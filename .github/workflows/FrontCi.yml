@@ -1,0 +1,31 @@
+name: ForntCI Pipeline
+
+on:
+  push:
+    branches:
+      - main # Es pora que se ejecute en main
+  pull_request:
+    branches:
+      - '**' # Es pora que se ejecute en todas las ramas
+
+jobs:
+  lint:
+    name: Linter de Código
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setear Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm install
+        working-directory: ./FrontAdmin
+      
+      - name: Correr linter de codigo
+        run: npm run lint
+        working-directory: ./FrontAdmin
+

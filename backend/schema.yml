@@ -1,0 +1,3783 @@
+openapi: 3.0.3
+info:
+  title: Gestion TUP API
+  version: 0.1.0
+  x-logo:
+    url: https://www.djangoproject.com                /m/img/logos/django-logo-negative.png
+    backgroundColor: '#FFFFFF'
+    altText: Django Logo
+  description: API Endpoint Documentation for Gestion TUP
+  termsOfService: https://github.com/samuop/GestionTUP/blob/main/README.md
+  contact:
+    name: API Support
+    url: https://github.com/carlosferreyra/GestionTUP
+    email: eduferreyraok@gmail.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+paths:
+  /api/schema/:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/token/:
+    post:
+      operationId: api_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: api_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/token/verify/:
+    post:
+      operationId: api_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+  /core/admin-roles/:
+    get:
+      operationId: core_admin_roles_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminRol'
+          description: ''
+    post:
+      operationId: core_admin_roles_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminRolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminRolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminRolRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminRol'
+          description: ''
+  /core/admin-roles/{id}/:
+    get:
+      operationId: core_admin_roles_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this admin rol.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminRol'
+          description: ''
+    put:
+      operationId: core_admin_roles_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this admin rol.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminRolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminRolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminRolRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminRol'
+          description: ''
+    patch:
+      operationId: core_admin_roles_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this admin rol.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminRolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminRolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminRolRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminRol'
+          description: ''
+    delete:
+      operationId: core_admin_roles_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this admin rol.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/administradores/:
+    get:
+      operationId: core_administradores_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Administrador'
+          description: ''
+    post:
+      operationId: core_administradores_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdministradorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdministradorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdministradorRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Administrador'
+          description: ''
+  /core/administradores/{id}/:
+    get:
+      operationId: core_administradores_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this administrador.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Administrador'
+          description: ''
+    put:
+      operationId: core_administradores_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this administrador.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdministradorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdministradorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdministradorRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Administrador'
+          description: ''
+    patch:
+      operationId: core_administradores_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this administrador.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdministradorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdministradorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdministradorRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Administrador'
+          description: ''
+    delete:
+      operationId: core_administradores_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this administrador.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/alumnos/:
+    get:
+      operationId: core_alumnos_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alumno'
+          description: ''
+    post:
+      operationId: core_alumnos_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alumno'
+          description: ''
+  /core/alumnos/{id}/:
+    get:
+      operationId: core_alumnos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alumno.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alumno'
+          description: ''
+    put:
+      operationId: core_alumnos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alumno.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alumno'
+          description: ''
+    patch:
+      operationId: core_alumnos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alumno.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumnoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumnoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumnoRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alumno'
+          description: ''
+    delete:
+      operationId: core_alumnos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this alumno.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/compromisos/:
+    get:
+      operationId: core_compromisos_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompromisoDePago'
+          description: ''
+    post:
+      operationId: core_compromisos_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompromisoDePagoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompromisoDePagoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompromisoDePagoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompromisoDePago'
+          description: ''
+  /core/compromisos/{id_comp_pago}/:
+    get:
+      operationId: core_compromisos_retrieve
+      parameters:
+      - in: path
+        name: id_comp_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this compromiso de pago.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompromisoDePago'
+          description: ''
+    put:
+      operationId: core_compromisos_update
+      parameters:
+      - in: path
+        name: id_comp_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this compromiso de pago.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompromisoDePagoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CompromisoDePagoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CompromisoDePagoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompromisoDePago'
+          description: ''
+    patch:
+      operationId: core_compromisos_partial_update
+      parameters:
+      - in: path
+        name: id_comp_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this compromiso de pago.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCompromisoDePagoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompromisoDePagoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCompromisoDePagoRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompromisoDePago'
+          description: ''
+    delete:
+      operationId: core_compromisos_destroy
+      parameters:
+      - in: path
+        name: id_comp_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this compromiso de pago.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/cuotas/:
+    get:
+      operationId: core_cuotas_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cuota'
+          description: ''
+    post:
+      operationId: core_cuotas_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuotaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CuotaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CuotaRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuota'
+          description: ''
+  /core/cuotas/{id_cuota}/:
+    get:
+      operationId: core_cuotas_retrieve
+      parameters:
+      - in: path
+        name: id_cuota
+        schema:
+          type: integer
+        description: A unique integer value identifying this cuota.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuota'
+          description: ''
+    put:
+      operationId: core_cuotas_update
+      parameters:
+      - in: path
+        name: id_cuota
+        schema:
+          type: integer
+        description: A unique integer value identifying this cuota.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuotaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CuotaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CuotaRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuota'
+          description: ''
+    patch:
+      operationId: core_cuotas_partial_update
+      parameters:
+      - in: path
+        name: id_cuota
+        schema:
+          type: integer
+        description: A unique integer value identifying this cuota.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCuotaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCuotaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCuotaRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuota'
+          description: ''
+    delete:
+      operationId: core_cuotas_destroy
+      parameters:
+      - in: path
+        name: id_cuota
+        schema:
+          type: integer
+        description: A unique integer value identifying this cuota.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/inhabilitaciones/:
+    get:
+      operationId: core_inhabilitaciones_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inhabilitacion'
+          description: ''
+    post:
+      operationId: core_inhabilitaciones_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InhabilitacionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InhabilitacionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InhabilitacionRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inhabilitacion'
+          description: ''
+  /core/inhabilitaciones/{id}/:
+    get:
+      operationId: core_inhabilitaciones_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inhabilitacion.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inhabilitacion'
+          description: ''
+    put:
+      operationId: core_inhabilitaciones_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inhabilitacion.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InhabilitacionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InhabilitacionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InhabilitacionRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inhabilitacion'
+          description: ''
+    patch:
+      operationId: core_inhabilitaciones_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inhabilitacion.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInhabilitacionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInhabilitacionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInhabilitacionRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inhabilitacion'
+          description: ''
+    delete:
+      operationId: core_inhabilitaciones_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inhabilitacion.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/materia-alumnos/:
+    get:
+      operationId: core_materia_alumnos_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MateriaAlumno'
+          description: ''
+    post:
+      operationId: core_materia_alumnos_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MateriaAlumnoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MateriaAlumnoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MateriaAlumnoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MateriaAlumno'
+          description: ''
+  /core/materia-alumnos/{id}/:
+    get:
+      operationId: core_materia_alumnos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia alumno.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MateriaAlumno'
+          description: ''
+    put:
+      operationId: core_materia_alumnos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia alumno.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MateriaAlumnoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MateriaAlumnoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MateriaAlumnoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MateriaAlumno'
+          description: ''
+    patch:
+      operationId: core_materia_alumnos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia alumno.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMateriaAlumnoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMateriaAlumnoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMateriaAlumnoRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MateriaAlumno'
+          description: ''
+    delete:
+      operationId: core_materia_alumnos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia alumno.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/materias/:
+    get:
+      operationId: core_materias_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Materia'
+          description: ''
+    post:
+      operationId: core_materias_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MateriaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MateriaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MateriaRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Materia'
+          description: ''
+  /core/materias/{id_materia}/:
+    get:
+      operationId: core_materias_retrieve
+      parameters:
+      - in: path
+        name: id_materia
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Materia'
+          description: ''
+    put:
+      operationId: core_materias_update
+      parameters:
+      - in: path
+        name: id_materia
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MateriaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MateriaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MateriaRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Materia'
+          description: ''
+    patch:
+      operationId: core_materias_partial_update
+      parameters:
+      - in: path
+        name: id_materia
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMateriaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMateriaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMateriaRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Materia'
+          description: ''
+    delete:
+      operationId: core_materias_destroy
+      parameters:
+      - in: path
+        name: id_materia
+        schema:
+          type: integer
+        description: A unique integer value identifying this materia.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/pagos/:
+    get:
+      operationId: core_pagos_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pago'
+          description: ''
+    post:
+      operationId: core_pagos_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PagoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PagoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PagoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+          description: ''
+  /core/pagos/{id_pago}/:
+    get:
+      operationId: core_pagos_retrieve
+      parameters:
+      - in: path
+        name: id_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this pago.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+          description: ''
+    put:
+      operationId: core_pagos_update
+      parameters:
+      - in: path
+        name: id_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this pago.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PagoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PagoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PagoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+          description: ''
+    patch:
+      operationId: core_pagos_partial_update
+      parameters:
+      - in: path
+        name: id_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this pago.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPagoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPagoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPagoRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+          description: ''
+    delete:
+      operationId: core_pagos_destroy
+      parameters:
+      - in: path
+        name: id_pago
+        schema:
+          type: integer
+        description: A unique integer value identifying this pago.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/permisos/:
+    get:
+      operationId: core_permisos_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Permisos'
+          description: ''
+    post:
+      operationId: core_permisos_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermisosRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PermisosRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PermisosRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permisos'
+          description: ''
+  /core/permisos/{id_permiso}/:
+    get:
+      operationId: core_permisos_retrieve
+      parameters:
+      - in: path
+        name: id_permiso
+        schema:
+          type: integer
+        description: A unique integer value identifying this permisos.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permisos'
+          description: ''
+    put:
+      operationId: core_permisos_update
+      parameters:
+      - in: path
+        name: id_permiso
+        schema:
+          type: integer
+        description: A unique integer value identifying this permisos.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermisosRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PermisosRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PermisosRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permisos'
+          description: ''
+    patch:
+      operationId: core_permisos_partial_update
+      parameters:
+      - in: path
+        name: id_permiso
+        schema:
+          type: integer
+        description: A unique integer value identifying this permisos.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPermisosRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPermisosRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPermisosRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permisos'
+          description: ''
+    delete:
+      operationId: core_permisos_destroy
+      parameters:
+      - in: path
+        name: id_permiso
+        schema:
+          type: integer
+        description: A unique integer value identifying this permisos.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/rol-permisos/:
+    get:
+      operationId: core_rol_permisos_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolPermiso'
+          description: ''
+    post:
+      operationId: core_rol_permisos_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolPermisoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RolPermisoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RolPermisoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolPermiso'
+          description: ''
+  /core/rol-permisos/{id}/:
+    get:
+      operationId: core_rol_permisos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol permiso.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolPermiso'
+          description: ''
+    put:
+      operationId: core_rol_permisos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol permiso.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolPermisoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RolPermisoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RolPermisoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolPermiso'
+          description: ''
+    patch:
+      operationId: core_rol_permisos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol permiso.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRolPermisoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRolPermisoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRolPermisoRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolPermiso'
+          description: ''
+    delete:
+      operationId: core_rol_permisos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol permiso.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/roles/:
+    get:
+      operationId: core_roles_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rol'
+          description: ''
+    post:
+      operationId: core_roles_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rol'
+          description: ''
+  /core/roles/{id_rol}/:
+    get:
+      operationId: core_roles_retrieve
+      parameters:
+      - in: path
+        name: id_rol
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rol'
+          description: ''
+    put:
+      operationId: core_roles_update
+      parameters:
+      - in: path
+        name: id_rol
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rol'
+          description: ''
+    patch:
+      operationId: core_roles_partial_update
+      parameters:
+      - in: path
+        name: id_rol
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRolRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rol'
+          description: ''
+    delete:
+      operationId: core_roles_destroy
+      parameters:
+      - in: path
+        name: id_rol
+        schema:
+          type: integer
+        description: A unique integer value identifying this rol.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/tipo-estados/:
+    get:
+      operationId: core_tipo_estados_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoEstado'
+          description: ''
+    post:
+      operationId: core_tipo_estados_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoEstadoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TipoEstadoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TipoEstadoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoEstado'
+          description: ''
+  /core/tipo-estados/{id_tipo_estado}/:
+    get:
+      operationId: core_tipo_estados_retrieve
+      parameters:
+      - in: path
+        name: id_tipo_estado
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo estado.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoEstado'
+          description: ''
+    put:
+      operationId: core_tipo_estados_update
+      parameters:
+      - in: path
+        name: id_tipo_estado
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo estado.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoEstadoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TipoEstadoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TipoEstadoRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoEstado'
+          description: ''
+    patch:
+      operationId: core_tipo_estados_partial_update
+      parameters:
+      - in: path
+        name: id_tipo_estado
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo estado.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoEstadoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoEstadoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoEstadoRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoEstado'
+          description: ''
+    delete:
+      operationId: core_tipo_estados_destroy
+      parameters:
+      - in: path
+        name: id_tipo_estado
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo estado.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /core/tipo-inhabilitaciones/:
+    get:
+      operationId: core_tipo_inhabilitaciones_list
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TipoInhabilitacion'
+          description: ''
+    post:
+      operationId: core_tipo_inhabilitaciones_create
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoInhabilitacionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TipoInhabilitacionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TipoInhabilitacionRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoInhabilitacion'
+          description: ''
+  /core/tipo-inhabilitaciones/{id_tipo_inhabilitacion}/:
+    get:
+      operationId: core_tipo_inhabilitaciones_retrieve
+      parameters:
+      - in: path
+        name: id_tipo_inhabilitacion
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo inhabilitacion.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoInhabilitacion'
+          description: ''
+    put:
+      operationId: core_tipo_inhabilitaciones_update
+      parameters:
+      - in: path
+        name: id_tipo_inhabilitacion
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo inhabilitacion.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoInhabilitacionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TipoInhabilitacionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TipoInhabilitacionRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoInhabilitacion'
+          description: ''
+    patch:
+      operationId: core_tipo_inhabilitaciones_partial_update
+      parameters:
+      - in: path
+        name: id_tipo_inhabilitacion
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo inhabilitacion.
+        required: true
+      tags:
+      - core
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoInhabilitacionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoInhabilitacionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTipoInhabilitacionRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoInhabilitacion'
+          description: ''
+    delete:
+      operationId: core_tipo_inhabilitaciones_destroy
+      parameters:
+      - in: path
+        name: id_tipo_inhabilitacion
+        schema:
+          type: integer
+        description: A unique integer value identifying this tipo inhabilitacion.
+        required: true
+      tags:
+      - core
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /users/login/:
+    post:
+      operationId: users_login_create
+      description: |-
+        Check the credentials and return the REST Token
+        if the credentials are valid and authenticated.
+        Calls Django Auth login method to register User ID
+        in Django session framework
+
+        Accept the following POST parameters: username, password
+        Return the REST Framework Token Object's key.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomLoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomLoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomLoginRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomJWTSerializerWithExpiration'
+          description: ''
+  /users/logout/:
+    post:
+      operationId: users_logout_create
+      description: |-
+        Calls Django logout method and delete the Token object
+        assigned to the current User object.
+
+        Accepts/Returns nothing.
+      tags:
+      - users
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /users/password/change/:
+    post:
+      operationId: users_password_change_create
+      description: |-
+        Calls Django Auth SetPasswordForm save method.
+
+        Accepts the following POST parameters: new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /users/password/reset/:
+    post:
+      operationId: users_password_reset_create
+      description: |-
+        Calls Django Auth PasswordResetForm save method.
+
+        Accepts the following POST parameters: email
+        Returns the success/fail message.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /users/password/reset/confirm/:
+    post:
+      operationId: users_password_reset_confirm_create
+      description: |-
+        Password reset e-mail link is confirmed, therefore
+        this resets the user's password.
+
+        Accepts the following POST parameters: token, uid,
+            new_password1, new_password2
+        Returns the success/fail message.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /users/signup/:
+    post:
+      operationId: users_signup_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomJWTSerializerWithExpiration'
+          description: ''
+  /users/signup/resend-email/:
+    post:
+      operationId: users_signup_resend_email_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerificationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerificationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerificationRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /users/signup/verify-email/:
+    post:
+      operationId: users_signup_verify_email_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmailRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestAuthDetail'
+          description: ''
+  /users/token/refresh/:
+    post:
+      operationId: users_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /users/token/verify/:
+    post:
+      operationId: users_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+  /users/user/:
+    get:
+      operationId: users_user_retrieve
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - users
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    put:
+      operationId: users_user_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetailsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDetailsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDetailsRequest'
+        required: true
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+    patch:
+      operationId: users_user_partial_update
+      description: |-
+        Reads and updates UserModel fields
+        Accepts GET, PUT, PATCH methods.
+
+        Default accepted fields: username, first_name, last_name
+        Default display fields: pk, username, email, first_name, last_name
+        Read-only fields: pk, email
+
+        Returns UserModel fields.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailsRequest'
+      security:
+      - jwtHeaderAuth: []
+      - jwtCookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+          description: ''
+components:
+  schemas:
+    AdminRol:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        id_admin:
+          type: integer
+        id_rol:
+          type: integer
+      required:
+      - id_admin
+      - id_rol
+    AdminRolRequest:
+      type: object
+      properties:
+        id_admin:
+          type: integer
+        id_rol:
+          type: integer
+      required:
+      - id_admin
+      - id_rol
+    Administrador:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        dni:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        user:
+          type: integer
+      required:
+      - dni
+      - user
+    AdministradorRequest:
+      type: object
+      properties:
+        dni:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        user:
+          type: integer
+      required:
+      - dni
+      - user
+    Alumno:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        legajo:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        dni:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        user:
+          type: integer
+        estado:
+          type: integer
+      required:
+      - dni
+      - estado
+      - legajo
+      - user
+    AlumnoRequest:
+      type: object
+      properties:
+        legajo:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        dni:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        user:
+          type: integer
+        estado:
+          type: integer
+      required:
+      - dni
+      - estado
+      - legajo
+      - user
+    CompromisoDePago:
+      type: object
+      properties:
+        id_comp_pago:
+          type: integer
+          readOnly: true
+        perfciclo:
+          type: string
+          format: date-time
+        monto:
+          type: number
+          format: double
+        firmado:
+          type: boolean
+        fecha_firmado:
+          type: string
+          format: date-time
+        compromiso:
+          type: string
+          maxLength: 255
+        alumno:
+          type: integer
+      required:
+      - alumno
+      - compromiso
+      - fecha_firmado
+      - firmado
+      - monto
+      - perfciclo
+    CompromisoDePagoRequest:
+      type: object
+      properties:
+        perfciclo:
+          type: string
+          format: date-time
+        monto:
+          type: number
+          format: double
+        firmado:
+          type: boolean
+        fecha_firmado:
+          type: string
+          format: date-time
+        compromiso:
+          type: string
+          minLength: 1
+          maxLength: 255
+        alumno:
+          type: integer
+      required:
+      - alumno
+      - compromiso
+      - fecha_firmado
+      - firmado
+      - monto
+      - perfciclo
+    Cuota:
+      type: object
+      properties:
+        id_cuota:
+          type: integer
+          readOnly: true
+        nro_cuota:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        recargo:
+          type: number
+          format: double
+        monto:
+          type: number
+          format: double
+        firmado:
+          type: boolean
+        vencimiento:
+          type: string
+          format: date
+        fecha_pago:
+          type: string
+          format: date
+        fecha_vencimiento:
+          type: string
+          format: date
+        fecha_pago_devengado:
+          type: string
+          format: date
+        fecha_pedido:
+          type: string
+          format: date
+        tipo_puesto:
+          type: string
+          maxLength: 255
+      required:
+      - fecha_pago
+      - fecha_pago_devengado
+      - fecha_pedido
+      - fecha_vencimiento
+      - firmado
+      - monto
+      - nro_cuota
+      - recargo
+      - tipo_puesto
+      - vencimiento
+    CuotaRequest:
+      type: object
+      properties:
+        nro_cuota:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        recargo:
+          type: number
+          format: double
+        monto:
+          type: number
+          format: double
+        firmado:
+          type: boolean
+        vencimiento:
+          type: string
+          format: date
+        fecha_pago:
+          type: string
+          format: date
+        fecha_vencimiento:
+          type: string
+          format: date
+        fecha_pago_devengado:
+          type: string
+          format: date
+        fecha_pedido:
+          type: string
+          format: date
+        tipo_puesto:
+          type: string
+          minLength: 1
+          maxLength: 255
+      required:
+      - fecha_pago
+      - fecha_pago_devengado
+      - fecha_pedido
+      - fecha_vencimiento
+      - firmado
+      - monto
+      - nro_cuota
+      - recargo
+      - tipo_puesto
+      - vencimiento
+    CustomJWTSerializerWithExpiration:
+      type: object
+      description: Serializer for JWT authentication with expiration times.
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+        user:
+          allOf:
+          - $ref: '#/components/schemas/UserDetails'
+          readOnly: true
+        access_expiration:
+          type: string
+          format: date-time
+        refresh_expiration:
+          type: string
+          format: date-time
+      required:
+      - access
+      - access_expiration
+      - refresh
+      - refresh_expiration
+    CustomLoginRequest:
+      type: object
+      description: |-
+        Custom login serializer that accepts either an email or a username.
+        :email_or_username: The email or username of the user.
+        :password: The password of the user.
+        :user: The user object.
+        :return: The validated data from the user serializer.
+      properties:
+        email_or_username:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+      required:
+      - email_or_username
+      - password
+    Inhabilitacion:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        fecha_desde:
+          type: string
+          format: date-time
+        fecha_hasta:
+          type: string
+          format: date-time
+        descripcion:
+          type: string
+        id_alumno:
+          type: integer
+        id_tipo_inhabilitacion:
+          type: integer
+      required:
+      - descripcion
+      - fecha_desde
+      - fecha_hasta
+      - id_alumno
+      - id_tipo_inhabilitacion
+    InhabilitacionRequest:
+      type: object
+      properties:
+        fecha_desde:
+          type: string
+          format: date-time
+        fecha_hasta:
+          type: string
+          format: date-time
+        descripcion:
+          type: string
+          minLength: 1
+        id_alumno:
+          type: integer
+        id_tipo_inhabilitacion:
+          type: integer
+      required:
+      - descripcion
+      - fecha_desde
+      - fecha_hasta
+      - id_alumno
+      - id_tipo_inhabilitacion
+    Materia:
+      type: object
+      properties:
+        id_materia:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 255
+        cuatrimestre:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - cuatrimestre
+      - nombre
+    MateriaAlumno:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        offrc:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        atendnc:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        id_materia:
+          type: integer
+        id_alumno:
+          type: integer
+      required:
+      - atendnc
+      - id_alumno
+      - id_materia
+      - offrc
+    MateriaAlumnoRequest:
+      type: object
+      properties:
+        offrc:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        atendnc:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        id_materia:
+          type: integer
+        id_alumno:
+          type: integer
+      required:
+      - atendnc
+      - id_alumno
+      - id_materia
+      - offrc
+    MateriaRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        cuatrimestre:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - cuatrimestre
+      - nombre
+    Pago:
+      type: object
+      properties:
+        id_pago:
+          type: integer
+          readOnly: true
+        descripcion:
+          type: string
+        medio_pago:
+          type: string
+          maxLength: 255
+        nro_recibo:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        monto:
+          type: number
+          format: double
+        estado:
+          type: boolean
+        fecha:
+          type: string
+          format: date
+        comprobante:
+          type: string
+          maxLength: 255
+        alumno:
+          type: integer
+        cuota:
+          type: integer
+      required:
+      - alumno
+      - comprobante
+      - cuota
+      - descripcion
+      - estado
+      - fecha
+      - medio_pago
+      - monto
+      - nro_recibo
+    PagoRequest:
+      type: object
+      properties:
+        descripcion:
+          type: string
+          minLength: 1
+        medio_pago:
+          type: string
+          minLength: 1
+          maxLength: 255
+        nro_recibo:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        monto:
+          type: number
+          format: double
+        estado:
+          type: boolean
+        fecha:
+          type: string
+          format: date
+        comprobante:
+          type: string
+          minLength: 1
+          maxLength: 255
+        alumno:
+          type: integer
+        cuota:
+          type: integer
+      required:
+      - alumno
+      - comprobante
+      - cuota
+      - descripcion
+      - estado
+      - fecha
+      - medio_pago
+      - monto
+      - nro_recibo
+    PasswordChangeRequest:
+      type: object
+      properties:
+        new_password1:
+          type: string
+          minLength: 1
+          maxLength: 128
+        new_password2:
+          type: string
+          minLength: 1
+          maxLength: 128
+      required:
+      - new_password1
+      - new_password2
+    PasswordResetConfirmRequest:
+      type: object
+      description: Serializer for confirming a password reset attempt.
+      properties:
+        new_password1:
+          type: string
+          minLength: 1
+          maxLength: 128
+        new_password2:
+          type: string
+          minLength: 1
+          maxLength: 128
+        uid:
+          type: string
+          minLength: 1
+        token:
+          type: string
+          minLength: 1
+      required:
+      - new_password1
+      - new_password2
+      - token
+      - uid
+    PasswordResetRequest:
+      type: object
+      description: Serializer for requesting a password reset e-mail.
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+      required:
+      - email
+    PatchedAdminRolRequest:
+      type: object
+      properties:
+        id_admin:
+          type: integer
+        id_rol:
+          type: integer
+    PatchedAdministradorRequest:
+      type: object
+      properties:
+        dni:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        user:
+          type: integer
+    PatchedAlumnoRequest:
+      type: object
+      properties:
+        legajo:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        dni:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        user:
+          type: integer
+        estado:
+          type: integer
+    PatchedCompromisoDePagoRequest:
+      type: object
+      properties:
+        perfciclo:
+          type: string
+          format: date-time
+        monto:
+          type: number
+          format: double
+        firmado:
+          type: boolean
+        fecha_firmado:
+          type: string
+          format: date-time
+        compromiso:
+          type: string
+          minLength: 1
+          maxLength: 255
+        alumno:
+          type: integer
+    PatchedCuotaRequest:
+      type: object
+      properties:
+        nro_cuota:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        recargo:
+          type: number
+          format: double
+        monto:
+          type: number
+          format: double
+        firmado:
+          type: boolean
+        vencimiento:
+          type: string
+          format: date
+        fecha_pago:
+          type: string
+          format: date
+        fecha_vencimiento:
+          type: string
+          format: date
+        fecha_pago_devengado:
+          type: string
+          format: date
+        fecha_pedido:
+          type: string
+          format: date
+        tipo_puesto:
+          type: string
+          minLength: 1
+          maxLength: 255
+    PatchedInhabilitacionRequest:
+      type: object
+      properties:
+        fecha_desde:
+          type: string
+          format: date-time
+        fecha_hasta:
+          type: string
+          format: date-time
+        descripcion:
+          type: string
+          minLength: 1
+        id_alumno:
+          type: integer
+        id_tipo_inhabilitacion:
+          type: integer
+    PatchedMateriaAlumnoRequest:
+      type: object
+      properties:
+        offrc:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        atendnc:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        id_materia:
+          type: integer
+        id_alumno:
+          type: integer
+    PatchedMateriaRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        cuatrimestre:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+    PatchedPagoRequest:
+      type: object
+      properties:
+        descripcion:
+          type: string
+          minLength: 1
+        medio_pago:
+          type: string
+          minLength: 1
+          maxLength: 255
+        nro_recibo:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        monto:
+          type: number
+          format: double
+        estado:
+          type: boolean
+        fecha:
+          type: string
+          format: date
+        comprobante:
+          type: string
+          minLength: 1
+          maxLength: 255
+        alumno:
+          type: integer
+        cuota:
+          type: integer
+    PatchedPermisosRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+    PatchedRolPermisoRequest:
+      type: object
+      properties:
+        id_rol:
+          type: integer
+        id_permiso:
+          type: integer
+    PatchedRolRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+    PatchedTipoEstadoRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+    PatchedTipoInhabilitacionRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+    PatchedUserDetailsRequest:
+      type: object
+      description: User model w/o password
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    Permisos:
+      type: object
+      properties:
+        id_permiso:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 255
+        descripcion:
+          type: string
+      required:
+      - descripcion
+      - nombre
+    PermisosRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+      required:
+      - descripcion
+      - nombre
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          minLength: 1
+        password1:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password2:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password1
+      - password2
+      - username
+    ResendEmailVerificationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+      required:
+      - email
+    RestAuthDetail:
+      type: object
+      properties:
+        detail:
+          type: string
+          readOnly: true
+    Rol:
+      type: object
+      properties:
+        id_rol:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 255
+        descripcion:
+          type: string
+      required:
+      - descripcion
+      - nombre
+    RolPermiso:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        id_rol:
+          type: integer
+        id_permiso:
+          type: integer
+      required:
+      - id_permiso
+      - id_rol
+    RolPermisoRequest:
+      type: object
+      properties:
+        id_rol:
+          type: integer
+        id_permiso:
+          type: integer
+      required:
+      - id_permiso
+      - id_rol
+    RolRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+      required:
+      - descripcion
+      - nombre
+    TipoEstado:
+      type: object
+      properties:
+        id_tipo_estado:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 255
+        descripcion:
+          type: string
+      required:
+      - descripcion
+      - nombre
+    TipoEstadoRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+      required:
+      - descripcion
+      - nombre
+    TipoInhabilitacion:
+      type: object
+      properties:
+        id_tipo_inhabilitacion:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 255
+        descripcion:
+          type: string
+      required:
+      - descripcion
+      - nombre
+    TipoInhabilitacionRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 255
+        descripcion:
+          type: string
+          minLength: 1
+      required:
+      - descripcion
+      - nombre
+    TokenObtainPair:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    TokenVerifyRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - token
+    UserDetails:
+      type: object
+      description: User model w/o password
+      properties:
+        pk:
+          type: integer
+          readOnly: true
+          title: ID
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - username
+    UserDetailsRequest:
+      type: object
+      description: User model w/o password
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - username
+    VerifyEmailRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - key
+  securitySchemes:
+    jwtCookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+    jwtHeaderAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-logo: x-logo
+servers:
+- url: '{protocol}://{host}{port}/'
+  description: Development server
+  variables:
+    protocol:
+      description: Protocol (http only for now)
+      default: https
+      enum:
+      - http
+      - https
+    host:
+      description: Hostname (FQDN)
+      default: gestiontup-42tx6kvt3q-uc.a.run.app
+      enum:
+      - gestiontup-42tx6kvt3q-uc.a.run.app
+      - 127.0.0.1
+    port:
+      description: server port
+      default: ''
+      enum:
+      - ''
+      - :8000
+tags:
+- name: api
+  description: API endpoint access, operations and schema.
+  externalDocs:
+    description: API Schema Formatting - OpenAPI 3.0.3
+    url: https://spec.openapis.org/oas/v3.0.3#schema
+- name: users
+  description: User operations,                 including login, logout, signup, and
+    password reset.
+  externalDocs:
+    description: 'Included auth Library: dj-rest-auth'
+    url: https://dj-rest-auth.readthedocs.io/en/latest/
+- name: core
+  description: Core operations,             including CRUD operations for the main
+    models.
+externalDocs:
+  description: Click here for Swagger UI Specification Docs
+  url: https://swagger.io/specification/

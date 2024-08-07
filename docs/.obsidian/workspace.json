@@ -1,0 +1,156 @@
+{
+  "main": {
+    "id": "cfc817c7621d9047",
+    "type": "split",
+    "children": [
+      {
+        "id": "6b5e76cf78e87084",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "357f742c6017d7c8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Notas de Clase/2024-06-26.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c6b56d59718c2d43",
+    "type": "split",
+    "children": [
+      {
+        "id": "6e0867b6a0304fa2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ee39f44e1e12fa62",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "ec0775a8ac47dadf",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9bebc34f800618d3",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e13c3cc95bdfc273",
+    "type": "split",
+    "children": [
+      {
+        "id": "40a17265e57f0791",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "273941cf3bab30f9",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Notas de Clase/2024-06-26.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "2041cd56565be4c9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Notas de Clase/2024-06-26.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "0b2f80a73eeb40e0",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "2b0f2f75b620fd97",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Notas de Clase/2024-06-26.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false
+    }
+  },
+  "active": "357f742c6017d7c8",
+  "lastOpenFiles": [
+    "Notas de Clase/2024-06-12.md",
+    "Notas de Clase/2024-06-26.md",
+    "Notas de Clase/2024-05-22.md",
+    "notas/Resumen de Informes.md"
+  ]
+}
