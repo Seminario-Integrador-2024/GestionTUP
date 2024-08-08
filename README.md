@@ -92,11 +92,10 @@ export default {
 
 This section is used for setting up the backend [Django][DjangoDocs] server, using [Python][PythonDocs] and [Django REST framework][DRFDocs], along with 3th party libraries like [drf-spectacular][DRFSpectacularDocs] for API documentation.
 
-You can test the current backend (only Swagger API endpoint done so far) by visiting the following [URL][APIUrl] deployed in GCP (Google Cloud Platform):
 This deployment is done using the `Dockerfile`.
 This template provides a minimal setup to get Python working in a Django web server.
 
-#### Setting up the backend
+#### Setting up the backend ( Development )
 
 - Tools needed:
   - Python 3.10 or higher
@@ -164,7 +163,7 @@ Steps to set up the backend environment:
 - _You can deactivate the virtual environment using the `deactivate` command, once you are done working on the project._
 - _A complete list of python dependencies can be found in the `requirements.txt` file at the root of the project._
 
-##### Setting up the Docker container
+##### Setting up the Docker container ( Testing Server )
 
 1. Install Docker using the official [Docker Desktop](https://www.docker.com/products/docker-desktop) application or using the package manager from your OS:
    1.On macOS run:
