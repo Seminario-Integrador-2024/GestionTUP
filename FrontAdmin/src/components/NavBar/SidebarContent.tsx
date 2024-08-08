@@ -14,9 +14,7 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
   return (
     <>
       <Box
-        bg="white"
         borderRight="1px"
-        borderRightColor="gray.300"
         w={{ base: "full", md: '100px' }}
         pos="fixed"
         h="100% "
@@ -26,7 +24,7 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
           {!isLargerThanMd && <CloseButton onClick={onClose} marginRight="8" />}
         </HStack>
         <Flex alignItems="center" justifyContent="center" flexDirection="column"  gap='2'>
-          <Text fontSize="4xl" fontFamily="monospace" fontWeight="bold"  color='black' >
+          <Text fontSize="4xl"  fontWeight="bold">
             TUP
           </Text>
           {LINK_ITEMS.map((link) => (

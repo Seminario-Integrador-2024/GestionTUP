@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./Context";
 import Auth from "./layouts/Auth";
 import Dashboard from "./layouts/Admin";
+import theme from "./theme/theme";
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
 
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
          <BrowserRouter>
             <Routes>
               {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}

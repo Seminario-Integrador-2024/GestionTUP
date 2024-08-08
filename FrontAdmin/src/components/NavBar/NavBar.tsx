@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Box, Drawer, DrawerContent, useDisclosure, Text } from "@chakra-ui/react";
+import { Box, Drawer, DrawerContent, useDisclosure} from "@chakra-ui/react";
 import {MobileNav} from "./MobileNav";
 import { SidebarContent } from "./SidebarContent";
 
@@ -7,8 +7,7 @@ export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box minH="100vh" bg="gray.100">
-      
+    <Box minH="100vh">
       <SidebarContent onClose={onClose} display={{ base: "none", md: "block" }} />
       <Drawer autoFocus={false} isOpen={isOpen} placement="left" onClose={onClose} onOverlayClick={onClose} size="xs">
         <DrawerContent>

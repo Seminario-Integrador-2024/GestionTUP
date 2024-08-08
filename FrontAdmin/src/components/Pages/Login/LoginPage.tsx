@@ -21,7 +21,7 @@ function LoginPage() {
   const [email, setEmail] = useState('');
    const { onLogin } = useAuth();
 
-  const titleColor = useColorModeValue("red.500", "red.500");
+  const titleColor = useColorModeValue("black", "white");
   const textColor = useColorModeValue("black", "white");
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -90,21 +90,9 @@ function LoginPage() {
                 />
 
                 <Button
-                  fontSize='16px'
                   type='submit'
-                  bg='red.500'
                   w='100%'
                   h='45'
-                  mb='20px'
-                  color='black'
-                  mt='20px'
-                  _hover={{
-                    bg: "red.200",
-                  }}
-                  _active={{
-                    bg: "black",
-                    color: 'white',
-                  }}
                 >
                   Acceder
                 </Button>
