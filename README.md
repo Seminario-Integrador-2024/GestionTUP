@@ -41,7 +41,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 - [Melgarejo Roma, Facundo Gabriel][facundomelgarejo]
 - [Miranda Falkievich, Ariano Gabriel][MirandaAriano]
 
-- [Pallares, Ulises Pablo]{ulises}
+- [Pallares, Ulises Pablo][ulises]
 - [Paredes, Samuel Octavio][samuop]
 - [Robales Lopez, Lautaro Nicols]
 
