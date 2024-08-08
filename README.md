@@ -1,9 +1,12 @@
-
 # :computer: _Sistema de Gestion TUP_ :rocket::books:
+
+<!-- repo url:  https://github.com/Seminario-Integrador-2024/GestionTUP -->
+
+<!-- repo badges -->
 
 ![GitHub followers](https://img.shields.io/github/followers/Seminario-Integrador-2024) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[![Django](https://img.shields.io/badge/Django-5.0.8-green.svg)](https://www.djangoproject.com/)   [![Python](https://img.shields.io/badge/Python-3.10.0-blue.svg)](https://www.python.org/) [![React](https://img.shields.io/badge/React-17.0.2-blue.svg)](https://reactjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-4.3.5-blue.svg)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-2.4.4-blue.svg)](https://vitejs.dev/) [![Docker](https://img.shields.io/badge/Docker-20.10.7-blue.svg)](https://www.docker.com/) [![Docker Compose](https://img.shields.io/badge/Docker_Compose-1.29.2-blue.svg)](https://docs.docker.com/compose/) [![ESLint](https://img.shields.io/badge/ESLint-7.32.0-blue.svg)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-2.4.1-orange.svg)](https://prettier.io/) [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Run-lightblue.svg)](https://cloud.google.com/run)
+[![Django](https://img.shields.io/badge/Django-5.1-green.svg)](https://www.djangoproject.com/) [![Python](https://img.shields.io/badge/Python-3.10.14-blue.svg)](https://www.python.org/) [![React](https://img.shields.io/badge/React-17.0.2-blue.svg)](https://reactjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-4.3.5-blue.svg)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-2.4.4-blue.svg)](https://vitejs.dev/) [![Docker](https://img.shields.io/badge/Docker-20.10.7-blue.svg)](https://www.docker.com/) [![Docker Compose](https://img.shields.io/badge/Docker_Compose-1.29.2-blue.svg)](https://docs.docker.com/compose/) [![ESLint](https://img.shields.io/badge/ESLint-7.32.0-blue.svg)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-2.4.1-orange.svg)](https://prettier.io/) [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Run-lightblue.svg)](https://cloud.google.com/run)
 
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run)
 
@@ -12,7 +15,7 @@
 - [:computer: _Sistema de Gestion TUP_ :rocket::books:](#computer-sistema-de-gestion-tup-rocketbooks)
   - [:notebook: Table of Contents :ledger:](#notebook-table-of-contents-ledger)
   - [About the project :briefcase:](#about-the-project-briefcase)
-  - [Team :busts\_in\_silhouette: :star:](#team-busts_in_silhouette-star)
+  - [Team :busts_in_silhouette: :star:](#team-busts_in_silhouette-star)
   - [Documentation :notebook:](#documentation-notebook)
     - [Frontend Documentation (React)](#frontend-documentation-react)
       - [React + TypeScript + Vite](#react--typescript--vite)
@@ -27,22 +30,22 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 
 ## Team :busts_in_silhouette: :star:
 
-[carlosferreyra]: <http://github.com/carlosferreyra>
-[TobiasMaciel]: <http://github.com/TobiasMaciel>
-[yoelmarain]: <https://github.com/yoelmarain>
-[facundomelgarejo]: <https://github.com/facundomelgarejo>
-[MirandaAriano]: <http://github.com/MirandaAriano>
-[samuop]: <https://github.com/samuop>
-[ulises]: <https://github.com/ulisespallares888>
+[carlosferreyra]: http://github.com/carlosferreyra
+[TobiasMaciel]: http://github.com/TobiasMaciel
+[yoelmarain]: https://github.com/yoelmarain
+[facundomelgarejo]: https://github.com/facundomelgarejo
+[MirandaAriano]: http://github.com/MirandaAriano
+[samuop]: https://github.com/samuop
+[ulises]: https://github.com/ulisespallares888
 
 - [Ferreyra, Carlos Eduardo][carlosferreyra]
 - [Maciel Meister, Tobias Alejandro][TobiasMaciel]
 - [Marain, Yoel Mario][yoelmarain]
 - [Melgarejo Roma, Facundo Gabriel][facundomelgarejo]
 - [Miranda Falkievich, Ariano Gabriel][MirandaAriano]
-
 - [Pallares, Ulises Pablo][ulises]
 - [Paredes, Samuel Octavio][samuop]
+
 - [Robales Lopez, Lautaro Nicols]
 
 ## Documentation :notebook:
@@ -68,12 +71,12 @@ If you are developing a production application, we recommend updating the config
 export default {
   // other rules...
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: ["./tsconfig.json", "./tsconfig.node.json"],
     tsconfigRootDir: __dirname,
   },
-}
+};
 ```
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
@@ -82,11 +85,11 @@ export default {
 
 =======================================
 
-[DjangoDocs]: <https://www.djangoproject.com/>
-[PythonDocs]: <https://www.python.org/doc/>
-[DRFDocs]: <https://www.django-rest-framework.org/>
-[DRFSpectacularDocs]: <https://drf-spectacular.readthedocs.io/en/latest/>
-[APIUrl]: <https://tup-backend-3q7z7w7zfq-uc.a.run.app/api/swagger-ui/>
+[DjangoDocs]: https://www.djangoproject.com/
+[PythonDocs]: https://www.python.org/doc/
+[DRFDocs]: https://www.django-rest-framework.org/
+[DRFSpectacularDocs]: https://drf-spectacular.readthedocs.io/en/latest/
+[APIUrl]: https://tup-backend-3q7z7w7zfq-uc.a.run.app/api/swagger-ui/
 
 ### Backend :snake:🧑‍💻
 
@@ -98,16 +101,17 @@ This template provides a minimal setup to get Python working in a Django web ser
 #### Setting up the backend ( Development )
 
 - Tools needed:
+  - Shell (bash, zsh, PowerShell, etc.)
   - Python 3.10 or higher
     - pip (Python package manager)
   - Docker
     - Docker Compose (optional)
-  - Git
   - Visual Studio Code (optional - recommended)
 
 Steps to set up the backend environment:
 
 1. Install Python 3.10 or higher using the package manager from you OS:
+
    1. if macOS run using zsh:
 
       ```bash
@@ -127,6 +131,7 @@ Steps to set up the backend environment:
       ```
 
       **Note:** _If you are using a different OS, or prefer a manual installation, please refer to the official Python [download page](https://www.python.org/downloads/)_
+
 2. Install pip (Python package manager):
 
    ```bash
@@ -146,6 +151,7 @@ Steps to set up the backend environment:
    ```
 
 4. Activate the virtual environment using:
+
    1. On macOS/Linux:
 
       ```bash
@@ -158,47 +164,50 @@ Steps to set up the backend environment:
       .\venv\Scripts\Activate
       ```
 
-  **Note:**
+   **Note:**
 
 - _You can deactivate the virtual environment using the `deactivate` command, once you are done working on the project._
 - _A complete list of python dependencies can be found in the `requirements.txt` file at the root of the project._
 
 ##### Setting up the Docker container ( Testing Server )
 
-1. Install Docker using the official [Docker Desktop](https://www.docker.com/products/docker-desktop) application or using the package manager from your OS:
+1. Install Docker using the official downloader [Docker Desktop](https://www.docker.com/products/docker-desktop), or using the package manager from your OS:
    1.On macOS run:
 
    ```bash
     brew install docker
-    ```
+   ```
 
    2.On Linux/Debian run:
 
    ```bash
     sudo apt-get install docker
-    ```
+   ```
 
    1.On Windows run:
 
    ```bash
     winget install docker
-    ```
+   ```
 
    _**Note:**_ _You may also need to install Docker Compose using `brew install docker-compose` in macOS or `sudo apt-get install docker-compose` in Ubuntu/Debian_
+
 2. Build the Docker image using at the root of the project:
 
-    ```bash
-    docker build -t [backend] . #replace `[backend]` with the desired image name 
-    ```
+   ```bash
+   docker build -t [backend] . #replace `[backend]` with the desired image name
+   ```
 
-    Docker settings can be configured in the `Dockerfile` and `docker-compose.yml` files at the root of the project.
+   Docker settings can be configured in the `Dockerfile` and `docker-compose.yml` files at the root of the project.
+
 3. Run the Docker container using
 
-    ```bash
-    docker run -p 8000:8000 [backend] #replace `[backend]` with the image name used in the previous step. 
-    ```
+   ```bash
+   docker run -p 8000:8000 [backend] #replace `[backend]` with the image name used in the previous step.
+   ```
 
    You can also run the container in the background using the `-d` flag or specify a different port using `-p [host_port]:8000`
+
 4. If defaults settings are used,the Django server should now be running on
 
    ```bash
@@ -215,7 +224,7 @@ Steps to set up the backend environment:
 7. You can access the API documentation with ReDoc at `http://localhost:8000/api/redoc-ui/`
 8. to stop the container press `Ctrl + C` in the terminal where the container is running.
 
-   *_If the container is running in the background use:_
+   \*_If the container is running in the background use:_
 
    ```bash
    docker ps #get the container ID
@@ -235,12 +244,12 @@ Steps to set up the backend environment:
 
 10. to remove the image use:
 
-      ```bash
-      docker rmi [backend] #replace `[backend]` with the image name
-      ```
+    ```bash
+    docker rmi [backend] #replace `[backend]` with the image name
+    ```
 
 11. to remove the container and image use:
 
-   ```bash
-      docker rm -f [container_id] #replace `[container_id]` with the container ID
-   ```
+```bash
+   docker rm -f [container_id] #replace `[container_id]` with the container ID
+```
