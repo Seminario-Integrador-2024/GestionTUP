@@ -8,10 +8,9 @@ import {
   Heading,
   Input,
   useColorModeValue,
-  useColorMode,
-  useToast
 } from "@chakra-ui/react";
 import { FetchLogin } from "../../../API/Login";
+import { useAuth } from "../../../Context";
 
 
 
@@ -20,26 +19,18 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+   const { onLogin } = useAuth();
 
   const titleColor = useColorModeValue("red.500", "red.500");
-  const textColor = useColorModeValue("white", "black");
-
-
-
+  const textColor = useColorModeValue("black", "white");
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    try {
-      await FetchLogin(username, email, password);
-
-    } catch (error) {
-      console.error('Network error', error);
-      // Handle network errors here
-    }
+    onLogin();
   };
 
   return (
-    <Flex position='relative' mb='40px' backgroundColor='dark'>
+    <Flex position='relative' mb='40px'>
       <Flex
         h={{ sm: "initial", md: "75vh", lg: "85vh" }}
         w='100%'

@@ -1,16 +1,9 @@
-import React, { useEffect } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 
-const ErrorPage: React.FC = () => {
-  const url = useLocation();
-  const navigate = useNavigate();
+function ErrorPage  () {
 
-  useEffect(() => {
-    if (url.pathname === "/") {
-      navigate("/home");
-    }
-  }, [navigate, url.pathname]);
+
 
   return (
     <Box textAlign="center" p="1rem">
