@@ -33,6 +33,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 [facundomelgarejo]: <https://github.com/facundomelgarejo>
 [MirandaAriano]: <http://github.com/MirandaAriano>
 [samuop]: <https://github.com/samuop>
+[ulises]: <https://github.com/ulisespallares888>
 
 - [Ferreyra, Carlos Eduardo][carlosferreyra]
 - [Maciel Meister, Tobias Alejandro][TobiasMaciel]
@@ -40,7 +41,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 - [Melgarejo Roma, Facundo Gabriel][facundomelgarejo]
 - [Miranda Falkievich, Ariano Gabriel][MirandaAriano]
 
-- [Pallares, Ulises Pablo]
+- [Pallares, Ulises Pablo]{ulises}
 - [Paredes, Samuel Octavio][samuop]
 - [Robales Lopez, Lautaro Nicols]
 
