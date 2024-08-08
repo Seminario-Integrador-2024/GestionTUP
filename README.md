@@ -1,9 +1,9 @@
 
 # :computer: _Sistema de Gestion TUP_ :rocket::books:
 
-![GitHub followers](https://img.shields.io/github/followers/samuop) ![GitHub forks](https://img.shields.io/github/forks/samuop/GestionTUP) ![GitHub Repo stars](https://img.shields.io/github/stars/samuop/GestionTUP) ![GitHub watchers](https://img.shields.io/github/watchers/samuop/GestionTUP) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![GitHub followers](https://img.shields.io/github/followers/Seminario-Integrador-2024) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[![Django](https://img.shields.io/badge/Django-5.0.7-green.svg)](https://www.djangoproject.com/)   [![Python](https://img.shields.io/badge/Python-3.10.0-blue.svg)](https://www.python.org/) [![React](https://img.shields.io/badge/React-17.0.2-blue.svg)](https://reactjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-4.3.5-blue.svg)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-2.4.4-blue.svg)](https://vitejs.dev/) [![Docker](https://img.shields.io/badge/Docker-20.10.7-blue.svg)](https://www.docker.com/) [![Docker Compose](https://img.shields.io/badge/Docker_Compose-1.29.2-blue.svg)](https://docs.docker.com/compose/) [![ESLint](https://img.shields.io/badge/ESLint-7.32.0-blue.svg)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-2.4.1-orange.svg)](https://prettier.io/) [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Run-lightblue.svg)](https://cloud.google.com/run)
+[![Django](https://img.shields.io/badge/Django-5.0.8-green.svg)](https://www.djangoproject.com/)   [![Python](https://img.shields.io/badge/Python-3.10.0-blue.svg)](https://www.python.org/) [![React](https://img.shields.io/badge/React-17.0.2-blue.svg)](https://reactjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-4.3.5-blue.svg)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-2.4.4-blue.svg)](https://vitejs.dev/) [![Docker](https://img.shields.io/badge/Docker-20.10.7-blue.svg)](https://www.docker.com/) [![Docker Compose](https://img.shields.io/badge/Docker_Compose-1.29.2-blue.svg)](https://docs.docker.com/compose/) [![ESLint](https://img.shields.io/badge/ESLint-7.32.0-blue.svg)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-2.4.1-orange.svg)](https://prettier.io/) [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Run-lightblue.svg)](https://cloud.google.com/run)
 
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run)
 
@@ -33,6 +33,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 [facundomelgarejo]: <https://github.com/facundomelgarejo>
 [MirandaAriano]: <http://github.com/MirandaAriano>
 [samuop]: <https://github.com/samuop>
+[ulises]: <https://github.com/ulisespallares888>
 
 - [Ferreyra, Carlos Eduardo][carlosferreyra]
 - [Maciel Meister, Tobias Alejandro][TobiasMaciel]
@@ -40,7 +41,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 - [Melgarejo Roma, Facundo Gabriel][facundomelgarejo]
 - [Miranda Falkievich, Ariano Gabriel][MirandaAriano]
 
-- [Pallares, Ulises Pablo]
+- [Pallares, Ulises Pablo][ulises]
 - [Paredes, Samuel Octavio][samuop]
 - [Robales Lopez, Lautaro Nicols]
 
@@ -91,19 +92,17 @@ export default {
 
 This section is used for setting up the backend [Django][DjangoDocs] server, using [Python][PythonDocs] and [Django REST framework][DRFDocs], along with 3th party libraries like [drf-spectacular][DRFSpectacularDocs] for API documentation.
 
-You can test the current backend (only Swagger API endpoint done so far) by visiting the following [URL][APIUrl] deployed in GCP (Google Cloud Platform):
 This deployment is done using the `Dockerfile`.
 This template provides a minimal setup to get Python working in a Django web server.
 
-#### Setting up the backend
+#### Setting up the backend ( Development )
 
 - Tools needed:
   - Python 3.10 or higher
     - pip (Python package manager)
-    - venv (Python virtual environment manager)
-  - Docker (optional)
+  - Docker
     - Docker Compose (optional)
-  - Git (optional)
+  - Git
   - Visual Studio Code (optional - recommended)
 
 Steps to set up the backend environment:
@@ -164,7 +163,7 @@ Steps to set up the backend environment:
 - _You can deactivate the virtual environment using the `deactivate` command, once you are done working on the project._
 - _A complete list of python dependencies can be found in the `requirements.txt` file at the root of the project._
 
-##### Setting up the Docker container
+##### Setting up the Docker container ( Testing Server )
 
 1. Install Docker using the official [Docker Desktop](https://www.docker.com/products/docker-desktop) application or using the package manager from your OS:
    1.On macOS run:
