@@ -21,7 +21,7 @@ gunicorn==22.0.0
 idna==3.7
 inflection==0.5.1
 isort==5.13.2
-jsonschema==4.22.0
+jsonschema==4.23.0
 jsonschema-specifications==2023.12.1
 mccabe==0.7.0
 oauthlib==3.2.2
