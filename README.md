@@ -101,10 +101,9 @@ This template provides a minimal setup to get Python working in a Django web ser
 - Tools needed:
   - Python 3.10 or higher
     - pip (Python package manager)
-    - venv (Python virtual environment manager)
-  - Docker (optional)
+  - Docker
     - Docker Compose (optional)
-  - Git (optional)
+  - Git
   - Visual Studio Code (optional - recommended)
 
 Steps to set up the backend environment:
