@@ -144,7 +144,7 @@ Steps to set up the backend environment:
    python -m pip install --upgrade pip
    ```
 
-3. At the root of the project, create a virtual environment
+3. At the root of the project, create a virtual environment:
 
    ```bash
    python -m venv venv
