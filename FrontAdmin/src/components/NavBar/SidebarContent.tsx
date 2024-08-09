@@ -10,6 +10,7 @@ interface SidebarProps extends BoxProps {
 export function SidebarContent({ onClose, ...rest }: SidebarProps) {
   const [isLargerThanMd] = useMediaQuery("(min-width: 768px)");
   const location = useLocation();
+  console.log(location.pathname);
 
   return (
     <>
@@ -27,9 +28,9 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
           <Text fontSize="4xl"  fontWeight="bold">
             TUP
           </Text>
-          {LINK_ITEMS.map((link) => (
-            <Link key={link.url} to={link.url} onClick={onClose} >
-              <NavItem icon={link.icon} color={location.pathname === link.url ? "green.100" : "white"}/>
+          {LINK_ITEMS.map((link, key) => (
+            <Link key={key} to={link.url} onClick={onClose} >
+              <NavItem icon={link.icon} color={location.pathname === '/admin/'+ link.url ? "green.100" : "white"}/>
             </Link>
           ))}
         </Flex>

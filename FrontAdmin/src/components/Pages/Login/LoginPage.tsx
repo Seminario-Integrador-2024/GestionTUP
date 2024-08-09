@@ -8,9 +8,13 @@ import {
   Heading,
   Input,
   useColorModeValue,
-  Link
+  Link, 
+  Image
 } from "@chakra-ui/react";
 import { FetchLogin } from "../../../API/Login";
+import { useAuth } from "../../../Context";
+import fondoLogin from '../../icons/utn-portada-transformed.jpeg'
+import imgLogin from '../../icons/Logos TUP_Mesa de trabajo 1.png' 
 
 
 
@@ -19,6 +23,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const { onLogin } = useAuth();
 
   const titleColor = useColorModeValue("black", "white");
   const textColor = useColorModeValue("black", "white");
@@ -26,7 +31,8 @@ function LoginPage() {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      await FetchLogin(username, email, password);
+      // await FetchLogin(username, email, password);
+      onLogin();
 
     } catch (error) {
       console.error('Network error', error);
@@ -35,14 +41,15 @@ function LoginPage() {
   };
 
   return (
-    <Flex position='relative' backgroundColor='gray.200' minHeight='100vh'>
+    <Flex position='relative' backgroundColor='#efefef' minHeight='100vh'>
       <Flex
         h={{ sm: "initial", md: "75vh", lg: "85vh" }}
         w='100%'
         maxW='1044px'
         //mx='auto'
-        ml='20vh'
+        ml={{ sm:"initial", md: "8vh", lg: "8vh" }}
         mb='30px'
+        p='8vh'
         pt={{ sm: "100px", md: "0px" }}>
         <Flex
           alignItems='center'
@@ -57,66 +64,90 @@ function LoginPage() {
               //p='48px'
               mt={{ md: "150px", lg: "80px" }}
               >
-              <Heading color={titleColor} fontSize='50px' mb='50px'  outline='none'>
-                Bienvenido
+              <Flex justifyContent='center'>
+                <Image src={imgLogin}  w='120px' ></Image>
+              </Flex>
+              <Heading 
+                color={titleColor} 
+                fontSize='35px'
+                m='40px'
+                fontWeight='500' outline='none'>
+                Iniciar sesión
               </Heading>
-              <FormControl>
-                <FormLabel ms='4px' fontSize='sm' fontWeight='normal' color={textColor}>
-                  Usuario
-                </FormLabel>
+              <FormControl> 
                 <Input
-                  borderRadius='15px'
-                  borderColor={textColor}
+                  borderRadius='none'
+                  borderTop='none'
+                  borderLeft='none'
+                  borderRight='none'
+                  borderColor='gray'
                   mb='24px'
-                  fontSize='sm'
+                  fontSize='md'
                   type='name'
-                  placeholder='Escribe tu nombre de usuario'
-                  _placeholder={{ color: textColor }}
+                  placeholder='Usuario'
+                  _placeholder={{ color: '#3f3f3f' }}
                   color={textColor}
                   size='lg'
-                  _focus={{ borderColor: "red" }}
+                  pl='4px'
+                  _focus={{ 
+                    borderColor: "#003063",
+                    boxShadow:'none',
+                    
+                  }}
+                  _hover={{ borderColor: "0f183f",}}
                   value={username}
                   onChange={e => setUsername(e.target.value)}
                 />
-                <FormLabel ms='4px' fontSize='sm' fontWeight='normal' color={textColor}>
-                  Contraseña
-                </FormLabel>
                 <Input
-                  borderRadius='15px'
-                  borderColor={textColor}
+                  borderRadius='0'
+                  borderTop='none'
+                  borderLeft='none'
+                  borderRight='none'
+                  outline='none'
+                  display='block'
+                  borderColor='gray'
                   mb='36px'
-                  fontSize='sm'
+                  fontSize='md'
                   type='password'
-                  placeholder='Escribe tu contraseña'
-                  _placeholder={{ color: textColor }}
+                  placeholder='Contraseña'
+                  _placeholder={{ color: '#3f3f3f' }}
                   size='lg'
-                  _focus={{ borderColor: "red" }}
+                  pl='4px'
+                  _focus={{ 
+                    borderColor: "#003063",
+                    boxShadow:'none'
+                  }}
+                  _hover={{ borderColor: "0f183f",}}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
 
                 <Button
-                  fontSize='16px'
+                  fontSize='15px'
                   type='submit'
-                  bg='#03346E'
+                  bg='#022855'
                   w='100%'
-                  h='45'
+                  h='42'
                   mb='20px'
                   color='white'
                   mt='20px'
+                  fontWeight='500'
+                  letterSpacing='1px'
                   _hover={{
-                    bg: "#022855",
+                    bg: "#0f183f",
                   }}
-                  _active={{
-                    bg: "black",
-                    color: 'white',
-                  }}
+                  
                 >
                   Acceder
                 </Button>
                 <Flex alignItems='center' justifyContent='center'> 
-                  <Link color='textColor' href='#' >
-                   He olvidado mi contraseña
+                  <Link 
+                    color='textColor' 
+                    href='#' 
+                    fontSize='15px'
+                    _hover={{ border:'none'}}
+                    >
+                   Olvide mi contraseña
                   </Link>
                 </Flex>
 
@@ -125,7 +156,7 @@ function LoginPage() {
           </form>
         </Flex>
         <Box
-          display={{ base: "none", md: "block" }}
+          display={{ base: "none", md: "none", lg:"block" }}
           overflowX='hidden'
           h='100%'
           w='65vw'
@@ -133,7 +164,7 @@ function LoginPage() {
           right='0px'
           >
           <Box
-            bgImage={'url(https://www.novachaco.com/data/fotos2/bbx_437820977_UTN.jpg)'}
+            bgImage={fondoLogin}
             w='100%'
             h='100%'
             bgSize='cover'
