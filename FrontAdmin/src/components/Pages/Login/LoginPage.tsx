@@ -11,6 +11,7 @@ import {
   Link
 } from "@chakra-ui/react";
 import { FetchLogin } from "../../../API/Login";
+import { useAuth } from "../../../Context";
 
 
 
@@ -19,6 +20,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const { onLogin } = useAuth();
 
   const titleColor = useColorModeValue("black", "white");
   const textColor = useColorModeValue("black", "white");
@@ -26,7 +28,8 @@ function LoginPage() {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      await FetchLogin(username, email, password);
+      // await FetchLogin(username, email, password);
+      onLogin();
 
     } catch (error) {
       console.error('Network error', error);
