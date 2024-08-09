@@ -20,5 +20,9 @@ export const globalStyles = {
 				fontFamily: "'Roboto', sans-serif"  //tipo de letra de la pagina completa
 			}
 		})
-	}
+	}, 
+	fonts: {
+		heading: `'Open Sans', sans-serif`,
+		body: `'Raleway', sans-serif`,
+	  },
 };
