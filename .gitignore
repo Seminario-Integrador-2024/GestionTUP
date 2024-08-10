@@ -44,3 +44,6 @@ logs/
 
 # sql files
 *.sql
+
+# django migrations binaries pyc
+*.pyc
