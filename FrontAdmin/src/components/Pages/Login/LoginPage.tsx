@@ -41,7 +41,7 @@ function LoginPage() {
   };
 
   return (
-    <Flex position='relative' backgroundColor='#efefef' minHeight='100vh'>
+    <Flex position='relative' backgroundColor='#EEEEF0' minHeight='100vh'>
       <Flex
         h={{ sm: "initial", md: "75vh", lg: "85vh" }}
         w='100%'
@@ -69,8 +69,8 @@ function LoginPage() {
               </Flex>
               <Heading 
                 color={titleColor} 
-                fontSize='35px'
-                m='40px'
+                fontSize={{base:'28px',  md: "30px", lg: "35px" }}
+                m={{base:'10px',  md: "40px"}}
                 fontWeight='500' outline='none'>
                 Iniciar sesión
               </Heading>
@@ -121,23 +121,7 @@ function LoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
-
-                <Button
-                  fontSize='15px'
-                  type='submit'
-                  bg='#022855'
-                  w='100%'
-                  h='42'
-                  mb='20px'
-                  color='white'
-                  mt='20px'
-                  fontWeight='500'
-                  letterSpacing='1px'
-                  _hover={{
-                    bg: "#0f183f",
-                  }}
-                  
-                >
+                <Button w='100%' h='42' mb='20px' mt='20px' type='submit'>
                   Acceder
                 </Button>
                 <Flex alignItems='center' justifyContent='center'> 

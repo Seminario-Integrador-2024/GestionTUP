@@ -13,7 +13,7 @@ export const globalStyles = {
 	styles: {
 		global: (props: StyleFunctionProps | Record<string, any>) => ({
 			body: {
-				bg: mode('gray.50', 'gray.800')(props), //color de fondo de la pagina completa 
+				bg: mode('eeeef0', 'gray.800')(props), //color de fondo de la pagina completa 
 				fontFamily: "'Roboto', sans-serif"
 			},
 			html: {
