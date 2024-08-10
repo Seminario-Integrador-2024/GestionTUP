@@ -21,7 +21,7 @@ function App() {
             <Routes>
               {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
               {isAuthenticated && <Route path="/admin/*" element={<NavBar/>} />} 
-              <Route path="/*" element={<Navigate replace to={isAuthenticated ? "/admin" : "/auth"}/>} />
+              <Route path="/*" element={<Navigate replace to={isAuthenticated ? "/admin/*" : "/auth/*"}/>} />
             </Routes>
       </BrowserRouter> 
     </ChakraProvider>
