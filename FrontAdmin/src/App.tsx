@@ -1,48 +1,10 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouteObject,
-  RouterProvider,
-} from "react-router-dom";
-import NavBar from "./components/NavBar/NavBar";
 import { ChakraProvider } from "@chakra-ui/react";
 import { useEffect } from "react";
-import Estadisticas from "./components/Pages/Estadisticas/Estadisticas"
-import ErrorPage from "./components/Pages/Error404";
-import LoginPage from "./components/Pages/Login/LoginPage";
-
-
-const routes: RouteObject[] = [
-  {
-    path: "/",
-    element: <NavBar />,
-    children: [
-      {
-        path: "Estadisticas",
-        element: <Estadisticas />,
-      },
-      {
-        path: "/",
-        element: <Navigate to="/Estadisticas" />,
-      },
-      // {
-      //   path: "error404",
-      //   element: <ErrorPage/>,
-      // },
-      {
-        path: '/login',
-        element: <LoginPage />,
-      }
-    
-    ],
-  },
-  {
-    path: "*",
-    element: <ErrorPage />,
-  },
-];
-
-const router = createBrowserRouter(routes);
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useAuth } from "./Context";
+import Auth from "./layouts/Auth";
+import NavBar from "./components/NavBar/NavBar";
+import theme from "./theme/theme";
 
 
 function App() {
@@ -50,12 +12,19 @@ function App() {
     document.title = "TUP Admin"; 
   }, []);
 
+  const { isAuthenticated } = useAuth();
+
+
   return (
-    <>
-      <ChakraProvider>
-          <RouterProvider router={router} />
+    <ChakraProvider theme={theme}>
+         <BrowserRouter>
+            <Routes>
+              {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
+              {isAuthenticated && <Route path="/admin/*" element={<NavBar/>} />} 
+              <Route path="/*" element={<Navigate replace to={isAuthenticated ? "/admin" : "/auth"}/>} />
+            </Routes>
+      </BrowserRouter> 
     </ChakraProvider>
-    </>
   )
 }
 
