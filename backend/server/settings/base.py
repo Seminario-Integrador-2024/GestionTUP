@@ -140,6 +140,17 @@ DATABASES = {
     }
 }
 
+"""DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'gestion_tup',
+            'USER': 'ulises',
+            'PASSWORD': 'ulises',
+            'HOST': 'localhost',
+            'PORT': '3306',
+        }
+    }
+"""
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS: list[str | None] = []
