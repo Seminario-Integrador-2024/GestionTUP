@@ -4,9 +4,9 @@ import iconConfig from '../icons/configuracion 1.png';
 import iconEstadisticas from '../icons/grafico-de-barras 1.png';
 
 export const LINK_ITEMS = [
-  { icon: iconEstadisticas, url: "/Estadisticas" },
-  { icon: iconAlumno, url: "/error404" },
-  { icon: iconChat, url: "/error404" },
-  { icon: iconConfig, url: "/error404" },
+  { icon: iconEstadisticas, url: "estadisticas" },
+  { icon: iconAlumno, url: "error404" },
+  { icon: iconChat, url: "error404" },
+  { icon: iconConfig, url: "error404" },
   
 ];
