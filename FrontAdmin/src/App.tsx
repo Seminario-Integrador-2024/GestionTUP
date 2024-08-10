@@ -18,11 +18,11 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
          <BrowserRouter>
-            <Routes>
+         <Routes>
               {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
-              {isAuthenticated && <Route path="/admin/*" element={<NavBar/>} />} 
+              {isAuthenticated && <Route path="/admin/*" element={<NavBar/>}/>} 
               <Route path="/*" element={<Navigate replace to={isAuthenticated ? "/admin" : "/auth"}/>} />
-            </Routes>
+          </Routes>
       </BrowserRouter> 
     </ChakraProvider>
   )
