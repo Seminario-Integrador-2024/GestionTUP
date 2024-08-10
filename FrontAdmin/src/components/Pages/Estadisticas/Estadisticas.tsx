@@ -3,12 +3,14 @@ import { Card, CardBody, Text } from '@chakra-ui/react'
 import Mensual from "./SubPages/Mensual";
 import Cuatrimestral from "./SubPages/Cuatrimestral";
 import Calendario from "./SubPages/Calendario";
+import { Outlet } from "react-router-dom";
 
 function Estadisticas() {
 
   
-  
+  console.log('Estadisticas');
   return (
+  
     <Flex>
        <Tabs position='relative' variant='unstyled' w='100%'>
         <TabList mb='1em' >
@@ -30,6 +32,7 @@ function Estadisticas() {
         </TabPanels>
       </Tabs>
     </Flex>
+
   );
 }
 

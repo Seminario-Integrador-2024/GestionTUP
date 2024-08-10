@@ -8,6 +8,7 @@ import {
   Heading,
   Input,
   useColorModeValue,
+  Link
 } from "@chakra-ui/react";
 import { FetchLogin } from "../../../API/Login";
 import { useAuth } from "../../../Context";
@@ -19,24 +20,31 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-   const { onLogin } = useAuth();
+  const { onLogin } = useAuth();
 
-  const titleColor = useColorModeValue("red.500", "red.500");
+  const titleColor = useColorModeValue("black", "white");
   const textColor = useColorModeValue("black", "white");
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    onLogin();
+    try {
+      // await FetchLogin(username, email, password);
+      onLogin();
+
+    } catch (error) {
+      console.error('Network error', error);
+      // Handle network errors here
+    }
   };
 
   return (
-    <Flex position='relative' mb='40px'>
+    <Flex position='relative' backgroundColor='gray.200' minHeight='100vh'>
       <Flex
         h={{ sm: "initial", md: "75vh", lg: "85vh" }}
         w='100%'
         maxW='1044px'
-        mx='auto'
-        justifyContent='space-between'
+        //mx='auto'
+        ml='20vh'
         mb='30px'
         pt={{ sm: "100px", md: "0px" }}>
         <Flex
@@ -49,10 +57,11 @@ function LoginPage() {
               direction='column'
               w='100%'
               background='transparent'
-              p='48px'
-              mt={{ md: "150px", lg: "80px" }}>
-              <Heading color={titleColor} fontSize='50px' mb='50px'>
-                Login TUP
+              //p='48px'
+              mt={{ md: "150px", lg: "80px" }}
+              >
+              <Heading color={titleColor} fontSize='50px' mb='50px'  outline='none'>
+                Bienvenido
               </Heading>
               <FormControl>
                 <FormLabel ms='4px' fontSize='sm' fontWeight='normal' color={textColor}>
@@ -92,14 +101,14 @@ function LoginPage() {
                 <Button
                   fontSize='16px'
                   type='submit'
-                  bg='red.500'
+                  bg='#03346E'
                   w='100%'
                   h='45'
                   mb='20px'
-                  color='black'
+                  color='white'
                   mt='20px'
                   _hover={{
-                    bg: "red.200",
+                    bg: "#022855",
                   }}
                   _active={{
                     bg: "black",
@@ -108,6 +117,12 @@ function LoginPage() {
                 >
                   Acceder
                 </Button>
+                <Flex alignItems='center' justifyContent='center'> 
+                  <Link color='textColor' href='#' >
+                   He olvidado mi contraseña
+                  </Link>
+                </Flex>
+
               </FormControl>
             </Flex>
           </form>
@@ -116,17 +131,19 @@ function LoginPage() {
           display={{ base: "none", md: "block" }}
           overflowX='hidden'
           h='100%'
-          w='40vw'
+          w='65vw'
           position='absolute'
-          right='0px'>
+          right='0px'
+          >
           <Box
-            bgImage={`url(https://th.bing.com/th/id/OIP.0LjfgJYuE3hxiDr_dw68GgHaE7?rs=1&pid=ImgDetMain)`}
+            bgImage={'url(https://www.novachaco.com/data/fotos2/bbx_437820977_UTN.jpg)'}
             w='100%'
             h='100%'
             bgSize='cover'
             bgPosition='50%'
             position='absolute'
-            borderBottomLeftRadius='20px'>
+            filter='contrast(120%)'
+            >
           </Box>
         </Box>
       </Flex>
