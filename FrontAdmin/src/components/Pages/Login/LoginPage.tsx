@@ -27,11 +27,12 @@ function LoginPage() {
 
   const titleColor = useColorModeValue("black", "white");
   const textColor = useColorModeValue("black", "white");
+  const bgColor = useColorModeValue("#EEEEF0", "gray.800");
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      await FetchLogin(username, password);
+      //await FetchLogin(username, password);
       onLogin();
 
     } catch (error) {
@@ -41,7 +42,7 @@ function LoginPage() {
   };
 
   return (
-    <Flex position='relative' backgroundColor='#EEEEF0' minHeight='100vh'>
+    <Flex position='relative' backgroundColor={bgColor} minHeight='100vh'>
       <Flex
         h={{ sm: "initial", md: "75vh", lg: "85vh" }}
         w='100%'
@@ -121,12 +122,12 @@ function LoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
-                <Button w='100%' h='42' mb='20px' mt='20px' type='submit'>
+                <Button w='100%' h='42' mb='20px' mt='20px' type='submit' color='white'>
                   Acceder
                 </Button>
                 <Flex alignItems='center' justifyContent='center'> 
                   <Link 
-                    color='textColor' 
+                    color={textColor} 
                     href='#' 
                     fontSize='15px'
                     _hover={{ border:'none'}}

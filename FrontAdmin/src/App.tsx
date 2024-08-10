@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./Context";
 import Auth from "./layouts/Auth";
-import NavBar from "./components/NavBar/NavBar";
+import Admin from "./layouts/Admin";
 import theme from "./theme/theme";
 
 
@@ -20,7 +20,7 @@ function App() {
          <BrowserRouter>
          <Routes>
               {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
-              {isAuthenticated && <Route path="/admin/*" element={<NavBar/>}/>} 
+              {isAuthenticated && <Route path="/admin/*" element={<Admin/>}/>} 
               <Route path="/*" element={<Navigate replace to={isAuthenticated ? "/admin" : "/auth"}/>} />
           </Routes>
       </BrowserRouter> 
