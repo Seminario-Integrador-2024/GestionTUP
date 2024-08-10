@@ -1,11 +1,11 @@
-export const FetchLogin = async (username : string, email : string, password: string) => {
+export const FetchLogin = async (email_or_username : string, password: string) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/accounts/login/', {
+      const response = await fetch('http://127.0.0.1:8000/users/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username ,email, password }),
+        body: JSON.stringify({ email_or_username, password }),
       });
   
       if (response.ok) {

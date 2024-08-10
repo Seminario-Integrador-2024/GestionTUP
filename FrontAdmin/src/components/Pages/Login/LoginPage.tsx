@@ -31,7 +31,7 @@ function LoginPage() {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      // await FetchLogin(username, email, password);
+      await FetchLogin(username, password);
       onLogin();
 
     } catch (error) {
