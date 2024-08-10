@@ -4,6 +4,11 @@
         "source": "/*",
         "destination": "/index.html",
         "status": 200
+      },
+      {
+        "source": "/auth",
+        "destination": "/index.html",
+        "status": 200
       }
     ]
   }
