@@ -1,10 +1,13 @@
-import { Box, Flex, Menu, MenuButton, MenuItem, Button, MenuList, Heading, Stack} from "@chakra-ui/react";
+import { Box, Flex, Menu, MenuButton, MenuItem, Button, MenuList, Heading, Stack, useDisclosure} from "@chakra-ui/react";
+import ModalVerDocumento from "./Modal";
 
 interface CardCargaProps {
     texto: string;
 }
 
 export default function CardCarga({ texto }: CardCargaProps) {
+
+const { isOpen, onOpen, onClose } = useDisclosure();
 
 return (
     <Box
@@ -27,10 +30,12 @@ return (
                 Opciones
             </MenuButton>
             <MenuList>
-                <MenuItem >Ver Ultimo Archivo</MenuItem>
-                <MenuItem >Cargar Archivo</MenuItem>
+                <MenuItem onClick={onOpen} >Ver Ultimo Archivo</MenuItem>
+                <MenuItem  >Cargar Archivo</MenuItem>
             </MenuList>
         </Menu>
+
+        <ModalVerDocumento isOpen={isOpen} onClose={onClose} titleModal={texto}/>
         </Stack>
     </Box>
 );
