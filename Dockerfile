@@ -2,7 +2,7 @@
 FROM python:3.12-slim-bullseye
 
 # Set environment variables
-ENV SECRET_KEY=${DJANGO_SECRET_KEY}
+
 ENV DJANGO_SETTINGS_MODULE=server.settings.base
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
