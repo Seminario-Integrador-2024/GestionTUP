@@ -1,4 +1,4 @@
-import { Flex, Image, MenuButton, Menu, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import { Flex, Image, MenuButton, Menu, MenuList, MenuItem, Button,useDisclosure } from "@chakra-ui/react";
 import imgLogo from "../icons/Logos TUP_Mesa de trabajo 1.png"
 import logoUser from "../icons/logo-user.png"
 
@@ -27,6 +27,6 @@ export function HeaderContent(){
                     <MenuItem>Cerrar sesión</MenuItem>
                 </MenuList>
             </Menu>
-        </Flex>
+        </Flex>   
     )
 }

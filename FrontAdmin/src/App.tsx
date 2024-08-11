@@ -19,7 +19,6 @@ function App() {
     <ChakraProvider theme={theme}>
          <BrowserRouter>
          <Routes>
-         <Routes>
               {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
               {isAuthenticated && <Route path="/admin/*" element={<Admin/>}/>} 
               <Route path="/*" element={<Navigate replace to={isAuthenticated ? "/admin" : "/auth"}/>} />
