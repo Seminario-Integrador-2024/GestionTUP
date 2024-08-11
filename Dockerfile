@@ -17,6 +17,9 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the entire backend directory
 COPY backend/ .
 
+# mount GCP Bucket to the container in cloud run
+VOLUME [ "/mnt/my-bucket" ]
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
