@@ -140,6 +140,17 @@ DATABASES = {
     }
 }
 
+"""DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'gestion_tup',
+            'USER': 'ulises',
+            'PASSWORD': 'ulises',
+            'HOST': 'localhost',
+            'PORT': '3306',
+        }
+    }
+"""
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS: list[str | None] = []
@@ -210,6 +221,9 @@ USE_TZ = True
 
 STATIC_ROOT: str = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL: str = "/static/"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
