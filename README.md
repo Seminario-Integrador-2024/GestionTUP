@@ -1,4 +1,5 @@
-# :computer: _Sistema de Gestion TUP_ :rocket: :books:
+
+# :computer: *Sistema de Gestion TUP* :rocket: :books:
 
 <!-- repo url:  https://github.com/Seminario-Integrador-2024/GestionTUP -->
 
@@ -87,6 +88,7 @@ export default {
 [PythonDocs]: https://www.python.org/doc/
 [DRFDocs]: https://www.django-rest-framework.org/
 [DRFSpectacularDocs]: https://drf-spectacular.readthedocs.io/en/latest/
+
 
 ### Backend
 
