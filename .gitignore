@@ -6,6 +6,8 @@
 env
 /env
 
+# Python Cache
+*/__pycache__/
 
 # Logs
 logs
@@ -42,3 +44,6 @@ logs/
 
 # sql files
 *.sql
+
+# django migrations binaries pyc
+*.pyc
