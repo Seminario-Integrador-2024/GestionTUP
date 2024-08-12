@@ -2,7 +2,7 @@
 FROM python:3.12-slim-bullseye
 
 # Set environment variables
-ENV SECRET_KEY=${DJANGO_SECRET_KEY}
+
 ENV DJANGO_SETTINGS_MODULE=server.settings.base
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -16,6 +16,9 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy the entire backend directory
 COPY backend/ .
+
+# mount GCP Bucket to the container in cloud run
+VOLUME [ "/mnt/my-bucket" ]
 
 # Collect static files
 RUN python manage.py collectstatic --noinput

@@ -1,3 +1,4 @@
+
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import Montos from "./Montos/Montos";
 
@@ -10,7 +11,8 @@ function Configuracion() {
         <Montos />
       </GridItem>
     </Grid>
+
   );
 }
-
 export default Configuracion;
+

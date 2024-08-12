@@ -42,7 +42,7 @@ function LoginPage() {
   };
 
   return (
-    <Flex position='relative' backgroundColor={bgColor} minHeight='100vh'>
+    <Flex position='relative' backgroundColor='#efefef' minHeight='100vh'>
       <Flex
         h={{ sm: "initial", md: "75vh", lg: "85vh" }}
         w='100%'
@@ -122,7 +122,23 @@ function LoginPage() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
-                <Button w='100%' h='42' mb='20px' mt='20px' type='submit' color='white'>
+
+                <Button
+                  fontSize='15px'
+                  type='submit'
+                  bg='#022855'
+                  w='100%'
+                  h='42'
+                  mb='20px'
+                  color='white'
+                  mt='20px'
+                  fontWeight='500'
+                  letterSpacing='1px'
+                  _hover={{
+                    bg: "#0f183f",
+                  }}
+                  
+                >
                   Acceder
                 </Button>
                 <Flex alignItems='center' justifyContent='center'> 

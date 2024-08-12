@@ -35,7 +35,6 @@ export const buttonStyles = {
         background:  "#022855",
         fontWeight: '500',
         color: 'white',
-        letterSpacing:'1px',
         _hover:{
           bg:  "#0f183f",
           background:  "#0f183f",

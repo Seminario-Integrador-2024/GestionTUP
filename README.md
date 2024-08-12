@@ -50,7 +50,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 
 ### Frontend Documentation (React)
 
-#### React & TypeScript & Vite
+#### React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

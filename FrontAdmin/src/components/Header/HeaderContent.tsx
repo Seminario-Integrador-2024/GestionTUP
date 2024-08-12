@@ -18,7 +18,6 @@ export function HeaderContent({onOpen}: {onOpen: any}){
            background='white'
             alignItems='center'
         > 
-        
             <Menu >
                 <Image src={imgLogo} w='80px' display={{ base: "none", md: "flex" }}></Image>
                 <IconButton
@@ -33,12 +32,10 @@ export function HeaderContent({onOpen}: {onOpen: any}){
                   <Image src={logoUser} w='100%'></Image>
                 </MenuButton>
                 <MenuList>
-                    <MenuItem>Ver Perfil</MenuItem>
+                    <MenuItem color="gray" pointerEvents="none">Ver Perfil</MenuItem>
                     <MenuItem>Cerrar sesión</MenuItem>
                 </MenuList>
             </Menu>
-            
-        
-        </Flex>
+        </Flex>   
     )
 }
