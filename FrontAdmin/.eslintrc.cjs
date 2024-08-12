@@ -14,8 +14,9 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
-    "@typescript-eslint/prefer-as-const": "warn", // Warning de la regla que requiere const en lugar de type assertion
-    "@typescript-eslint/no-unused-vars": "warn", // Warning de la regla que indica variables no usadas
-    "no-extra-semi": "warn", // Warning de la regla que prohíbe los puntos y comas innecesarios
+    "@typescript-eslint/prefer-as-const": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-extra-semi": "warn",
+    "no-mixed-spaces-and-tabs": "warn",
   },
 };
