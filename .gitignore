@@ -8,7 +8,7 @@ env
 
 
 # Logs
-logs
+logs/*
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -21,10 +21,20 @@ dist
 dist-ssr
 *.local
 
+# Python byte-code
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.dll
+
 # Editor directories and files
+# Local development
+.idea
+*.iml
+*.DS_Store
 .vscode/*
 !.vscode/extensions.json
-.idea
 .DS_Store
 *.suo
 *.ntvs*
@@ -37,8 +47,6 @@ dist-ssr
 .obsidian/
 
 # API Docs
-#schema.yml
-logs/
 
 # sql files
 *.sql
