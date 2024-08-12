@@ -57,6 +57,8 @@ class CompromisoDePagoSerializer(serializers.ModelSerializer):
         compromiso_de_pago.save()
         
         return compromiso_de_pago
+    
+
 
 class PagoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,6 +67,7 @@ class PagoSerializer(serializers.ModelSerializer):
 
 
 class CuotaSerializer(serializers.ModelSerializer):
+    monto = CompromisoDePagoSerializer()
     class Meta:
         model = Cuota
         fields = "__all__"

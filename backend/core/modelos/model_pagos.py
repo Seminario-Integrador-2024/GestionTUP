@@ -36,6 +36,40 @@ class Pago(models.Model):
     cuota = models.ForeignKey("Cuota", on_delete=models.CASCADE)
 
 
+class CompromisoDePago(models.Model):
+    """
+    Represents a payment commitment.
+
+    Args:
+        models (type): The Django models module.
+
+    Attributes:
+        id_comp_pago (AutoField): The primary key for the payment commitment.
+        perfciclo (DateTimeField): The date and time of the payment commitment.
+        monto (FloatField): The amount of the payment commitment.
+        firmado (BooleanField): Indicates if \
+            the payment commitment has been signed.
+        fecha_firmado (DateTimeField): The date and time when \
+            the payment commitment was signed.
+        compromiso (CharField): The description of the payment commitment.
+        alumno (ForeignKey): The foreign key to \
+            the related Alumno (student) model.
+    """
+
+    id_comp_pago = models.AutoField(primary_key=True)
+    perfciclo = models.DateTimeField()
+    monto_completo = models.FloatField()
+    monto_completo_2venc = models.FloatField()
+    monto_completo_3venc = models.FloatField()
+    matricula = models.FloatField()
+    cuota_reducida = models.FloatField()
+    cuota_reducida_2venc = models.FloatField()
+    cuota_reducida_3venc = models.FloatField()
+    
+    compromiso = models.CharField(max_length=255)
+    archivo_pdf = models.FileField(upload_to='compromisos/')
+
+
 class Cuota(models.Model):
     """
     Represents a Cuota.
@@ -61,7 +95,7 @@ class Cuota(models.Model):
     id_cuota = models.AutoField(primary_key=True)
     nro_cuota = models.IntegerField()
     recargo = models.FloatField()
-    monto = models.FloatField()
+    monto =  models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
     firmado = models.BooleanField()
     vencimiento = models.DateField()
     fecha_pago = models.DateField()
@@ -69,6 +103,7 @@ class Cuota(models.Model):
     fecha_pago_devengado = models.DateField()
     fecha_pedido = models.DateField()
     tipo_puesto = models.CharField(max_length=255)
+
 
 class LineaDePago(models.Model):
     """
@@ -89,33 +124,6 @@ class LineaDePago(models.Model):
     pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
     cuota = models.ForeignKey(Cuota, on_delete=models.CASCADE)
     monto_aplicado = models.FloatField()
-
-
-class CompromisoDePago(models.Model):
-    """
-    Represents a payment commitment.
-
-    Args:
-        models (type): The Django models module.
-
-    Attributes:
-        id_comp_pago (AutoField): The primary key for the payment commitment.
-        perfciclo (DateTimeField): The date and time of the payment commitment.
-        monto (FloatField): The amount of the payment commitment.
-        firmado (BooleanField): Indicates if \
-            the payment commitment has been signed.
-        fecha_firmado (DateTimeField): The date and time when \
-            the payment commitment was signed.
-        compromiso (CharField): The description of the payment commitment.
-        alumno (ForeignKey): The foreign key to \
-            the related Alumno (student) model.
-    """
-
-    id_comp_pago = models.AutoField(primary_key=True)
-    perfciclo = models.DateTimeField()
-    monto = models.FloatField()
-    compromiso = models.CharField(max_length=255)
-    archivo_pdf = models.FileField(upload_to='compromisos/')
 
 
 class FirmaCompPagoAlumno(models.Model):
