@@ -3,10 +3,7 @@ name: FrontCI Pipeline
 on:
   push:
     branches:
-      - main # Se ejecuta en la rama main
-  pull_request:
-    branches:
-      - '**' # Se ejecuta en todas las ramas para los pull requests
+      - '**' # Se ejecuta en todas las ramas
 
 jobs:
   lint:
