@@ -67,7 +67,9 @@ class PagoSerializer(serializers.ModelSerializer):
 
 
 class CuotaSerializer(serializers.ModelSerializer):
-    monto = CompromisoDePagoSerializer()
+    #compdepago = CompromisoDePagoSerializer()
+    compdepago = serializers.PrimaryKeyRelatedField(queryset=CompromisoDePago.objects.all(), write_only=True)
+    compdepago_detalle = CompromisoDePagoSerializer(source='compdepago', read_only=True) 
     class Meta:
         model = Cuota
         fields = "__all__"

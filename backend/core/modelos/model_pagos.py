@@ -4,6 +4,8 @@
 
 from django.db import models
 from .model_alumno import Alumno
+
+
 class Pago(models.Model):
     """
     Represents a payment made by a student.
@@ -67,7 +69,18 @@ class CompromisoDePago(models.Model):
     cuota_reducida_3venc = models.FloatField()
     
     compromiso = models.CharField(max_length=255)
+    comprimiso_path = models.CharField(max_length=255, blank=True, null=True)
     archivo_pdf = models.FileField(upload_to='compromisos/')
+
+    def save(self, *args, **kwargs):
+        # Llama al método save original
+        super().save(*args, **kwargs)
+
+        # Actualiza comprimiso_path si el archivo_pdf ha sido cargado
+        if self.archivo_pdf:
+            self.comprimiso_path = self.archivo_pdf.url
+            # Guarda nuevamente para actualizar comprimiso_path
+            super().save(update_fields=['comprimiso_path'])
 
 
 class Cuota(models.Model):
@@ -95,7 +108,7 @@ class Cuota(models.Model):
     id_cuota = models.AutoField(primary_key=True)
     nro_cuota = models.IntegerField()
     recargo = models.FloatField()
-    monto =  models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
+    compdepago =  models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
     firmado = models.BooleanField()
     vencimiento = models.DateField()
     fecha_pago = models.DateField()
