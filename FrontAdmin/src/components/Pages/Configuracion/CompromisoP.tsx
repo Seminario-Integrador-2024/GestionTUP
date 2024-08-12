@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import ModalCompromisoPago from "./Modal";
+import ModalCompromisoPago from "./ModalVerDocumento";
 
 export default function CompromisoP(){
     return(

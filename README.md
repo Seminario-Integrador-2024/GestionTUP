@@ -1,5 +1,4 @@
-
-# :computer: *Sistema de Gestion TUP* :rocket: :books:
+# :computer: _Sistema de Gestion TUP_ :rocket: :books:
 
 <!-- repo url:  https://github.com/Seminario-Integrador-2024/GestionTUP -->
 
@@ -51,7 +50,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 
 ### Frontend Documentation (React)
 
-#### React & TypeScript & Vite
+#### React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -88,7 +87,6 @@ export default {
 [PythonDocs]: https://www.python.org/doc/
 [DRFDocs]: https://www.django-rest-framework.org/
 [DRFSpectacularDocs]: https://drf-spectacular.readthedocs.io/en/latest/
-
 
 ### Backend
 
