@@ -115,6 +115,7 @@ class CompromisoDePago(models.Model):
     perfciclo = models.DateTimeField()
     monto = models.FloatField()
     compromiso = models.CharField(max_length=255)
+    archivo_pdf = models.FileField(upload_to='compromisos/')
 
 
 class FirmaCompPagoAlumno(models.Model):
