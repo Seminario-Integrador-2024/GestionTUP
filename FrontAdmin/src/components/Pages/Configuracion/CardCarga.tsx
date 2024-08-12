@@ -1,5 +1,7 @@
 import { Box, Flex, Menu, MenuButton, MenuItem, Button, MenuList, Heading, Stack, useDisclosure} from "@chakra-ui/react";
-import ModalVerDocumento from "./Modal";
+import ModalVerDocumento from "./ModalVerDocumento";
+import ModalCargarDocumento from "./ModalCargarDocumento";
+import { useState } from "react";
 
 interface CardCargaProps {
     texto: string;
@@ -7,11 +9,16 @@ interface CardCargaProps {
 
 export default function CardCarga({ texto }: CardCargaProps) {
 
-const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [modalType, setModalType] = useState<string | null>(null);
 
+    const handleMenuClick = (type: string) => {
+        setModalType(type);
+        onOpen();
+    };
 return (
     <Box
-        bg="#f1f1c5"
+        bg="#e7ecf3"
         borderRadius="10px"
         w="50%"
         // marginLeft="10px" 
@@ -30,12 +37,18 @@ return (
                 Opciones
             </MenuButton>
             <MenuList>
-                <MenuItem onClick={onOpen} >Ver Ultimo Archivo</MenuItem>
-                <MenuItem  >Cargar Archivo</MenuItem>
+            <MenuItem onClick={() => handleMenuClick('visualizarArchivo')}>Ver último archivo</MenuItem>
+            <MenuItem onClick={() => handleMenuClick('cargarArchivo')}>Cargar archivo</MenuItem>
             </MenuList>
         </Menu>
 
-        <ModalVerDocumento isOpen={isOpen} onClose={onClose} titleModal={texto}/>
+        {modalType === 'visualizarArchivo' && (
+            <ModalVerDocumento isOpen={isOpen} onClose={onClose} titleModal={texto} />
+        )}
+        
+        {modalType === 'cargarArchivo' && (
+            <ModalCargarDocumento isOpen={isOpen} onClose={onClose} titleModal={texto} />
+        )}
         </Stack>
     </Box>
 );

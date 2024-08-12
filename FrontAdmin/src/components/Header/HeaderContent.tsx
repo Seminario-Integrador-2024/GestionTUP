@@ -19,11 +19,11 @@ export function HeaderContent(){
         > 
             <Menu >
                 <Image src={imgLogo} w='80px'></Image>
-                <MenuButton  as={Button} borderRadius='50%' w='50px' h='50px' p='0px' >
+                <MenuButton bg="white"  as={Button} borderRadius='50%' w='50px' h='50px' p='0px' >
                   <Image src={logoUser} w='100%'></Image>
                 </MenuButton>
                 <MenuList>
-                    <MenuItem>Ver Perfil</MenuItem>
+                    <MenuItem color="gray" pointerEvents="none">Ver Perfil</MenuItem>
                     <MenuItem>Cerrar sesión</MenuItem>
                 </MenuList>
             </Menu>
