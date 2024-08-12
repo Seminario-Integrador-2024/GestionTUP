@@ -48,5 +48,7 @@ __pycache__/
 
 # API Docs
 
+*schema.yml
+
 # sql files
 *.sql

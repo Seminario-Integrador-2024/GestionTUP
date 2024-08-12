@@ -27,11 +27,12 @@ function LoginPage() {
 
   const titleColor = useColorModeValue("black", "white");
   const textColor = useColorModeValue("black", "white");
+  const bgColor = useColorModeValue("#EEEEF0", "gray.800");
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      await FetchLogin(username, password);
+      //await FetchLogin(username, password);
       onLogin();
 
     } catch (error) {
@@ -69,8 +70,8 @@ function LoginPage() {
               </Flex>
               <Heading 
                 color={titleColor} 
-                fontSize='35px'
-                m='40px'
+                fontSize={{base:'28px',  md: "30px", lg: "35px" }}
+                m={{base:'10px',  md: "40px"}}
                 fontWeight='500' outline='none'>
                 Iniciar sesión
               </Heading>
@@ -142,7 +143,7 @@ function LoginPage() {
                 </Button>
                 <Flex alignItems='center' justifyContent='center'> 
                   <Link 
-                    color='textColor' 
+                    color={textColor} 
                     href='#' 
                     fontSize='15px'
                     _hover={{ border:'none'}}
