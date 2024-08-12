@@ -47,6 +47,6 @@ __pycache__/
 .obsidian/
 
 # API Docs
-
+*schema.yml
 # sql files
 *.sql
