@@ -1,4 +1,4 @@
-# :computer: _Sistema de Gestion TUP_ :rocket::books:
+# :computer: _Sistema de Gestion TUP_ :rocket: :books:
 
 <!-- repo url:  https://github.com/Seminario-Integrador-2024/GestionTUP -->
 
@@ -10,25 +10,23 @@
 
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run)
 
-## :notebook: Table of Contents :ledger:
+## Table of Contents
 
-- [:computer: _Sistema de Gestion TUP_ :rocket::books:](#computer-sistema-de-gestion-tup-rocketbooks)
-  - [:notebook: Table of Contents :ledger:](#notebook-table-of-contents-ledger)
-  - [About the project :briefcase:](#about-the-project-briefcase)
-  - [Team :busts_in_silhouette: :star:](#team-busts_in_silhouette-star)
-  - [Documentation :notebook:](#documentation-notebook)
-    - [Frontend Documentation (React)](#frontend-documentation-react)
-      - [React + TypeScript + Vite](#react--typescript--vite)
-      - [Expanding the ESLint configuration](#expanding-the-eslint-configuration)
-    - [Backend :snake:🧑‍💻](#backend-snake)
-      - [Setting up the backend](#setting-up-the-backend)
-        - [Setting up the Docker container](#setting-up-the-docker-container)
+- [About the project](#about-the-project)
+- [Team](#team)
+- [Documentation](#documentation)
+  - [Frontend Documentation (React)](#frontend-documentation-react)
+    - [React + TypeScript + Vite](#react--typescript--vite)
+    - [Expanding the ESLint configuration](#expanding-the-eslint-configuration)
+  - [Backend](#backend)
+    - [Setting up the backend for Development](#setting-up-the-backend-for-development)
+    - [Setting up the Docker container for testing server](#setting-up-the-docker-container-for-testing-server)
 
-## About the project :briefcase:
+## About the project
 
 Team project for the Seminario Universitario course at the UTN - FRRe. The project consists of a web application for managing the TUP (Tecnicatura Universitaria en Programacion) of the students of the UTN - FRRe. The project is divided into two parts, the frontend and the backend. The frontend is developed using React/TS/Vite and the backend using Python with Django/DRF.
 
-## Team :busts_in_silhouette: :star:
+## Team
 
 [carlosferreyra]: http://github.com/carlosferreyra
 [TobiasMaciel]: http://github.com/TobiasMaciel
@@ -48,7 +46,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 
 - [Robales Lopez, Lautaro Nicols]
 
-## Documentation :notebook:
+## Documentation
 
 ### Frontend Documentation (React)
 
@@ -89,16 +87,15 @@ export default {
 [PythonDocs]: https://www.python.org/doc/
 [DRFDocs]: https://www.django-rest-framework.org/
 [DRFSpectacularDocs]: https://drf-spectacular.readthedocs.io/en/latest/
-[APIUrl]: https://tup-backend-3q7z7w7zfq-uc.a.run.app/api/swagger-ui/
 
-### Backend :snake:🧑‍💻
+### Backend
 
 This section is used for setting up the backend [Django][DjangoDocs] server, using [Python][PythonDocs] and [Django REST framework][DRFDocs], along with 3th party libraries like [drf-spectacular][DRFSpectacularDocs] for API documentation.
 
 This deployment is done using the `Dockerfile`.
 This template provides a minimal setup to get Python working in a Django web server.
 
-#### Setting up the backend ( Development )
+#### Setting up the backend for Development
 
 - Tools needed:
   - Shell (bash, zsh, PowerShell, etc.)
@@ -169,7 +166,7 @@ Steps to set up the backend environment:
 - _You can deactivate the virtual environment using the `deactivate` command, once you are done working on the project._
 - _A complete list of python dependencies can be found in the `requirements.txt` file at the root of the project._
 
-##### Setting up the Docker container ( Testing Server )
+#### Setting up the Docker container for testing server
 
 1. Install Docker using the official downloader [Docker Desktop](https://www.docker.com/products/docker-desktop), or using the package manager from your OS:
    1.On macOS run:
