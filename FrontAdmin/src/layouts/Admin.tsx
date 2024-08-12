@@ -15,12 +15,12 @@ export default function Admin() {
       <SidebarContent onClose={onClose} display={{ base: "none", md: "block" }} />
       <Drawer autoFocus={false} isOpen={isOpen} placement="left" onClose={onClose} onOverlayClick={onClose} size="xs">
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+         <SidebarContent onClose={onClose} /> 
         </DrawerContent>
       </Drawer>
-      <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-      <Header/>
-      <Box ml={{ base: 0, md: 20 }} p="4" pt="20" pl='20'>
+      {/* <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} /> */}
+      <Header onOpen={onOpen}/>
+      <Box ml={{ base: 0, md: 20 }} p="10" pt="20">
         {element}
       </Box>
     </Box>
