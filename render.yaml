@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: GestionTUP
+    name: your-app-name
     env: static
-    buildCommand: 'npm run build'
-    staticPublishPath: 'dist'
+    buildCommand: 'cd FrontAdmin && npm run build'
+    staticPublishPath: 'FrontAdmin/dist'
