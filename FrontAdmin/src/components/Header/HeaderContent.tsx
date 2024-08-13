@@ -33,7 +33,7 @@ export function HeaderContent({onOpen}: {onOpen: any}){
                 </MenuButton>
                 <MenuList>
                     <MenuItem color="gray" pointerEvents="none">Ver Perfil</MenuItem>
-                    <MenuItem>Cerrar sesión</MenuItem>
+                    <MenuItem onClick={() => window.location.href = '/login'}>Cerrar sesión</MenuItem>
                 </MenuList>
             </Menu>
         </Flex>   
