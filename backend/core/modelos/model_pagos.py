@@ -109,7 +109,7 @@ class Cuota(models.Model):
     nro_cuota = models.IntegerField()
     recargo = models.FloatField()
     compdepago =  models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
-    pagada = models.BooleanField(default=False)
+    estado = models.CharField(max_length=255)
     vencimiento = models.DateField()
     fecha_pago = models.DateField()
     fecha_vencimiento = models.DateField()
