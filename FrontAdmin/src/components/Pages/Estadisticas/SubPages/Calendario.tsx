@@ -72,6 +72,6 @@ function Calendario() {
       </Box>
   </Flex>
     )
-};
+}
 
 export default Calendario;

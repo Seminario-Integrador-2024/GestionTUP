@@ -1,17 +1,17 @@
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
 
 export const globalStyles = {
-	colors: {
-		transparent: "transparent",
-    black: "#000",
-    white: "#fff",
+  colors: {
+    transparent: 'transparent',
+    black: '#000',
+    white: '#fff',
     gray: {
-      50: "#f7fafc",
-      900: "#171923",
+      50: '#f7fafc',
+      900: '#171923',
     },
 	},
 	styles: {
-		global: (props: StyleFunctionProps | Record<string, any>) => ({
+		global: (props: StyleFunctionProps) => ({
 			body: {
 				bg: mode('eeeef0', 'gray.800')(props), //color de fondo de la pagina completa 
 				fontFamily: "'Roboto', sans-serif"

@@ -1,15 +1,18 @@
-import { Stack} from "@chakra-ui/react";
-import CardCarga from "./CardCarga";
 
+import { Box, Grid, GridItem } from "@chakra-ui/react";
+import Montos from "./Montos/Montos";
 
 function Configuracion() {
-
   return (
-    <Stack direction="row" spacing={2} align="center" >
-     <CardCarga texto="Compromiso de Pago" />
-     <CardCarga texto="Sysacad" />
-    </Stack>
+    <Grid
+      templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+    >
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <Montos />
+      </GridItem>
+    </Grid>
+
   );
 }
-
 export default Configuracion;
+

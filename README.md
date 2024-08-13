@@ -16,7 +16,7 @@
 - [Team](#team)
 - [Documentation](#documentation)
   - [Frontend Documentation (React)](#frontend-documentation-react)
-    - [React & TypeScript & Vite](#react--typescript--vite)
+    - [React + TypeScript + Vite](#react--typescript--vite)
     - [Expanding the ESLint configuration](#expanding-the-eslint-configuration)
   - [Backend](#backend)
     - [Setting up the backend for Development](#setting-up-the-backend-for-development)
@@ -50,7 +50,7 @@ Team project for the Seminario Universitario course at the UTN - FRRe. The proje
 
 ### Frontend Documentation (React)
 
-#### React & TypeScript & Vite
+#### React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

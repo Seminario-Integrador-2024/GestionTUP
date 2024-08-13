@@ -1,8 +1,4 @@
 import {
-    Box, 
-    Flex, 
-    Button, 
-    propNames,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -10,39 +6,43 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure,
-    Image,
-    Heading
+    Text,
+    Button,
   } from '@chakra-ui/react'
 
-  import compPago from "../../icons/compromiso_de_pago_2023.pdf"
-
-  interface ModalProps {
+  interface ModalComponentProps {
     isOpen: boolean;
     onClose: () => void;
-    titleModal: string;
+    texto: string;
+    confirmar: () => void;
   }
-  
-//<Heading onClick={onOpen}></Heading>
-const ModalVerDocumento: React.FC<ModalProps> = ({ isOpen, onClose, titleModal }) => {
+  export default function ModalComponent({ isOpen, onClose, texto, confirmar }: ModalComponentProps) {
+
+    const handleconfirmar = () => {
+        confirmar();
+        onClose();
+    }
+
     return (
+      <>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>{titleModal}</ModalHeader>
+            <ModalHeader>Confirmar cambios</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Image src={compPago}></Image>
+                <Text>{texto}</Text>
             </ModalBody>
-  
             <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={handleconfirmar}>
+                Aceptar
+              </Button>
               <Button colorScheme='blue' mr={3} onClick={onClose}>
-                Cerrar
+                Cancelar
               </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
+      </>
     )
-  }
-
-export default ModalVerDocumento
+  } 

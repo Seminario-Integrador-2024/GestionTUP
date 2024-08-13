@@ -17,8 +17,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the entire backend directory
 COPY backend/ .
 
-# Create a directory for media files
-RUN mkdir -p /app/media
+# mount GCP Bucket to the container in cloud run
+VOLUME [ "app/mnt/my-bucket" ]
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
