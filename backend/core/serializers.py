@@ -67,12 +67,26 @@ class PagoSerializer(serializers.ModelSerializer):
 
 
 class CuotaSerializer(serializers.ModelSerializer):
-    #compdepago = CompromisoDePagoSerializer()
-    compdepago = serializers.PrimaryKeyRelatedField(queryset=CompromisoDePago.objects.all(), write_only=True)
-    compdepago_detalle = CompromisoDePagoSerializer(source='compdepago', read_only=True) 
+    monto = serializers.SerializerMethodField()
+
     class Meta:
         model = Cuota
         fields = "__all__"
+        
+    def get_monto(self, obj):
+        # Obtén el compromiso de pago asociado
+        compromiso_de_pago = obj.compdepago
+        if compromiso_de_pago:
+            return compromiso_de_pago.monto_completo
+        return None
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.pop('compdepago', None)
+        return representation
+        
+
+    
 
 
 class InhabilitacionSerializer(serializers.ModelSerializer):
