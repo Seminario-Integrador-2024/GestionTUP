@@ -60,19 +60,18 @@ jobs:
           git push
 
   start_deploy_render:
-    name: Iniciar el despligue en Render
+    name: Iniciar el despliegue en Render
     runs-on: ubuntu-latest
     steps:
       - name: Desplegar en Render
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.render.com/deploy/srv-cqr6m5l6l47c739pbda0" -H "key: $RENDER_API_KEY")
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.render.com/v1/services/srv-cqr6m5l6l47c739pbda0/deploys" -H "Authorization: Bearer $RENDER_API_KEY")
           if [ $response -eq 200 ]; then
             echo "Deployment successful"
           else
             echo "Deployment failed with HTTP status code $response"
             exit 1
           fi
-
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
 
