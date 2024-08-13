@@ -11,7 +11,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["react-refresh", "prettier"],
   rules: {
-    "prettier/prettier": "warn", // Se muestra los errores de Prettier como warnings
+    /* "prettier/prettier": "warn",  */// Se muestra los errores de Prettier como warnings
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
