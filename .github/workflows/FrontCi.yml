@@ -65,7 +65,7 @@ jobs:
     steps:
       - name: Desplegar en Render
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.render.com/deploy/srv-cqr6m5l6l47c739pbda0?key=$RENDER_API_KEY")
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.render.com/v1/services/srv-cqr6m5l6l47c739pbda0/deploys" -H "Authorization: Bearer $RENDER_API_KEY")
           if [ $response -eq 200 ]; then
             echo "Deployment successful"
           else
