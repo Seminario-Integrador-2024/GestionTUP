@@ -178,8 +178,8 @@ REST_AUTH = {
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
     # JWT token settings
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=2),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
     # JWT token blacklist settings
     "ROTATE_REFRESH_TOKENS": True,  # Enable refresh token rotation
     "BLACKLIST_AFTER_ROTATION": True,  # Blacklist tokens after rotation
