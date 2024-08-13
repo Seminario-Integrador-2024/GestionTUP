@@ -1,4 +1,4 @@
-# :computer: _Sistema de Gestion TUP_ :rocket: :books:
+# :computer: *Sistema de Gestion TUP* :rocket: :books:
 
 <!-- repo url:  https://github.com/Seminario-Integrador-2024/GestionTUP -->
 
@@ -16,8 +16,8 @@
 - [Team](#team)
 - [Documentation](#documentation)
   - [Frontend Documentation (React)](#frontend-documentation-react)
-    - [React + TypeScript + Vite](#react--typescript--vite)
-    - [Expanding the ESLint configuration](#expanding-the-eslint-configuration)
+      - [React + TypeScript + Vite](#react--typescript--vite)
+      - [Expanding the ESLint configuration](#expanding-the-eslint-configuration)
   - [Backend](#backend)
     - [Setting up the backend for Development](#setting-up-the-backend-for-development)
     - [Setting up the Docker container for testing server](#setting-up-the-docker-container-for-testing-server)
@@ -87,6 +87,7 @@ export default {
 [PythonDocs]: https://www.python.org/doc/
 [DRFDocs]: https://www.django-rest-framework.org/
 [DRFSpectacularDocs]: https://drf-spectacular.readthedocs.io/en/latest/
+
 
 ### Backend
 

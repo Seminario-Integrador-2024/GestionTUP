@@ -10,7 +10,7 @@ function Estadisticas() {
   
   console.log('Estadisticas');
   return (
-
+  
     <Flex>
        <Tabs position='relative' variant='unstyled' w='100%'>
         <TabList mb='1em' >

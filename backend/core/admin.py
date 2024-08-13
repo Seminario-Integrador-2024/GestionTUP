@@ -1,4 +1,6 @@
 # core/admin.py
+from django.contrib import admin
+import core.models as models
 
 # unregister the default OutstandingTokenAdmin
 # from rest_framework_simplejwt.token_blacklist.models import OutstandingToken

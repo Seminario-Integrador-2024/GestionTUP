@@ -4,8 +4,6 @@ import {MobileNav} from "./MobileNav";
 import { SidebarContent } from "./SidebarContent";
 import routes from "../../routes";
 
-import Header from "../Header/Header";
-
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const element = useRoutes(routes);
@@ -19,7 +17,6 @@ export default function NavBar() {
         </DrawerContent>
       </Drawer>
       <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-      <Header/>
       <Box ml={{ base: 0, md: 20 }} p="4" pt="20" pl='20'>
         {element}
       </Box>
