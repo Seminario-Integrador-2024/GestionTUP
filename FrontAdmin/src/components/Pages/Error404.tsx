@@ -16,7 +16,7 @@ function ErrorPage  () {
       </Link>
     </Box>
   );
-}
+};
 
 export default ErrorPage;
 
