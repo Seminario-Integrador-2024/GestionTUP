@@ -2,8 +2,10 @@ import { Flex, Image, MenuButton, Menu, MenuList, MenuItem, Button, IconButton, 
 import imgLogo from "../icons/Logos TUP_Mesa de trabajo 1.png"
 import logoUser from "../icons/logo-user.png"
 import { FiMenu } from "react-icons/fi";
+import { useAuth } from "../../Context";
 
 export function HeaderContent({onOpen}: {onOpen: any}){
+    const { onLogout } = useAuth();
     return (
         <Flex
             borderBottom="1px"
@@ -33,7 +35,7 @@ export function HeaderContent({onOpen}: {onOpen: any}){
                 </MenuButton>
                 <MenuList>
                     <MenuItem color="gray" pointerEvents="none">Ver Perfil</MenuItem>
-                    <MenuItem onClick={() => window.location.href = '/login'}>Cerrar sesión</MenuItem>
+                    <MenuItem onClick={() => onLogout()}>Cerrar sesión</MenuItem>
                 </MenuList>
             </Menu>
         </Flex>   

@@ -1,4 +1,5 @@
 import { createContext, useState, ReactNode, useContext } from 'react';
+import Cookies from 'js-cookie';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -16,6 +17,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const onLogout = () => {
+    Cookies.remove('access');
+    Cookies.remove('refresh');
+    Cookies.remove('access_expiration');
+    Cookies.remove('refresh_expiration');
+    Cookies.remove('username');
+    console.log('logout');  
     setIsAuthenticated(false);
   };
 

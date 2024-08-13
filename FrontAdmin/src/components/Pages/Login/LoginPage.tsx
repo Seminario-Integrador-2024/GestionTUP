@@ -15,6 +15,7 @@ import { FetchLogin } from "../../../API/Login";
 import { useAuth } from "../../../Context";
 import fondoLogin from '../../icons/utn-portada-transformed.jpeg'
 import imgLogin from '../../icons/Logos TUP_Mesa de trabajo 1.png' 
+import { useToast } from "../../Toast/useToast";
 
 
 
@@ -24,6 +25,7 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const { onLogin } = useAuth();
+  const showToast = useToast();
 
   const titleColor = useColorModeValue("black", "white");
   const textColor = useColorModeValue("black", "white");
@@ -32,12 +34,14 @@ function LoginPage() {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      //await FetchLogin(username, password);
+      await FetchLogin(username, password);
       onLogin();
+      showToast('Bienvenido', 'Inicio de sesión exitoso', 'success');
 
     } catch (error) {
       console.error('Network error', error);
-      // Handle network errors here
+      showToast('Error', 'Inicio de sesión fallido', 'error');
+
     }
   };
 

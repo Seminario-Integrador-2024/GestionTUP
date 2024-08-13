@@ -18,8 +18,9 @@ export default function Admin() {
          <SidebarContent onClose={onClose} /> 
         </DrawerContent>
       </Drawer>
-      {/* <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} /> */}
-      <Header onOpen={onOpen}/>
+      <Box pos="relative" zIndex="10">
+      <Header onOpen={onOpen} />
+    </Box>
       <Box ml={{ base: 0, md: 20 }} p="10" pt="20">
         {element}
       </Box>

@@ -1,6 +1,8 @@
+import Cookies from 'js-cookie';
+
 export const FetchLogin = async (email_or_username : string, password: string) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/users/login/', {
+      const response = await fetch('https://gestiontup-42tx6kvt3q-uc.a.run.app/users/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -10,12 +12,16 @@ export const FetchLogin = async (email_or_username : string, password: string) =
   
       if (response.ok) {
         const data = await response.json();
-        console.log('Login successful', data);
+        Cookies.set('access', data.access);
+        Cookies.set('refresh', data.refresh);
+        Cookies.set('access_expiration', data.access_expiration);
+        Cookies.set('refresh_expiration', data.refresh_expiration);
+        Cookies.set('username', data.user.username);
         return data;
       } else {
-        console.error('Login failed');
+        throw new Error('Login failed');
       }
     } catch (error) {
-      console.error('Network error', error);
+      throw new Error('Network error: ' + error);
     }
   }
