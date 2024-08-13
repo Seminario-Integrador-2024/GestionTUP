@@ -4,6 +4,8 @@
 
 from django.db import models
 from .model_alumno import Alumno
+
+
 class Pago(models.Model):
     """
     Represents a payment made by a student.
@@ -36,6 +38,51 @@ class Pago(models.Model):
     cuota = models.ForeignKey("Cuota", on_delete=models.CASCADE)
 
 
+class CompromisoDePago(models.Model):
+    """
+    Represents a payment commitment.
+
+    Args:
+        models (type): The Django models module.
+
+    Attributes:
+        id_comp_pago (AutoField): The primary key for the payment commitment.
+        perfciclo (DateTimeField): The date and time of the payment commitment.
+        monto (FloatField): The amount of the payment commitment.
+        firmado (BooleanField): Indicates if \
+            the payment commitment has been signed.
+        fecha_firmado (DateTimeField): The date and time when \
+            the payment commitment was signed.
+        compromiso (CharField): The description of the payment commitment.
+        alumno (ForeignKey): The foreign key to \
+            the related Alumno (student) model.
+    """
+
+    id_comp_pago = models.AutoField(primary_key=True)
+    perfciclo = models.DateTimeField()
+    monto_completo = models.FloatField()
+    monto_completo_2venc = models.FloatField()
+    monto_completo_3venc = models.FloatField()
+    matricula = models.FloatField()
+    cuota_reducida = models.FloatField()
+    cuota_reducida_2venc = models.FloatField()
+    cuota_reducida_3venc = models.FloatField()
+    
+    compromiso = models.CharField(max_length=255)
+    comprimiso_path = models.CharField(max_length=255, blank=True, null=True)
+    archivo_pdf = models.FileField(upload_to='compromisos/')
+
+    def save(self, *args, **kwargs):
+        # Llama al método save original
+        super().save(*args, **kwargs)
+
+        # Actualiza comprimiso_path si el archivo_pdf ha sido cargado
+        if self.archivo_pdf:
+            self.comprimiso_path = self.archivo_pdf.url
+            # Guarda nuevamente para actualizar comprimiso_path
+            super().save(update_fields=['comprimiso_path'])
+
+
 class Cuota(models.Model):
     """
     Represents a Cuota.
@@ -61,14 +108,15 @@ class Cuota(models.Model):
     id_cuota = models.AutoField(primary_key=True)
     nro_cuota = models.IntegerField()
     recargo = models.FloatField()
-    monto = models.FloatField()
-    firmado = models.BooleanField()
+    compdepago =  models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
+    estado = models.CharField(max_length=255)
     vencimiento = models.DateField()
     fecha_pago = models.DateField()
     fecha_vencimiento = models.DateField()
     fecha_pago_devengado = models.DateField()
     fecha_pedido = models.DateField()
     tipo_puesto = models.CharField(max_length=255)
+
 
 class LineaDePago(models.Model):
     """
@@ -89,33 +137,6 @@ class LineaDePago(models.Model):
     pago = models.ForeignKey(Pago, on_delete=models.CASCADE)
     cuota = models.ForeignKey(Cuota, on_delete=models.CASCADE)
     monto_aplicado = models.FloatField()
-
-
-class CompromisoDePago(models.Model):
-    """
-    Represents a payment commitment.
-
-    Args:
-        models (type): The Django models module.
-
-    Attributes:
-        id_comp_pago (AutoField): The primary key for the payment commitment.
-        perfciclo (DateTimeField): The date and time of the payment commitment.
-        monto (FloatField): The amount of the payment commitment.
-        firmado (BooleanField): Indicates if \
-            the payment commitment has been signed.
-        fecha_firmado (DateTimeField): The date and time when \
-            the payment commitment was signed.
-        compromiso (CharField): The description of the payment commitment.
-        alumno (ForeignKey): The foreign key to \
-            the related Alumno (student) model.
-    """
-
-    id_comp_pago = models.AutoField(primary_key=True)
-    perfciclo = models.DateTimeField()
-    monto = models.FloatField()
-    compromiso = models.CharField(max_length=255)
-    archivo_pdf = models.FileField(upload_to='compromisos/')
 
 
 class FirmaCompPagoAlumno(models.Model):

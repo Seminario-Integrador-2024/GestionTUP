@@ -2,6 +2,8 @@ import { Box, Flex, Menu, MenuButton, MenuItem, Button, MenuList, Heading, Stack
 import ModalVerDocumento from "./ModalVerDocumento";
 import ModalCargarDocumento from "./ModalCargarDocumento";
 import { useState } from "react";
+import CompPago from "../../icons/compromiso_de_pago_2023.pdf"
+import Sysacad from "../../icons/alcances.pdf"
 
 interface CardCargaProps {
     texto: string;
@@ -25,7 +27,7 @@ return (
         p="15px"
         minHeight={5}
     >
-        <Stack direction="column" spacing={2} align="left" marginLeft= "20px" mb="10px" mt="10px">
+        <Stack direction="column" spacing={2} align="left" marginLeft= "10px" mb="10px" mt="10px">
         <Heading 
             fontSize= "23px"
             fontWeight="bold" 
@@ -42,8 +44,12 @@ return (
             </MenuList>
         </Menu>
 
-        {modalType === 'visualizarArchivo' && (
-            <ModalVerDocumento isOpen={isOpen} onClose={onClose} titleModal={texto} />
+        {modalType === 'visualizarArchivo' && texto === "Compromiso de Pago" && (
+                <ModalVerDocumento isOpen={isOpen} onClose={onClose} titleModal={texto} pdfUrl={CompPago}/>
+        )}
+
+        {modalType === 'visualizarArchivo' && texto === "Sysacad" && (
+                <ModalVerDocumento isOpen={isOpen} onClose={onClose} titleModal={texto} pdfUrl={Sysacad}/>
         )}
         
         {modalType === 'cargarArchivo' && (

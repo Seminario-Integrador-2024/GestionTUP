@@ -140,17 +140,7 @@ DATABASES = {
     }
 }
 
-"""DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'gestion_tup',
-            'USER': 'ulises',
-            'PASSWORD': 'ulises',
-            'HOST': 'localhost',
-            'PORT': '3306',
-        }
-    }
-"""
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS: list[str | None] = []
@@ -188,8 +178,8 @@ REST_AUTH = {
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
     # JWT token settings
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=2),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
     # JWT token blacklist settings
     "ROTATE_REFRESH_TOKENS": True,  # Enable refresh token rotation
     "BLACKLIST_AFTER_ROTATION": True,  # Blacklist tokens after rotation
@@ -219,11 +209,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+BASE_DIR: Path = Path(__file__).resolve().parent.parent.parent.parent
+
 STATIC_ROOT: str = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL: str = "/static/"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mnt/my-bucket/')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
