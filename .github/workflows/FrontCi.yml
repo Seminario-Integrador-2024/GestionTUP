@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - '**' # Se ejecuta en todas las ramas
+  pull_request:
+    branches:
+      - main # Es para que se ejecute en main nomas
 
 jobs:
   lint:
@@ -21,7 +24,7 @@ jobs:
       - name: Instalar dependencias
         run: npm install
         working-directory: ./FrontAdmin
-      
+
       - name: Correr linter de codigo
         run: npm run lint
         working-directory: ./FrontAdmin
@@ -29,7 +32,8 @@ jobs:
   prettier:
     name: Formatear código con Prettier
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' # Solo se ejecuta en la rama main
+    needs: lint
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success() # Solo se ejecuta en la rama main
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -54,3 +58,19 @@ jobs:
           git add .
           git commit -m "chore: Se formateo el codigo con Prettier" || echo "No hay cambios para comitear"
           git push
+
+  start_deploy_render:
+    name: Iniciar el despligue en Render
+    runs-on: ubuntu-latest
+    steps:
+      - name: Desplegar en Render
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST `$RENDER_API_KEY`)
+          if [ $response -eq 200 ]; then
+            echo "Deployment successful"
+          else
+            echo "Deployment failed with HTTP status code $response"
+          fi
+
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
