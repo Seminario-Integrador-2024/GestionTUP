@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: gestion-tup
-    env: static
-    buildCommand: 'cd FrontAdmin && npm install && npm run build'
-    staticPublishPath: 'FrontAdmin/dist'
