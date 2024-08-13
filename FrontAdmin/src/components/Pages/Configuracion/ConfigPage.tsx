@@ -1,6 +1,7 @@
 
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import Montos from "./Montos/Montos";
+import CardCarga from "./CardCarga";
 
 function Configuracion() {
   return (
@@ -9,6 +10,9 @@ function Configuracion() {
     >
       <GridItem colSpan={{ base: 1, md: 2 }}>
         <Montos />
+      </GridItem>
+      <GridItem colSpan={{ base: 1, md: 2 }} mt="20px">
+          <CardCarga texto="Compromiso de Pago"/>
       </GridItem>
     </Grid>
 

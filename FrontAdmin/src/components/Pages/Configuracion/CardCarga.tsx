@@ -27,7 +27,7 @@ return (
         p="15px"
         minHeight={5}
     >
-        <Stack direction="column" spacing={2} align="left" marginLeft= "20px" mb="10px" mt="10px">
+        <Stack direction="column" spacing={2} align="left" marginLeft= "10px" mb="10px" mt="10px">
         <Heading 
             fontSize= "23px"
             fontWeight="bold" 
