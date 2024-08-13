@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: your-app-name
-    env: static
-    buildCommand: 'cd FrontAdmin && npm run build'
-    staticPublishPath: 'FrontAdmin/dist'
