@@ -85,7 +85,7 @@ jobs:
         run:  |
           deploy_status="pending"
           while [ "$deploy_status" != "live" ]; do
-            response=$(curl -s -H "Authorization: $RENDER_API_KEY" "https://api.render.com/v1/services/srv-cqr6m5l6l47c739pbda0/deploys")
+            response=$(curl -s -H "Authorization:$RENDER_API_KEY" "https://api.render.com/v1/services/srv-cqr6m5l6l47c739pbda0/deploys")
             echo "Render API response: $response"
             deploy_status=$(echo $response | jq -r '.[0].deploy.status') 
             echo "Current deploy status: $deploy_status"
