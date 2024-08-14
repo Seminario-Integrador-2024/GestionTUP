@@ -34,10 +34,10 @@ import {
                 <Text>{texto}</Text>
             </ModalBody>
             <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={handleconfirmar}>
+            <Button size="sm" colorScheme='blue' mr={3} onClick={handleconfirmar}>
                 Aceptar
               </Button>
-              <Button colorScheme='blue' mr={3} onClick={onClose}>
+              <Button size="sm"  variant="light" colorScheme='blue' mr={3} onClick={onClose}>
                 Cancelar
               </Button>
             </ModalFooter>

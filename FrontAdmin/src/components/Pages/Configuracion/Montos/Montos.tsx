@@ -10,6 +10,7 @@ import {
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/react'
+import { FetchMontos } from "../../../../API/Montos";
 
 const Montos = () => {
 
