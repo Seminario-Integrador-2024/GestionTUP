@@ -27,13 +27,14 @@ SECRET_KEY: str = os.getenv(
 
 ALLOWED_HOSTS: list[str] = ["*"]
 
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 APPEND_SLASH = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # https://docs.djangoproject.com/en/5.0/ref/settings/#std:setting-BASE_DIR
-BASE_DIR: Path = Path(__file__).resolve().parent.parent
+BASE_DIR: Path = Path(__file__).resolve().parent.parent # this is the root of the project
 
 
 # Quick-start development settings - unsuitable for production
@@ -64,6 +65,7 @@ INSTALLED_APPS: list[str] = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    "whitenoise.runserver_nostatic",
     # local apps
     "users",
     "core",
@@ -72,16 +74,16 @@ INSTALLED_APPS: list[str] = [
 # middleware settings
 # https://docs.djangoproject.com/en/5.0/topics/http/middleware/
 MIDDLEWARE: list[str] = [
+    "corsheaders.middleware.CorsMiddleware", # third party middleware for corsc
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", # third party middleware for static files
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # third party middleware
-    "allauth.account.middleware.AccountMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    "allauth.account.middleware.AccountMiddleware", # third party middleware for allauth
 ]
 
 ROOT_URLCONF = "server.urls"
@@ -130,15 +132,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "server.wsgi.application"
 
+#Storage settings
+# GCP Bucket settings
+MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        #make sqlite db file in the root of the project
+        "NAME": MOUNTED_BUCKET_ROOT / "db.sqlite3",
     }
 }
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+STATIC_ROOT: Path = MOUNTED_BUCKET_ROOT / "static"
+STATIC_URL: str = '/static/'
+
+MEDIA_ROOT: Path = MOUNTED_BUCKET_ROOT / "media"
+MEDIA_URL: str = '/media/'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -177,8 +193,8 @@ REST_AUTH = {
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
     # JWT token settings
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=2),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
     # JWT token blacklist settings
     "ROTATE_REFRESH_TOKENS": True,  # Enable refresh token rotation
     "BLACKLIST_AFTER_ROTATION": True,  # Blacklist tokens after rotation
@@ -196,20 +212,17 @@ AUTHENTICATION_BACKENDS: list[str] = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "es-ar"
 
-TIME_ZONE = "UTC"
+# set time zone to argentina
+TIME_ZONE = "America/Argentina/Buenos_Aires"
 
 USE_I18N = True
 
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_ROOT: str = os.path.join(BASE_DIR, "staticfiles")
-STATIC_URL: str = "/static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

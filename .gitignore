@@ -50,3 +50,14 @@ __pycache__/
 
 # sql files
 *.sql
+
+# static files
+static*/
+*staticfiles*/
+# build files
+build/
+
+#sqliet db
+*.sqlite3
+*.db
+*.sqlite

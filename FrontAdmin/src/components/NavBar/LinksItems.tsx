@@ -7,6 +7,5 @@ export const LINK_ITEMS = [
   { icon: iconEstadisticas, url: "estadisticas" },
   { icon: iconAlumno, url: "error404" },
   { icon: iconChat, url: "error404" },
-  { icon: iconConfig, url: "error404" },
-  
+  { icon: iconConfig, url: "configuracion" },
 ];

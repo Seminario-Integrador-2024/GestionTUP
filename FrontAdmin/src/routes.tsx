@@ -7,6 +7,10 @@ const routes = [
         element: <Estadisticas />,  
       },
       {
+        path: "configuracion",
+        element: <Configuracion />,
+      },
+      {
         path: "error404",
         element: <ErrorPage />,
       },

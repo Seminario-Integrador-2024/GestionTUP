@@ -1,5 +1,7 @@
 # core/serializers.py
 # apps imports
+import base64
+from django.core.files.base import ContentFile
 from core.models import *
 from core.serializers import *
 
@@ -32,9 +34,29 @@ class MateriaAlumnoSerializer(serializers.ModelSerializer):
 
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
+    archivo_pdf = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = CompromisoDePago
         fields = "__all__"
+
+    def create(self, validated_data):
+        archivo_pdf_base64 = validated_data.pop('archivo_pdf', None)
+        compromiso = validated_data.get('compromiso', 'default_name')
+        perfciclo = validated_data.get('perfciclo', 'default_name')
+
+        if archivo_pdf_base64:
+            archivo_pdf_decoded = base64.b64decode(archivo_pdf_base64)
+            archivo_pdf_name = f"{compromiso}_{perfciclo}.pdf"
+            archivo_pdf = ContentFile(archivo_pdf_decoded, archivo_pdf_name)
+            validated_data['archivo_pdf'] = archivo_pdf
+
+        compromiso_de_pago = super().create(validated_data)
+        
+        compromiso_de_pago.compromiso = compromiso
+        compromiso_de_pago.save()
+        
+        return compromiso_de_pago
 
 
 class PagoSerializer(serializers.ModelSerializer):
@@ -44,9 +66,26 @@ class PagoSerializer(serializers.ModelSerializer):
 
 
 class CuotaSerializer(serializers.ModelSerializer):
+    monto = serializers.SerializerMethodField()
+
     class Meta:
         model = Cuota
         fields = "__all__"
+        
+    def get_monto(self, obj):
+        # Obtén el compromiso de pago asociado
+        compromiso_de_pago = obj.compdepago
+        if compromiso_de_pago:
+            return compromiso_de_pago.monto_completo
+        return None
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.pop('compdepago', None)
+        return representation
+        
+
+    
 
 
 class InhabilitacionSerializer(serializers.ModelSerializer):
