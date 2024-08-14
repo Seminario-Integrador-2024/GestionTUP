@@ -212,7 +212,7 @@ AUTHENTICATION_BACKENDS: list[str] = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "es-ar"
 
 # set time zone to argentina
 TIME_ZONE = "America/Argentina/Buenos_Aires"

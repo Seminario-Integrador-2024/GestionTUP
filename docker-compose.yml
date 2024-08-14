@@ -1,16 +1,16 @@
-version: "3.8"
+version: "3.8" # Adjust if needed based on your Docker Compose version
 
 services:
-  web:
+  back: # Replace with your actual application name
     build: .
-    command: gunicorn server.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - ./backend:/app
-      - media_volume:/app/media
+      - vol:/app/mnt/my-bucket/ # Adjust the volume name if needed
     ports:
-      - "8000:8000"
-    env_file:
-      - .env
+      - "8000:8000" # Expose port 8000
+    environment:
+      DJANGO_SETTINGS_MODULE: server.settings.base
+      PYTHONDONTWRITEBYTECODE: 1
+      PYTHONUNBUFFERED: 1
 
 volumes:
-  media_volume:
+  vol: {} # Define an empty named volume
