@@ -20,14 +20,16 @@ export default function CardCarga({ texto }: CardCargaProps) {
     };
 return (
     <Box
-        bg="#e7ecf3"
-        borderRadius="10px"
+        borderWidth="1px"
+        borderRadius="lg"
+        bg="#e9eef4"
+        p={6}
+        boxShadow="md"
+        maxW="100%"
         w="50%"
-        // marginLeft="10px" 
-        p="15px"
         minHeight={5}
     >
-        <Stack direction="column" spacing={2} align="left" marginLeft= "10px" mb="10px" mt="10px">
+        <Stack direction="column" spacing={2} align="left">
         <Heading 
             fontSize= "23px"
             fontWeight="bold" 
@@ -35,7 +37,7 @@ return (
             {texto}
         </Heading>
         <Menu>
-            <MenuButton as={Button} w="25%" color="white" colorScheme="">
+            <MenuButton as={Button} w="25%"  colorScheme="" size="sm">
                 Opciones
             </MenuButton>
             <MenuList>
