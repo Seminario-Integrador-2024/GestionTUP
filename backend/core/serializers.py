@@ -34,7 +34,7 @@ class MateriaAlumnoSerializer(serializers.ModelSerializer):
 
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
-    archivo_pdf = serializers.CharField(write_only=True)  # Para recibir el base64
+    archivo_pdf = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = CompromisoDePago
@@ -57,7 +57,6 @@ class CompromisoDePagoSerializer(serializers.ModelSerializer):
         compromiso_de_pago.save()
         
         return compromiso_de_pago
-    
 
 
 class PagoSerializer(serializers.ModelSerializer):
