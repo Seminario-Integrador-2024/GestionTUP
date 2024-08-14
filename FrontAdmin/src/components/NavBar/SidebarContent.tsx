@@ -28,7 +28,7 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
         <Flex alignItems="center" justifyContent="center" flexDirection="column"  gap='2' mt='70px'>
           {LINK_ITEMS.map((link, key) => (
             <Link key={key} to={link.url} onClick={onClose} >
-              <NavItem icon={link.icon} color={location.pathname === '/admin/'+ link.url ? "green.100" : "white"}/>
+              <NavItem icon={link.icon} color={location.pathname === '/admin/'+ link.url ? "#b8cce2" : "white"}/>
             </Link>
           ))}
         </Flex>
@@ -36,3 +36,4 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
     </>
   );
 }
+//#cfe0f3

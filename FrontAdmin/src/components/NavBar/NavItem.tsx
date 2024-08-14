@@ -11,7 +11,7 @@ export default function NavItem({ icon, color, ...props }: NavItemProps) {
       align="center"
       justify="center"
       p={4}
-      _hover={{ bg: "green.300" }}
+      _hover={{ bg: "#cfe0f3" }}
       {...props}
       borderRadius="5px"
       backgroundColor={color}

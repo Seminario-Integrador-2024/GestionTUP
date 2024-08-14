@@ -8,7 +8,7 @@ const routes = [
         element: <Estadisticas />,  
       },
       {
-        path: "configuración",
+        path: "configuracion",
         element: <Configuracion />,
       },
       {
