@@ -53,13 +53,13 @@ jobs:
 
       - name: Commit changes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git config --local user.name "TobiasMaciel"
           git config --local user.email "tobiasmaciel03@gmail.com"
           git add .
           git commit -m "chore: Se formateo el codigo con Prettier" || echo "No hay cambios para comitear"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
+          git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
 
   start_deploy_render:
     name: Iniciar el despligue en Render
