@@ -28,13 +28,14 @@ class AlumnoSerializer(serializers.ModelSerializer):
 
 
 class MateriaAlumnoSerializer(serializers.ModelSerializer):
+    archivo_pdf = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = MateriaAlumno
         fields = "__all__"
 
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
-    archivo_pdf = serializers.CharField(write_only=True)  # Para recibir el base64
+    archivo_pdf = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = CompromisoDePago
@@ -57,6 +58,7 @@ class CompromisoDePagoSerializer(serializers.ModelSerializer):
         compromiso_de_pago.save()
         
         return compromiso_de_pago
+
     
 
 
@@ -74,7 +76,6 @@ class CuotaSerializer(serializers.ModelSerializer):
         fields = "__all__"
         
     def get_monto(self, obj):
-        # Obtén el compromiso de pago asociado
         compromiso_de_pago = obj.compdepago
         if compromiso_de_pago:
             return compromiso_de_pago.monto_completo
@@ -85,9 +86,6 @@ class CuotaSerializer(serializers.ModelSerializer):
         representation.pop('compdepago', None)
         return representation
         
-
-    
-
 
 class InhabilitacionSerializer(serializers.ModelSerializer):
     class Meta:
