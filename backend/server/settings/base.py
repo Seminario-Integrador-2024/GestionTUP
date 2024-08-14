@@ -27,8 +27,6 @@ SECRET_KEY: str = os.getenv(
 
 ALLOWED_HOSTS: list[str] = ["*"]
 
-USE_TZ = True
-TIME_ZONE = "America/Argentina/Cordoba"
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -216,7 +214,8 @@ AUTHENTICATION_BACKENDS: list[str] = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# set time zone to argentina
+TIME_ZONE = "America/Argentina/Buenos_Aires"
 
 USE_I18N = True
 
