@@ -87,6 +87,6 @@ function Cuatrimestral() {
       </Box>
   </Flex>
     )
-};
+}
 
 export default Cuatrimestral;

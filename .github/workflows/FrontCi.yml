@@ -1,4 +1,4 @@
-name: ForntCI Pipeline
+name: FrontCI Pipeline
 
 on:
   push:

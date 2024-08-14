@@ -16,6 +16,7 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
     <>
       <Box
         borderRight="1px"
+        borderColor='gray.300'
         w={{ base: "full", md: '100px' }}
         pos="fixed"
         h="100% "
@@ -24,10 +25,7 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
         <HStack h="5" marginLeft="8">
           {!isLargerThanMd && <CloseButton onClick={onClose} marginRight="8" />}
         </HStack>
-        <Flex alignItems="center" justifyContent="center" flexDirection="column"  gap='2'>
-          <Text fontSize="4xl"  fontWeight="bold">
-            TUP
-          </Text>
+        <Flex alignItems="center" justifyContent="center" flexDirection="column"  gap='2' mt='70px'>
           {LINK_ITEMS.map((link, key) => (
             <Link key={key} to={link.url} onClick={onClose} >
               <NavItem icon={link.icon} color={location.pathname === '/admin/'+ link.url ? "#b8cce2" : "white"}/>

@@ -32,7 +32,7 @@ const DoughnutChart : React.FC<DoughnutChartProps> = ({ labelsPromp, dataPromp }
       },
       legend: {
         display: true,
-        position: 'bottom' as 'bottom',
+        position: 'bottom' as const,
         labels: {
             font: {
                 size: 14,
