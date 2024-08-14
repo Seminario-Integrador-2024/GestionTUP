@@ -70,7 +70,7 @@ class CompromisoDePago(models.Model):
     
     compromiso = models.CharField(max_length=255)
     comprimiso_path = models.CharField(max_length=255, blank=True, null=True)
-    archivo_pdf = models.FileField(upload_to='compromisos/')
+    archivo_pdf = models.FileField(upload_to='compromisos/', blank=True,  null=True)
 
     def save(self, *args, **kwargs):
         # Llama al método save original
