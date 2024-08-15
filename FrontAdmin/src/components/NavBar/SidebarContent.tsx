@@ -10,25 +10,12 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { LINK_ITEMS } from './LinksItems';
 import NavItem from './NavItem';
-import {
-  Box,
-  Flex,
-  HStack,
-  CloseButton,
-  useMediaQuery,
-  Text,
-  BoxProps,
-} from '@chakra-ui/react';
-import { Link, useLocation } from 'react-router-dom';
-import { LINK_ITEMS } from './LinksItems';
-import NavItem from './NavItem';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
 export function SidebarContent({ onClose, ...rest }: SidebarProps) {
-  const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const location = useLocation();
   console.log(location.pathname);
@@ -39,8 +26,6 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
         borderRight="1px"
         borderColor="gray.300"
         w={{ base: 'full', md: '100px' }}
-        borderColor="gray.300"
-        w={{ base: 'full', md: '100px' }}
         pos="fixed"
         h="100% "
         {...rest}
@@ -48,13 +33,6 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
         <HStack h="5" marginLeft="8">
           {!isLargerThanMd && <CloseButton onClick={onClose} marginRight="8" />}
         </HStack>
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-          gap="2"
-          mt="70px"
-        >
         <Flex
           alignItems="center"
           justifyContent="center"
