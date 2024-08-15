@@ -7,7 +7,14 @@ export const useToast = () => {
     toast({
       title: titulo,
       description: descripcion,
-      status: estado === 'success' || estado === "info" || estado === "warning" || estado === "error" || estado === "loading" ? estado : undefined,
+      status:
+        estado === 'success' ||
+        estado === 'info' ||
+        estado === 'warning' ||
+        estado === 'error' ||
+        estado === 'loading'
+          ? estado
+          : undefined,
       duration: 5000,
       isClosable: true,
     });
