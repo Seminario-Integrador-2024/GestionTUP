@@ -28,41 +28,11 @@ jobs:
       - name: Correr linter de codigo
         run: npm run lint
         working-directory: ./FrontAdmin
-
-  prettier:
-    name: Formatear código con Prettier
-    runs-on: ubuntu-latest
-    needs: lint
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success() # Solo se ejecuta en la rama main
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setear Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Instalar dependencias
-        run: npm install
-        working-directory: ./FrontAdmin
-
-      - name: Correr Prettier
-        run: npm run format
-        working-directory: ./FrontAdmin
-
-      - name: Commit changes
-        run: |
-          git config --local user.name "TobiasMaciel"
-          git config --local user.email "tobiasmaciel03@gmail.com"
-          git add .
-          git commit -m "chore: Se formateo el codigo con Prettier" || echo "No hay cambios para comitear"
-          git push
-
+      
   start_deploy_render:
     name: Iniciar el despligue en Render
     runs-on: ubuntu-latest
-    needs: prettier
+    needs: lint
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success() # Solo se ejecuta en la rama main
     steps:
       - name: Desplegar en Render
