@@ -9,7 +9,33 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Text,
+  Button,
+} from '@chakra-ui/react';
 
+interface ModalComponentProps {
+  isOpen: boolean;
+  onClose: () => void;
+  texto: string;
+  confirmar: () => void;
+}
+export default function ModalComponent({
+  isOpen,
+  onClose,
+  texto,
+  confirmar,
+}: ModalComponentProps) {
+  const handleconfirmar = () => {
+    confirmar();
+    onClose();
+  };
 interface ModalComponentProps {
   isOpen: boolean;
   onClose: () => void;
@@ -38,21 +64,10 @@ export default function ModalComponent({
             <Text>{texto}</Text>
           </ModalBody>
           <ModalFooter>
-            <Button
-              size="sm"
-              colorScheme="blue"
-              mr={3}
-              onClick={handleconfirmar}
-            >
+            <Button colorScheme="blue" mr={3} onClick={handleconfirmar}>
               Aceptar
             </Button>
-            <Button
-              size="sm"
-              variant="light"
-              colorScheme="blue"
-              mr={3}
-              onClick={onClose}
-            >
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
               Cancelar
             </Button>
           </ModalFooter>

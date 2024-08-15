@@ -19,6 +19,9 @@ router.register(r"permisos", PermisosViewSet)
 router.register(r"admin-roles", AdminRolViewSet)
 router.register(r"rol-permisos", RolPermisoViewSet)
 
+router.register(r"excel_upload", ExcelUploadViewSet)
+
+
 urlpatterns = [
     path("", include(router.urls)),
 ]

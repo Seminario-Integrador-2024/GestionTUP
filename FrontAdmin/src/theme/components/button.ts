@@ -1,4 +1,4 @@
-import { background, border } from '@chakra-ui/react';
+import { background } from '@chakra-ui/react';
 import { color } from 'chart.js/helpers';
 import { ImTextColor } from 'react-icons/im';
 
@@ -46,15 +46,17 @@ export const buttonStyles = {
       baseStyle: {
         bg: '#022855',
         background: '#022855',
+        background: '#022855',
         fontWeight: '500',
         color: 'white',
-        border: '1px solid #022855',
         _hover: {
           bg: '#0f183f',
           background: '#0f183f',
         },
+        //
         borderRadius: '15px',
         _focus: {
+          boxShadow: 'none',
           boxShadow: 'none',
         },
       },
