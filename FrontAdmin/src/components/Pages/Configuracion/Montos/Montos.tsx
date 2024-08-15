@@ -27,7 +27,7 @@ const Montos = () => {
 
   const [tempMonto, setTempMonto] = useState(monto);
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
+  const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setTempMonto({
       ...tempMonto,
@@ -155,7 +155,6 @@ const Montos = () => {
           Ver Historial
         </Button>
       </Flex>
-
       <ModalComponent
         isOpen={isOpen}
         onClose={onClose}
