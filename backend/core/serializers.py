@@ -11,6 +11,7 @@ from rest_framework import serializers
 #  custom imports
 from users.models import *
 from users.serializers import *
+from .modelos.model_pagos import *
 
 # Create your serializers here.
 
@@ -132,4 +133,12 @@ class AdminRolSerializer(serializers.ModelSerializer):
 class RolPermisoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolPermiso
+        fields = "__all__"
+
+
+
+class ExcelUploadSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
+    class Meta:
+        model = ExcelFile
         fields = "__all__"
