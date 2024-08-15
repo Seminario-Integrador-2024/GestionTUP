@@ -1,8 +1,6 @@
-import { Box } from "@chakra-ui/react";
-import ModalCompromisoPago from "./ModalVerDocumento";
+import { Box } from '@chakra-ui/react';
+import ModalCompromisoPago from './ModalVerDocumento';
 
-export default function CompromisoP(){
-    return(
-       <Box>-</Box>
-    );
+export default function CompromisoP() {
+  return <Box>-</Box>;
 }
