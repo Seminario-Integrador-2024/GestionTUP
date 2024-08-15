@@ -10,7 +10,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(!Cookies.get('access') ? false : true);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !Cookies.get('access') ? false : true
+  );
 
   const onLogin = () => {
     setIsAuthenticated(true);
@@ -22,7 +24,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove('access_expiration');
     Cookies.remove('refresh_expiration');
     Cookies.remove('username');
-    console.log('logout');  
+    console.log('logout');
     setIsAuthenticated(false);
   };
 
@@ -36,7 +38,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth debe ser usado dentro de un AuthProvider");
+    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
   }
   return context;
 };

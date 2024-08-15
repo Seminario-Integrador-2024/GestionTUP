@@ -9,10 +9,9 @@ import {
 } from '@chakra-ui/react';
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
 import { useState } from 'react';
-import { useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react';
 
 const Montos = () => {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const confirmarMontos = useToast();
 
@@ -28,7 +27,8 @@ const Montos = () => {
 
   const [tempMonto, setTempMonto] = useState(monto);
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setTempMonto({
       ...tempMonto,
@@ -41,9 +41,12 @@ const Montos = () => {
     console.log('Cambios guardados');
     onClose();
     confirmarMontos({
-      title: "Cambios Guardados",
-      description: "Los cambios se guardaron correctamente",
-      status: "success",
+      title: 'Cambios Guardados',
+      description: 'Los cambios se guardaron correctamente',
+      status: 'success',
+      title: 'Cambios Guardados',
+      description: 'Los cambios se guardaron correctamente',
+      status: 'success',
       duration: 5000,
       isClosable: true,
     });
@@ -65,52 +68,170 @@ const Montos = () => {
       <SimpleGrid columns={2} spacing={4}>
         <Flex align="center">
           <Text w="60%">Cuota Completa</Text>
-          <Input type="text" name="cuotaCompleta" value={"$" + tempMonto.cuotaCompleta} onChange={handleChange} size="sm" bg='white'/>
+          <Input
+            type="text"
+            name="cuotaCompleta"
+            value={'$' + tempMonto.cuotaCompleta}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
+          <Input
+            type="text"
+            name="cuotaCompleta"
+            value={'$' + tempMonto.cuotaCompleta}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
         </Flex>
 
         <Flex align="center">
           <Text w="60%">Cuota Reducida</Text>
-          <Input type="text" name="cuotaReducida" value={"$" + tempMonto.cuotaReducida} onChange={handleChange} size="sm" bg='white'/>
+          <Input
+            type="text"
+            name="cuotaReducida"
+            value={'$' + tempMonto.cuotaReducida}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
+          <Input
+            type="text"
+            name="cuotaReducida"
+            value={'$' + tempMonto.cuotaReducida}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
         </Flex>
 
         <Flex align="center">
           <Text w="60%">Cuota Completa 2do Vencimiento</Text>
-          <Input type="text" name="cuotaCompleta2doVencimiento" value={"$" + tempMonto.cuotaCompleta2doVencimiento} onChange={handleChange} size="sm" bg='white'/>
+          <Input
+            type="text"
+            name="cuotaCompleta2doVencimiento"
+            value={'$' + tempMonto.cuotaCompleta2doVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
+          <Input
+            type="text"
+            name="cuotaCompleta2doVencimiento"
+            value={'$' + tempMonto.cuotaCompleta2doVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
         </Flex>
 
         <Flex align="center">
           <Text w="60%">Cuota Reducida 2do Vencimiento</Text>
-          <Input type="text" name="cuotaReducida2doVencimiento" value={"$" + tempMonto.cuotaReducida2doVencimiento} onChange={handleChange} size="sm" bg='white' />
+          <Input
+            type="text"
+            name="cuotaReducida2doVencimiento"
+            value={'$' + tempMonto.cuotaReducida2doVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
+          <Input
+            type="text"
+            name="cuotaReducida2doVencimiento"
+            value={'$' + tempMonto.cuotaReducida2doVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
         </Flex>
 
         <Flex align="center">
           <Text w="60%">Cuota Completa 3er Vencimiento</Text>
-          <Input type="text" name="cuotaCompleta3erVencimiento" value={"$" + tempMonto.cuotaCompleta3erVencimiento} onChange={handleChange} size="sm" bg='white' />
+          <Input
+            type="text"
+            name="cuotaCompleta3erVencimiento"
+            value={'$' + tempMonto.cuotaCompleta3erVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
+          <Input
+            type="text"
+            name="cuotaCompleta3erVencimiento"
+            value={'$' + tempMonto.cuotaCompleta3erVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
         </Flex>
 
         <Flex align="center">
           <Text w="60%">Cuota Reducida 3er Vencimiento</Text>
-          <Input type="text" name="cuotaReducida3erVencimiento" value={"$" + tempMonto.cuotaReducida3erVencimiento} onChange={handleChange} size="sm" bg='white'/>
+          <Input
+            type="text"
+            name="cuotaReducida3erVencimiento"
+            value={'$' + tempMonto.cuotaReducida3erVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
+          <Input
+            type="text"
+            name="cuotaReducida3erVencimiento"
+            value={'$' + tempMonto.cuotaReducida3erVencimiento}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
         </Flex>
 
         <Flex align="center">
           <Text w="60%">Matrícula</Text>
-          <Input type="text" name="matricula" value={"$" + tempMonto.matricula} onChange={handleChange} size="sm" bg='white'/>
+          <Input
+            type="text"
+            name="matricula"
+            value={'$' + tempMonto.matricula}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
+          <Input
+            type="text"
+            name="matricula"
+            value={'$' + tempMonto.matricula}
+            onChange={handleChange}
+            size="sm"
+            bg="white"
+          />
         </Flex>
       </SimpleGrid>
 
-      <Flex justify="flex-end" gap='4' pt={{base:'30px', md:'0'}}>
-        <Button color='white' size="sm" onClick={onOpen}>
+      <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
+        <Button color="white" size="sm" onClick={onOpen}>
+      <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
+        <Button color="white" size="sm" onClick={onOpen}>
           Guardar Cambios
         </Button>
-        <Button color='white' size="sm">
+        <Button color="white" size="sm">
+        <Button color="white" size="sm">
           Ver Historial
         </Button>
       </Flex>
-      <ModalComponent isOpen={isOpen} onClose={onClose} texto={'¿Estás seguro que deseas guardar los cambios?'} confirmar={confirmar}/>
+      <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        texto={'¿Estás seguro que deseas guardar los cambios?'}
+        confirmar={confirmar}
+      />
+      <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        texto={'¿Estás seguro que deseas guardar los cambios?'}
+        confirmar={confirmar}
+      />
     </Box>
   );
 };
 
 export default Montos;
-

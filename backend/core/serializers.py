@@ -37,6 +37,7 @@ class MateriaAlumnoSerializer(serializers.ModelSerializer):
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
     archivo_pdf = serializers.CharField(write_only=True, required=False)
+    archivo_pdf = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = CompromisoDePago
