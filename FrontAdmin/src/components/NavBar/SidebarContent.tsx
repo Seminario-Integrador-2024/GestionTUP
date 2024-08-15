@@ -10,12 +10,25 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { LINK_ITEMS } from './LinksItems';
 import NavItem from './NavItem';
+import {
+  Box,
+  Flex,
+  HStack,
+  CloseButton,
+  useMediaQuery,
+  Text,
+  BoxProps,
+} from '@chakra-ui/react';
+import { Link, useLocation } from 'react-router-dom';
+import { LINK_ITEMS } from './LinksItems';
+import NavItem from './NavItem';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
 export function SidebarContent({ onClose, ...rest }: SidebarProps) {
+  const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const location = useLocation();
   console.log(location.pathname);
@@ -24,6 +37,8 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
     <>
       <Box
         borderRight="1px"
+        borderColor="gray.300"
+        w={{ base: 'full', md: '100px' }}
         borderColor="gray.300"
         w={{ base: 'full', md: '100px' }}
         pos="fixed"
@@ -40,13 +55,20 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
           gap="2"
           mt="70px"
         >
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="column"
+          gap="2"
+          mt="70px"
+        >
           {LINK_ITEMS.map((link, key) => (
             <Link key={key} to={link.url} onClick={onClose}>
               <NavItem
                 icon={link.icon}
                 color={
                   location.pathname === '/admin/' + link.url
-                    ? '#b8cce2'
+                    ? 'green.100'
                     : 'white'
                 }
               />

@@ -134,7 +134,9 @@ WSGI_APPLICATION = "server.wsgi.application"
 
 #Storage settings
 # GCP Bucket settings
-MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
+MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent.parent / "mnt/my-bucket/"
+
+os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -145,6 +147,8 @@ DATABASES = {
         "NAME": MOUNTED_BUCKET_ROOT / "db.sqlite3",
     }
 }
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

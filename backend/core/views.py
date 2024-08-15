@@ -2,7 +2,10 @@
 
 # django imports
 from django.db.models.manager import BaseManager
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+import pandas as pd
 # third party imports
 from rest_framework import viewsets
 
@@ -22,6 +25,8 @@ from .models import (
     RolPermiso,
     TipoEstado,
     TipoInhabilitacion,
+    
+    ExcelFile,
 )
 from .serializers import (
     AdministradorSerializer,
@@ -38,6 +43,8 @@ from .serializers import (
     RolSerializer,
     TipoEstadoSerializer,
     TipoInhabilitacionSerializer,
+
+    ExcelUploadSerializer,
 )
 
 # Create your views here.
@@ -57,10 +64,6 @@ class MateriaAlumnoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[MateriaAlumno] = MateriaAlumno.objects.all()
     serializer_class = MateriaAlumnoSerializer
 
-
-class CompromisoDePagoViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[CompromisoDePago] = CompromisoDePago.objects.all()
-    serializer_class = CompromisoDePagoSerializer
 
 
 class PagoViewSet(viewsets.ModelViewSet):
@@ -111,3 +114,25 @@ class AdminRolViewSet(viewsets.ModelViewSet):
 class RolPermisoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[RolPermiso] = RolPermiso.objects.all()
     serializer_class = RolPermisoSerializer
+
+
+class CompromisoDePagoViewSet(viewsets.ModelViewSet):
+    queryset: BaseManager[CompromisoDePago] = CompromisoDePago.objects.all()
+    serializer_class = CompromisoDePagoSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class ExcelUploadViewSet(viewsets.ModelViewSet):
+    queryset: BaseManager[ExcelFile] = ExcelFile.objects.all()
+    serializer_class = ExcelUploadSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    

@@ -11,6 +11,7 @@ from rest_framework import serializers
 #  custom imports
 from users.models import *
 from users.serializers import *
+from .modelos.model_pagos import *
 
 # Create your serializers here.
 
@@ -28,35 +29,24 @@ class AlumnoSerializer(serializers.ModelSerializer):
 
 
 class MateriaAlumnoSerializer(serializers.ModelSerializer):
+    archivo_pdf = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = MateriaAlumno
         fields = "__all__"
 
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
-    archivo_pdf = serializers.CharField(write_only=True, required=False)
-
+    archivo_pdf = serializers.FileField(write_only=True, required=False)
     class Meta:
         model = CompromisoDePago
         fields = "__all__"
 
-    def create(self, validated_data):
-        archivo_pdf_base64 = validated_data.pop('archivo_pdf', None)
-        compromiso = validated_data.get('compromiso', 'default_name')
-        perfciclo = validated_data.get('perfciclo', 'default_name')
 
-        if archivo_pdf_base64:
-            archivo_pdf_decoded = base64.b64decode(archivo_pdf_base64)
-            archivo_pdf_name = f"{compromiso}_{perfciclo}.pdf"
-            archivo_pdf = ContentFile(archivo_pdf_decoded, archivo_pdf_name)
-            validated_data['archivo_pdf'] = archivo_pdf
-
-        compromiso_de_pago = super().create(validated_data)
-        
-        compromiso_de_pago.compromiso = compromiso
-        compromiso_de_pago.save()
-        
-        return compromiso_de_pago
+class ExcelUploadSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
+    class Meta:
+        model = ExcelFile
+        fields = "__all__"
 
 
 class PagoSerializer(serializers.ModelSerializer):
@@ -73,7 +63,6 @@ class CuotaSerializer(serializers.ModelSerializer):
         fields = "__all__"
         
     def get_monto(self, obj):
-        # Obtén el compromiso de pago asociado
         compromiso_de_pago = obj.compdepago
         if compromiso_de_pago:
             return compromiso_de_pago.monto_completo
@@ -84,8 +73,6 @@ class CuotaSerializer(serializers.ModelSerializer):
         representation.pop('compdepago', None)
         return representation
         
-
-    
 
 
 class InhabilitacionSerializer(serializers.ModelSerializer):
@@ -134,3 +121,6 @@ class RolPermisoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolPermiso
         fields = "__all__"
+
+
+
