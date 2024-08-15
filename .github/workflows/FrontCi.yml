@@ -28,8 +28,7 @@ jobs:
       - name: Correr linter de codigo
         run: npm run lint
         working-directory: ./FrontAdmin
-
-
+      
   start_deploy_render:
     name: Iniciar el despligue en Render
     runs-on: ubuntu-latest
