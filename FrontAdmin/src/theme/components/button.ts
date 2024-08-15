@@ -46,7 +46,6 @@ export const buttonStyles = {
       baseStyle: {
         bg: '#022855',
         background: '#022855',
-        background: '#022855',
         fontWeight: '500',
         color: 'white',
         _hover: {
@@ -56,7 +55,6 @@ export const buttonStyles = {
         //
         borderRadius: '15px',
         _focus: {
-          boxShadow: 'none',
           boxShadow: 'none',
         },
       },
