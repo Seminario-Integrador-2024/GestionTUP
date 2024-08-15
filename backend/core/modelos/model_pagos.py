@@ -59,16 +59,16 @@ class CompromisoDePago(models.Model):
     """
 
     id_comp_pago = models.AutoField(primary_key=True)
-    perfciclo = models.DateTimeField()
-    monto_completo = models.FloatField()
-    monto_completo_2venc = models.FloatField()
-    monto_completo_3venc = models.FloatField()
-    matricula = models.FloatField()
-    cuota_reducida = models.FloatField()
-    cuota_reducida_2venc = models.FloatField()
-    cuota_reducida_3venc = models.FloatField()
+    perfciclo = models.DateTimeField( blank=True,  null=True)
+    monto_completo = models.FloatField( blank=True,  null=True)
+    monto_completo_2venc = models.FloatField( blank=True,  null=True)
+    monto_completo_3venc = models.FloatField( blank=True,  null=True)
+    matricula = models.FloatField( blank=True,  null=True)
+    cuota_reducida = models.FloatField( blank=True,  null=True)
+    cuota_reducida_2venc = models.FloatField( blank=True,  null=True)
+    cuota_reducida_3venc = models.FloatField( blank=True,  null=True)
     
-    compromiso = models.CharField(max_length=255)
+    compromiso = models.CharField(max_length=255, blank=True,  null=True)
     comprimiso_path = models.CharField(max_length=255, blank=True, null=True)
     archivo_pdf = models.FileField(upload_to='compromisos/', blank=True,  null=True)
 

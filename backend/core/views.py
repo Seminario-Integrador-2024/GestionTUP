@@ -65,10 +65,6 @@ class MateriaAlumnoViewSet(viewsets.ModelViewSet):
     serializer_class = MateriaAlumnoSerializer
 
 
-class CompromisoDePagoViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[CompromisoDePago] = CompromisoDePago.objects.all()
-    serializer_class = CompromisoDePagoSerializer
-
 
 class PagoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Pago] = Pago.objects.all()
@@ -120,9 +116,18 @@ class RolPermisoViewSet(viewsets.ModelViewSet):
     serializer_class = RolPermisoSerializer
 
 
+class CompromisoDePagoViewSet(viewsets.ModelViewSet):
+    queryset: BaseManager[CompromisoDePago] = CompromisoDePago.objects.all()
+    serializer_class = CompromisoDePagoSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class ExcelUploadViewSet(viewsets.ModelViewSet):
-    queryset = ExcelFile.objects.all()
+    queryset: BaseManager[ExcelFile] = ExcelFile.objects.all()
     serializer_class = ExcelUploadSerializer
 
     def create(self, request, *args, **kwargs):
@@ -130,5 +135,4 @@ class ExcelUploadViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    queryset: BaseManager[ExcelFile] = ExcelFile.objects.all()
-    serializer_class = ExcelUploadSerializer
+    

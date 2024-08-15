@@ -138,4 +138,4 @@ class TipoEstado(models.Model):
 class ExcelFile(models.Model):
     id_excel = models.AutoField(primary_key=True)
     file = models.FileField(upload_to='excel_files/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    fecha_subido = models.DateTimeField(auto_now_add=True)
