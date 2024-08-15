@@ -55,7 +55,7 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git config --local user.name "TobiasMaciel"
+          git config --local user.name "Tobias Maciel"
           git config --local user.email "tobiasmaciel03@gmail.com"
           git add .
           git commit -m "chore: Se formateo el codigo con Prettier" || echo "No hay cambios para comitear"
