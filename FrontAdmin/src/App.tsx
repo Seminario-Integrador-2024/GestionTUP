@@ -1,31 +1,37 @@
-import { ChakraProvider } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useAuth } from "./Context";
-import Auth from "./layouts/Auth";
-import Admin from "./layouts/Admin";
-import theme from "./theme/theme";
-
+import { ChakraProvider } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { useAuth } from './Context';
+import Auth from './layouts/Auth';
+import Admin from './layouts/Admin';
+import theme from './theme/theme';
 
 function App() {
   useEffect(() => {
-    document.title = "TUP Admin"; 
+    document.title = 'TUP Admin';
   }, []);
 
   const { isAuthenticated } = useAuth();
 
-
   return (
     <ChakraProvider theme={theme}>
-         <BrowserRouter>
-         <Routes>
-              {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
-              {isAuthenticated && <Route path="/admin/*" element={<Admin/>}/>} 
-              <Route path="/*" element={<Navigate replace to={isAuthenticated ? "/admin/estadisticas" : "/auth"}/>} />
-          </Routes>
-      </BrowserRouter> 
+      <BrowserRouter>
+        <Routes>
+          {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
+          {isAuthenticated && <Route path="/admin/*" element={<Admin />} />}
+          <Route
+            path="/*"
+            element={
+              <Navigate
+                replace
+                to={isAuthenticated ? '/admin/estadisticas' : '/auth'}
+              />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </ChakraProvider>
-  )
+  );
 }
 
-export default App
+export default App;

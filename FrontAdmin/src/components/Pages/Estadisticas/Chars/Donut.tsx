@@ -4,19 +4,20 @@ import { Box } from '@chakra-ui/react';
 Chart.register(ArcElement, Tooltip, Legend);
 
 interface DoughnutChartProps {
-    labelsPromp: string[];
-    dataPromp: number[];
-  }
-  
+  labelsPromp: string[];
+  dataPromp: number[];
+}
 
-
-const DoughnutChart : React.FC<DoughnutChartProps> = ({ labelsPromp, dataPromp }) => {
+const DoughnutChart: React.FC<DoughnutChartProps> = ({
+  labelsPromp,
+  dataPromp,
+}) => {
   const data = {
     labels: labelsPromp,
     datasets: [
       {
         label: 'Estado de Alumnos',
-        data: dataPromp, 
+        data: dataPromp,
         backgroundColor: ['#4CAF50', '#FF6384'],
         hoverBackgroundColor: ['#66BB6A', '#FF6384'],
       },
@@ -27,22 +28,22 @@ const DoughnutChart : React.FC<DoughnutChartProps> = ({ labelsPromp, dataPromp }
     plugins: {
       tooltip: {
         callbacks: {
-          label: (context) => `${context.label}: ${context.raw}`
+          label: (context) => `${context.label}: ${context.raw}`,
         },
       },
       legend: {
         display: true,
         position: 'bottom' as const,
         labels: {
-            font: {
-                size: 14,
-              },
+          font: {
+            size: 14,
+          },
         },
       },
     },
     maintainAspectRatio: false,
   };
-  
+
   return (
     <Box w={{ base: '100%', md: '40%' }} h={{ base: '300px', md: '240px' }}>
       <Doughnut data={data} options={options} />

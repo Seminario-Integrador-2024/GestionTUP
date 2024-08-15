@@ -1,10 +1,7 @@
-import { Box, Button, Text } from "@chakra-ui/react";
-import { Link} from "react-router-dom";
+import { Box, Button, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
-function ErrorPage  () {
-
-
-
+function ErrorPage() {
   return (
     <Box textAlign="center" p="1rem">
       <Text fontSize="3rem">404</Text>
@@ -19,4 +16,3 @@ function ErrorPage  () {
 }
 
 export default ErrorPage;
-
