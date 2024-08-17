@@ -13,12 +13,12 @@ router.register(r"pagos", PagoViewSet)
 router.register(r"cuotas", CuotaViewSet)
 #router.register(r"inhabilitaciones", InhabilitacionViewSet)
 #router.register(r"tipo-inhabilitaciones", TipoInhabilitacionViewSet)
-router.register(r"administradores", AdministradorViewSet)
+#router.register(r"administradores", AdministradorViewSet)
 #router.register(r"tipo-estados", TipoEstadoViewSet)
-router.register(r"roles", RolViewSet)
-router.register(r"permisos", PermisosViewSet)
-router.register(r"admin-roles", AdminRolViewSet)
-router.register(r"rol-permisos", RolPermisoViewSet)
+#router.register(r"roles", RolViewSet)
+#router.register(r"permisos", PermisosViewSet)
+#router.register(r"admin-roles", AdminRolViewSet)
+#router.register(r"rol-permisos", RolPermisoViewSet)
 
 
 urlpatterns = [

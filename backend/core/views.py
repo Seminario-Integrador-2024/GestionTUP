@@ -11,8 +11,8 @@ from rest_framework import viewsets
 
 # custom imports
 from .models import (
-    Administrador,
-    AdminRol,
+    #Administrador,
+    #AdminRol,
     #Alumno,
     CompromisoDePago,
     Cuota,
@@ -20,15 +20,15 @@ from .models import (
     #Materia,
     #MateriaAlumno,
     Pago,
-    Permisos,
-    Rol,
-    RolPermiso,
+    #Permisos,
+    #Rol,
+    #RolPermiso,
     #TipoEstado,
     #TipoInhabilitacion,
 )
 from .serializers import (
-    AdministradorSerializer,
-    AdminRolSerializer,
+    #AdministradorSerializer,
+    #AdminRolSerializer,
     #AlumnoSerializer,
     CompromisoDePagoSerializer,
     CuotaSerializer,
@@ -36,9 +36,9 @@ from .serializers import (
     #MateriaAlumnoSerializer,
     #MateriaSerializer,
     PagoSerializer,
-    PermisosSerializer,
-    RolPermisoSerializer,
-    RolSerializer,
+    #PermisosSerializer,
+    #RolPermisoSerializer,
+    #RolSerializer,
     #TipoEstadoSerializer,
     #TipoInhabilitacionSerializer,
 )
@@ -82,9 +82,9 @@ class TipoInhabilitacionViewSet(viewsets.ModelViewSet):
     serializer_class = TipoInhabilitacionSerializer"""
 
 
-class AdministradorViewSet(viewsets.ModelViewSet):
+"""class AdministradorViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Administrador] = Administrador.objects.all()
-    serializer_class = AdministradorSerializer
+    serializer_class = AdministradorSerializer"""
 
 
 """class TipoEstadoViewSet(viewsets.ModelViewSet):
@@ -92,7 +92,7 @@ class AdministradorViewSet(viewsets.ModelViewSet):
     serializer_class = TipoEstadoSerializer
 """
 
-class RolViewSet(viewsets.ModelViewSet):
+"""class RolViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Rol] = Rol.objects.all()
     serializer_class = RolSerializer
 
@@ -109,7 +109,7 @@ class AdminRolViewSet(viewsets.ModelViewSet):
 
 class RolPermisoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[RolPermiso] = RolPermiso.objects.all()
-    serializer_class = RolPermisoSerializer
+    serializer_class = RolPermisoSerializer"""
 
 
 class CompromisoDePagoViewSet(viewsets.ModelViewSet):

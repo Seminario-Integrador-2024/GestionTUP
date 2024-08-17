@@ -1,3 +1,12 @@
+# mansajeria.py
+
+# django imports
+
 from django.db import models
 
-# Create your models here.
+class Persona(models.Model):
+    pass
+class Mensaje(models.Model):
+    pass
+class DestinatarioMensaje(models.Model):
+    pass

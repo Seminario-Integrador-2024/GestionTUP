@@ -74,6 +74,7 @@ INSTALLED_APPS: list[str] = [
     "alumnos",
     "excel_sysadmin",
     "mensajeria",
+    "administrador",
 ]
 
 # middleware settings

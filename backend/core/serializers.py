@@ -80,11 +80,11 @@ class TipoInhabilitacionSerializer(serializers.ModelSerializer):
         fields = "__all__"""
 
 
-class AdministradorSerializer(serializers.ModelSerializer):
+"""class AdministradorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administrador
         fields = "__all__"
-
+"""
 
 """class TipoEstadoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -92,7 +92,7 @@ class AdministradorSerializer(serializers.ModelSerializer):
         fields = "__all__"""
 
 
-class RolSerializer(serializers.ModelSerializer):
+"""class RolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rol
         fields = "__all__"
@@ -113,7 +113,7 @@ class AdminRolSerializer(serializers.ModelSerializer):
 class RolPermisoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolPermiso
-        fields = "__all__"
+        fields = "__all__"""
 
 
 
