@@ -69,6 +69,11 @@ INSTALLED_APPS: list[str] = [
     # local apps
     "users",
     "core",
+    "pagos",
+    "excel_sysacad",
+    "alumnos",
+    "excel_sysadmin",
+    "mensajeria",
 ]
 
 # middleware settings

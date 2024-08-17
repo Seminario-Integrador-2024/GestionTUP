@@ -13,44 +13,40 @@ from rest_framework import viewsets
 from .models import (
     Administrador,
     AdminRol,
-    Alumno,
+    #Alumno,
     CompromisoDePago,
     Cuota,
-    Inhabilitacion,
-    Materia,
-    MateriaAlumno,
+    #Inhabilitacion,
+    #Materia,
+    #MateriaAlumno,
     Pago,
     Permisos,
     Rol,
     RolPermiso,
-    TipoEstado,
-    TipoInhabilitacion,
-    
-    ExcelFile,
+    #TipoEstado,
+    #TipoInhabilitacion,
 )
 from .serializers import (
     AdministradorSerializer,
     AdminRolSerializer,
-    AlumnoSerializer,
+    #AlumnoSerializer,
     CompromisoDePagoSerializer,
     CuotaSerializer,
-    InhabilitacionSerializer,
-    MateriaAlumnoSerializer,
-    MateriaSerializer,
+    #InhabilitacionSerializer,
+    #MateriaAlumnoSerializer,
+    #MateriaSerializer,
     PagoSerializer,
     PermisosSerializer,
     RolPermisoSerializer,
     RolSerializer,
-    TipoEstadoSerializer,
-    TipoInhabilitacionSerializer,
-
-    ExcelUploadSerializer,
+    #TipoEstadoSerializer,
+    #TipoInhabilitacionSerializer,
 )
 
 # Create your views here.
 
 
-class MateriaViewSet(viewsets.ModelViewSet):
+"""class MateriaViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Materia] = Materia.objects.all()
     serializer_class = MateriaSerializer
 
@@ -62,7 +58,7 @@ class AlumnoViewSet(viewsets.ModelViewSet):
 
 class MateriaAlumnoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[MateriaAlumno] = MateriaAlumno.objects.all()
-    serializer_class = MateriaAlumnoSerializer
+    serializer_class = MateriaAlumnoSerializer"""
 
 
 
@@ -76,14 +72,14 @@ class CuotaViewSet(viewsets.ModelViewSet):
     serializer_class = CuotaSerializer
 
 
-class InhabilitacionViewSet(viewsets.ModelViewSet):
+"""class InhabilitacionViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Inhabilitacion] = Inhabilitacion.objects.all()
     serializer_class = InhabilitacionSerializer
 
 
 class TipoInhabilitacionViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[TipoInhabilitacion] = TipoInhabilitacion.objects.all()
-    serializer_class = TipoInhabilitacionSerializer
+    serializer_class = TipoInhabilitacionSerializer"""
 
 
 class AdministradorViewSet(viewsets.ModelViewSet):
@@ -91,10 +87,10 @@ class AdministradorViewSet(viewsets.ModelViewSet):
     serializer_class = AdministradorSerializer
 
 
-class TipoEstadoViewSet(viewsets.ModelViewSet):
+"""class TipoEstadoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[TipoEstado] = TipoEstado.objects.all()
     serializer_class = TipoEstadoSerializer
-
+"""
 
 class RolViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Rol] = Rol.objects.all()
@@ -126,13 +122,4 @@ class CompromisoDePagoViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class ExcelUploadViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[ExcelFile] = ExcelFile.objects.all()
-    serializer_class = ExcelUploadSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
