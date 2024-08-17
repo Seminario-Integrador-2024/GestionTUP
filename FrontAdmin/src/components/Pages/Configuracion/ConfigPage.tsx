@@ -14,4 +14,5 @@ function Configuracion() {
     </Grid>
   );
 }
+
 export default Configuracion;
