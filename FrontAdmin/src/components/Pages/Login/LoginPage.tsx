@@ -4,7 +4,6 @@ import {
   Flex,
   Button,
   FormControl,
-  FormLabel,
   Heading,
   Input,
   useColorModeValue,
@@ -31,7 +30,7 @@ function LoginPage() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-      await FetchLogin(username, password);
+      // await FetchLogin(username, password);
       onLogin();
       showToast('Bienvenido', 'Inicio de sesión exitoso', 'success');
     } catch (error) {
