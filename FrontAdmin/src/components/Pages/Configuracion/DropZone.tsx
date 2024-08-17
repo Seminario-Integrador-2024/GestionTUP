@@ -84,11 +84,7 @@ function Dropzone() {
             }}
           />
         )}
-        <Flex justifyContent="center" mt="20px">
-          <Button color="white" mt="20px">
-            Cargar
-          </Button>
-        </Flex>
+        
       </FormControl>
     </Box>
   );

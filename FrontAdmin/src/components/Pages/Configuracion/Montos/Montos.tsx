@@ -6,10 +6,16 @@ import {
   Button,
   SimpleGrid,
   useDisclosure,
+  Stack,
+  Alert,
+  AlertIcon
 } from '@chakra-ui/react';
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
+
+//utilizar fecha ultima vez que se cargo el archivo/montos
+let fechaUltimoPago = "2024 - 2C"
 
 const Montos = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,15 +58,21 @@ const Montos = () => {
     <Box
       borderWidth="1px"
       borderRadius="lg"
-      bg="#e9eef4"
+      bg="secundaryBg"
       p={6}
       boxShadow="md"
       maxW="100%"
       mt={4}
     >
-      <Text fontSize="2xl" fontWeight="bold" mb={4}>
-        Montos
-      </Text>
+      <SimpleGrid  columns={2} >
+        <Text fontSize="2xl" fontWeight="bold" mb={4}>
+          Montos
+        </Text>
+        <Text textAlign="end" pr="20px">
+          Periodo: {fechaUltimoPago}
+        </Text>
+      </SimpleGrid>
+      
       <SimpleGrid columns={2} spacing={4}>
         <Flex align="center">
           <Text w="60%">Cuota Completa</Text>
@@ -148,10 +160,10 @@ const Montos = () => {
       </SimpleGrid>
 
       <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
-        <Button color="white" size="sm" onClick={onOpen}>
+        <Button color="white" size="sm" onClick={onOpen} >
           Guardar Cambios
         </Button>
-        <Button color="white" size="sm">
+        <Button color="white" size="sm" >
           Ver Historial
         </Button>
       </Flex>
