@@ -10,8 +10,7 @@ class CompromisoDePagoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CompromisoDePago
-        # Define explícitamente los campos y agrega archivo_pdf_url
-        fields = "__all__"
+        exclude = ['comprimiso_path']
 
     def get_archivo_pdf_url(self, obj):
         request = self.context.get('request')
