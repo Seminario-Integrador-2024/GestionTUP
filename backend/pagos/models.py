@@ -58,7 +58,6 @@ class CompromisoDePago(models.Model):
     """
 
     id_comp_pago = models.AutoField(primary_key=True)
-    fecha_compr = models.DateField(blank=True,  null=True)
     cuatrimestre = models.CharField(max_length=255, blank=True,  null=True)
     monto_completo = models.FloatField( blank=True,  null=True)
     monto_completo_2venc = models.FloatField( blank=True,  null=True)
@@ -69,10 +68,10 @@ class CompromisoDePago(models.Model):
     cuota_reducida_3venc = models.FloatField( blank=True,  null=True)
     comprimiso_path = models.CharField(max_length=255, blank=True, null=True)
     archivo_pdf = models.FileField(upload_to='compromisos/', blank=True,  null=True)
-    fecha_carga_comp_pdf = models.DateTimeField(auto_now_add=True, blank=True,  null=True)
+    fecha_carga_comp_pdf = models.DateTimeField(max_length=10, auto_now_add=True, blank=True,  null=True)
 
     def save(self, *args, **kwargs):
-        # Llama al método save original
+        # Llama al método save original 
         super().save(*args, **kwargs)
 
         # Actualiza comprimiso_path si el archivo_pdf ha sido cargado

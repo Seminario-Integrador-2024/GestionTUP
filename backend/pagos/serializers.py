@@ -1,16 +1,28 @@
 from rest_framework import serializers
 from .models import *
-
+from django.urls import reverse
 
 # Create your serializers here.
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
     archivo_pdf = serializers.FileField(write_only=True, required=False)
+    archivo_pdf_url = serializers.SerializerMethodField()
+
     class Meta:
         model = CompromisoDePago
+        # Define explícitamente los campos y agrega archivo_pdf_url
         fields = "__all__"
 
-
+    def get_archivo_pdf_url(self, obj):
+        request = self.context.get('request')
+        if obj.archivo_pdf:
+            # Genera la URL completa al archivo PDF
+            url = reverse('compromisodepago-retrieve-pdf', args=[obj.pk])
+            if request is not None:
+                return request.build_absolute_uri(url)
+            else:
+                return url
+        return None
 
 class PagoSerializer(serializers.ModelSerializer):
     class Meta:
