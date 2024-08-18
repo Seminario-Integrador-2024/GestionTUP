@@ -8,9 +8,7 @@ from core.serializers import *
 from rest_framework import serializers
 
 #  custom imports
-from users.models import *
-from users.serializers import *
-from .modelos.model_pagos import *
+
 
 # Create your serializers here.
 
@@ -32,7 +30,7 @@ class MateriaAlumnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = MateriaAlumno
         fields = "__all__"""
-
+"""
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
     archivo_pdf = serializers.FileField(write_only=True, required=False)
@@ -65,7 +63,7 @@ class CuotaSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation.pop('compdepago', None)
         return representation
-        
+        """
 
 
 """class InhabilitacionSerializer(serializers.ModelSerializer):

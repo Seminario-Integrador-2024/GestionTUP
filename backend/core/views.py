@@ -10,38 +10,38 @@ import pandas as pd
 from rest_framework import viewsets
 
 # custom imports
-from .models import (
+"""from .models import (
     #Administrador,
     #AdminRol,
     #Alumno,
-    CompromisoDePago,
-    Cuota,
+    #CompromisoDePago,
+    #Cuota,
     #Inhabilitacion,
     #Materia,
     #MateriaAlumno,
-    Pago,
+    #Pago,
     #Permisos,
     #Rol,
     #RolPermiso,
     #TipoEstado,
     #TipoInhabilitacion,
-)
-from .serializers import (
+)"""
+"""from .serializers import (
     #AdministradorSerializer,
     #AdminRolSerializer,
     #AlumnoSerializer,
-    CompromisoDePagoSerializer,
-    CuotaSerializer,
+    #CompromisoDePagoSerializer,
+    ##CuotaSerializer,
     #InhabilitacionSerializer,
     #MateriaAlumnoSerializer,
     #MateriaSerializer,
-    PagoSerializer,
+    ##PagoSerializer,
     #PermisosSerializer,
     #RolPermisoSerializer,
     #RolSerializer,
     #TipoEstadoSerializer,
     #TipoInhabilitacionSerializer,
-)
+)"""
 
 # Create your views here.
 
@@ -62,7 +62,7 @@ class MateriaAlumnoViewSet(viewsets.ModelViewSet):
 
 
 
-class PagoViewSet(viewsets.ModelViewSet):
+"""class PagoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Pago] = Pago.objects.all()
     serializer_class = PagoSerializer
 
@@ -70,7 +70,7 @@ class PagoViewSet(viewsets.ModelViewSet):
 class CuotaViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Cuota] = Cuota.objects.all()
     serializer_class = CuotaSerializer
-
+"""
 
 """class InhabilitacionViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Inhabilitacion] = Inhabilitacion.objects.all()
@@ -112,7 +112,7 @@ class RolPermisoViewSet(viewsets.ModelViewSet):
     serializer_class = RolPermisoSerializer"""
 
 
-class CompromisoDePagoViewSet(viewsets.ModelViewSet):
+"""class CompromisoDePagoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[CompromisoDePago] = CompromisoDePago.objects.all()
     serializer_class = CompromisoDePagoSerializer
 
@@ -122,4 +122,4 @@ class CompromisoDePagoViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    
+    """

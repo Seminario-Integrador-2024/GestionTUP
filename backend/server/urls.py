@@ -28,6 +28,7 @@ urlpatterns: list[URLResolver] = [
     path("excel_sysadmin/", include("excel_sysadmin.urls")),
     path("alumnos/", include("alumnos.urls")),
     path("administrador/", include("administrador.urls")),
+    path("pagos/", include("pagos.urls")),
 
 ]
 if settings.DEBUG:
