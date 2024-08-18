@@ -9,9 +9,8 @@ class CompromisoDePagoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompromisoDePago
         fields = "__all__"
-
-
-
+    
+        
 class PagoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pago
