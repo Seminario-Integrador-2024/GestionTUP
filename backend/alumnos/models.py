@@ -40,7 +40,7 @@ class Alumno(models.Model):
 
     """
 
-    #user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     legajo = models.IntegerField()
     dni = models.IntegerField()
     estado = models.ForeignKey("TipoEstado", on_delete=models.CASCADE)

@@ -1,9 +1,8 @@
-# core/models/model_pagos.py
-
-# django imports
 
 from django.db import models
-from .model_alumno import Alumno
+
+
+from alumnos.models import Alumno
 
 
 class Pago(models.Model):
