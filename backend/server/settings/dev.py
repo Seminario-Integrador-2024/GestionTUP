@@ -16,6 +16,7 @@ from .base import (
     SECRET_KEY,
     SIMPLE_JWT,
     SITE_ID,
+    SIMPLE_JWT,
     SPECTACULAR_SETTINGS,
     STATIC_URL,
     TEMPLATES,
