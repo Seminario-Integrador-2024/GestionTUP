@@ -14,6 +14,7 @@ from .base import (
     REST_FRAMEWORK,
     ROOT_URLCONF,
     SECRET_KEY,
+    SIMPLE_JWT,
     SITE_ID,
     SPECTACULAR_SETTINGS,
     STATIC_URL,
