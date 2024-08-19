@@ -27,7 +27,6 @@ interface ModalProps {
 //si la fecha esta entre enero y junio, que devuelva 1C, sino 2C y con eso autocompletar el campo select cuatrimestre
 //Usar esto para que el mensaje de alerta en rojo: El ultimo compromiso de pago fue cargado el xx/xx/xxxx
 
-
 //<Heading onClick={onOpen}></Heading>
 const ModalCargarDocumento: React.FC<ModalProps> = ({
   isOpen,
@@ -52,10 +51,10 @@ const ModalCargarDocumento: React.FC<ModalProps> = ({
           </Select>
           <Dropzone />
           <Flex justifyContent="center" mt="20px">
-          <Button color="white" mt="20px" size="sm">
-            Cargar
-          </Button>
-        </Flex>
+            <Button color="white" mt="20px" size="sm">
+              Cargar
+            </Button>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>

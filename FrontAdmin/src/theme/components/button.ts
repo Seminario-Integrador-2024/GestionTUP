@@ -1,4 +1,4 @@
-import { background  } from '@chakra-ui/react';
+import { background } from '@chakra-ui/react';
 import { color } from 'chart.js/helpers';
 import { ImTextColor } from 'react-icons/im';
 
@@ -6,7 +6,7 @@ export const buttonStyles = {
   components: {
     Button: {
       variants: {
-        'light': {
+        light: {
           background: 'transparent',
           fontWeight: '500',
           color: '#022855',
@@ -22,10 +22,10 @@ export const buttonStyles = {
         },
       },
       baseStyle: {
-        bg: "principal",
+        bg: 'principal',
         background: '#022855',
         fontWeight: '500',
-        color:"white",
+        color: 'white',
         _hover: {
           bg: 'principalHover',
           background: '#0f183f',

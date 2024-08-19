@@ -11,7 +11,7 @@ import {
   useDisclosure,
   Text,
   Alert,
-  AlertIcon
+  AlertIcon,
 } from '@chakra-ui/react';
 import ModalVerDocumento from './ModalVerDocumento';
 import ModalCargarDocumento from './ModalCargarDocumento';
@@ -23,7 +23,7 @@ interface CardCargaProps {
   texto: string;
 }
 //usar varible del endpoint
-let fechaUltimoPago = "28/07/2024 14:25"
+let fechaUltimoPago = '28/07/2024 14:25';
 
 export default function CardCarga({ texto }: CardCargaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,11 +58,24 @@ export default function CardCarga({ texto }: CardCargaProps) {
           El último archivo fue cargado por última vez el {fechaUltimoPago}
         </Text>
         <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
-          <Button onClick={() => handleMenuClick('visualizarArchivo')} color="white" size="sm"> Ver último archivo </Button>
-          <Button onClick={() => handleMenuClick('cargarArchivo')} color="white" size="sm"> Cargar archivo</Button>
+          <Button
+            onClick={() => handleMenuClick('visualizarArchivo')}
+            color="white"
+            size="sm"
+          >
+            {' '}
+            Ver último archivo{' '}
+          </Button>
+          <Button
+            onClick={() => handleMenuClick('cargarArchivo')}
+            color="white"
+            size="sm"
+          >
+            {' '}
+            Cargar archivo
+          </Button>
         </Flex>
-        
-        
+
         {modalType === 'visualizarArchivo' &&
           texto === 'Compromiso de Pago' && (
             <ModalVerDocumento
@@ -72,7 +85,6 @@ export default function CardCarga({ texto }: CardCargaProps) {
               pdfUrl={CompPago}
             />
           )}
-        
 
         {modalType === 'cargarArchivo' && (
           <ModalCargarDocumento

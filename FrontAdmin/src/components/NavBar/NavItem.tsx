@@ -1,4 +1,4 @@
-import { Flex, Image, FlexProps, Tooltip  } from '@chakra-ui/react';
+import { Flex, Image, FlexProps, Tooltip } from '@chakra-ui/react';
 
 interface NavItemProps extends FlexProps {
   icon: string;
@@ -6,11 +6,16 @@ interface NavItemProps extends FlexProps {
   title: string;
 }
 
-export default function NavItem({ icon, color, title, ...props }: NavItemProps) {
+export default function NavItem({
+  icon,
+  color,
+  title,
+  ...props
+}: NavItemProps) {
   return (
-    <Tooltip 
-      label={title} 
-      placement='right' 
+    <Tooltip
+      label={title}
+      placement="right"
       pt="8px"
       pb="8px"
       pl="20px"
@@ -18,9 +23,9 @@ export default function NavItem({ icon, color, title, ...props }: NavItemProps) 
       ml="8px"
       bg="secundaryHover"
       color="black"
-      hasArrow 
+      hasArrow
       borderRadius="10px"
-      >
+    >
       <Flex
         align="center"
         justify="center"
@@ -30,9 +35,7 @@ export default function NavItem({ icon, color, title, ...props }: NavItemProps) 
         borderRadius="5px"
         backgroundColor={color}
       >
-        
         <Image src={icon} boxSize="30px" />
-        
       </Flex>
     </Tooltip>
   );

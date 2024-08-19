@@ -84,7 +84,6 @@ function Dropzone() {
             }}
           />
         )}
-        
       </FormControl>
     </Box>
   );

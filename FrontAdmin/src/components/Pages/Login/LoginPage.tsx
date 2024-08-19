@@ -38,7 +38,7 @@ function LoginPage() {
       console.error('Network error', error);
       showToast('Error', 'Inicio de sesión fallido', 'error');
     }*/
-      onLogin();
+    onLogin();
   };
 
   return (
