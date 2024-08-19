@@ -23,7 +23,7 @@ interface CardCargaProps {
   texto: string;
 }
 //usar varible del endpoint
-let fechaUltimoPago = '28/07/2024 14:25';
+const fechaUltimoPago = '28/07/2024 14:25';
 
 export default function CardCarga({ texto }: CardCargaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();

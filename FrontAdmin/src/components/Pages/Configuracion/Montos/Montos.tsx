@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 
 //utilizar fecha ultima vez que se cargo el archivo/montos
-let fechaUltimoPago = '2024 - 2C';
+const fechaUltimoPago = '2024 - 2C';
 
 const Montos = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
