@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from .base import (
     AUTH_USER_MODEL,
     BASE_DIR,
+    CORS_ALLOW_ALL_ORIGINS,
+    DATABASES,
     DEFAULT_AUTO_FIELD,
     INSTALLED_APPS,
     MIDDLEWARE,
@@ -12,6 +14,7 @@ from .base import (
     REST_FRAMEWORK,
     ROOT_URLCONF,
     SECRET_KEY,
+    SITE_ID,
     SPECTACULAR_SETTINGS,
     STATIC_URL,
     TEMPLATES,
@@ -23,7 +26,7 @@ APPEND_SLASH = True
 
 DEBUG = True
 ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS += [
     # third party apps

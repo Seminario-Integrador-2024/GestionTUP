@@ -43,5 +43,5 @@ if settings.DEBUG:
             lambda request: redirect("api/swagger-ui/", permanent=False),
             name="api_redirect",
         ),
-        path("_/", admin.site.urls),
+        path("admin/", admin.site.urls),
     ] + debug_toolbar_urls(prefix="debug")
