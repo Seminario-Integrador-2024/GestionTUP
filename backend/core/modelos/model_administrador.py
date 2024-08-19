@@ -1,4 +1,4 @@
-# core/models/model_administrador.py
+# model_administrador.py
 
 # django imports
 from django.conf import settings
@@ -17,7 +17,7 @@ class Administrador(models.Model):
             of the administrator.
     """
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     dni = models.IntegerField()
 
 

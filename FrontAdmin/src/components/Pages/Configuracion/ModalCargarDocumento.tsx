@@ -12,6 +12,7 @@ import {
   ModalCloseButton,
   Select,
   Image,
+  Text,
   Heading,
 } from '@chakra-ui/react';
 import compPago from '../../icons/compromiso_de_pago_2023.pdf';
@@ -21,6 +22,10 @@ interface ModalProps {
   onClose: () => void;
   titleModal: string;
 }
+
+//funcion que dependiendo lo que devuelva el endpoint /compromisos/ verifique la fecha de carga del ultimo
+//si la fecha esta entre enero y junio, que devuelva 1C, sino 2C y con eso autocompletar el campo select cuatrimestre
+//Usar esto para que el mensaje de alerta en rojo: El ultimo compromiso de pago fue cargado el xx/xx/xxxx
 
 //<Heading onClick={onOpen}></Heading>
 const ModalCargarDocumento: React.FC<ModalProps> = ({
@@ -35,25 +40,21 @@ const ModalCargarDocumento: React.FC<ModalProps> = ({
         <ModalHeader>{titleModal}</ModalHeader>
         <ModalCloseButton />
         <ModalBody mb="30px">
+          <Text mb="20px">¿A que cuatrimestre corresponde el archivo?</Text>
           <Select
             placeholder="Selecciona un cuatrimestre"
             name="cuatrimestre"
             mb="20px"
           >
-            <option value="1C">1C</option>
-            <option value="2C">2C</option>
-          </Select>
-          <Select placeholder="Selecciona un año" name="anio" mb="20px">
-            {Array.from({ length: 5 }, (_, index) => {
-              const year = new Date().getFullYear() - index;
-              return (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              );
-            })}
+            <option value="1C">1er Cuatrimestre</option>
+            <option value="2C">2do Cuatrimestre</option>
           </Select>
           <Dropzone />
+          <Flex justifyContent="center" mt="20px">
+            <Button color="white" mt="20px" size="sm">
+              Cargar
+            </Button>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>

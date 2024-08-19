@@ -9,6 +9,9 @@ import {
   Heading,
   Stack,
   useDisclosure,
+  Text,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 import ModalVerDocumento from './ModalVerDocumento';
 import ModalCargarDocumento from './ModalCargarDocumento';
@@ -19,6 +22,8 @@ import Sysacad from '../../icons/alcances.pdf';
 interface CardCargaProps {
   texto: string;
 }
+//usar varible del endpoint
+const fechaUltimoPago = '28/07/2024 14:25';
 
 export default function CardCarga({ texto }: CardCargaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,12 +35,12 @@ export default function CardCarga({ texto }: CardCargaProps) {
   };
   return (
     <Box
-      bg="#e7ecf3"
+      bg="secundaryBg"
       borderRadius="10px"
       w="50%"
-      // marginLeft="10px"
       p="15px"
       minHeight={5}
+      boxShadow="md"
     >
       <Stack
         direction="column"
@@ -48,19 +53,28 @@ export default function CardCarga({ texto }: CardCargaProps) {
         <Heading fontSize="23px" fontWeight="bold">
           {texto}
         </Heading>
-        <Menu>
-          <MenuButton as={Button} w="25%" color="white" colorScheme="">
-            Opciones
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => handleMenuClick('visualizarArchivo')}>
-              Ver último archivo
-            </MenuItem>
-            <MenuItem onClick={() => handleMenuClick('cargarArchivo')}>
-              Cargar archivo
-            </MenuItem>
-          </MenuList>
-        </Menu>
+
+        <Text color="red" p="6px">
+          El último archivo fue cargado por última vez el {fechaUltimoPago}
+        </Text>
+        <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
+          <Button
+            onClick={() => handleMenuClick('visualizarArchivo')}
+            color="white"
+            size="sm"
+          >
+            {' '}
+            Ver último archivo{' '}
+          </Button>
+          <Button
+            onClick={() => handleMenuClick('cargarArchivo')}
+            color="white"
+            size="sm"
+          >
+            {' '}
+            Cargar archivo
+          </Button>
+        </Flex>
 
         {modalType === 'visualizarArchivo' &&
           texto === 'Compromiso de Pago' && (
@@ -71,24 +85,6 @@ export default function CardCarga({ texto }: CardCargaProps) {
               pdfUrl={CompPago}
             />
           )}
-        {modalType === 'visualizarArchivo' &&
-          texto === 'Compromiso de Pago' && (
-            <ModalVerDocumento
-              isOpen={isOpen}
-              onClose={onClose}
-              titleModal={texto}
-              pdfUrl={CompPago}
-            />
-          )}
-
-        {modalType === 'visualizarArchivo' && texto === 'Sysacad' && (
-          <ModalVerDocumento
-            isOpen={isOpen}
-            onClose={onClose}
-            titleModal={texto}
-            pdfUrl={Sysacad}
-          />
-        )}
 
         {modalType === 'cargarArchivo' && (
           <ModalCargarDocumento

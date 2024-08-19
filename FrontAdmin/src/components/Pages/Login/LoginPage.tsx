@@ -29,7 +29,7 @@ function LoginPage() {
   const bgColor = useColorModeValue('#EEEEF0', 'gray.800');
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+    /*e.preventDefault();
     try {
       await FetchLogin(username, password);
       onLogin();
@@ -37,7 +37,8 @@ function LoginPage() {
     } catch (error) {
       console.error('Network error', error);
       showToast('Error', 'Inicio de sesión fallido', 'error');
-    }
+    }*/
+    onLogin();
   };
 
   return (
@@ -136,9 +137,6 @@ function LoginPage() {
                   mt="20px"
                   fontWeight="500"
                   letterSpacing="1px"
-                  _hover={{
-                    bg: '#0f183f',
-                  }}
                 >
                   Acceder
                 </Button>
