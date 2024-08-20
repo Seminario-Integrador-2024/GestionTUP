@@ -33,7 +33,7 @@ class CompromisoDePagoViewSet(viewsets.ModelViewSet):
                 # Extrae el nombre del archivo sin la ruta
                 filename = os.path.basename(compromiso.archivo_pdf.name)
                 response = FileResponse(compromiso.archivo_pdf.open(), content_type='application/pdf')
-                response['Content-Disposition'] = f'attachment; filename="{filename}"'
+                response['Content-Disposition'] = f'inline ; filename="{filename}"'
                 return response
             else:
                 return Response({"detail": "El compromiso no tiene un archivo PDF asociado."}, status=status.HTTP_404_NOT_FOUND)
