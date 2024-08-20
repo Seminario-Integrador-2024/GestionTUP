@@ -48,7 +48,6 @@ BASE_DIR: Path = (
 # https://docs.djangoproject.com/en/5.0/ref/settings/#installed-apps
 INSTALLED_APPS: list[str] = [
     # django default
-    "grappelli",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -145,7 +144,7 @@ WSGI_APPLICATION = "server.wsgi.application"
 
 # Storage settings
 # GCP Bucket settings
-MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent.parent / "mnt/my-bucket/"
+MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
 
 os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
 
