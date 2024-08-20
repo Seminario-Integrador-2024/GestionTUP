@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { useDropzone, FileRejection } from 'react-dropzone';
 import {
   Flex,
   Box,
@@ -13,18 +13,51 @@ import {
   HStack,
   VStack,
   StackDivider,
+  useToast,
 } from '@chakra-ui/react';
 import iconUpload from '../../icons/subir.png';
 function Dropzone() {
+  const toast = useToast();
+  const [filePreview, setFilePreview] = useState<string | null>(null); // Estado para la vista previa del archivo
   //fuente:
   //https://github.com/fazt/react-dropzone-tutorial
   // const [file, setFile] = useState();
   const onDrop = useCallback((acceptedFiles: any[]) => {
     console.log(acceptedFiles[0]);
-    // Do something with the files
+    const file = acceptedFiles[0];
+    setFilePreview(URL.createObjectURL(file)); // Crear una URL para la vista previa
   }, []);
+
+  // Función que se ejecuta cuando se rechazan archivos
+  const onDropRejected = useCallback(
+    (fileRejections: FileRejection[]) => {
+      fileRejections.forEach((fileRejection) => {
+        if (
+          fileRejection.errors.some(
+            (error) => error.code === 'file-invalid-type'
+          )
+        ) {
+          toast({
+            title: 'Archivo no permitido.',
+            description: 'Solo se aceptan archivos PDF.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      });
+    },
+    [toast]
+  );
+
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
-    useDropzone({ onDrop });
+    useDropzone({
+      onDrop,
+      onDropRejected,
+      accept: {
+        'application/pdf': ['.pdf'], // Acepta solo archivos PDF
+      },
+    });
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -74,15 +107,15 @@ function Dropzone() {
           </VStack>
         </Flex>
 
-        {acceptedFiles[0] && (
-          <img
-            src={URL.createObjectURL(acceptedFiles[0])}
-            alt=""
-            style={{
-              width: '100%',
-              height: '200px',
-            }}
-          />
+        {filePreview && (
+          <Box mt="20px">
+            <embed
+              src={filePreview}
+              width="100%"
+              height="300px"
+              type="application/pdf"
+            />
+          </Box>
         )}
       </FormControl>
     </Box>
