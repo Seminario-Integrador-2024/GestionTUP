@@ -182,7 +182,7 @@ AUTH_USER_MODEL: str = "users.CustomUser"
 # dj-rest-auth settings (with Registration & JWT enabled)
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
 REST_AUTH = {
-    "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # custom "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
+    "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",  # default "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",
     "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
     # jwt settings
     # "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration", custom jwt serializer
@@ -258,7 +258,7 @@ SITE_ID = 1
 AUTHENTICATION_BACKENDS: list[str] = [
     # "users.backends.EmailOrUsernameModelBackend",
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
 ]
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Internationalization
