@@ -1,17 +1,11 @@
 import { useState, useCallback } from 'react';
 import { useDropzone, FileRejection } from 'react-dropzone';
-import {
-  Flex,
-  Box,
-  VStack,
-  useToast,
-  Image,
-} from '@chakra-ui/react';
+import { Flex, Box, VStack, useToast, Image } from '@chakra-ui/react';
 import iconUpload from '../../icons/subir.png';
 
 function Dropzone() {
   const toast = useToast();
-  const [filePreview, setFilePreview] = useState<string | null>(null); 
+  const [filePreview, setFilePreview] = useState<string | null>(null);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
