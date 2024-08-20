@@ -18,8 +18,8 @@ export const FetchLogin = async (
 
     if (response.ok) {
       const data = await response.json();
-      Cookies.set('access', data.access);
-      Cookies.set('refresh', data.refresh);
+      Cookies.set('access_token', data.access);
+      Cookies.set('refresh_token', data.refresh);
       Cookies.set('access_expiration', data.access_expiration);
       Cookies.set('refresh_expiration', data.refresh_expiration);
       Cookies.set('username', data.user.username);
