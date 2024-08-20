@@ -34,7 +34,9 @@ APPEND_SLASH = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # https://docs.djangoproject.com/en/5.0/ref/settings/#std:setting-BASE_DIR
-BASE_DIR: Path = Path(__file__).resolve().parent.parent # this is the root of the project
+BASE_DIR: Path = (
+    Path(__file__).resolve().parent.parent
+)  # this is the root of the project
 
 
 # Quick-start development settings - unsuitable for production
@@ -48,18 +50,20 @@ INSTALLED_APPS: list[str] = [
     # django default
     "django.contrib.admin",
     "django.contrib.auth",
-    "django.contrib.sites",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third party apps
     "rest_framework",
+    "rest_framework.authtoken",
     "dj_rest_auth",
-    "django_extensions",
+    "django.contrib.sites",
     "allauth",
     "allauth.account",
     "dj_rest_auth.registration",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "rest_framework_simplejwt",
@@ -80,16 +84,16 @@ INSTALLED_APPS: list[str] = [
 # middleware settings
 # https://docs.djangoproject.com/en/5.0/topics/http/middleware/
 MIDDLEWARE: list[str] = [
-    "corsheaders.middleware.CorsMiddleware", # third party middleware for corsc
+    "corsheaders.middleware.CorsMiddleware",  # third party middleware for corsc
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware", # third party middleware for static files
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # third party middleware for static files
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware", # third party middleware for allauth
+    "allauth.account.middleware.AccountMiddleware",  # third party middleware for allauth
 ]
 
 ROOT_URLCONF = "server.urls"
@@ -138,7 +142,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "server.wsgi.application"
 
-#Storage settings
+# Storage settings
 # GCP Bucket settings
 MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
 
@@ -149,21 +153,20 @@ os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        #make sqlite db file in the root of the project
+        # make sqlite db file in the root of the project
         "NAME": MOUNTED_BUCKET_ROOT / "db.sqlite3",
     }
 }
-
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_ROOT: Path = MOUNTED_BUCKET_ROOT / "static"
-STATIC_URL: str = '/static/'
+STATIC_URL: str = "/static/"
 
 MEDIA_ROOT: Path = MOUNTED_BUCKET_ROOT / "media"
-MEDIA_URL: str = '/media/'
+MEDIA_URL: str = "/media/"
 
 
 # Password validation
@@ -214,9 +217,15 @@ ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 SITE_ID = 1
 
+# Social Account settings
+SOCIALACCOUNT_ONLY = True
+SOCIAL_ACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_PROVIDERS = {"google": {"EMAIL_AUTHENTICATION": True}}
+
 AUTHENTICATION_BACKENDS: list[str] = [
     "users.backends.EmailOrUsernameModelBackend",
-    # 'django.contrib.auth.backends.ModelBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # Internationalization
@@ -230,7 +239,6 @@ TIME_ZONE = "America/Argentina/Buenos_Aires"
 USE_I18N = True
 
 USE_TZ = True
-
 
 
 # Default primary key field type
@@ -327,6 +335,16 @@ SPECTACULAR_SETTINGS = {
             "name": "core",
             "description": "Core operations, \
             including CRUD operations for the main models.",
+        },
+        {
+            "name": "pagos",
+            "description": "Pagos operations, \
+            including CRUD operations for the pagos models.",
+        },
+        {
+            "name": "excel_sysacad",
+            "description": "Excel Sysacad operations, \
+            including CRUD operations for the excel_sysacad models.",
         },
     ],
     "COMPONENT_SPLIT_REQUEST": True,

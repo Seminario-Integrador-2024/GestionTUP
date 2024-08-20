@@ -17,9 +17,13 @@ from .base import (
     SIMPLE_JWT,
     SITE_ID,
     SIMPLE_JWT,
+    SOCIAL_ACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT,
+    SOCIALACCOUNT_ONLY,
+    SOCIALACCOUNT_PROVIDERS,
     SPECTACULAR_SETTINGS,
     STATIC_URL,
     TEMPLATES,
+    WSGI_APPLICATION,
 )
 
 load_dotenv()
@@ -33,6 +37,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 INSTALLED_APPS += [
     # third party apps
     "debug_toolbar",
+    "django_extensions",
     # local apps
 ]
 
