@@ -47,8 +47,7 @@ BASE_DIR: Path = (
 # Application definition
 # https://docs.djangoproject.com/en/5.0/ref/settings/#installed-apps
 INSTALLED_APPS: list[str] = [
-    # django default
-    "grappelli",
+    # django default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
