@@ -39,7 +39,7 @@ function LoginPage() {
     } catch (error) {
       console.error('Network error', error);
       showToast('Error', 'Inicio de sesión fallido', 'error');
-    }  finally {
+    } finally {
       setIsLoading(false);
     }
   };
