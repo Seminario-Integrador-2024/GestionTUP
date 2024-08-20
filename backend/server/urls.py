@@ -24,18 +24,22 @@ urlpatterns: list[URLResolver] = [
     path("users/", include("users.urls")),
     path("api/", include("api.urls")),
     path("core/", include("core.urls")),
+    path("excel_sysacad/", include("excel_sysacad.urls")),
+    path("excel_sysadmin/", include("excel_sysadmin.urls")),
+    path("alumnos/", include("alumnos.urls")),
+    path("administrador/", include("administrador.urls")),
+    path("pagos/", include("pagos.urls")),
 ]
 if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
-    from django.conf.urls.static import static
     from django.contrib import admin
 
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += [
         path(
             "",
-            lambda request: redirect("api/swagger-ui/", permanent=False),
-            name="api_redirect",
+            lambda request: redirect("users/", permanent=False),
+            name="root_redirect",
         ),
-        path("_/", admin.site.urls),
+        path("grappelli/", include("grappelli.urls")),
+        path("admin/", admin.site.urls),
     ] + debug_toolbar_urls(prefix="debug")

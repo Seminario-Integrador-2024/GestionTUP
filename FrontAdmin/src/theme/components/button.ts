@@ -6,28 +6,6 @@ export const buttonStyles = {
   components: {
     Button: {
       variants: {
-        'no-hover': {
-          _hover: {
-            boxShadow: 'none',
-          },
-        },
-        'transparent-with-icon': {
-          bg: 'transparent',
-          fontWeight: 'bold',
-          borderRadius: 'inherit',
-          cursor: 'pointer',
-          _active: {
-            bg: 'transparent',
-            transform: 'none',
-            borderColor: 'transparent',
-          },
-          _focus: {
-            boxShadow: 'none',
-          },
-          _hover: {
-            boxShadow: 'none',
-          },
-        },
         light: {
           background: 'transparent',
           fontWeight: '500',
@@ -44,15 +22,14 @@ export const buttonStyles = {
         },
       },
       baseStyle: {
-        bg: '#022855',
+        bg: 'principal',
         background: '#022855',
         fontWeight: '500',
         color: 'white',
         _hover: {
-          bg: '#0f183f',
+          bg: 'principalHover',
           background: '#0f183f',
         },
-        //
         borderRadius: '15px',
         _focus: {
           boxShadow: 'none',

@@ -40,7 +40,7 @@ class Alumno(models.Model):
 
     """
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     legajo = models.IntegerField()
     dni = models.IntegerField()
     estado = models.ForeignKey("TipoEstado", on_delete=models.CASCADE)
@@ -133,9 +133,3 @@ class TipoEstado(models.Model):
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
 
-
-
-class ExcelFile(models.Model):
-    id_excel = models.AutoField(primary_key=True)
-    file = models.FileField(upload_to='excel_files/')
-    fecha_subido = models.DateTimeField(auto_now_add=True)

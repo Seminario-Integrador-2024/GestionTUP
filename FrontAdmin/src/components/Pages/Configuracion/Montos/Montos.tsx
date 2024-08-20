@@ -30,6 +30,9 @@ const MontoInput = ({ label, name, value, onChange, isReadOnly }: { label: strin
   </Flex>
 );
 
+//utilizar fecha ultima vez que se cargo el archivo/montos
+const fechaUltimoPago = '2024 - 2C';
+
 const Montos = () => {
   const { isOpen: isOpenModal1, onOpen: onOpenModal1, onClose: onCloseModal1 } = useDisclosure();
   const { isOpen: isOpenModal2, onOpen: onOpenModal2, onClose: onCloseModal2 } = useDisclosure();
@@ -74,7 +77,7 @@ const Montos = () => {
     <Box
       borderWidth="1px"
       borderRadius="lg"
-      bg="#e9eef4"
+      bg="secundaryBg"
       p={6}
       boxShadow="md"
       maxW="100%"

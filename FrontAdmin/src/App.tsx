@@ -24,7 +24,7 @@ function App() {
             element={
               <Navigate
                 replace
-                to={isAuthenticated ? '/admin/estadisticas' : '/auth'}
+                to={isAuthenticated ? '/admin/alumnos' : '/auth'}
               />
             }
           />

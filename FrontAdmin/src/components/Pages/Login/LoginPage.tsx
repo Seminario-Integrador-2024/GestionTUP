@@ -140,9 +140,6 @@ function LoginPage() {
                   mt="20px"
                   fontWeight="500"
                   letterSpacing="1px"
-                  _hover={{
-                    bg: '#0f183f',
-                  }}
                 >
                   {isLoading ? <Spinner size="sm" /> : 'Acceder'}
                 </Button>

@@ -18,7 +18,6 @@ interface SidebarProps extends BoxProps {
 export function SidebarContent({ onClose, ...rest }: SidebarProps) {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const location = useLocation();
-  console.log(location.pathname);
 
   return (
     <>
@@ -44,9 +43,10 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
             <Link key={key} to={link.url} onClick={onClose}>
               <NavItem
                 icon={link.icon}
+                title={link.title}
                 color={
                   location.pathname === '/admin/' + link.url
-                    ? 'green.100'
+                    ? 'secundary'
                     : 'white'
                 }
               />
@@ -57,4 +57,3 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
     </>
   );
 }
-//#cfe0f3

@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from .base import (
     AUTH_USER_MODEL,
     BASE_DIR,
+    CORS_ALLOW_ALL_ORIGINS,
+    DATABASES,
     DEFAULT_AUTO_FIELD,
     INSTALLED_APPS,
     MIDDLEWARE,
@@ -12,9 +14,15 @@ from .base import (
     REST_FRAMEWORK,
     ROOT_URLCONF,
     SECRET_KEY,
+    SIMPLE_JWT,
+    SITE_ID,
+    SOCIAL_ACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT,
+    SOCIALACCOUNT_ONLY,
+    SOCIALACCOUNT_PROVIDERS,
     SPECTACULAR_SETTINGS,
     STATIC_URL,
     TEMPLATES,
+    WSGI_APPLICATION,
 )
 
 load_dotenv()
@@ -23,11 +31,12 @@ APPEND_SLASH = True
 
 DEBUG = True
 ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS += [
     # third party apps
     "debug_toolbar",
+    "django_extensions",
     # local apps
 ]
 

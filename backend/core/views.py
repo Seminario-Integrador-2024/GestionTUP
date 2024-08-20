@@ -10,47 +10,43 @@ import pandas as pd
 from rest_framework import viewsets
 
 # custom imports
-from .models import (
-    Administrador,
-    AdminRol,
-    Alumno,
-    CompromisoDePago,
-    Cuota,
-    Inhabilitacion,
-    Materia,
-    MateriaAlumno,
-    Pago,
-    Permisos,
-    Rol,
-    RolPermiso,
-    TipoEstado,
-    TipoInhabilitacion,
-    
-    ExcelFile,
-)
-from .serializers import (
-    AdministradorSerializer,
-    AdminRolSerializer,
-    AlumnoSerializer,
-    CompromisoDePagoSerializer,
-    CuotaSerializer,
-    InhabilitacionSerializer,
-    MateriaAlumnoSerializer,
-    MateriaSerializer,
-    PagoSerializer,
-    PermisosSerializer,
-    RolPermisoSerializer,
-    RolSerializer,
-    TipoEstadoSerializer,
-    TipoInhabilitacionSerializer,
-
-    ExcelUploadSerializer,
-)
+"""from .models import (
+    #Administrador,
+    #AdminRol,
+    #Alumno,
+    #CompromisoDePago,
+    #Cuota,
+    #Inhabilitacion,
+    #Materia,
+    #MateriaAlumno,
+    #Pago,
+    #Permisos,
+    #Rol,
+    #RolPermiso,
+    #TipoEstado,
+    #TipoInhabilitacion,
+)"""
+"""from .serializers import (
+    #AdministradorSerializer,
+    #AdminRolSerializer,
+    #AlumnoSerializer,
+    #CompromisoDePagoSerializer,
+    ##CuotaSerializer,
+    #InhabilitacionSerializer,
+    #MateriaAlumnoSerializer,
+    #MateriaSerializer,
+    ##PagoSerializer,
+    #PermisosSerializer,
+    #RolPermisoSerializer,
+    #RolSerializer,
+    #TipoEstadoSerializer,
+    #TipoInhabilitacionSerializer,
+)"""
 
 # Create your views here.
 
 
-class MateriaViewSet(viewsets.ModelViewSet):
+"""class MateriaViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Materia] = Materia.objects.all()
     serializer_class = MateriaSerializer
 
@@ -62,11 +58,11 @@ class AlumnoViewSet(viewsets.ModelViewSet):
 
 class MateriaAlumnoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[MateriaAlumno] = MateriaAlumno.objects.all()
-    serializer_class = MateriaAlumnoSerializer
+    serializer_class = MateriaAlumnoSerializer"""
 
 
 
-class PagoViewSet(viewsets.ModelViewSet):
+"""class PagoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Pago] = Pago.objects.all()
     serializer_class = PagoSerializer
 
@@ -74,29 +70,29 @@ class PagoViewSet(viewsets.ModelViewSet):
 class CuotaViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Cuota] = Cuota.objects.all()
     serializer_class = CuotaSerializer
+"""
 
-
-class InhabilitacionViewSet(viewsets.ModelViewSet):
+"""class InhabilitacionViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Inhabilitacion] = Inhabilitacion.objects.all()
     serializer_class = InhabilitacionSerializer
 
 
 class TipoInhabilitacionViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[TipoInhabilitacion] = TipoInhabilitacion.objects.all()
-    serializer_class = TipoInhabilitacionSerializer
+    serializer_class = TipoInhabilitacionSerializer"""
 
 
-class AdministradorViewSet(viewsets.ModelViewSet):
+"""class AdministradorViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Administrador] = Administrador.objects.all()
-    serializer_class = AdministradorSerializer
+    serializer_class = AdministradorSerializer"""
 
 
-class TipoEstadoViewSet(viewsets.ModelViewSet):
+"""class TipoEstadoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[TipoEstado] = TipoEstado.objects.all()
     serializer_class = TipoEstadoSerializer
+"""
 
-
-class RolViewSet(viewsets.ModelViewSet):
+"""class RolViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Rol] = Rol.objects.all()
     serializer_class = RolSerializer
 
@@ -113,10 +109,10 @@ class AdminRolViewSet(viewsets.ModelViewSet):
 
 class RolPermisoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[RolPermiso] = RolPermiso.objects.all()
-    serializer_class = RolPermisoSerializer
+    serializer_class = RolPermisoSerializer"""
 
 
-class CompromisoDePagoViewSet(viewsets.ModelViewSet):
+"""class CompromisoDePagoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[CompromisoDePago] = CompromisoDePago.objects.all()
     serializer_class = CompromisoDePagoSerializer
 
@@ -126,13 +122,4 @@ class CompromisoDePagoViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class ExcelUploadViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[ExcelFile] = ExcelFile.objects.all()
-    serializer_class = ExcelUploadSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+    """

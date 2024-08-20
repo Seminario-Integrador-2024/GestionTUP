@@ -44,10 +44,21 @@ export default function ModalComponent({
             <Text>{texto}</Text>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleconfirmar}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={handleconfirmar}
+              size="sm"
+            >
               Aceptar
             </Button>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={onClose}
+              variant="light"
+              size="sm"
+            >
               Cancelar
             </Button>
           </ModalFooter>

@@ -1,6 +1,5 @@
 # core/serializers.py
 # apps imports
-import base64
 from django.core.files.base import ContentFile
 from core.models import *
 from core.serializers import *
@@ -9,20 +8,18 @@ from core.serializers import *
 from rest_framework import serializers
 
 #  custom imports
-from users.models import *
-from users.serializers import *
-from .modelos.model_pagos import *
+
 
 # Create your serializers here.
 
 
-class MateriaSerializer(serializers.ModelSerializer):
+"""class MateriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Materia
         fields = "__all__"
+"""
 
-
-class AlumnoSerializer(serializers.ModelSerializer):
+"""class AlumnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alumno
         fields = "__all__"
@@ -32,8 +29,8 @@ class MateriaAlumnoSerializer(serializers.ModelSerializer):
     archivo_pdf = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = MateriaAlumno
-        fields = "__all__"
-
+        fields = "__all__"""
+"""
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
     archivo_pdf = serializers.FileField(write_only=True, required=False)
@@ -41,12 +38,6 @@ class CompromisoDePagoSerializer(serializers.ModelSerializer):
         model = CompromisoDePago
         fields = "__all__"
 
-
-class ExcelUploadSerializer(serializers.ModelSerializer):
-    file = serializers.FileField()
-    class Meta:
-        model = ExcelFile
-        fields = "__all__"
 
 
 class PagoSerializer(serializers.ModelSerializer):
@@ -72,10 +63,10 @@ class CuotaSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation.pop('compdepago', None)
         return representation
-        
+        """
 
 
-class InhabilitacionSerializer(serializers.ModelSerializer):
+"""class InhabilitacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inhabilitacion
         fields = "__all__"
@@ -84,22 +75,22 @@ class InhabilitacionSerializer(serializers.ModelSerializer):
 class TipoInhabilitacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoInhabilitacion
-        fields = "__all__"
+        fields = "__all__"""
 
 
-class AdministradorSerializer(serializers.ModelSerializer):
+"""class AdministradorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administrador
         fields = "__all__"
+"""
 
-
-class TipoEstadoSerializer(serializers.ModelSerializer):
+"""class TipoEstadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoEstado
-        fields = "__all__"
+        fields = "__all__"""
 
 
-class RolSerializer(serializers.ModelSerializer):
+"""class RolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rol
         fields = "__all__"
@@ -120,7 +111,7 @@ class AdminRolSerializer(serializers.ModelSerializer):
 class RolPermisoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolPermiso
-        fields = "__all__"
+        fields = "__all__"""
 
 
 
