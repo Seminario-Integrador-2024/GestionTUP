@@ -12,6 +12,7 @@ import { EditIcon } from '@chakra-ui/icons';
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
+import  VerHistorial  from './ModalVerHistorial';
 
 const MontoInput = ({ label, name, value, onChange, isReadOnly }: { label: string, name: string, value: number, onChange: (e: { target: { name: string; value: string } }) => void, isReadOnly: boolean }) => (
   <Flex align="center">
@@ -30,7 +31,8 @@ const MontoInput = ({ label, name, value, onChange, isReadOnly }: { label: strin
 );
 
 const Montos = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenModal1, onOpen: onOpenModal1, onClose: onCloseModal1 } = useDisclosure();
+  const { isOpen: isOpenModal2, onOpen: onOpenModal2, onClose: onCloseModal2 } = useDisclosure();
   const confirmarMontos = useToast();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -57,7 +59,7 @@ const Montos = () => {
   const confirmar = () => {
     setMonto(tempMonto);
     console.log('Cambios guardados');
-    onClose();
+    onCloseModal1();
     confirmarMontos({
       title: 'Cambios Guardados',
       description: 'Los cambios se guardaron correctamente',
@@ -147,19 +149,21 @@ const Montos = () => {
       </SimpleGrid>
 
       <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
-        <Button color="white" size="sm" onClick={onOpen} isDisabled={!isEditing}>
+        <Button color="white"  onClick={onOpenModal1} isDisabled={!isEditing}>
           Guardar Cambios
         </Button>
-        <Button color="white" size="sm">
+        <Button color="white" onClick={onOpenModal2}>
           Ver Historial
         </Button>
       </Flex>
       <ModalComponent
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isOpenModal1}
+        onClose={onCloseModal1}
         texto={'¿Estás seguro que deseas guardar los cambios?'}
         confirmar={confirmar}
       />
+      <VerHistorial isOpen={isOpenModal2} onClose={onCloseModal2} />
+
     </Box>
   );
 };
