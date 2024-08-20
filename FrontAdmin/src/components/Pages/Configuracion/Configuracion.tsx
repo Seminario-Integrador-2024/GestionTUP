@@ -32,7 +32,7 @@ function Configuracion() {
   }, []); // Dependencias vacías para ejecutar solo al montar el componente
 
 
-  const ultimoMonto = montos[montos.length - 1]; // Obtener el último monto
+  /* const ultimoMonto = montos[montos.length - 1]; // Obtener el último monto */
 
   return (
     <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
@@ -40,10 +40,10 @@ function Configuracion() {
         <Montos />
       </GridItem>
       <GridItem colSpan={2} mt="20px">
-        <CardCarga texto="Compromiso de Pago" compromiso={ultimoMonto} />
+        <CardCarga texto="Compromiso de Pago" compromisos={montos} />
         <Button
           onClick={() => {
-            console.log(ultimoMonto);
+            console.log(montos);
           }}
         />
       </GridItem>

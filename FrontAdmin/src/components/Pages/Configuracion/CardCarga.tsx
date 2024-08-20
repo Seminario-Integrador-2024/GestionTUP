@@ -23,13 +23,23 @@ import Sysacad from '../../icons/alcances.pdf';
 interface Compromiso {
   fecha_carga_comp_pdf: string;
   cuatrimestre: string;
-}
-interface CardCargaProps {
-  texto: string;
-  compromiso: Compromiso;
+  archivo_pdf_url?: string; // ejemplo: si esta propiedad es opcional
+  id_comp_pago: number;
+  matricula: number;
+  monto_completo: number;
+  monto_completo_2venc: number;
+  monto_completo_3venc: number;
+  cuota_reducida: number;
+  cuota_reducida_2venc: number;
+  cuota_reducida_3venc: number;
 }
 
-export default function CardCarga({ texto, compromiso }: CardCargaProps) {
+interface CardCargaProps {
+  texto: string;
+  compromisos: Compromiso[];
+}
+
+export default function CardCarga({ texto, compromisos }: CardCargaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState<string | null>(null);
 
@@ -59,9 +69,18 @@ export default function CardCarga({ texto, compromiso }: CardCargaProps) {
         </Heading>
 
         <Text color="red" p="6px">
-          El último archivo fue cargado por última vez el {formatoFechaISOaDDMMAAAA(compromiso?.fecha_carga_comp_pdf)}
+          El último archivo fue cargado por última vez el{' '}
+          {formatoFechaISOaDDMMAAAA(compromisos[compromisos?.length - 1]?.fecha_carga_comp_pdf)}
         </Text>
         <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
+          <Button
+            onClick={() => console.log(compromisos)}
+            color="white"
+            size="sm"
+          >
+            {' '}
+            PRUEBA{' '}
+          </Button>
           <Button
             onClick={() => handleMenuClick('visualizarArchivo')}
             color="white"
@@ -95,7 +114,7 @@ export default function CardCarga({ texto, compromiso }: CardCargaProps) {
             isOpen={isOpen}
             onClose={onClose}
             titleModal={texto}
-            compromiso={compromiso}
+            compromisos={compromisos}
           />
         )}
       </Stack>

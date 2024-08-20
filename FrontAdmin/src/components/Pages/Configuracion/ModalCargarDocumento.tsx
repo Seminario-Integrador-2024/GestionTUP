@@ -26,12 +26,22 @@ import { useEffect, useState } from 'react';
 interface Compromiso {
   fecha_carga_comp_pdf: string;
   cuatrimestre: string;
+  archivo_pdf_url?: string; // ejemplo: si esta propiedad es opcional
+  id_comp_pago: number;
+  matricula: number;
+  monto_completo: number;
+  monto_completo_2venc: number;
+  monto_completo_3venc: number;
+  cuota_reducida: number;
+  cuota_reducida_2venc: number;
+  cuota_reducida_3venc: number;
 }
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   titleModal: string;
-  compromiso: Compromiso;
+  compromisos: Compromiso[];
 }
 
 //funcion que dependiendo lo que devuelva el endpoint /compromisos/ verifique la fecha de carga del ultimo
@@ -43,42 +53,66 @@ const ModalCargarDocumento: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   titleModal,
-  compromiso,
+  compromisos,
 }) => {
   const añoActual = new Date().getFullYear();
-  const añoCompromiso = new Date(
-    compromiso?.fecha_carga_comp_pdf
-  ).getUTCFullYear();
+
   const [cuatrimestre, setCuatrimestre] = useState('');
+  const [primercuatrimestre, setPrimerCuatrimestre] = useState(false);
+  const [segundocuatrimestre, setSegundoCuatrimestre] = useState(false);
   const [aviso, setAviso] = useState(false);
 
   useEffect(() => {
-    if (añoActual == añoCompromiso) {
-      if (compromiso?.cuatrimestre === '1C') {
+    const verificarCuatrimestre = () => {
+      for (let i = compromisos.length - 1; i >= 0; i--) {
+        const compromiso = compromisos[i];
+        const añoCompromiso = new Date(
+          compromiso?.fecha_carga_comp_pdf
+        ).getUTCFullYear();
+        if (añoCompromiso === añoActual) {
+          if (compromiso.cuatrimestre === '1C') {
+            setPrimerCuatrimestre(true);
+          }
+          if (compromiso.cuatrimestre === '2C') {
+            setSegundoCuatrimestre(true);
+          }
+        }
+
+        if (primercuatrimestre && segundocuatrimestre) {
+          break;
+        }
+      }
+    };
+    verificarCuatrimestre();
+  }, []);
+
+  useEffect(() => {
+    if (primercuatrimestre != segundocuatrimestre) {
+      if (primercuatrimestre) {
         setCuatrimestre('2C');
       } else {
         setCuatrimestre('1C');
       }
     }
-  }, []);
+  }, [primercuatrimestre, segundocuatrimestre]);
 
   const handleSelect = () => {
     if (cuatrimestre == '1C') {
       setCuatrimestre('2C');
+      if (segundocuatrimestre) {
+        setAviso(true);
+      } else {
+        setAviso(false);
+      }
     } else {
       setCuatrimestre('1C');
-    }
-  };
-
-  useEffect(() => {
-    if (añoActual == añoCompromiso) {
-      if (compromiso?.cuatrimestre === cuatrimestre) {
+      if (primercuatrimestre) {
         setAviso(true);
       } else {
         setAviso(false);
       }
     }
-  }, [cuatrimestre]);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
