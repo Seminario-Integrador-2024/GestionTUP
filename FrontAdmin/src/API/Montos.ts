@@ -3,14 +3,19 @@ import Cookies from 'js-cookie';
 export const FetchMontos = async () => {
   try {
     const token = Cookies.get('access_token');
-    const response = await fetch('http://localhost:8000/pagos/compromisos/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
 
+    const response = await fetch(
+      'https://gestiontup-42tx6kvt3q-uc.a.run.app/pagos/compromisos/',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+ 
     if (response.ok) {
       const data = await response.json();
       return data;

@@ -7,12 +7,15 @@ import {
   SimpleGrid,
   useDisclosure,
   IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import VerHistorial from './ModalVerHistorial';
+import { FetchMontos } from '../../../../API/Montos';
+
 
 const MontoInput = ({
   label,
@@ -37,15 +40,18 @@ const MontoInput = ({
       size="sm"
       bg="white"
       readOnly={isReadOnly}
-      _readOnly={{ opacity: 1, cursor: 'default' }}
+      _readOnly={{
+        opacity: 1,
+        cursor: 'not-allowed',
+        bg: 'gray.50',
+        color: 'gray.700',
+      }}
     />
   </Flex>
 );
 
-//utilizar fecha ultima vez que se cargo el archivo/montos
-const fechaUltimoPago = '2024 - 2C';
-
 const Montos = () => {
+
   const {
     isOpen: isOpenModal1,
     onOpen: onOpenModal1,
@@ -104,21 +110,36 @@ const Montos = () => {
       mt={4}
       position="relative"
     >
-      <IconButton
-        icon={<EditIcon />}
-        aria-label="Editar"
-        size="sm"
-        position="absolute"
-        top={2}
-        right={2}
-        onClick={() => setIsEditing(!isEditing)}
-        color={isEditing ? 'green.500' : 'gray.500'}
-        bgColor={isEditing ? 'green.100' : 'gray.100'}
-        _hover={{ color: 'green.600', bgColor: 'green.200' }}
-      />
-      <Text fontSize="2xl" fontWeight="bold" mb={4}>
-        Montos
-      </Text>
+      <Tooltip
+        label="Editar"
+        placement="bottom"
+        p="10px"
+        bg="white"
+        color="black"
+        hasArrow
+        borderRadius="10px"
+      >
+        <IconButton
+          icon={<EditIcon color="black" />}
+          aria-label="Editar"
+          size="lg"
+          position="absolute"
+          top={2}
+          right={2}
+          onClick={() => setIsEditing(!isEditing)}
+          color={isEditing ? 'green.500' : 'gray.500'}
+          bgColor={isEditing ? 'green.100' : 'white'}
+          _hover={{ color: 'green.600', bgColor: 'green.200' }}
+        />
+      </Tooltip>
+      <SimpleGrid columns={8} spacing={0}>
+        <Text fontSize="2xl" fontWeight="bold" mb={4}>
+          Montos
+        </Text>
+        <Text fontWeight="bold" mb={4} mt={2}>
+          Periodo {fechaUltimoPago}
+        </Text>
+      </SimpleGrid>
       <SimpleGrid columns={2} spacing={2}>
         <MontoInput
           isReadOnly={!isEditing}
@@ -172,10 +193,17 @@ const Montos = () => {
       </SimpleGrid>
 
       <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
-        <Button color="white" onClick={onOpenModal1} isDisabled={!isEditing}>
+        <Button
+          color="white"
+          size="sm"
+          onClick={onOpenModal1}
+          isDisabled={!isEditing}
+          _hover={isEditing ? 'none' : 'auto'}
+        >
+
           Guardar Cambios
         </Button>
-        <Button color="white" onClick={onOpenModal2}>
+        <Button color="white" size="sm" onClick={onOpenModal2}>
           Ver Historial
         </Button>
       </Flex>
