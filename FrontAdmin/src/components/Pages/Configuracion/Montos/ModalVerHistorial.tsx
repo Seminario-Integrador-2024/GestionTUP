@@ -28,10 +28,7 @@ interface ModalComponentProps {
   onClose: () => void;
 }
 
-export default function VerHistorial({
-  isOpen,
-  onClose,
-}: ModalComponentProps) {
+export default function VerHistorial({ isOpen, onClose }: ModalComponentProps) {
   const [montos, setMontos] = useState<any[]>([]);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<string>('');
@@ -113,8 +110,13 @@ export default function VerHistorial({
                   onChange={(e) => setEndDate(e.target.value)}
                   mr={2}
                 />
-                <Button colorScheme="blue" onClick={filteredMontos? handleClearFilter: handleFilter} mr={2} width="150px">
-                  {filteredMontos? <CloseIcon /> : "Filtrar"}  
+                <Button
+                  colorScheme="blue"
+                  onClick={filteredMontos ? handleClearFilter : handleFilter}
+                  mr={2}
+                  width="150px"
+                >
+                  {filteredMontos ? <CloseIcon /> : 'Filtrar'}
                 </Button>
               </Flex>
               {montos.length > 0 ? (
@@ -144,7 +146,11 @@ export default function VerHistorial({
                         <Td>{monto.cuota_reducida}</Td>
                         <Td>{monto.cuota_reducida_2venc}</Td>
                         <Td>{monto.cuota_reducida_3venc}</Td>
-                        <Td>{new Date(monto.fecha_carga_comp_pdf).toLocaleDateString()}</Td>
+                        <Td>
+                          {new Date(
+                            monto.fecha_carga_comp_pdf
+                          ).toLocaleDateString()}
+                        </Td>
                         <Td>
                           <Button
                             colorScheme="blue"
