@@ -35,8 +35,5 @@ RUN python manage.py spectacular --color --file schema.yml --validate
 # Expose port 8000 for the Django app
 EXPOSE 8000
 
-# Create supersuser
-RUN python create_superuser.py
-
 # Run the application
 CMD ["gunicorn", "server.wsgi:application", "--bind", "0.0.0.0:8000"]
