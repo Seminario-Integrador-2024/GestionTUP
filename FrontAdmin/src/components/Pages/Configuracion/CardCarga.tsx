@@ -23,7 +23,7 @@ import Sysacad from '../../icons/alcances.pdf';
 interface Compromiso {
   fecha_carga_comp_pdf: string;
   cuatrimestre: string;
-  archivo_pdf_url?: string; // ejemplo: si esta propiedad es opcional
+  archivo_pdf_url?: string;
   id_comp_pago: number;
   matricula: number;
   monto_completo: number;
@@ -70,17 +70,11 @@ export default function CardCarga({ texto, compromisos }: CardCargaProps) {
 
         <Text color="red" p="6px">
           El último archivo fue cargado por última vez el{' '}
-          {formatoFechaISOaDDMMAAAA(compromisos[compromisos?.length - 1]?.fecha_carga_comp_pdf)}
+          {formatoFechaISOaDDMMAAAA(
+            compromisos[compromisos?.length - 1]?.fecha_carga_comp_pdf
+          )}
         </Text>
         <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
-          <Button
-            onClick={() => console.log(compromisos)}
-            color="white"
-            size="sm"
-          >
-            {' '}
-            PRUEBA{' '}
-          </Button>
           <Button
             onClick={() => handleMenuClick('visualizarArchivo')}
             color="white"
