@@ -26,7 +26,6 @@ function Dropzone() {
     console.log(acceptedFiles[0]);
     const file = acceptedFiles[0];
     setFilePreview(URL.createObjectURL(file)); // Crear una URL para la vista previa
-    // Do something with the files
   }, []);
 
   // Función que se ejecuta cuando se rechazan archivos
