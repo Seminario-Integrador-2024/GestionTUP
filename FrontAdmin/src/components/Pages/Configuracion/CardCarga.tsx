@@ -17,15 +17,19 @@ import ModalVerDocumento from './ModalVerDocumento';
 import ModalCargarDocumento from './ModalCargarDocumento';
 import { useState } from 'react';
 import CompPago from '../../icons/compromiso_de_pago_2023.pdf';
+import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
 import Sysacad from '../../icons/alcances.pdf';
 
+interface Compromiso {
+  fecha_carga_comp_pdf: string;
+  cuatrimestre: string;
+}
 interface CardCargaProps {
   texto: string;
+  compromiso: Compromiso;
 }
-//usar varible del endpoint
-const fechaUltimoPago = '28/07/2024 14:25';
 
-export default function CardCarga({ texto }: CardCargaProps) {
+export default function CardCarga({ texto, compromiso }: CardCargaProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalType, setModalType] = useState<string | null>(null);
 
@@ -55,7 +59,7 @@ export default function CardCarga({ texto }: CardCargaProps) {
         </Heading>
 
         <Text color="red" p="6px">
-          El último archivo fue cargado por última vez el {fechaUltimoPago}
+          El último archivo fue cargado por última vez el {formatoFechaISOaDDMMAAAA(compromiso?.fecha_carga_comp_pdf)}
         </Text>
         <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
           <Button
@@ -91,6 +95,7 @@ export default function CardCarga({ texto }: CardCargaProps) {
             isOpen={isOpen}
             onClose={onClose}
             titleModal={texto}
+            compromiso={compromiso}
           />
         )}
       </Stack>
