@@ -40,6 +40,5 @@ if settings.DEBUG:
             lambda request: redirect("users/", permanent=False),
             name="root_redirect",
         ),
-        path("grappelli/", include("grappelli.urls")),
         path("admin/", admin.site.urls),
     ] + debug_toolbar_urls(prefix="debug")
