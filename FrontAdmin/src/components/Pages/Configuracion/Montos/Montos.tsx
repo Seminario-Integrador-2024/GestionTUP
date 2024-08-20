@@ -16,6 +16,7 @@ import { useToast } from '@chakra-ui/react';
 import VerHistorial from './ModalVerHistorial';
 import { FetchMontos } from '../../../../API/Montos';
 
+
 const MontoInput = ({
   label,
   name,
@@ -50,50 +51,6 @@ const MontoInput = ({
 );
 
 const Montos = () => {
-  //utilizar fecha ultima vez que se cargo el archivo/montos
-  interface Archivo {
-    id_comp_pago: number;
-    archivo_pdf_url: string;
-    cuatrimestre: string;
-    monto_completo: number;
-    monto_completo_2venc: number;
-    monto_completo_3venc: number;
-    matricula: number;
-    cuota_reducida: number;
-    cuota_reducida_2venc: number;
-    cuota_reducida_3venc: number;
-    fecha_carga_comp_pdf: string;
-  }
-
-  const [fechaUltimoPago, setFechaUltimoPago] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await FetchMontos();
-
-        if (data && data.length > 0) {
-          // Encontrar el archivo con la última fecha de carga
-          const ultimoArchivo = data.reduce(
-            (prev: Archivo, current: Archivo) => {
-              const prevDate = new Date(prev.fecha_carga_comp_pdf);
-              const currentDate = new Date(current.fecha_carga_comp_pdf);
-              return prevDate > currentDate ? prev : current;
-            }
-          );
-
-          // Guardar la fecha del último archivo en el estado
-          const fechaFormateada = new Date(
-            ultimoArchivo.fecha_carga_comp_pdf
-          ).toLocaleDateString();
-          setFechaUltimoPago(fechaFormateada);
-        }
-      } catch (error) {
-        console.error('Error al obtener los montos:', error);
-      }
-    };
-    fetchData();
-  });
 
   const {
     isOpen: isOpenModal1,
@@ -243,6 +200,7 @@ const Montos = () => {
           isDisabled={!isEditing}
           _hover={isEditing ? 'none' : 'auto'}
         >
+
           Guardar Cambios
         </Button>
         <Button color="white" size="sm" onClick={onOpenModal2}>
