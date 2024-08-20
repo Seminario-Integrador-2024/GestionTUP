@@ -37,6 +37,3 @@ EXPOSE 8000
 
 # Run the application
 CMD ["gunicorn", "server.wsgi:application", "--bind", "0.0.0.0:8000"]
-
-# Create supersuser
-RUN python create_superuser.py
