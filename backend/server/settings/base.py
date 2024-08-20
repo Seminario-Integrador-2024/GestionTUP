@@ -202,8 +202,8 @@ REST_AUTH = {
     "LOGOUT_ON_PASSWORD_CHANGE": False,
     "SESSION_LOGIN": False,  # for the session cookie login. since we are using JWT, we don't need this
     "USE_JWT": True,  # uses JWT for authentication, it requires the simple jwt package
-    "JWT_AUTH_COOKIE": "jwt_token",  # set the name of the cookie
-    "JWT_AUTH_REFRESH_COOKIE": "jwt_refresh_token",  # set the name of the cookie
+    "JWT_AUTH_COOKIE": "access_token",  # set the name of the cookie
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",  # set the name of the cookie
     "JWT_AUTH_REFRESH_COOKIE_PATH": "/",
     "JWT_AUTH_SECURE": False,
     "JWT_AUTH_HTTPONLY": False,  # allow javascript to access the cookie
