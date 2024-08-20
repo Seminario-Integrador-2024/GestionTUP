@@ -18,11 +18,14 @@ import {
 import iconUpload from '../../icons/subir.png';
 function Dropzone() {
   const toast = useToast();
+  const [filePreview, setFilePreview] = useState<string | null>(null); // Estado para la vista previa del archivo
   //fuente:
   //https://github.com/fazt/react-dropzone-tutorial
   // const [file, setFile] = useState();
   const onDrop = useCallback((acceptedFiles: any[]) => {
     console.log(acceptedFiles[0]);
+    const file = acceptedFiles[0];
+    setFilePreview(URL.createObjectURL(file)); // Crear una URL para la vista previa
     // Do something with the files
   }, []);
 
@@ -105,15 +108,13 @@ function Dropzone() {
           </VStack>
         </Flex>
 
-        {acceptedFiles[0] && (
+        {filePreview && (
           <Box mt="20px">
-            <img
-              src={URL.createObjectURL(acceptedFiles[0])}
-              alt=""
-              style={{
-                width: '100%',
-                height: '200px',
-              }}
+            <embed
+              src={filePreview}
+              width="100%"
+              height="300px"
+              type="application/pdf"
             />
           </Box>
         )}
