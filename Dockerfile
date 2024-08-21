@@ -33,7 +33,7 @@ RUN python manage.py migrate
 RUN python manage.py spectacular --color --file schema.yml --validate
 
 # Create supersuser
-RUN python create_superuser.py
+# RUN python create_superuser.py
 
 # Expose port 8000 for the Django app
 EXPOSE 8000
