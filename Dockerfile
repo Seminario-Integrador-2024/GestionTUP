@@ -32,11 +32,11 @@ RUN python manage.py migrate
 # Generate the OpenAPI schema
 RUN python manage.py spectacular --color --file schema.yml --validate
 
+# Create supersuser
+RUN python create_superuser.py
+
 # Expose port 8000 for the Django app
 EXPOSE 8000
 
 # Run the application
 CMD ["gunicorn", "server.wsgi:application", "--bind", "0.0.0.0:8000"]
-
-# Create supersuser
-RUN python create_superuser.py
