@@ -5,7 +5,7 @@ export const FetchMontos = async () => {
     const token = Cookies.get('access_token');
 
     const response = await fetch(
-      'http://127.0.0.1:8000/pagos/compromisos/',
+      'https://gestiontup-42tx6kvt3q-uc.a.run.app/pagos/compromisos/',
       {
         method: 'GET',
         headers: {

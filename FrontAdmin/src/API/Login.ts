@@ -5,7 +5,7 @@ export const FetchLogin = async (
   password: string
 ) => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/users/login/', {
+    const response = await fetch('https://gestiontup-42tx6kvt3q-uc.a.run.app/users/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
