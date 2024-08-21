@@ -86,7 +86,7 @@ export default function CardCarga({ texto, compromisos }: CardCargaProps) {
             Ver último archivo{' '}
           </Button>
           <Button
-            onClick={() => handleMenuClick('cargarArchivo')}
+            onClick={() => window.open(compromisos[compromisos.length - 1]?.archivo_pdf_url, '_blank')}
             color="white"
             size="sm"
           >
