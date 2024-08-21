@@ -115,9 +115,9 @@ const ModalCargarDocumento: React.FC<ModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="2x1">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxWidth="70vw" minH="80vh">
         <ModalHeader>{titleModal}</ModalHeader>
         <ModalCloseButton />
         <ModalBody mb="30px">

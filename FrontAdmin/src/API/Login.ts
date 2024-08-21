@@ -5,16 +5,13 @@ export const FetchLogin = async (
   password: string
 ) => {
   try {
-    const response = await fetch(
-      'https://gestiontup-42tx6kvt3q-uc.a.run.app/users/login/',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email_or_username, password }),
-      }
-    );
+    const response = await fetch('https://gestiontup-42tx6kvt3q-uc.a.run.app/users/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email_or_username, password }),
+    });
 
     if (response.ok) {
       const data = await response.json();
