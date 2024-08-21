@@ -69,7 +69,6 @@ const MontoInput = ({
 );
 
 const Montos = ({ texto, compromisos }: CardCargaProps) => {
-
   const {
     isOpen: isOpenModal1,
     onOpen: onOpenModal1,
@@ -223,7 +222,6 @@ const Montos = ({ texto, compromisos }: CardCargaProps) => {
           isDisabled={!isEditing}
           _hover={isEditing ? 'none' : 'auto'}
         >
-
           Guardar Cambios
         </Button>
         <Button color="white" size="sm" onClick={onOpenModal2}>

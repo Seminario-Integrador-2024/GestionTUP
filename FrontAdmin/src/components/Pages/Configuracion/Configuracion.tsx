@@ -33,7 +33,7 @@ function Configuracion() {
   return (
     <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
       <GridItem colSpan={{ base: 1, md: 2 }}>
-        <Montos texto="Compromiso de Pago" compromisos={montos}/>
+        <Montos texto="Compromiso de Pago" compromisos={montos} />
       </GridItem>
       <GridItem colSpan={2} mt="20px">
         <CardCarga texto="Compromiso de Pago" compromisos={montos} />

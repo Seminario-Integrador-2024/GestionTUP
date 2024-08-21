@@ -15,7 +15,6 @@ export const FetchMontos = async () => {
       }
     );
 
- 
     if (response.ok) {
       const data = await response.json();
       return data;
