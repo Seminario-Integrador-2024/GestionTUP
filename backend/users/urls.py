@@ -14,10 +14,6 @@ from django.urls import URLResolver, include, path
 
 # base urls
 urlpatterns: list[URLResolver] = [
-    path("", include("dj_rest_auth.urls"), name="dj_rest_auth"),
-    path(
-        "signup/",
-        include("dj_rest_auth.registration.urls"),
-        name="dj_rest_auth_registration",
-    ),
+    path("", include("dj_rest_auth.urls"), name="rest_auth"),
+    path("signup/", include("dj_rest_auth.registration.urls"), name="rest_auth_signup"),
 ]

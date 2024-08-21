@@ -18,6 +18,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
+from server.settings.production import EMAIL_BACKEND
 
 load_dotenv()
 
@@ -56,7 +57,7 @@ INSTALLED_APPS: list[str] = [
     "django.contrib.staticfiles",
     # third party apps
     "rest_framework",
-    "rest_framework.authtoken",
+    # "rest_framework.authtoken", # not needed since we are using jwt in dj-rest-auth
     "dj_rest_auth",
     "django.contrib.sites",
     "allauth",
@@ -87,8 +88,8 @@ MIDDLEWARE: list[str] = [
     "corsheaders.middleware.CorsMiddleware",  # third party middleware for corsc
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # third party middleware for static files
-    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -144,7 +145,7 @@ WSGI_APPLICATION = "server.wsgi.application"
 
 # Storage settings
 # GCP Bucket settings
-MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent.parent / "mnt/my-bucket/"
+MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
 
 os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
 
@@ -181,53 +182,85 @@ AUTH_USER_MODEL: str = "users.CustomUser"
 # dj-rest-auth settings (with Registration & JWT enabled)
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
 REST_AUTH = {
-    "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
-    "LOGOUT_SERIALIZER": "dj_rest_auth.serializers.LogoutSerializer",
-    "USER_SERIALIZER": "dj_rest_auth.serializers.UserDetailsSerializer",
-    "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration",
-    "TOKEN_MODEL": None,
-    "TOKEN_CREATOR": None,
-    "JWT_AUTH_RETURN_EXPIRATION": True,
+    "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",  # default "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",
+    "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
+    # jwt settings
+    # "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration", custom jwt serializer
+    "JWT_SERIALIZER": "dj_rest_auth.serializers.JWTSerializer",  # default jwt serializer
+    "JWT_SERIALIZER_WITH_EXPIRATION": "dj_rest_auth.serializers.JWTSerializerWithExpiration",
+    "JWT_TOKEN_CLAIMS_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "USER_DETAILS_SERIALIZER": "dj_rest_auth.serializers.UserDetailsSerializer",
+    "PASSWORD_RESET_SERIALIZER": "dj_rest_auth.serializers.PasswordResetSerializer",
+    "PASSWORD_RESET_CONFIRM_SERIALIZER": "dj_rest_auth.serializers.PasswordResetConfirmSerializer",
+    "PASSWORD_CHANGE_SERIALIZER": "dj_rest_auth.serializers.PasswordChangeSerializer",
+    "REGISTER_SERIALIZER": "dj_rest_auth.registration.serializers.RegisterSerializer",
+    "REGISTER_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
+    "TOKEN_MODEL": None,  # default is "rest_framework.authtoken.models.Token",
+    "TOKEN_CREATOR": "dj_rest_auth.utils.default_create_token",
     "PASSWORD_RESET_USE_SITES_DOMAIN": False,
     "OLD_PASSWORD_FIELD_ENABLED": False,
     "LOGOUT_ON_PASSWORD_CHANGE": False,
-    "SESSION_LOGIN": False,
-    "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "access_token",
-    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+    "SESSION_LOGIN": False,  # for the session cookie login. since we are using JWT, we don't need this
+    "USE_JWT": True,  # uses JWT for authentication, it requires the simple jwt package
+    "JWT_AUTH_COOKIE": "access_token",  # set the name of the cookie
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",  # set the name of the cookie
     "JWT_AUTH_REFRESH_COOKIE_PATH": "/",
     "JWT_AUTH_SECURE": False,
-    "JWT_AUTH_HTTPONLY": False,
+    "JWT_AUTH_HTTPONLY": False,  # allow javascript to access the cookie
     "JWT_AUTH_SAMESITE": "Lax",
+    "JWT_AUTH_RETURN_EXPIRATION": True,  # return the expiration time in the response
     "JWT_AUTH_COOKIE_USE_CSRF": False,
     "JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED": False,
 }
 # JWT settings
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    # JWT token settings
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
-    # JWT token blacklist settings
-    "ROTATE_REFRESH_TOKENS": True,  # Enable refresh token rotation
-    "BLACKLIST_AFTER_ROTATION": True,  # Blacklist tokens after rotation
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+    "JTI_CLAIM": "jti",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-ACCOUNT_EMAIL_VERIFICATION = "none"
+
+## Allauth settings
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+# ACCOUNT_EMAIL_VERIFICATION = "none"
 SITE_ID = 1
 
-# Social Account settings
-SOCIALACCOUNT_ONLY = True
-SOCIAL_ACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-SOCIALACCOUNT_PROVIDERS = {"google": {"EMAIL_AUTHENTICATION": True}}
 
 AUTHENTICATION_BACKENDS: list[str] = [
-    "users.backends.EmailOrUsernameModelBackend",
+    # "users.backends.EmailOrUsernameModelBackend",
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
 ]
-
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
