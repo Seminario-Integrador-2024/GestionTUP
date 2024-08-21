@@ -15,8 +15,27 @@ import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import VerHistorial from './ModalVerHistorial';
 import { FetchMontos } from '../../../../API/Montos';
+import { formatoFechaISOaDDMMAAAA } from '../../../../utils/general';
+let fechaUltimoPago = "12/08/2024"
 
+interface Compromiso {
+  fecha_carga_comp_pdf: string;
+  cuatrimestre: string;
+  archivo_pdf_url?: string;
+  id_comp_pago: number;
+  matricula: number;
+  monto_completo: number;
+  monto_completo_2venc: number;
+  monto_completo_3venc: number;
+  cuota_reducida: number;
+  cuota_reducida_2venc: number;
+  cuota_reducida_3venc: number;
+}
 
+interface CardCargaProps {
+  texto: string;
+  compromisos: Compromiso[];
+}
 const MontoInput = ({
   label,
   name,
@@ -50,7 +69,7 @@ const MontoInput = ({
   </Flex>
 );
 
-const Montos = () => {
+const Montos = ({ texto, compromisos }: CardCargaProps) => {
 
   const {
     isOpen: isOpenModal1,
@@ -137,7 +156,12 @@ const Montos = () => {
           Montos
         </Text>
         <Text fontWeight="bold" mb={4} mt={2}>
-          Periodo {fechaUltimoPago}
+          Periodo{' '}
+          {compromisos && compromisos.length > 0
+            ? formatoFechaISOaDDMMAAAA(
+                compromisos[compromisos.length - 1]?.fecha_carga_comp_pdf
+              )
+            : '-'}
         </Text>
       </SimpleGrid>
       <SimpleGrid columns={2} spacing={2}>

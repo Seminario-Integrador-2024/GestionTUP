@@ -70,9 +70,11 @@ export default function CardCarga({ texto, compromisos }: CardCargaProps) {
 
         <Text color="red" p="6px">
           El último archivo fue cargado por última vez el{' '}
-          {formatoFechaISOaDDMMAAAA(
-            compromisos[compromisos?.length - 1]?.fecha_carga_comp_pdf
-          )}
+          {compromisos && compromisos.length > 0
+            ? formatoFechaISOaDDMMAAAA(
+                compromisos[compromisos.length - 1]?.fecha_carga_comp_pdf
+              )
+            : '-'}
         </Text>
         <Flex justify="flex-end" gap="4" pt={{ base: '30px', md: '0' }}>
           <Button
