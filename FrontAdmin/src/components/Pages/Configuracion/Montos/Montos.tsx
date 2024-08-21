@@ -16,7 +16,6 @@ import { useToast } from '@chakra-ui/react';
 import VerHistorial from './ModalVerHistorial';
 import { FetchMontos } from '../../../../API/Montos';
 import { formatoFechaISOaDDMMAAAA } from '../../../../utils/general';
-let fechaUltimoPago = "12/08/2024"
 
 interface Compromiso {
   fecha_carga_comp_pdf: string;
