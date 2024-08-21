@@ -2,8 +2,9 @@ import os
 
 from dotenv import load_dotenv
 
-from .base import (
+from .base import (  # ACCOUNT_AUTHENTICATION_METHOD,; ACCOUNT_EMAIL_REQUIRED,; ACCOUNT_EMAIL_VERIFICATION,
     AUTH_USER_MODEL,
+    AUTHENTICATION_BACKENDS,
     BASE_DIR,
     CORS_ALLOW_ALL_ORIGINS,
     DATABASES,
