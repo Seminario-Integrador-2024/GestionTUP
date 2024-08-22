@@ -29,6 +29,9 @@ import {
 
     const handleconfirmar = () => {
       confirmar(idMateria, nombre, plan);
+      setIdMateria('');
+      setNombre('');
+      setPlan('');
       onClose();
     };
 

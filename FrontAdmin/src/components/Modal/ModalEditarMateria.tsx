@@ -24,6 +24,9 @@ import {
    
     const handleconfirmar = () => {
       confirmar(id, nombre, plan);
+      setId('');
+      setNombre('');
+      setPlan('');
       onClose();
     };
 
@@ -38,6 +41,10 @@ import {
         setPlan(materia.plan);
         }
     }, [materia]);
+
+    if (!materia) {
+        return null;
+      }
   
     return (
       <>

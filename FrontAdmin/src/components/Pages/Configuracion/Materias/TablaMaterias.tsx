@@ -77,16 +77,16 @@ export default function TablaMaterias() {
                 </Flex>
                 <Table variant="simple">
                     <Thead>
-                        <Tr>
+                        <Tr bg="secundaryBg">
                             <Th>ID Materia</Th>
                             <Th>Nombre</Th>
                             <Th>Plan</Th>
-                            <Th>Acciones</Th>
+                            <Th textAlign="center">Acciones</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {materias.map((materia, index) => (
-                            <Tr key={index}>
+                            <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"}>
                                 <Td>{materia.id}</Td>
                                 <Td>{materia.nombre}</Td>
                                 <Td>{materia.plan}</Td>
