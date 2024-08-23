@@ -1,16 +1,17 @@
-import { Box, Button, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Button, Grid, GridItem, Icon } from '@chakra-ui/react';
 import Montos from './Montos/Montos';
 import CardCarga from './CardCarga';
 import { FetchMontos } from '../../../API/Montos';
 import { useEffect, useState } from 'react';
+import NewInterfaz from './Montos/NewInterfaz';
+import { AddIcon } from '@chakra-ui/icons';
 
 function Configuracion() {
-  const [montos, setMontos] = useState([]); // Estado inicial
-  const [loading, setLoading] = useState(true); // Estado para manejar el estado de carga
-  const [error, setError] = useState<string | null>(null); // Estado para manejar errores
+  const [montos, setMontos] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState<string | null>(null); 
 
   useEffect(() => {
-    // Función para obtener los datos
     const getMontos = async () => {
       try {
         const data = await FetchMontos();
@@ -27,16 +28,18 @@ function Configuracion() {
     };
 
     getMontos();
-    console.log(montos);
   }, []);
 
   return (
     <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
-      <GridItem colSpan={{ base: 1, md: 2 }}>
-        <Montos texto="Compromiso de Pago" compromisos={montos}/>
-      </GridItem>
       <GridItem colSpan={2} mt="20px">
-        <CardCarga texto="Compromiso de Pago" compromisos={montos} />
+        
+          <Button color="white" leftIcon={<AddIcon />}>
+            Nuevo Cuatrimestre
+          </Button>
+      </GridItem>
+      <GridItem colSpan={{ base: 1, md: 2 }}>
+        <NewInterfaz texto="Monto de Carga" compromisos={montos} />
       </GridItem>
     </Grid>
   );
