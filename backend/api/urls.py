@@ -26,8 +26,3 @@ urlpatterns = [
     ),
     path("redoc-ui/", SpectacularRedocView.as_view(url_name="schema"), name="redoc-ui"),
 ]
-if settings.DEBUG:
-    # add admin to the urlpatterns if DEBUG is True
-    from django.contrib import admin
-
-    urlpatterns += [path("admin/", admin.site.urls)]

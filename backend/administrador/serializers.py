@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import *
+from .models import Administrador, AdminRol, Permisos, Rol, RolPermiso
+
 
 class AdministradorSerializer(serializers.ModelSerializer):
     class Meta:

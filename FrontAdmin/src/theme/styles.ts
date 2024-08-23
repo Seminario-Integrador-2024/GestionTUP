@@ -9,11 +9,11 @@ export const globalStyles = {
       50: '#f7fafc',
       900: '#171923',
     },
-    principal: "#252f5e",
-    principalHover: "#0f183f",
-    secundaryBg: "#e9eef4",
-    secundary: "#c4daf4",
-    secundaryHover: "#94c0f4",
+    principal: '#252f5e',
+    principalHover: '#0f183f',
+    secundaryBg: '#e9eef4',
+    secundary: '#c4daf4',
+    secundaryHover: '#94c0f4',
   },
   styles: {
     global: (props: StyleFunctionProps) => ({

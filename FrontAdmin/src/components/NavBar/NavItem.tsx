@@ -7,7 +7,12 @@ interface NavItemProps extends FlexProps {
   title: string;
 }
 
-export default function NavItem({ icon, color, title, ...props }: NavItemProps) {
+export default function NavItem({
+  icon,
+  color,
+  title,
+  ...props
+}: NavItemProps) {
   return (
     <Tooltip
       label={title}

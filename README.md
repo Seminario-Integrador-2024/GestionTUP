@@ -4,7 +4,7 @@
 
 <!-- repo badges -->
 
-![GitHub followers](https://img.shields.io/github/followers/Seminario-Integrador-2024) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![GitHub followers](https://img.shields.io/github/followers/Seminario-Integrador-2024) [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![FrontCI Pipeline](https://github.com/Seminario-Integrador-2024/GestionTUP/actions/workflows/FrontCi.yml/badge.svg)](https://github.com/Seminario-Integrador-2024/GestionTUP/actions/workflows/FrontCi.yml)
 
 [![Django](https://img.shields.io/badge/Django-5.1-green.svg)](https://www.djangoproject.com/) [![Python](https://img.shields.io/badge/Python-3.10.14-blue.svg)](https://www.python.org/) [![React](https://img.shields.io/badge/React-17.0.2-blue.svg)](https://reactjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-4.3.5-blue.svg)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-2.4.4-blue.svg)](https://vitejs.dev/) [![Docker](https://img.shields.io/badge/Docker-20.10.7-blue.svg)](https://www.docker.com/) [![Docker Compose](https://img.shields.io/badge/Docker_Compose-1.29.2-blue.svg)](https://docs.docker.com/compose/) [![ESLint](https://img.shields.io/badge/ESLint-7.32.0-blue.svg)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-2.4.1-orange.svg)](https://prettier.io/) [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Run-lightblue.svg)](https://cloud.google.com/run)
 
