@@ -1,9 +1,8 @@
 
 from django.db import models
-
+from django.utils import timezone
 
 from alumnos.models import Alumno
-
 
 class Pago(models.Model):
     """
@@ -46,19 +45,33 @@ class CompromisoDePago(models.Model):
 
     Attributes:
         id_comp_pago (AutoField): The primary key for the payment commitment.
-        perfciclo (DateTimeField): The date and time of the payment commitment.
-        monto (FloatField): The amount of the payment commitment.
-        firmado (BooleanField): Indicates if \
-            the payment commitment has been signed.
-        fecha_firmado (DateTimeField): The date and time when \
-            the payment commitment was signed.
-        compromiso (CharField): The description of the payment commitment.
-        alumno (ForeignKey): The foreign key to \
-            the related Alumno (student) model.
+        cuatrimestre (CharField): The academic period (e.g., semester or quarter) \
+            for which the payment commitment is made.
+        anio (DateTimeField): The year related to the payment commitment.
+        monto_completo (FloatField): The full amount of the payment commitment.
+        monto_completo_2venc (FloatField): The amount to be paid if payment is  \
+            made by the second due date.
+        monto_completo_3venc (FloatField): The amount to be paid if payment is 
+            made by the third due date.
+        matricula (FloatField): The amount of the registration fee for the commitment.
+        cuota_reducida (FloatField): The reduced amount of the payment commitment.
+        cuota_reducida_2venc (FloatField): The reduced amount to be paid if payment
+            is made by the second due date.
+        cuota_reducida_3venc (FloatField): The reduced amount to be paid if payment 
+            is made by the third due date.
+        comprimiso_path (CharField): The file path to the saved commitment
+          document (PDF).
+        archivo_pdf (FileField): The uploaded PDF file of the payment commitment.
+        fecha_ultima_modif (DateTimeField): The date and time when the payment
+          commitment was last modified.
+        fecha_carga_comp_pdf (DateTimeField): The date and time when the PDF of the \
+            payment commitment was uploaded, automatically set when the record 
+            is created.
     """
 
     id_comp_pago = models.AutoField(primary_key=True)
     cuatrimestre = models.CharField(max_length=255, blank=True,  null=True)
+    anio = models.DateTimeField(max_length=10,  blank=True,  null=True)
     monto_completo = models.FloatField( blank=True,  null=True)
     monto_completo_2venc = models.FloatField( blank=True,  null=True)
     monto_completo_3venc = models.FloatField( blank=True,  null=True)
@@ -68,16 +81,15 @@ class CompromisoDePago(models.Model):
     cuota_reducida_3venc = models.FloatField( blank=True,  null=True)
     comprimiso_path = models.CharField(max_length=255, blank=True, null=True)
     archivo_pdf = models.FileField(upload_to='compromisos/', blank=True,  null=True)
+    fecha_ultima_modif = models.DateTimeField(max_length=10,  blank=True,  null=True)
     fecha_carga_comp_pdf = models.DateTimeField(max_length=10, auto_now_add=True, blank=True,  null=True)
 
     def save(self, *args, **kwargs):
-        # Llama al método save original 
+        self.fecha_ultima_modif = timezone.now()
         super().save(*args, **kwargs)
 
-        # Actualiza comprimiso_path si el archivo_pdf ha sido cargado
         if self.archivo_pdf:
             self.comprimiso_path = self.archivo_pdf.url
-            # Guarda nuevamente para actualizar comprimiso_path
             super().save(update_fields=['comprimiso_path'])
 
 
