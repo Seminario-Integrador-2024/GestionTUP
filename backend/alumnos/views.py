@@ -3,20 +3,12 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 
-# Create your views here.
-class MateriaViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[Materia] = Materia.objects.all()
-    serializer_class = MateriaSerializer
-
+# Create your views her
 
 class AlumnoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Alumno] = Alumno.objects.all()
     serializer_class = AlumnoSerializer
 
-
-class MateriaAlumnoViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[MateriaAlumno] = MateriaAlumno.objects.all()
-    serializer_class = MateriaAlumnoSerializer
 
 class InhabilitacionViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Inhabilitacion] = Inhabilitacion.objects.all()
