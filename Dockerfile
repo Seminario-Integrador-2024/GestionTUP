@@ -41,15 +41,14 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 
-# Create the volume mount point
-RUN mkdir -p /app/mnt/my-bucket/
+# Create the volume mount point & give read/write access
+RUN mkdir -p /app/mnt/my-bucket/ && chown -R 1001:1001 /app/mnt/my-bucket/
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Make migrations and migrate the database
+# generate sql migrations for the chosen database
 RUN python manage.py makemigrations
-RUN python manage.py migrate
 
 # Generate the OpenAPI schema
 RUN python manage.py spectacular --color --file schema.yml --validate
@@ -58,4 +57,4 @@ RUN python manage.py spectacular --color --file schema.yml --validate
 EXPOSE 8000
 
 # Run the application
-CMD ["gunicorn", "server.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && gunicorn server.wsgi:application --bind 0.0.0.0:8000"]

@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-
-# Variables and Secrets.
 import secrets
 from datetime import timedelta
 from pathlib import Path
+
+# Variables and Secrets.
+from re import A
 
 from dotenv import load_dotenv
 from server.settings.production import EMAIL_BACKEND
@@ -224,21 +225,31 @@ REST_AUTH = {
 # JWT settings
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=3600),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
+# Allauth settings
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 SITE_ID = 1
 
 
 AUTHENTICATION_BACKENDS: list[str] = [
+    "allauth.account.auth_backends.AuthenticationBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
+
+
+CSRF_TRUSTED_ORIGINS = ["http://*", "https://*"]
 
 LANGUAGE_CODE = "es-ar"
 
