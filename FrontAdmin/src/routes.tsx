@@ -2,11 +2,15 @@ import Estadisticas from './components/Pages/Estadisticas/Estadisticas';
 import ErrorPage from './components/Pages/Error404';
 import Configuracion from './components/Pages/Configuracion/Configuracion';
 import Sysacad from './components/Pages/Sysacad/Sysacad';
+import AlumnosCursanMateria from './components/Pages/Estadisticas/SubPages/Alumnos-que-cursan-materia';
 
 const routes = [
   {
     path: 'estadisticas',
     element: <Estadisticas />,
+    children: [
+      { path: 'alumnos-que-cursan-materia', element: <AlumnosCursanMateria /> },
+    ],
   },
   {
     path: 'sysacad',
