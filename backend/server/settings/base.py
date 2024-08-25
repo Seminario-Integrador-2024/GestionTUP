@@ -78,6 +78,7 @@ INSTALLED_APPS: list[str] = [
     "alumnos",
     "excel_sysadmin",
     "mensajeria",
+    "materias",
     "administrador",
 ]
 
@@ -93,6 +94,7 @@ MIDDLEWARE: list[str] = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "server.urls"
