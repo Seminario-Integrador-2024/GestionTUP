@@ -17,6 +17,6 @@ export const LINK_ITEMS = [
     ],
   },
   { icon: iconSysAdmin, url: 'sysadmin', title: 'SysAdmin' },
-  { icon: iconSysAcad, url: 'sysacad', title: 'SysAcad' },
+  { icon: iconSysAcad, url: 'sysacad', title: 'Academica' },
   { icon: iconConfig, url: 'configuracion', title: 'Configuración' },
 ];

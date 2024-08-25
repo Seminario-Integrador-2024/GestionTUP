@@ -42,7 +42,6 @@ function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-    onLogin();
   };
 
   return (
