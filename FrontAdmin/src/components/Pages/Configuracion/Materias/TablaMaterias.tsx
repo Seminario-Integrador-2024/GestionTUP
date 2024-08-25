@@ -86,7 +86,7 @@ export default function TablaMaterias() {
                     </Thead>
                     <Tbody>
                         {materias.map((materia, index) => (
-                            <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"}>
+                            <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"} h={0.5}>
                                 <Td>{materia.id}</Td>
                                 <Td>{materia.nombre}</Td>
                                 <Td>{materia.plan}</Td>
