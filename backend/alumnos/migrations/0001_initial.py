@@ -14,14 +14,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Materia',
-            fields=[
-                ('id_materia', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre', models.CharField(max_length=255)),
-                ('cuatrimestre', models.PositiveSmallIntegerField()),
-            ],
-        ),
+       
         migrations.CreateModel(
             name='TipoEstado',
             fields=[
@@ -58,18 +51,5 @@ class Migration(migrations.Migration):
                 ('id_alumno', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='alumnos.alumno')),
                 ('id_tipo_inhabilitacion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='alumnos.tipoinhabilitacion')),
             ],
-        ),
-        migrations.CreateModel(
-            name='MateriaAlumno',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('offrc', models.IntegerField()),
-                ('atendnc', models.IntegerField()),
-                ('id_alumno', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='alumnos.alumno')),
-                ('id_materia', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='alumnos.materia')),
-            ],
-            options={
-                'unique_together': {('id_materia', 'id_alumno')},
-            },
         ),
     ]
