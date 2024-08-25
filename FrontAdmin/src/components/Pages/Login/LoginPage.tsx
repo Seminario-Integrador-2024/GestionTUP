@@ -41,7 +41,8 @@ function LoginPage() {
       showToast('Error', 'Inicio de sesión fallido', 'error');
     } finally {
       setIsLoading(false);
-    }onLogin();
+    }
+    onLogin();
   };
 
   return (
