@@ -12,18 +12,6 @@ class AlumnoSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class MateriaAlumnoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MateriaAlumno
-        fields = "__all__"
-
-
-class MateriaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Materia
-        fields = "__all__"
-
-
 class InhabilitacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inhabilitacion
