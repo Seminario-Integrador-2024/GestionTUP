@@ -16,18 +16,34 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { Card, CardBody, Text } from '@chakra-ui/react';
 import Mensual from './SubPages/Mensual';
 import Cuatrimestral from './SubPages/Cuatrimestral';
 import Calendario from './SubPages/Calendario';
-import { Outlet } from 'react-router-dom';
+import { Link, useLocation, Outlet, useRoutes } from 'react-router-dom';
+import routes from '../../../routes';
+import SubMenuContent from '../../SubMenu/SubMenuContent';
 
 function Estadisticas() {
-  console.log('Estadisticas');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const element = useRoutes(routes);
   return (
-    <Flex>
-      <Tabs position="relative" variant="unstyled" w="100%">
+    <Box display="flex">
+      <SubMenuContent onClose={onOpen} titleSubMenu="INFORMES" />
+      <Box flex="1" ml="300px">
+        <Outlet />
+      </Box>
+    </Box>
+  );
+}
+
+export default Estadisticas;
+
+/* Codigo de samu 
+
+<Tabs position="relative" variant="unstyled" w="100%">
         <TabList mb="1em">
           <Tab fontWeight="bold">Mensual</Tab>
           <Tab fontWeight="bold">Cuatrimestral</Tab>
@@ -51,8 +67,4 @@ function Estadisticas() {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Flex>
-  );
-}
-
-export default Estadisticas;
+      */

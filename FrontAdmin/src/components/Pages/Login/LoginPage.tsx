@@ -32,7 +32,6 @@ function LoginPage() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsLoading(true);
-    /*
     try {
       await FetchLogin(username, password);
       onLogin();
@@ -43,8 +42,6 @@ function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-      */
-    onLogin();
   };
 
   return (
