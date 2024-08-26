@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Flex,
   HStack,
   CloseButton,
   useMediaQuery,
-  Text,
   BoxProps,
-  Collapse,
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { LINK_ITEMS } from './LinksItems';
 import NavItem from './NavItem';
-import iconAlumno from '../icons/alumno 1.png';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
@@ -20,10 +17,7 @@ interface SidebarProps extends BoxProps {
 
 export function SidebarContent({ onClose, ...rest }: SidebarProps) {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
-  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-
-  const handleToggle = () => setIsOpen(!isOpen);
 
   return (
     <Box
@@ -44,55 +38,19 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
         gap="2"
         mt="70px"
       >
-        {LINK_ITEMS.map((link, key) => {
-          if (link.accordion) {
-            return (
-              <React.Fragment key={key}>
-                <Box onClick={handleToggle}>
-                  <NavItem
-                    icon={link.icon}
-                    title={link.title}
-                    color={
-                      location.pathname.includes(link.url)
-                        ? 'secundary'
-                        : 'white'
-                    }
-                  />
-                </Box>
-                <Collapse in={isOpen}>
-                  <Box pl={4}>
-                    {link.accordion.map((linkAccordion, key) => (
-                      <Link key={key} to={linkAccordion.url} onClick={onClose}>
-                        <NavItem
-                          title={linkAccordion.title}
-                          color={
-                            location.pathname === '/admin/' + linkAccordion.url
-                              ? 'secundary'
-                              : 'white'
-                          }
-                        />
-                      </Link>
-                    ))}
-                  </Box>
-                </Collapse>
-              </React.Fragment>
-            );
-          } else {
-            return (
-              <Link key={key} to={link.url} onClick={onClose}>
-                <NavItem
-                  icon={link.icon}
-                  title={link.title}
-                  color={
-                    location.pathname === '/admin/' + link.url
-                      ? 'secundary'
-                      : 'white'
-                  }
-                />
-              </Link>
-            );
-          }
-        })}
+        {LINK_ITEMS.map((link, key) => (
+          <Link key={key} to={link.url} onClick={onClose}>
+            <NavItem
+              icon={link.icon}
+              title={link.title}
+              color={
+                location.pathname === '/admin/' + link.url
+                  ? 'secundary'
+                  : 'white'
+              }
+            />
+          </Link>
+        ))}
       </Flex>
     </Box>
   );
