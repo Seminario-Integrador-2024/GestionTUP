@@ -1,6 +1,6 @@
 from django.core.files.base import ContentFile
 from django.urls import reverse
-from .models import *
+
 #  third party imports
 from rest_framework import serializers
 
@@ -15,6 +15,7 @@ class AlumnoRetrieveSerializer(serializers.ModelSerializer):
         model = Alumno
         exclude = ['telefono', 'celular', 'user', "id"]
     
+
     def get_alumno_link(self, obj):
         request = self.context.get('request')
         if request is not None:
@@ -24,9 +25,17 @@ class AlumnoRetrieveSerializer(serializers.ModelSerializer):
         return None
 
 class AlumnoCreateSerializer(serializers.ModelSerializer):
+    email = serializers.SerializerMethodField()
+    
     class Meta:
         model = Alumno
         fields = "__all__"
+
+    def get_email(self,obj):
+        user_email = obj.user
+        if user_email is not None:
+            return user_email.email
+        return None
 
 class InhabilitacionSerializer(serializers.ModelSerializer):
     class Meta:

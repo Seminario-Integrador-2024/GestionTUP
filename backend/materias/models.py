@@ -18,8 +18,11 @@ class Materia(models.Model):
     """
 
     id_materia = models.AutoField(primary_key=True)
+    codigo_materia = models.IntegerField()
+    anio_plan = models.IntegerField()
     nombre = models.CharField(max_length=255)
     cuatrimestre = models.PositiveSmallIntegerField()
+
 
 
 
