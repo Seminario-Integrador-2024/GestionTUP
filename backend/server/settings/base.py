@@ -322,12 +322,12 @@ SPECTACULAR_SETTINGS = {
             "variables": {
                 "protocol": {
                     "description": "Protocol (http only for now)",
-                    "default": "https",
+                    "default": "http",
                     "enum": ["http", "https"],
                 },
                 "host": {
                     "description": "Hostname (FQDN)",
-                    "default": "gestiontup-42tx6kvt3q-uc.a.run.app",
+                    "default": "127.0.0.1",
                     "enum": [
                         "gestiontup-42tx6kvt3q-uc.a.run.app",
                         "127.0.0.1",
@@ -335,7 +335,7 @@ SPECTACULAR_SETTINGS = {
                 },
                 "port": {
                     "description": "server port",
-                    "default": "",
+                    "default": ":8000",
                     "enum": ["", ":8000"],
                 },
             },
