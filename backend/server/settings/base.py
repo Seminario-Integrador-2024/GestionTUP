@@ -121,6 +121,9 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "ALLOWED_VERSIONS": ["1.0.0"],
     "DEFAULT_VERSION": "1.0.0",
+    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
 }
 
 # Template settings

@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 #  custom imports
 from .models import *
+from .paginations import StandardResultsSetPagination
 
 
 class AlumnoRetrieveSerializer(serializers.ModelSerializer):
@@ -14,6 +15,7 @@ class AlumnoRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alumno
         exclude = ['telefono', 'celular', 'user', "id"]
+        pagination_class = StandardResultsSetPagination
     
 
     def get_alumno_link(self, obj):
