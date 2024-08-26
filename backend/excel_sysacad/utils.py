@@ -33,27 +33,12 @@ B. cargar archivo sysacad xls en la bbdd
 6 reporte de registros agregados de Materia_Alumno
 """
 
-# import modules
-# from tkinter import filedialog as fd
+import re
+from time import sleep
 
 import pandas as pd
 
-# get file by filedialog, http post or other method
-# path: str = fd.askopenfilename(
-#     title="Elija Archivo excel",
-#     initialdir="/Users/carlosferreyra/Downloads",
-#     filetypes=(("Excel files", "*.xls *.xlsx"), ("all files", "*.*")),
-# )
-raw_path = "/Users/carlosferreyra/Downloads/Cursantes 2 cuatrimestre.xlsx"
-
-
-
-
-
 # functions definitions
-
-
-import re
 
 
 def validate_excel(data: pd.DataFrame) -> pd.DataFrame:
@@ -140,4 +125,68 @@ def validate_excel(data: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
     # Call the main function
-    pass
+
+    # import modules
+    import os
+    from tkinter import filedialog as fd
+
+    # get file by filedialog, http post or other method
+    path: str = fd.askopenfilename(
+        title="Elija Archivo excel",
+        initialdir=os.getcwd(),
+        filetypes=(("Excel files", "*.xls *.xlsx"), ("all files", "*.*")),
+    )
+    raw_path = "/Users/carlosferreyra/Downloads/Cursantes 2 cuatrimestre.xlsx"
+
+    # read the file
+    COL_HEADER = 6  # header row with column names in the excel file
+    df: pd.DataFrame = pd.read_excel(
+        # io=path,
+        io=raw_path,
+        # header=COL_HEADER - 1,
+        names=[
+            "Extensión",
+            "Esp.",
+            "Ingr.",
+            "Año",
+            "Legajo",
+            "Documento",
+            "Apellido y Nombres",
+            "Comisión",
+            "Materia",
+            "Nombre de materia",
+            "Estado",
+            "Recursa",
+            "Cant.",
+            "Mail",
+            "Celular",
+            "Teléfono",
+            "Tel. Resid",
+            "Nota 1",
+            "Nota 2",
+            "Nota 3",
+            "Nota 4",
+            "Nota 5",
+            "Nota 6",
+            "Nota 7",
+            "Nota Final",
+            "Nombre",
+        ],
+        skiprows=COL_HEADER - 1,
+        engine="openpyxl",
+    )
+    # make index start at 6
+    df.index = df.index + COL_HEADER + 1
+
+    result = validate_excel(df)
+    # return the data as json
+    if not result.empty:
+        print("generando json con filas invalidas\n")
+        sleep(3)
+        print(result.to_json(orient="index"), end="\n")
+        sleep(3)
+        name = "invalid_rows.json"
+        result.to_json(orient="index", path_or_buf=name)
+        print(f"json guardado en {os.getcwd()}/{name}")
+    else:
+        print("All rows are valid.")
