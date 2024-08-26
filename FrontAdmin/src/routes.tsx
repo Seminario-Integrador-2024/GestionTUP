@@ -4,7 +4,7 @@ import Configuracion from './components/Pages/Configuracion/Configuracion';
 import Sysacad from './components/Pages/Sysacad/Sysacad';
 import ListadoMaterias from './components/Pages/Estadisticas/SubPages/ListadoMaterias';
 import MateriaDetalle from './components/Subjects/MateriaDetalle';
-import Programacion from './components/Pages/Estadisticas/SubPages/Programacion';
+import ListadoAlumnos from './components/Pages/Estadisticas/SubPages/ListadoAlumnos';
 
 const routes = [
   {
@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path: 'estadisticas/alumnos-que-cursan-materia/:url',
-    element: <Programacion />,
+    element: <ListadoAlumnos />,
   },
   {
     path: 'sysacad',

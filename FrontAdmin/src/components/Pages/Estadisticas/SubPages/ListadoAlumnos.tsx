@@ -16,7 +16,7 @@ import {
   Tfoot,
 } from '@chakra-ui/react';
 
-export default function Programacion() {
+export default function ListadoAlumnos() {
   return (
     <Box>
       <TableContainer>
