@@ -39,7 +39,6 @@ import {
   }
   
   interface CardCargaProps {
-    texto: string;
     compromisos: Compromiso[];
   }
   const MontoInput = ({
@@ -75,7 +74,7 @@ import {
     </Flex>
   );
   
-  const NewInterfaz = ({ texto, compromisos }: CardCargaProps) => {
+  const NewInterfaz = ({  compromisos }: CardCargaProps) => {
 
     const [montos, setMontos] = useState<any[]>([]);
     const cargarDatosDePrueba = () => {
@@ -104,65 +103,16 @@ import {
         fecha_carga_comp_pdf: '2023-02-20',
         archivo_pdf_url: 'https://example.com/pdf2.pdf',
       },
-      // Agrega más datos de prueba según sea necesario
+
     ];
   
     setMontos(datosDePrueba);
   };
 
-  // Llama a la función para cargar los datos de prueba
 useEffect(() => {
   cargarDatosDePrueba();
 }, []);
 
-
-    const {
-      isOpen: isOpenModal1,
-      onOpen: onOpenModal1,
-      onClose: onCloseModal1,
-    } = useDisclosure();
-    const {
-      isOpen: isOpenModal2,
-      onOpen: onOpenModal2,
-      onClose: onCloseModal2,
-    } = useDisclosure();
-    const confirmarMontos = useToast();
-    const [isEditing, setIsEditing] = useState(false);
-  
-    const [monto, setMonto] = useState({
-      cuotaCompleta: 25000,
-      cuotaReducida: 22000,
-      cuotaCompleta2doVencimiento: 29000,
-      cuotaReducida2doVencimiento: 25000,
-      cuotaCompleta3erVencimiento: 31000,
-      cuotaReducida3erVencimiento: 28000,
-      matricula: 52000,
-    });
-  
-    const [tempMonto, setTempMonto] = useState(monto);
-  
-    const handleChange = (e: { target: { name: string; value: string } }) => {
-      const { name, value } = e.target;
-      setTempMonto({
-        ...tempMonto,
-        [name]: parseInt(value.replace(/\D/g, ''), 10) || 0,
-      });
-    };
-  
-    const confirmar = () => {
-      setMonto(tempMonto);
-      console.log('Cambios guardados');
-      onCloseModal1();
-      confirmarMontos({
-        title: 'Cambios Guardados',
-        description: 'Los cambios se guardaron correctamente',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-      setIsEditing(false);
-    };
-  
     return (
       <Box
         borderWidth="1px"
@@ -174,7 +124,6 @@ useEffect(() => {
         mt={4}
         position="relative"
       >
-
 
         <SimpleGrid mt="15px">
         {montos.length > 0 ? (

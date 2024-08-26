@@ -5,7 +5,7 @@ export const FetchMontos = async () => {
     const token = Cookies.get('access_token');
 
     const response = await fetch(
-      'https://gestiontup-42tx6kvt3q-uc.a.run.app/pagos/compromisos/',
+      'http://localhost:8000/pagos/compromisos/',
       {
         method: 'GET',
         headers: {
@@ -14,6 +14,30 @@ export const FetchMontos = async () => {
         },
       }
     );
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error('Error en la respuesta del servidor');
+    }
+  } catch (error) {
+    throw new Error('Network error: ' + error);
+  }
+};
+
+export const createCompromiso = async (compromisoData: any) => {
+  try {
+    const token = Cookies.get('access_token');
+
+    const response = await fetch('http://localhost:8000/pagos/compromisos/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(compromisoData),
+    });
 
     if (response.ok) {
       const data = await response.json();
