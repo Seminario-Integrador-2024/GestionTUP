@@ -16,7 +16,7 @@ import { useToast } from '@chakra-ui/react';
 import VerHistorial from './ModalVerHistorial';
 import { FetchMontos } from '../../../../API/Montos';
 import { formatoFechaISOaDDMMAAAA } from '../../../../utils/general';
-let fechaUltimoPago = "12/08/2024"
+let fechaUltimoPago = '12/08/2024';
 
 interface Compromiso {
   fecha_carga_comp_pdf: string;
@@ -70,7 +70,6 @@ const MontoInput = ({
 );
 
 const Montos = ({ texto, compromisos }: CardCargaProps) => {
-
   const {
     isOpen: isOpenModal1,
     onOpen: onOpenModal1,
@@ -224,7 +223,6 @@ const Montos = ({ texto, compromisos }: CardCargaProps) => {
           isDisabled={!isEditing}
           _hover={isEditing ? 'none' : 'auto'}
         >
-
           Guardar Cambios
         </Button>
         <Button color="white" size="sm" onClick={onOpenModal2}>
