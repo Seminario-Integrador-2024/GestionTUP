@@ -6,5 +6,6 @@ from .serializers import MateriaSerializer
 
 # Create your views here.
 class MateriaViewSet(viewsets.ModelViewSet):
+    lookup_field = 'codigo_materia'
     queryset: BaseManager[Materia] = Materia.objects.all()
     serializer_class = MateriaSerializer
