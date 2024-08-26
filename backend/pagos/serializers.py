@@ -30,6 +30,7 @@ class PagoSerializer(serializers.ModelSerializer):
 
 
 class CuotaSerializer(serializers.ModelSerializer):
+    
     monto = serializers.SerializerMethodField()
 
     class Meta:
