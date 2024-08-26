@@ -40,31 +40,3 @@ function Estadisticas() {
 }
 
 export default Estadisticas;
-
-/* Codigo de samu 
-
-<Tabs position="relative" variant="unstyled" w="100%">
-        <TabList mb="1em">
-          <Tab fontWeight="bold">Mensual</Tab>
-          <Tab fontWeight="bold">Cuatrimestral</Tab>
-          <Tab fontWeight="bold">Calendario</Tab>
-        </TabList>
-        <TabIndicator
-          mt="-10.5px"
-          height="2px"
-          bg="green.500"
-          borderRadius="1px"
-        />
-        <TabPanels>
-          <TabPanel>
-            <Mensual />
-          </TabPanel>
-          <TabPanel>
-            <Cuatrimestral />
-          </TabPanel>
-          <TabPanel>
-            <Calendario />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      */
