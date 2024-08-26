@@ -123,6 +123,49 @@ def validate_excel(data: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+# cargar archivo sysacad xls en la bbdd
+
+from django.db import transaction
+from sqlalchemy import create_engine
+
+
+def load_excel(data: pd.DataFrame) -> None:
+    """
+    Loads the data into the database, handling multiple tables and transactions.
+
+    Args:
+        data (pd.DataFrame): a DataFrame containing the data to load into the database.
+    """
+
+    def get_connection_string():
+        from django.conf import settings
+
+        return settings.DATABASES["default"]["ENGINE"]
+
+    engine = create_engine(get_connection_string())
+
+    # Replace 'table_definitions' with a dictionary containing table names and their respective column lists
+    table_definitions = {
+        "alumnos_Materia": ["Materia", "Nombre de materia"],
+        "alumnos_Alumno": [
+            "Mail",
+            "Apellido y Nombres",
+            "Legajo",
+            "Documento",
+            "Nombre",
+        ],
+        "alumnos_MateriaAlumno": ["Materia", "Documento", "Año"],
+        # ... add more tables and their columns here
+    }
+
+    # Define a transaction to ensure all table updates are committed together
+    with transaction.atomic():
+        # Iterate over each table and its corresponding columns
+        for table_name, columns in table_definitions.items():
+            table_data = data[columns]
+            table_data.to_sql(table_name, con=engine, if_exists="append", index=False)
+
+
 if __name__ == "__main__":
     # Call the main function
 
@@ -132,7 +175,7 @@ if __name__ == "__main__":
 
     # get file by filedialog, http post or other method
     path: str = fd.askopenfilename(
-        title="Elija Archivo excel",
+        title="Elija Archivo excel a validar",
         initialdir=os.getcwd(),
         filetypes=(("Excel files", "*.xls *.xlsx"), ("all files", "*.*")),
     )

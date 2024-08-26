@@ -1,3 +1,5 @@
+from json import load
+
 import pandas as pd
 from django.db.models.manager import BaseManager
 from rest_framework import status, viewsets
@@ -23,10 +25,10 @@ class ExcelViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["get"], url_path="validar_excel")
-    def validate_excel(self, request, pk):
+    def validar_excel(self, request, pk):
 
         try:
-            # get the file from the request
+            # get the file by pk
             file = self.get_object().file
             # file manipulation with pandas
             # pandas documentation:
@@ -73,10 +75,18 @@ class ExcelViewSet(viewsets.ModelViewSet):
 
             result = validate_excel(df)
             # return the data as json
-            if result:
+            if not result.empty:
                 return Response(
                     result.to_json(orient="index"),
                     status=status.HTTP_206_PARTIAL_CONTENT,
+                )
+            else:
+                from .utils import load_excel
+
+                load_excel(df)
+                return Response(
+                    {"detail": "Archivo Excel válido, se cargará en la base de datos."},
+                    status=status.HTTP_200_OK,
                 )
         except ExcelFile.DoesNotExist:
             return Response(
