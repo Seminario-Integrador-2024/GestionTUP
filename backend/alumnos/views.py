@@ -1,22 +1,23 @@
 from django.db.models.manager import BaseManager
 from rest_framework import viewsets
+from rest_framework import generics
 from .models import *
 from .serializers import *
 
-# Create your views here.
-class MateriaViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[Materia] = Materia.objects.all()
-    serializer_class = MateriaSerializer
+# Create your views her
 
-
-class AlumnoViewSet(viewsets.ModelViewSet):
+class AlumnosViewSet(viewsets.ModelViewSet):
+    lookup_field = 'dni'
     queryset: BaseManager[Alumno] = Alumno.objects.all()
-    serializer_class = AlumnoSerializer
 
-
-class MateriaAlumnoViewSet(viewsets.ModelViewSet):
-    queryset: BaseManager[MateriaAlumno] = MateriaAlumno.objects.all()
-    serializer_class = MateriaAlumnoSerializer
+    def get_serializer_class(self):
+        # Usar el serializador adecuado según el método HTTP
+        if self.request.method == 'GET' and self.action == 'retrieve':
+            return AlumnoCreateSerializer
+        elif self.request.method == 'GET':
+            return AlumnoRetrieveSerializer 
+        return AlumnoCreateSerializer  
+    
 
 class InhabilitacionViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Inhabilitacion] = Inhabilitacion.objects.all()

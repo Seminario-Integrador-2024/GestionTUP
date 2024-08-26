@@ -28,11 +28,16 @@ load_dotenv()
 APPEND_SLASH = True
 
 DEBUG = True
+
+DEBUG_PROPAGATE_EXCEPTIONS = False
+
 ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS += [
     # third party apps
+    "whitenoise.runserver_nostatic",
     "debug_toolbar",
     "django_extensions",
     # local apps

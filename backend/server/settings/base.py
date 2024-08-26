@@ -48,7 +48,7 @@ BASE_DIR: Path = (
 # Application definition
 # https://docs.djangoproject.com/en/5.0/ref/settings/#installed-apps
 INSTALLED_APPS: list[str] = [
-    # django default
+    # django default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -70,7 +70,6 @@ INSTALLED_APPS: list[str] = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
-    "whitenoise.runserver_nostatic",
     # local apps
     "users",
     "core",
@@ -79,6 +78,7 @@ INSTALLED_APPS: list[str] = [
     "alumnos",
     "excel_sysadmin",
     "mensajeria",
+    "materias",
     "administrador",
 ]
 
@@ -94,7 +94,7 @@ MIDDLEWARE: list[str] = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",  # third party middleware for allauth
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "server.urls"
@@ -121,6 +121,9 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "ALLOWED_VERSIONS": ["1.0.0"],
     "DEFAULT_VERSION": "1.0.0",
+    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
 }
 
 # Template settings
@@ -142,6 +145,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "server.wsgi.application"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 
 # Storage settings
 # GCP Bucket settings
@@ -312,12 +325,12 @@ SPECTACULAR_SETTINGS = {
             "variables": {
                 "protocol": {
                     "description": "Protocol (http only for now)",
-                    "default": "https",
+                    "default": "http",
                     "enum": ["http", "https"],
                 },
                 "host": {
                     "description": "Hostname (FQDN)",
-                    "default": "gestiontup-42tx6kvt3q-uc.a.run.app",
+                    "default": "127.0.0.1",
                     "enum": [
                         "gestiontup-42tx6kvt3q-uc.a.run.app",
                         "127.0.0.1",
@@ -325,7 +338,7 @@ SPECTACULAR_SETTINGS = {
                 },
                 "port": {
                     "description": "server port",
-                    "default": "",
+                    "default": ":8000",
                     "enum": ["", ":8000"],
                 },
             },

@@ -10,6 +10,6 @@ export const LINK_ITEMS = [
   { icon: iconAlumno, url: 'alumnos', title: 'Alumnos' },
   { icon: iconEstadisticas, url: 'estadisticas', title: 'Estadísticas' },
   { icon: iconSysAdmin, url: 'sysadmin', title: 'SysAdmin' },
-  { icon: iconSysAcad, url: 'sysacad', title: 'SysAcad' },
+  { icon: iconSysAcad, url: 'sysacad', title: 'Academica' },
   { icon: iconConfig, url: 'configuracion', title: 'Configuración' },
 ];
