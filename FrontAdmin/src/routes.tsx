@@ -4,10 +4,15 @@ import Configuracion from './components/Pages/Configuracion/Configuracion';
 import Sysacad from './components/Pages/Sysacad/Sysacad';
 import AlumnosCursanMateria from './components/Pages/Estadisticas/SubPages/Alumnos-que-cursan-materia';
 import Alumnos from './components/Pages/Alumnos/Alumnos';
+import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno';
+
 const routes = [
   {
     path: 'alumnos',
     element: <Alumnos />,
+    children: [
+      { path: 'id', element: <FichaAlumno /> },
+    ],
   },
   {
     path: 'estadisticas',

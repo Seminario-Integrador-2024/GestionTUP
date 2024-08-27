@@ -4,12 +4,12 @@ import {
   MaterialReactTable,
   MRT_ColumnDef,
   useMaterialReactTable,
+  muiTableBodyRowProps
 } from 'material-react-table';
 import { data } from '../../API/DatosAlumnos';
 //Import Material React Table Translations
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 
-console.log(data);
 interface PropsTable extends FlexProps {
   nombre: string;
   legajo: number;
@@ -23,7 +23,7 @@ function Table() {
     () => [
       {
         accessorKey: 'nombre',
-        header: 'NOMBRE',
+        header: 'APELLIDO Y NOMBRES',
         enableHiding: true,
       },
       {
@@ -54,7 +54,6 @@ function Table() {
   const table = useMaterialReactTable({
     columns,
     data,
-
     enableRowSelection: true,
     enableColumnOrdering: true,
     enableGlobalFilter: true,
@@ -65,6 +64,7 @@ function Table() {
       },
     },
     localization: MRT_Localization_ES,
+   
   });
 
   return <MaterialReactTable table={table} />;
