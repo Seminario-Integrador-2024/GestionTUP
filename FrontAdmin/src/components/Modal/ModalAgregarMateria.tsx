@@ -15,7 +15,7 @@ import {
   interface ModalComponentProps {
     isOpen: boolean;
     onClose: () => void;
-    confirmar: (id: string, nombre: string, plan: string, cuatrimestre:string) => void;
+    confirmar: (id: string, anio_cursada: string, nombre: string, plan: string, cuatrimestre:string) => void;
   }
   export default function ModalComponentMateria({
     isOpen,
@@ -27,13 +27,15 @@ import {
     const [nombre, setNombre] = useState('');
     const [plan, setPlan] = useState('');
     const [cuatrimestre, setCuatrimestre] = useState('');
+    const [anio_cursada, setAnioCursada] = useState('');
 
     const handleconfirmar = () => {
-      confirmar(idMateria, nombre, plan, cuatrimestre);
+      confirmar(idMateria, anio_cursada, nombre, plan, cuatrimestre);
       setIdMateria('');
       setNombre('');
       setPlan('');
       setCuatrimestre('');
+      setAnioCursada('');
       onClose();
     };
 
@@ -61,11 +63,11 @@ import {
                   onChange={(e) => setNombre(e.target.value)}
                 />
                 <Input
-                  placeholder='Plan'
+                  placeholder='Año'
                   size='md'
                   variant="flushed"
-                  value={plan}
-                  onChange={(e) => setPlan(e.target.value)}
+                  value={anio_cursada}
+                  onChange={(e) => setAnioCursada(e.target.value)}
                 />
                 <Input
                   placeholder='Cuatrimestre'
@@ -74,6 +76,13 @@ import {
                   value={cuatrimestre}
                   onChange={(e) => setCuatrimestre(e.target.value)}
                 />  
+                <Input
+                  placeholder='Plan'
+                  size='md'
+                  variant="flushed"
+                  value={plan}
+                  onChange={(e) => setPlan(e.target.value)}
+                />
               </Stack>
             </ModalBody>
             <ModalFooter>
