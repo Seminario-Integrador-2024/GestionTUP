@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 
 export const FetchPostMateria = async (
     codigo_materia: number,
+    anio_cursada: number,
     anio_plan: number,
     nombre:string,
     cuatrimestre: number
@@ -15,7 +16,7 @@ export const FetchPostMateria = async (
           'Content-Type': 'application/json',
            Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ codigo_materia, anio_plan, nombre, cuatrimestre }),
+        body: JSON.stringify({ codigo_materia, anio_cursada, anio_plan, nombre, cuatrimestre }),
       });
 
       if (response.ok) {
@@ -58,6 +59,7 @@ export const FetchMaterias = async () => {
 
 export const FetchPutMateria = async (
   codigo_materia: number,
+  anio_cursada: number,
   anio_plan: number,
   nombre:string,
   cuatrimestre: number
@@ -71,7 +73,7 @@ export const FetchPutMateria = async (
         'Content-Type': 'application/json',
          Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ codigo_materia, anio_plan, nombre, cuatrimestre }),
+      body: JSON.stringify({ codigo_materia, anio_cursada, anio_plan, nombre, cuatrimestre }),
     });
 
     if (response.ok) {
