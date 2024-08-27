@@ -1,11 +1,12 @@
+import { controllers } from 'chart.js';
 import Cookies from 'js-cookie';
 
-export const FetchMontos = async () => {
+export const FetchMontos = async (offset: number, limit:number ) => {
   try {
     const token = Cookies.get('access_token');
 
     const response = await fetch(
-      'http://localhost:8000/pagos/compromisos/',
+      `http://localhost:8000/pagos/compromisos/?offset=${offset}&limit=${limit}`,
       {
         method: 'GET',
         headers: {
@@ -17,6 +18,7 @@ export const FetchMontos = async () => {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data);
       return data;
     } else {
       throw new Error('Error en la respuesta del servidor');
@@ -29,6 +31,7 @@ export const FetchMontos = async () => {
 export const createCompromiso = async (compromisoData: any) => {
   try {
     const token = Cookies.get('access_token');
+    console.log(compromisoData);
 
     const response = await fetch('http://localhost:8000/pagos/compromisos/', {
       method: 'POST',
@@ -43,7 +46,8 @@ export const createCompromiso = async (compromisoData: any) => {
       const data = await response.json();
       return data;
     } else {
-      throw new Error('Error en la respuesta del servidor');
+      const errorResponse = await response.json();
+      throw new Error('Error en la respuesta del servidor: ' + JSON.stringify(errorResponse));
     }
   } catch (error) {
     throw new Error('Network error: ' + error);

@@ -3,7 +3,7 @@ import { useDropzone, FileRejection } from 'react-dropzone';
 import { Flex, Box, VStack, useToast, Image } from '@chakra-ui/react';
 import iconUpload from '../../icons/subir.png';
 
-function Dropzone({ setFilePreview, filePreview }: { setFilePreview: any, filePreview: any }) {
+function Dropzone({ setFilePreview, setSelectedFile, filePreview }: { setFilePreview: any, setSelectedFile: any, filePreview: any }) {
   const toast = useToast();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -11,9 +11,10 @@ function Dropzone({ setFilePreview, filePreview }: { setFilePreview: any, filePr
       const file = acceptedFiles[0];
       if (file) {
         setFilePreview(URL.createObjectURL(file));
+        setSelectedFile(file);
       }
     }
-  }, []);
+  }, [setFilePreview, setSelectedFile]);
 
   const onDropRejected = useCallback(
     (fileRejections: FileRejection[]) => {
@@ -44,7 +45,7 @@ function Dropzone({ setFilePreview, filePreview }: { setFilePreview: any, filePr
 
   return (
     <Box>
-      <Flex
+      {!filePreview && <Flex
         borderRadius="10px"
         w="100%"
         justifyContent="center"
@@ -70,7 +71,7 @@ function Dropzone({ setFilePreview, filePreview }: { setFilePreview: any, filePr
             <p>Arrastrar y soltar archivo aquí</p>
           )}
         </VStack>
-      </Flex>
+      </Flex>}
 
       {filePreview && (
         <Box mt="20px">

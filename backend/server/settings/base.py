@@ -298,10 +298,10 @@ SPECTACULAR_SETTINGS = {
                 },
                 "host": {
                     "description": "Hostname (FQDN)",
-                    "default": "127.0.0.1",
+                    "default": "localhost",
                     "enum": [
                         "gestiontup-42tx6kvt3q-uc.a.run.app",
-                        "127.0.0.1",
+                        "localhost",
                     ],
                 },
                 "port": {
