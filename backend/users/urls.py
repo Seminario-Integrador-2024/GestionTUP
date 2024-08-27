@@ -17,5 +17,4 @@ from users.views import GoogleLogin
 urlpatterns: list = [
     path("", include("dj_rest_auth.urls"), name="rest_auth"),
     path("signup/", include("dj_rest_auth.registration.urls"), name="rest_auth_signup"),
-    path()
 ]

@@ -1,6 +1,6 @@
+from alumnos.models import Alumno
 from django.db import models
 
-from alumnos.models import Alumno
 
 # Create your models here.
 class Materia(models.Model):
@@ -16,15 +16,12 @@ class Materia(models.Model):
         cuatrimestre (PositiveSmallIntegerField): The semester in which\
             the subject is offered.
     """
-
-    id_materia = models.AutoField(primary_key=True)
-    codigo_materia = models.IntegerField()
+    # id_materia = models.AutoField(primary_key=True)
+    codigo_materia = models.IntegerField(primary_key=True)
     anio_cursada = models.PositiveSmallIntegerField()
     anio_plan = models.PositiveSmallIntegerField()
     nombre = models.CharField(max_length=255)
     cuatrimestre = models.PositiveSmallIntegerField()
-
-
 
 
 class MateriaAlumno(models.Model):
