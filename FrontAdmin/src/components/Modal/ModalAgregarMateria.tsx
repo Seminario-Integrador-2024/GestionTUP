@@ -15,7 +15,7 @@ import {
   interface ModalComponentProps {
     isOpen: boolean;
     onClose: () => void;
-    confirmar: (id: string, nombre: string, plan: string) => void;
+    confirmar: (id: string, nombre: string, plan: string, cuatrimestre:string) => void;
   }
   export default function ModalComponentMateria({
     isOpen,
@@ -26,12 +26,14 @@ import {
     const [idMateria, setIdMateria] = useState('');
     const [nombre, setNombre] = useState('');
     const [plan, setPlan] = useState('');
+    const [cuatrimestre, setCuatrimestre] = useState('');
 
     const handleconfirmar = () => {
-      confirmar(idMateria, nombre, plan);
+      confirmar(idMateria, nombre, plan, cuatrimestre);
       setIdMateria('');
       setNombre('');
       setPlan('');
+      setCuatrimestre('');
       onClose();
     };
 
@@ -65,6 +67,13 @@ import {
                   value={plan}
                   onChange={(e) => setPlan(e.target.value)}
                 />
+                <Input
+                  placeholder='Cuatrimestre'
+                  size='md'
+                  variant="flushed"
+                  value={cuatrimestre}
+                  onChange={(e) => setCuatrimestre(e.target.value)}
+                />  
               </Stack>
             </ModalBody>
             <ModalFooter>

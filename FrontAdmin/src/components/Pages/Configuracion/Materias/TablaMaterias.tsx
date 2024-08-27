@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Button, Text, useDisclosure, IconButton} from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons'; 
-import API from '../../../../API/Materias';
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
 import ModalComponentMateria from '../../../Modal/ModalAgregarMateria';
 import ModalEditarMateria from '../../../Modal/ModalEditarMateria';
+import { FetchPostMateria, FetchMaterias, FetchPutMateria, FetchDeleteMateria} from '../../../../API/Materias';
+import { useToast } from '../../../Toast/useToast';
 
 export default function TablaMaterias() {
     const [materias, setMaterias] = useState<any[]>([]);
     const [selectedMateria, setSelectedMateria] = useState<any>(null);
     const [selectedMateriaEditar, setSelectedMateriaEditar] = useState<any>(null);
+    const showToast = useToast();
     //Eliminar
     const {
         isOpen: isOpen1,
@@ -30,7 +32,12 @@ export default function TablaMaterias() {
     } = useDisclosure();
 
     useEffect(() => {
-        setMaterias(API);
+        const fetchData = async () => {
+            const data = await FetchMaterias();
+            setMaterias(data.results);
+            console.log(data.results);
+          };
+        fetchData();
     }, []);
 
     const handleBorrar = (materia: any) => {
@@ -39,14 +46,31 @@ export default function TablaMaterias() {
     };
 
     const handleConfirmarBorrado = () => {
-        setMaterias(materias.filter(m => m.id !== selectedMateria.id));  //Elimina del json ya traido asi no hace falta volver a hacer un GET
-         // Aca la solicitud DELETE para eliminar la materia
+        // Aca la solicitud DELETE para eliminar la materia
+        try {
+            const Data = FetchDeleteMateria(selectedMateria.codigo_materia);
+            showToast('Exito', 'Materia eliminada con exito', 'success');
+            setMaterias(materias.filter(m => m.codigo_materia !== selectedMateria.codigo_materia)); // Elimina del estado
+          } catch (error) {
+            console.error('Network error', error);
+            showToast('Error', 'No se pudo eliminar la materia', 'error');
+        }
+
         onClose1();
     };
 
-    const handleAgregar = (id: string, nombre: string, plan: string) => {
-        // Aca la solicitud GET para agregar la materia
-        setMaterias([...materias, { id, nombre, plan }]);
+    const handleAgregar = (codigo_materia: string, nombre: string, anio_plan: string, cuatrimestre:string) => {
+        // Aca la solicitud POST para agregar la materia
+        try {
+            console.log({ codigo_materia, anio_plan, nombre });
+            const Data = FetchPostMateria(parseInt(codigo_materia), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
+            console.log(Data);
+            showToast('Exito', 'Materia agregada con exito', 'success');
+          } catch (error) {
+            console.error('Network error', error);
+            showToast('Error', 'No se pudo agregar la materia', 'error');
+        }
+        setMaterias([...materias, { codigo_materia, nombre, anio_plan, cuatrimestre }]);
         onClose2();
     }
 
@@ -55,13 +79,21 @@ export default function TablaMaterias() {
         onOpen3();
     };
 
-    const handleConfirmarEditar = (id: string, nombre: string, plan: string) => {
+    const handleConfirmarEditar = (codigo_materia:string, nombre: string, cuatrimestre:string, anio_plan: string) => {
         // Aca la solicitud PUT para editar la materia
+        try {
+            const Data = FetchPutMateria(parseInt(codigo_materia), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
+            console.log(Data);  
+            showToast('Exito', 'Materia editada con exito', 'success');
+          } catch (error) {
+            console.error('Network error', error);
+            showToast('Error', 'No se pudo editar la materia', 'error');
+        }
 
-        const index = materias.findIndex(materia => materia.id === id);
+        const index = materias.findIndex(materia => materia.codigo_materia === codigo_materia);
         if (index !== -1) {
             const newMaterias = [...materias];
-            newMaterias[index] = { ...newMaterias[index], nombre, plan };
+            newMaterias[index] = { ...newMaterias[index], anio_plan, nombre, cuatrimestre };
             setMaterias(newMaterias);
         }
 
@@ -70,7 +102,6 @@ export default function TablaMaterias() {
 
     return (
         <Box>
-            {materias.length > 0 ? (
                 <Box>
                 <Flex justifyContent="center" mb={4}>
                     <Button leftIcon={<AddIcon />} colorScheme="green" onClick={onOpen2}>Agregar Materia</Button>
@@ -80,6 +111,7 @@ export default function TablaMaterias() {
                         <Tr bg="secundaryBg">
                             <Th>ID Materia</Th>
                             <Th>Nombre</Th>
+                            <Th>Cuatrimestre</Th>
                             <Th>Plan</Th>
                             <Th textAlign="center">Acciones</Th>
                         </Tr>
@@ -87,9 +119,10 @@ export default function TablaMaterias() {
                     <Tbody>
                         {materias.map((materia, index) => (
                             <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"} h={0.5}>
-                                <Td>{materia.id}</Td>
+                                <Td>{materia.codigo_materia}</Td>
                                 <Td>{materia.nombre}</Td>
-                                <Td>{materia.plan}</Td>
+                                <Td>{materia.cuatrimestre}</Td>
+                                <Td>{materia.anio_plan}</Td>
                                 <Td>
                                     <Flex>
                                        <IconButton
@@ -113,9 +146,6 @@ export default function TablaMaterias() {
                     </Tbody>
                 </Table>
                 </Box>
-            ) : (
-                <Text>No hay datos disponibles</Text>
-            )}
             <ModalComponent
                 isOpen={isOpen1}
                 onClose={onClose1}
