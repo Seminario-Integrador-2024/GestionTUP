@@ -2,6 +2,7 @@
 from django.db.models.manager import BaseManager
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
 from rest_framework import viewsets
 from django.http import FileResponse
@@ -25,6 +26,9 @@ class CompromisoDePagoViewSet(viewsets.ModelViewSet):
     queryset = CompromisoDePago.objects.all()
     serializer_class = CompromisoDePagoSerializer
     pagination_class = CompDePagResultsSetPagination
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['anio']
+    ordering = ['anio']
 
     @action(detail=True, methods=['get'], url_path='archivo')
     def retrieve_pdf(self, request, pk=None):
