@@ -17,28 +17,30 @@ import {
   interface ModalComponentProps {
     isOpen: boolean;
     onClose: () => void;
-    confirmar: (id: string, nombre: string, plan: string) => void;
+    confirmar: (codigo_materia:string, nombre: string, cuatrimestre:string, anio_plan: string) => void;
     materia: any;
   }
   export default function ModalEditarMateria({ isOpen, onClose, confirmar, materia, }: ModalComponentProps) {
    
     const handleconfirmar = () => {
-      confirmar(id, nombre, plan);
-      setId('');
+      confirmar(codigo_materia, nombre, cuatrimestre, plan);
+      setCodigoMateria('');
       setNombre('');
       setPlan('');
       onClose();
     };
 
-    const [id, setId] = useState('');
+    const [codigo_materia, setCodigoMateria] = useState('');
     const [nombre, setNombre] = useState('');
+    const [cuatrimestre, setCuatrimestre] = useState('');
     const [plan, setPlan] = useState('');
 
     useEffect(() => {
         if (materia) {
-        setId(materia.id);
+        setCodigoMateria(materia.codigo_materia);
         setNombre(materia.nombre);
-        setPlan(materia.plan);
+        setCuatrimestre(materia.cuatrimestre);
+        setPlan(materia.anio_plan);
         }
     }, [materia]);
 
@@ -58,10 +60,10 @@ import {
                 <Flex direction="column">
                     <Text>ID Materia</Text>
                     <Input
-                        value={id}
+                        value={codigo_materia}
                         placeholder="Materia ID"
                         size='md'
-                        onChange={(e) => setId(e.target.value)}
+                        onChange={(e) => setCodigoMateria(e.target.value)}
                         variant = "flushed"
                         ml={1}
                     />
@@ -73,6 +75,17 @@ import {
                     placeholder="Nombre"
                     size='md'
                     onChange={(e) => setNombre(e.target.value)}
+                    variant = "flushed"
+                    ml={1}
+                />
+                </Flex>
+                <Flex direction="column" mt="10px">
+                <Text mb={0}>Cuatrimestre</Text>
+                <Input
+                    value={cuatrimestre}
+                    placeholder="Cuatrimestre"
+                    size='md'
+                    onChange={(e) => setCuatrimestre(e.target.value)}
                     variant = "flushed"
                     ml={1}
                 />
