@@ -9,7 +9,7 @@ import os
 
 # third party imports
 from .serializers import *
-
+from .paginations import CompDePagResultsSetPagination
 
 class PagoViewSet(viewsets.ModelViewSet):
     queryset: BaseManager[Pago] = Pago.objects.all()
@@ -24,6 +24,7 @@ class CuotaViewSet(viewsets.ModelViewSet):
 class CompromisoDePagoViewSet(viewsets.ModelViewSet):
     queryset = CompromisoDePago.objects.all()
     serializer_class = CompromisoDePagoSerializer
+    pagination_class = CompDePagResultsSetPagination
 
     @action(detail=True, methods=['get'], url_path='archivo')
     def retrieve_pdf(self, request, pk=None):
