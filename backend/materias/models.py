@@ -16,6 +16,7 @@ class Materia(models.Model):
         cuatrimestre (PositiveSmallIntegerField): The semester in which\
             the subject is offered.
     """
+
     # id_materia = models.AutoField(primary_key=True)
     codigo_materia = models.IntegerField(primary_key=True)
     anio_cursada = models.PositiveSmallIntegerField()
@@ -45,6 +46,7 @@ class MateriaAlumno(models.Model):
 
     id_materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     id_alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
+    anio = models.IntegerField()
     offrc = models.IntegerField()
     atendnc = models.IntegerField()
 
@@ -53,4 +55,6 @@ class MateriaAlumno(models.Model):
         This class provides metadata options for the model.
         """
 
-        unique_together: tuple[tuple[str, str]] = (("id_materia", "id_alumno"),)
+        unique_together: tuple[tuple[str, str, str]] = (
+            ("id_materia", "id_alumno", "anio"),
+        )
