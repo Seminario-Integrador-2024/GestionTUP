@@ -39,7 +39,7 @@ if settings.DEBUG:
     urlpatterns += [
         path(
             "",
-            lambda request: redirect("users/", permanent=False),
+            lambda request: redirect("admin/", permanent=False),
             name="root_redirect",
         ),
         path("admin/", admin.site.urls),
