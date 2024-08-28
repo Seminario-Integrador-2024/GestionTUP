@@ -37,7 +37,7 @@ if settings.DEBUG:
     urlpatterns += [
         path(
             "",
-            lambda request: redirect("users/", permanent=False),
+            lambda request: redirect("api/swagger-ui/", permanent=False),
             name="root_redirect",
         ),
         path("grappelli/", include("grappelli.urls")),
