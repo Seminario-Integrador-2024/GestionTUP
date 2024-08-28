@@ -29,6 +29,7 @@ class Alumno(models.Model):
     dni = models.IntegerField()
     estado = models.CharField(max_length=255)
     #estado = models.ForeignKey("TipoEstado", on_delete=models.CASCADE)
+    cuil = models.IntegerField()
     anio_ingreso = models.IntegerField()
     telefono = models.IntegerField(blank=True,  null=True)
     celular = models.IntegerField(blank=True,  null=True)
