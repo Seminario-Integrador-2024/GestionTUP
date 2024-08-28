@@ -34,8 +34,8 @@ export default function TablaMaterias() {
     useEffect(() => {
         const fetchData = async () => {
             const data = await FetchMaterias();
-            setMaterias(data.results);
-            console.log(data.results);
+            setMaterias(data);
+            console.log(data);
           };
         fetchData();
     }, []);
@@ -59,18 +59,18 @@ export default function TablaMaterias() {
         onClose1();
     };
 
-    const handleAgregar = (codigo_materia: string, nombre: string, anio_plan: string, cuatrimestre:string) => {
+    const handleAgregar = (codigo_materia: string, anio_cursada: string, nombre: string, anio_plan: string, cuatrimestre:string) => {
         // Aca la solicitud POST para agregar la materia
         try {
             console.log({ codigo_materia, anio_plan, nombre });
-            const Data = FetchPostMateria(parseInt(codigo_materia), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
+            const Data = FetchPostMateria(parseInt(codigo_materia), parseInt(anio_cursada), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
             console.log(Data);
             showToast('Exito', 'Materia agregada con exito', 'success');
           } catch (error) {
             console.error('Network error', error);
             showToast('Error', 'No se pudo agregar la materia', 'error');
         }
-        setMaterias([...materias, { codigo_materia, nombre, anio_plan, cuatrimestre }]);
+        setMaterias([...materias, { codigo_materia, anio_cursada, anio_plan, nombre, cuatrimestre }]);
         onClose2();
     }
 
@@ -79,23 +79,31 @@ export default function TablaMaterias() {
         onOpen3();
     };
 
-    const handleConfirmarEditar = (codigo_materia:string, nombre: string, cuatrimestre:string, anio_plan: string) => {
+    const handleConfirmarEditar = (codigo_materia:string, anio_cursado:string, nombre: string, cuatrimestre:string, anio_plan: string) => {
         // Aca la solicitud PUT para editar la materia
         try {
-            const Data = FetchPutMateria(parseInt(codigo_materia), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
+            const Data = FetchPutMateria(parseInt(codigo_materia), parseInt(anio_cursado), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
             console.log(Data);  
             showToast('Exito', 'Materia editada con exito', 'success');
+
+            const index = materias.findIndex(materia => materia.codigo_materia === parseInt(codigo_materia));
+            if (index !== -1) {
+                const newMaterias = [...materias];
+                newMaterias[index] = { 
+                    ...newMaterias[index], 
+                    codigo_materia: parseInt(codigo_materia), 
+                    anio_cursada: parseInt(anio_cursado), 
+                    anio_plan: parseInt(anio_plan), 
+                    nombre, 
+                    cuatrimestre: parseInt(cuatrimestre) 
+                };
+                setMaterias(newMaterias);
+            }
           } catch (error) {
             console.error('Network error', error);
             showToast('Error', 'No se pudo editar la materia', 'error');
         }
 
-        const index = materias.findIndex(materia => materia.codigo_materia === codigo_materia);
-        if (index !== -1) {
-            const newMaterias = [...materias];
-            newMaterias[index] = { ...newMaterias[index], anio_plan, nombre, cuatrimestre };
-            setMaterias(newMaterias);
-        }
 
         onClose3();
     }
@@ -111,6 +119,7 @@ export default function TablaMaterias() {
                         <Tr bg="secundaryBg">
                             <Th>ID Materia</Th>
                             <Th>Nombre</Th>
+                            <Th>Año</Th>
                             <Th>Cuatrimestre</Th>
                             <Th>Plan</Th>
                             <Th textAlign="center">Acciones</Th>
@@ -118,9 +127,10 @@ export default function TablaMaterias() {
                     </Thead>
                     <Tbody>
                         {materias.map((materia, index) => (
-                            <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"} h={0.5}>
+                            <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"} height="15px">
                                 <Td>{materia.codigo_materia}</Td>
                                 <Td>{materia.nombre}</Td>
+                                <Td>{materia.anio_cursada}</Td>
                                 <Td>{materia.cuatrimestre}</Td>
                                 <Td>{materia.anio_plan}</Td>
                                 <Td>

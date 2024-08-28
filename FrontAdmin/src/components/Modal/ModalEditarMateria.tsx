@@ -17,16 +17,13 @@ import {
   interface ModalComponentProps {
     isOpen: boolean;
     onClose: () => void;
-    confirmar: (codigo_materia:string, nombre: string, cuatrimestre:string, anio_plan: string) => void;
+    confirmar: (codigo_materia:string, anio_cursado:string, nombre: string, cuatrimestre:string, anio_plan: string) => void;
     materia: any;
   }
   export default function ModalEditarMateria({ isOpen, onClose, confirmar, materia, }: ModalComponentProps) {
    
     const handleconfirmar = () => {
-      confirmar(codigo_materia, nombre, cuatrimestre, plan);
-      setCodigoMateria('');
-      setNombre('');
-      setPlan('');
+      confirmar(codigo_materia, anio_cursado, nombre, cuatrimestre, plan);
       onClose();
     };
 
@@ -34,6 +31,7 @@ import {
     const [nombre, setNombre] = useState('');
     const [cuatrimestre, setCuatrimestre] = useState('');
     const [plan, setPlan] = useState('');
+    const [anio_cursado, setAnioCursado] = useState('');
 
     useEffect(() => {
         if (materia) {
@@ -41,6 +39,7 @@ import {
         setNombre(materia.nombre);
         setCuatrimestre(materia.cuatrimestre);
         setPlan(materia.anio_plan);
+        setAnioCursado(materia.anio_cursada);
         }
     }, [materia]);
 
@@ -75,6 +74,17 @@ import {
                     placeholder="Nombre"
                     size='md'
                     onChange={(e) => setNombre(e.target.value)}
+                    variant = "flushed"
+                    ml={1}
+                />
+                </Flex>
+                <Flex direction="column" mt="10px">
+                <Text mb={0}>Año</Text>
+                <Input
+                    value={anio_cursado}
+                    placeholder="Año"
+                    size='md'
+                    onChange={(e) => setAnioCursado(e.target.value)}
                     variant = "flushed"
                     ml={1}
                 />
