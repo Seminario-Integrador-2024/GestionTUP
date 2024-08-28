@@ -77,6 +77,15 @@ function Table() {
       },
     },
     localization: MRT_Localization_ES,
+
+    muiTableBodyRowProps: ({ row }) => ({
+      onClick: (event) => {
+        console.info( row.original.dni ); //redireccionar a la ficha alumno/{dni}
+      },
+      sx: {
+        cursor: 'pointer', //you might want to change the cursor too when adding an onClick
+      },
+    }),
   });
 
   return <MaterialReactTable table={table} />;
