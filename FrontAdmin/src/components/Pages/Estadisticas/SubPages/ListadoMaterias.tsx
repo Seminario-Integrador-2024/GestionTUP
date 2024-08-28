@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import {
     Container,
@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import CustomSelect from './Seleccion';
 import { LINK_MATERIAS } from '../../../Subjects/LinksMaterias';
+import { FetchMaterias } from '../../../../API/Materias';
 
 type Cuatrimestre = 'primer-cuatrimestre' | 'segundo-cuatrimestre';
 
@@ -18,6 +19,30 @@ const opcionesCuatrimestre = [
     { value: 'primer-cuatrimestre', label: 'Primer Cuatrimestre' },
     { value: 'segundo-cuatrimestre', label: 'Segundo Cuatrimestre' },
 ];
+
+const [asignaturas, setAsignaturas] = useState()
+const [error, setError] = useState("")
+const [loading, setLoading] = useState(true)
+
+useEffect(() => {
+    const getMaterias = async () => {
+        try {
+            const data = await FetchMaterias();
+            setAsignaturas(data.results);
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError('An unknown error occurred');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    getMaterias();
+}, []
+)
 
 const materias: Record<Cuatrimestre, string[]> = {
     'primer-cuatrimestre': [
