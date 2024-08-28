@@ -121,7 +121,6 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "ALLOWED_VERSIONS": ["1.0.0"],
     "DEFAULT_VERSION": "1.0.0",
-    
     #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     #'PAGE_SIZE': 100,
 }
@@ -195,7 +194,8 @@ AUTH_USER_MODEL: str = "users.CustomUser"
 # dj-rest-auth settings (with Registration & JWT enabled)
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
 REST_AUTH = {
-    "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",  #  "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # default
+    # "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
+    "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # default
     "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
     # jwt settings
     # "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration", custom jwt serializer
@@ -236,6 +236,13 @@ SIMPLE_JWT = {
 
 SITE_ID = 1
 
+# Django Allauth settings
+# https://docs.allauth.org/en/latest/account/configuration.html
+# https://docs.allauth.org/en/latest/socialaccount/configuration.html
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 
 AUTHENTICATION_BACKENDS: list[str] = [
     "users.backends.EmailOrUsernameModelBackend",
