@@ -20,6 +20,9 @@ from django.shortcuts import redirect
 from django.urls import include, path
 from django.urls.resolvers import URLResolver
 
+# import routers
+from rest_framework.routers import DefaultRouter
+
 urlpatterns: list[URLResolver] = [
     path("users/", include("users.urls")),
     path("api/", include("api.urls")),
@@ -30,16 +33,17 @@ urlpatterns: list[URLResolver] = [
     path("administrador/", include("administrador.urls")),
     path("pagos/", include("pagos.urls")),
     path("materias/", include("materias.urls")),
+    path("accounts/", include("allauth.urls")),
 ]
 if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
     from django.contrib import admin
 
     urlpatterns += [
-        path(
-            "",
-            lambda request: redirect("api/swagger-ui/", permanent=False),
-            name="root_redirect",
-        ),
+        # path(
+        #     "",
+        #     lambda request: redirect("api/swagger-ui/", permanent=False),
+        #     name="root_redirect",
+        # ),
         path("admin/", admin.site.urls),
     ] + debug_toolbar_urls(prefix="debug")
