@@ -1,14 +1,21 @@
 import { useDropzone, FileRejection } from 'react-dropzone';
 import { Flex, Box, VStack, useToast, Image, Stack, Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import iconUpload from '../../../icons/subir.png';
 import { HiOutlineDocumentAdd } from "react-icons/hi";
 
-function ZonaCarga () {
-
+const ZonaCarga = ({ onFileUpload, reset }: { onFileUpload: (fileName: string) => void, reset: boolean }) => {
     const toast = useToast();
     const [fileName, setFileName] = useState('');
+    const [isUploadDisabled, setIsUploadDisabled] = useState(false);
     
+    useEffect(() => {
+        if (reset) {
+            setFileName('');
+            setIsUploadDisabled(false);
+        }
+    }, [reset]);
+
     const onDrop = (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         if (rejectedFiles.length > 0) {
         toast({
@@ -23,11 +30,14 @@ function ZonaCarga () {
         if (acceptedFiles.length > 0) {
             const file = acceptedFiles[0];
             setFileName(acceptedFiles[0].name);
+            setIsUploadDisabled(true); // Desactiva la zona de carga
+            onFileUpload(file.name); // Notifica al componente padre que se subió un archivo
         }
     };
     
     const { getRootProps, getInputProps, acceptedFiles, isDragActive } = useDropzone({
         onDrop,
+        disabled: isUploadDisabled,
         accept: {
         'application/xlsx': ['.xlsx'],
         },
@@ -43,10 +53,10 @@ function ZonaCarga () {
         alignItems="center"
         border="2px solid #6f6f6f"
         borderStyle="dashed"
-        cursor="pointer"
+        cursor={isUploadDisabled ? 'not-allowed' : 'pointer'}
         {...getRootProps()}
         style={{
-          background: '#e3e3e3',
+          background: isUploadDisabled ? '#d3d3d3' : '#e3e3e3',
           padding: '40px',
         }}
         >
