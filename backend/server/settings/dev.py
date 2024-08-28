@@ -1,13 +1,19 @@
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 
-from .base import (
+from .base import (  # ACCOUNT_AUTHENTICATION_METHOD,; ACCOUNT_EMAIL_REQUIRED,; ACCOUNT_EMAIL_VERIFICATION,
+    ACCOUNT_AUTHENTICATION_METHOD,
+    ACCOUNT_EMAIL_REQUIRED,
+    ACCOUNT_EMAIL_VERIFICATION,
     AUTH_USER_MODEL,
+    AUTHENTICATION_BACKENDS,
     BASE_DIR,
     CORS_ALLOW_ALL_ORIGINS,
     DATABASES,
     DEFAULT_AUTO_FIELD,
+    EMAIL_BACKEND,
     INSTALLED_APPS,
     MIDDLEWARE,
     REST_AUTH,
@@ -16,9 +22,7 @@ from .base import (
     SECRET_KEY,
     SIMPLE_JWT,
     SITE_ID,
-    SOCIAL_ACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT,
-    SOCIALACCOUNT_ONLY,
-    SOCIALACCOUNT_PROVIDERS,
+    SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT,
     SPECTACULAR_SETTINGS,
     STATIC_URL,
     TEMPLATES,
@@ -30,11 +34,16 @@ load_dotenv()
 APPEND_SLASH = True
 
 DEBUG = True
+
+DEBUG_PROPAGATE_EXCEPTIONS = False
+
 ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS += [
     # third party apps
+    "whitenoise.runserver_nostatic",
     "debug_toolbar",
     "django_extensions",
     # local apps
@@ -53,6 +62,12 @@ INTERNAL_IPS: list[str] = [
 # Static files (CSS, JavaScript, images)
 logs_dir: str = os.path.join(BASE_DIR, "logs")
 os.makedirs(name=logs_dir, exist_ok=True)
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(seconds=60),
+}
+
 
 # Logging
 LOGGING = {

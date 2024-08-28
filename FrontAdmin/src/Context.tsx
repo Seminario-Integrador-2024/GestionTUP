@@ -11,7 +11,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    !Cookies.get('access') ? false : true
+    !Cookies.get('access_token') ? false : true
   );
 
   const onLogin = () => {
@@ -19,8 +19,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const onLogout = () => {
-    Cookies.remove('access');
-    Cookies.remove('refresh');
+    Cookies.remove('access_token');
+    Cookies.remove('refresh_token');
     Cookies.remove('access_expiration');
     Cookies.remove('refresh_expiration');
     Cookies.remove('username');

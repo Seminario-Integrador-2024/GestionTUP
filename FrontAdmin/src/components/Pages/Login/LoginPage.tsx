@@ -4,12 +4,12 @@ import {
   Flex,
   Button,
   FormControl,
-  FormLabel,
   Heading,
   Input,
   useColorModeValue,
   Link,
   Image,
+  Spinner,
 } from '@chakra-ui/react';
 import { FetchLogin } from '../../../API/Login';
 import { useAuth } from '../../../Context';
@@ -21,6 +21,7 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { onLogin } = useAuth();
   const showToast = useToast();
 
@@ -29,7 +30,8 @@ function LoginPage() {
   const bgColor = useColorModeValue('#EEEEF0', 'gray.800');
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
-    /*e.preventDefault();
+    e.preventDefault();
+    setIsLoading(true);
     try {
       await FetchLogin(username, password);
       onLogin();
@@ -37,8 +39,9 @@ function LoginPage() {
     } catch (error) {
       console.error('Network error', error);
       showToast('Error', 'Inicio de sesión fallido', 'error');
-    }*/
-    onLogin();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -138,7 +141,7 @@ function LoginPage() {
                   fontWeight="500"
                   letterSpacing="1px"
                 >
-                  Acceder
+                  {isLoading ? <Spinner size="sm" /> : 'Acceder'}
                 </Button>
                 <Flex alignItems="center" justifyContent="center">
                   <Link

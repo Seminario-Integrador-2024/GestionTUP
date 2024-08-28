@@ -29,6 +29,7 @@ urlpatterns: list[URLResolver] = [
     path("alumnos/", include("alumnos.urls")),
     path("administrador/", include("administrador.urls")),
     path("pagos/", include("pagos.urls")),
+    path("materias/", include("materias.urls")),
 ]
 if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
@@ -40,6 +41,5 @@ if settings.DEBUG:
             lambda request: redirect("api/swagger-ui/", permanent=False),
             name="root_redirect",
         ),
-        path("grappelli/", include("grappelli.urls")),
         path("admin/", admin.site.urls),
     ] + debug_toolbar_urls(prefix="debug")

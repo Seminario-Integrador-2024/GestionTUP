@@ -2,57 +2,66 @@ import {
   Box,
   Flex,
   Button,
-  propNames,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Select,
-  Image,
   Text,
-  Heading,
 } from '@chakra-ui/react';
-import compPago from '../../icons/compromiso_de_pago_2023.pdf';
 import Dropzone from './DropZone';
+import { useState } from 'react';
+
+interface Compromiso {
+  fecha_carga_comp_pdf: string;
+  cuatrimestre: string;
+  archivo_pdf_url?: string; 
+  id_comp_pago: number;
+  matricula: number;
+  monto_completo: number;
+  monto_completo_2venc: number;
+  monto_completo_3venc: number;
+  cuota_reducida: number;
+  cuota_reducida_2venc: number;
+  cuota_reducida_3venc: number;
+}
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  titleModal: string;
+  setFilePreview: any;
+  filePreview: any;
+  selectedFile: File | null;
+  setSelectedFile: any;
 }
 
-//funcion que dependiendo lo que devuelva el endpoint /compromisos/ verifique la fecha de carga del ultimo
-//si la fecha esta entre enero y junio, que devuelva 1C, sino 2C y con eso autocompletar el campo select cuatrimestre
-//Usar esto para que el mensaje de alerta en rojo: El ultimo compromiso de pago fue cargado el xx/xx/xxxx
+const ModalCargarDocumento: React.FC<ModalProps> = ({ isOpen, onClose, setFilePreview, selectedFile, setSelectedFile }) => {
+  const [tempFilePreview, setTempFilePreview] = useState<string | null>(null);
+ 
 
-//<Heading onClick={onOpen}></Heading>
-const ModalCargarDocumento: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  titleModal,
-}) => {
+  const handleCargar = () => {
+    setFilePreview(tempFilePreview);
+    onClose();
+  };
+
+ 
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="2x1">
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{titleModal}</ModalHeader>
+      <ModalContent maxWidth="70vw" minH="80vh">
         <ModalCloseButton />
+        <ModalHeader>Cargar Compromiso de Pago</ModalHeader>
         <ModalBody mb="30px">
-          <Text mb="20px">¿A que cuatrimestre corresponde el archivo?</Text>
-          <Select
-            placeholder="Selecciona un cuatrimestre"
-            name="cuatrimestre"
-            mb="20px"
-          >
-            <option value="1C">1er Cuatrimestre</option>
-            <option value="2C">2do Cuatrimestre</option>
-          </Select>
-          <Dropzone />
+          <Dropzone setFilePreview={setTempFilePreview} setSelectedFile={setSelectedFile} filePreview={tempFilePreview} />
           <Flex justifyContent="center" mt="20px">
-            <Button color="white" mt="20px" size="sm">
+            <Button color="white" mt="20px" size="sm" onClick={handleCargar}>
               Cargar
+            </Button>
+            <Button color="white" mt="20px" size="sm" ml="20px" onClick={() => {setTempFilePreview(null), setFilePreview(null)}} isActive={tempFilePreview ? false : true}>
+              Volver a intentar
             </Button>
           </Flex>
         </ModalBody>
@@ -60,4 +69,5 @@ const ModalCargarDocumento: React.FC<ModalProps> = ({
     </Modal>
   );
 };
+
 export default ModalCargarDocumento;

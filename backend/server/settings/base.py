@@ -18,6 +18,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
+from server.settings.production import EMAIL_BACKEND
 
 load_dotenv()
 
@@ -47,19 +48,18 @@ BASE_DIR: Path = (
 # Application definition
 # https://docs.djangoproject.com/en/5.0/ref/settings/#installed-apps
 INSTALLED_APPS: list[str] = [
-    # django default
-    "grappelli",
+    # django default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # third party apps
     "rest_framework",
-    "rest_framework.authtoken",
+    "rest_framework.authtoken",  # not needed since we are using jwt in dj-rest-auth
     "dj_rest_auth",
-    "django.contrib.sites",
     "allauth",
     "allauth.account",
     "dj_rest_auth.registration",
@@ -70,7 +70,6 @@ INSTALLED_APPS: list[str] = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
-    "whitenoise.runserver_nostatic",
     # local apps
     "users",
     "core",
@@ -79,6 +78,7 @@ INSTALLED_APPS: list[str] = [
     "alumnos",
     "excel_sysadmin",
     "mensajeria",
+    "materias",
     "administrador",
 ]
 
@@ -88,13 +88,13 @@ MIDDLEWARE: list[str] = [
     "corsheaders.middleware.CorsMiddleware",  # third party middleware for corsc
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # third party middleware for static files
-    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",  # third party middleware for allauth
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "server.urls"
@@ -116,11 +116,13 @@ REST_FRAMEWORK = {
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "ALLOWED_VERSIONS": ["1.0.0"],
     "DEFAULT_VERSION": "1.0.0",
+    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    #'PAGE_SIZE': 100,
 }
 
 # Template settings
@@ -143,9 +145,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "server.wsgi.application"
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
 # Storage settings
 # GCP Bucket settings
-MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent.parent / "mnt/my-bucket/"
+MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
 
 os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
 
@@ -182,53 +194,61 @@ AUTH_USER_MODEL: str = "users.CustomUser"
 # dj-rest-auth settings (with Registration & JWT enabled)
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
 REST_AUTH = {
-    "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
-    "LOGOUT_SERIALIZER": "dj_rest_auth.serializers.LogoutSerializer",
-    "USER_SERIALIZER": "dj_rest_auth.serializers.UserDetailsSerializer",
-    "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration",
-    "TOKEN_MODEL": None,
-    "TOKEN_CREATOR": None,
-    "JWT_AUTH_RETURN_EXPIRATION": True,
+    # "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
+    "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # default
+    "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
+    # jwt settings
+    # "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration", custom jwt serializer
+    "JWT_SERIALIZER": "dj_rest_auth.serializers.JWTSerializer",  # default jwt serializer
+    "JWT_SERIALIZER_WITH_EXPIRATION": "dj_rest_auth.serializers.JWTSerializerWithExpiration",
+    "JWT_TOKEN_CLAIMS_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "USER_DETAILS_SERIALIZER": "dj_rest_auth.serializers.UserDetailsSerializer",
+    "PASSWORD_RESET_SERIALIZER": "dj_rest_auth.serializers.PasswordResetSerializer",
+    "PASSWORD_RESET_CONFIRM_SERIALIZER": "dj_rest_auth.serializers.PasswordResetConfirmSerializer",
+    "PASSWORD_CHANGE_SERIALIZER": "dj_rest_auth.serializers.PasswordChangeSerializer",
+    "REGISTER_SERIALIZER": "dj_rest_auth.registration.serializers.RegisterSerializer",
+    # "REGISTER_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
+    "TOKEN_MODEL": None,  # "rest_framework.authtoken.models.Token",
+    "TOKEN_CREATOR": "dj_rest_auth.utils.default_create_token",
     "PASSWORD_RESET_USE_SITES_DOMAIN": False,
     "OLD_PASSWORD_FIELD_ENABLED": False,
     "LOGOUT_ON_PASSWORD_CHANGE": False,
-    "SESSION_LOGIN": False,
-    "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "access_token",
-    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+    "SESSION_LOGIN": False,  # for the session cookie login. since we are using JWT, we don't need this
+    "USE_JWT": True,  # uses JWT for authentication, it requires the simple jwt package
+    "JWT_AUTH_COOKIE": "access_token",  # set the name of the cookie
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",  # set the name of the cookie
     "JWT_AUTH_REFRESH_COOKIE_PATH": "/",
     "JWT_AUTH_SECURE": False,
-    "JWT_AUTH_HTTPONLY": False,
+    "JWT_AUTH_HTTPONLY": False,  # allow javascript to access the cookie
     "JWT_AUTH_SAMESITE": "Lax",
+    "JWT_AUTH_RETURN_EXPIRATION": True,  # return the expiration time in the response
     "JWT_AUTH_COOKIE_USE_CSRF": False,
     "JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED": False,
 }
 # JWT settings
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    # JWT token settings
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
-    # JWT token blacklist settings
-    "ROTATE_REFRESH_TOKENS": True,  # Enable refresh token rotation
-    "BLACKLIST_AFTER_ROTATION": True,  # Blacklist tokens after rotation
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = "username"
-ACCOUNT_EMAIL_VERIFICATION = "none"
+
 SITE_ID = 1
 
-# Social Account settings
-SOCIALACCOUNT_ONLY = True
-SOCIAL_ACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-SOCIALACCOUNT_PROVIDERS = {"google": {"EMAIL_AUTHENTICATION": True}}
+# Django Allauth settings
+# https://docs.allauth.org/en/latest/account/configuration.html
+# https://docs.allauth.org/en/latest/socialaccount/configuration.html
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 
 AUTHENTICATION_BACKENDS: list[str] = [
     "users.backends.EmailOrUsernameModelBackend",
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
 ]
-
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -280,20 +300,20 @@ SPECTACULAR_SETTINGS = {
             "variables": {
                 "protocol": {
                     "description": "Protocol (http only for now)",
-                    "default": "https",
+                    "default": "http",
                     "enum": ["http", "https"],
                 },
                 "host": {
                     "description": "Hostname (FQDN)",
-                    "default": "gestiontup-42tx6kvt3q-uc.a.run.app",
+                    "default": "localhost",
                     "enum": [
                         "gestiontup-42tx6kvt3q-uc.a.run.app",
-                        "127.0.0.1",
+                        "localhost",
                     ],
                 },
                 "port": {
                     "description": "server port",
-                    "default": "",
+                    "default": ":8000",
                     "enum": ["", ":8000"],
                 },
             },
