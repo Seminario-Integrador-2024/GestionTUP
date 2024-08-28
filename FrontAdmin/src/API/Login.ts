@@ -25,6 +25,6 @@ export const FetchLogin = async (
       throw new Error('Login failed');
     }
   } catch (error) {
-    throw new Error('Network error: ' );
+    throw new Error('Network error: ');
   }
 };
