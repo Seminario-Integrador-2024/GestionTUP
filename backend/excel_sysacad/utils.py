@@ -37,8 +37,13 @@ import re
 from time import sleep
 
 import pandas as pd
+from django.conf import settings
+
 
 # functions definitions
+def get_connection_string():
+
+    return settings.DATABASES["default"]["ENGINE"]
 
 
 def validate_excel(data: pd.DataFrame) -> pd.DataFrame:
@@ -129,22 +134,19 @@ from django.db import transaction
 from sqlalchemy import create_engine
 
 
-def load_excel(data: pd.DataFrame) -> None:
+def load_excel(data: pd.DataFrame) -> pd.DataFrame:
     """
     Loads the data into the database, handling multiple tables and transactions.
+    Returns a DataFrame containing duplicate rows found in the existing database.
 
     Args:
         data (pd.DataFrame): a DataFrame containing the data to load into the database.
     """
 
-    def get_connection_string():
-        from django.conf import settings
-
-        return settings.DATABASES["default"]["ENGINE"]
-
+    # Get the connection string from Django settings
     engine = create_engine(get_connection_string())
 
-    # Replace 'table_definitions' with a dictionary containing table names and their respective column lists
+    # Define table definitions with column lists
     table_definitions = {
         "alumnos_Materia": ["Materia", "Nombre de materia"],
         "alumnos_Alumno": [
@@ -158,11 +160,25 @@ def load_excel(data: pd.DataFrame) -> None:
         # ... add more tables and their columns here
     }
 
-    # Define a transaction to ensure all table updates are committed together
+    # Initialize an empty DataFrame to store duplicate rows
+    duplicates = pd.DataFrame()
+
+    # Use a transaction to ensure all table updates are committed together
     with transaction.atomic():
         # Iterate over each table and its corresponding columns
         for table_name, columns in table_definitions.items():
+            # Filter the DataFrame for the current table's columns
             table_data = data[columns]
+
+            # Check for duplicate rows in the existing database table
+            existing_data = pd.read_sql_table(table_name, con=engine)
+            duplicate_rows = pd.merge(table_data, existing_data, how="inner")
+
+            # Append the duplicate rows to the duplicates DataFrame
+            duplicates = pd.concat([duplicates, duplicate_rows])
+
+            # Load the data into the database table, excluding duplicates
+            table_data = table_data.drop_duplicates(keep=False)
             table_data.to_sql(table_name, con=engine, if_exists="append", index=False)
 
 
