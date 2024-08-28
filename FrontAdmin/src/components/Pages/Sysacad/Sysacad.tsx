@@ -1,7 +1,7 @@
 import { Grid, Text, Stack } from '@chakra-ui/react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
-import Dropzone from 'react-dropzone';
-import TablaMaterias from '../Configuracion/Materias/TablaMaterias';
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from '@chakra-ui/react'
+import TablaMaterias from './Materias/TablaMaterias';
+import CargaExcel from './ExcelSysacad/CargaExcel';
 
 function Sysacad() {
   return (
@@ -13,7 +13,9 @@ function Sysacad() {
 
   <TabPanels>
     <TabPanel>
-      <p>Aca se carga el excel proveniente de Sysacad</p>
+      <Stack direction="column" spacing={4} align="center">
+          <CargaExcel/>
+      </Stack>
     </TabPanel>
     <TabPanel>
       <Stack direction="column" spacing={4} align="center">
