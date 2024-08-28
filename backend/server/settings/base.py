@@ -79,6 +79,7 @@ INSTALLED_APPS: list[str] = [
     "alumnos",
     "excel_sysadmin",
     "mensajeria",
+    "materias",
     "administrador",
 ]
 
@@ -121,6 +122,8 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "ALLOWED_VERSIONS": ["1.0.0"],
     "DEFAULT_VERSION": "1.0.0",
+    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    #'PAGE_SIZE': 100,
 }
 
 # Template settings
@@ -192,7 +195,8 @@ AUTH_USER_MODEL: str = "users.CustomUser"
 # dj-rest-auth settings (with Registration & JWT enabled)
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
 REST_AUTH = {
-    "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",  # default
+    # "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
+    "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # default
     "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
     # jwt settings
     # "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration", custom jwt serializer
@@ -225,8 +229,8 @@ REST_AUTH = {
 # JWT settings
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=3600),
-    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=10),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
@@ -239,9 +243,16 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 SITE_ID = 1
 
+# Django Allauth settings
+# https://docs.allauth.org/en/latest/account/configuration.html
+# https://docs.allauth.org/en/latest/socialaccount/configuration.html
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 
 AUTHENTICATION_BACKENDS: list[str] = [
-    "allauth.account.auth_backends.AuthenticationBackend",
+    "users.backends.EmailOrUsernameModelBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -299,20 +310,20 @@ SPECTACULAR_SETTINGS = {
             "variables": {
                 "protocol": {
                     "description": "Protocol (http only for now)",
-                    "default": "https",
+                    "default": "http",
                     "enum": ["http", "https"],
                 },
                 "host": {
                     "description": "Hostname (FQDN)",
-                    "default": "gestiontup-42tx6kvt3q-uc.a.run.app",
+                    "default": "localhost",
                     "enum": [
                         "gestiontup-42tx6kvt3q-uc.a.run.app",
-                        "127.0.0.1",
+                        "localhost",
                     ],
                 },
                 "port": {
                     "description": "server port",
-                    "default": "",
+                    "default": ":8000",
                     "enum": ["", ":8000"],
                 },
             },

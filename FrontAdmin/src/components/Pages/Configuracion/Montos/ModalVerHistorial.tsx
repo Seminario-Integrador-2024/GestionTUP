@@ -39,11 +39,15 @@ export default function VerHistorial({ isOpen, onClose }: ModalComponentProps) {
     if (isOpen) {
       const fetchData = async () => {
         const data = await FetchMontos();
-        setMontos(data);
+        setMontos(data.results);
       };
       fetchData();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    console.log(montos);
+  }, [montos]);
 
   const handleViewPdf = async (url: string) => {
     try {

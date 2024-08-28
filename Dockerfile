@@ -53,6 +53,9 @@ RUN python manage.py makemigrations
 # Generate the OpenAPI schema
 RUN python manage.py spectacular --color --file schema.yml --validate
 
+# Create supersuser
+# RUN python create_superuser.py
+
 # Expose port 8000 for the Django app
 EXPOSE 8000
 

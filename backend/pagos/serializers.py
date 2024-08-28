@@ -5,7 +5,7 @@ from django.urls import reverse
 # Create your serializers here.
 
 class CompromisoDePagoSerializer(serializers.ModelSerializer):
-    archivo_pdf = serializers.FileField(write_only=True, required=False)
+    archivo_pdf = serializers.FileField(write_only=True, required=False, allow_null=True)
     archivo_pdf_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -30,6 +30,7 @@ class PagoSerializer(serializers.ModelSerializer):
 
 
 class CuotaSerializer(serializers.ModelSerializer):
+    
     monto = serializers.SerializerMethodField()
 
     class Meta:
