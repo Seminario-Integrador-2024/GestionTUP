@@ -180,6 +180,7 @@ def load_excel(data: pd.DataFrame) -> pd.DataFrame:
             # Load the data into the database table, excluding duplicates
             table_data = table_data.drop_duplicates(keep=False)
             table_data.to_sql(table_name, con=engine, if_exists="append", index=False)
+    return duplicates
 
 
 if __name__ == "__main__":
