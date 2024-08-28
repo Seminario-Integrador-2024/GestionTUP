@@ -10,7 +10,7 @@ export const FetchPostMateria = async (
   try {
     const token = Cookies.get('access_token');
 
-    const response = await fetch('http://127.0.0.1:8000/materias/', {
+    const response = await fetch('https://gestiontup-42tx6kvt3q-uc.a.run.app/materias/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

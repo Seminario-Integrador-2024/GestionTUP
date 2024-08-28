@@ -6,7 +6,7 @@ export const FetchMontos = async (offset: number, limit: number) => {
     const token = Cookies.get('access_token');
 
     const response = await fetch(
-      `http://localhost:8000/pagos/compromisos/?offset=${offset}&limit=${limit}`,
+      `https://gestiontup-42tx6kvt3q-uc.a.run.app/pagos/compromisos/?offset=${offset}&limit=${limit}`,
       {
         method: 'GET',
         headers: {
@@ -33,7 +33,7 @@ export const createCompromiso = async (compromisoData: any) => {
     const token = Cookies.get('access_token');
     console.log(compromisoData);
 
-    const response = await fetch('http://localhost:8000/pagos/compromisos/', {
+    const response = await fetch('https://gestiontup-42tx6kvt3q-uc.a.run.app/pagos/compromisos/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
