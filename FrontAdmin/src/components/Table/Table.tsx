@@ -11,8 +11,13 @@ import { useNavigate } from 'react-router-dom';
 
 let tableHeaders = [
   {
+    accessorKey: 'apellido',
+    header: 'APELLIDO',
+    enableHiding: true,
+  },
+  {
     accessorKey: 'nombre',
-    header: 'APELLIDO Y NOMBRES',
+    header: 'NOMBRES',
     enableHiding: true,
   },
   {
