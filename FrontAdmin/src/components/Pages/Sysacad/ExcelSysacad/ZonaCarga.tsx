@@ -48,7 +48,7 @@ const ZonaCarga = ({ onFileUpload, reset }: { onFileUpload: (fileName: string) =
         <Stack direction="column">
         <Flex
         borderRadius="10px"
-        w="100%"
+        w={500}
         justifyContent="center"
         alignItems="center"
         border="2px solid #6f6f6f"
