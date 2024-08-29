@@ -4,8 +4,8 @@
 from django.conf import settings
 from django.db import models
 
-
 # Create your models here.
+
 
 class Alumno(models.Model):
     """
@@ -25,13 +25,13 @@ class Alumno(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     apellido = models.CharField(max_length=255)
     nombre = models.CharField(max_length=255)
-    legajo = models.IntegerField()
-    dni = models.IntegerField()
+    legajo = models.IntegerField(unique=True)
+    dni = models.IntegerField(primary_key=True)
     estado = models.CharField(max_length=255)
-    #estado = models.ForeignKey("TipoEstado", on_delete=models.CASCADE)
+    # estado = models.ForeignKey("TipoEstado", on_delete=models.CASCADE)
     anio_ingreso = models.IntegerField()
-    telefono = models.IntegerField(blank=True,  null=True)
-    celular = models.IntegerField(blank=True,  null=True)
+    telefono = models.IntegerField(blank=True, null=True)
+    celular = models.IntegerField(blank=True, null=True)
 
 
 class Inhabilitacion(models.Model):
@@ -74,6 +74,7 @@ class TipoInhabilitacion(models.Model):
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
 
+
 class TipoEstado(models.Model):
     """
     Represents a type of state.
@@ -88,4 +89,3 @@ class TipoEstado(models.Model):
     id_tipo_estado = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
-
