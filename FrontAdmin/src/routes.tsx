@@ -10,9 +10,10 @@ const routes = [
   {
     path: 'alumnos',
     element: <Alumnos />,
-    children: [
-      { path: 'id', element: <FichaAlumno /> },
-    ],
+  },
+  {
+    path: 'alumnos/:dni',
+    element:  <FichaAlumno /> ,
   },
   {
     path: 'estadisticas',

@@ -7,6 +7,36 @@ import {
 } from 'material-react-table';
 import { FetchAlumnos } from '../../API/DatosAlumnosV2.ts';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import { useNavigate } from 'react-router-dom';
+
+let tableHeaders = [
+  {
+    accessorKey: 'nombre',
+    header: 'APELLIDO Y NOMBRES',
+    enableHiding: true,
+  },
+  {
+    accessorKey: 'legajo',
+    header: 'LEGAJO',
+    enableHiding: true,
+  },
+  {
+    accessorKey: 'dni',
+    header: 'DNI',
+    enableHiding: true,
+  },
+  {
+    accessorKey: 'estado',
+    header: 'SITUACIÓN',
+    enableHiding: true,
+  },
+  {
+    accessorKey: 'anio_ingreso',
+    header: 'AÑO INGRESO',
+    muiTableHeadCellProps: { style: { color: '#fffff' } },
+    enableHiding: true,
+  },
+]
 
 interface PropsTable extends FlexProps {
   nombre: string;
@@ -14,10 +44,13 @@ interface PropsTable extends FlexProps {
   dni: number;
   estado: string;
   anio_ingreso: number;
+  boolEnableRowSelection: bool;
+  tableHeaders: array;
 }
 
-function Table() {
+function Table( {boolEnableRowSelection }: PropsTable ) {
   const [alumnos, setAlumnos] = useState<PropsTable[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,41 +66,13 @@ function Table() {
   }, []);
 
   const columns = useMemo<MRT_ColumnDef<PropsTable>[]>(
-    () => [
-      {
-        accessorKey: 'nombre',
-        header: 'APELLIDO Y NOMBRES',
-        enableHiding: true,
-      },
-      {
-        accessorKey: 'legajo',
-        header: 'LEGAJO',
-        enableHiding: true,
-      },
-      {
-        accessorKey: 'dni',
-        header: 'DNI',
-        enableHiding: true,
-      },
-      {
-        accessorKey: 'estado',
-        header: 'SITUACIÓN',
-        enableHiding: true,
-      },
-      {
-        accessorKey: 'anio_ingreso',
-        header: 'AÑO INGRESO',
-        muiTableHeadCellProps: { style: { color: '#fffff' } },
-        enableHiding: true,
-      },
-    ],
-    []
+    () => tableHeaders,[]
   );
 
   const table = useMaterialReactTable({
     columns,
-    data: alumnos, // Cambiar 'alumnos' a 'data'
-    enableRowSelection: true,
+    data: alumnos, 
+    enableRowSelection: boolEnableRowSelection,
     enableColumnOrdering: true,
     enableGlobalFilter: true,
     initialState: {
@@ -80,10 +85,10 @@ function Table() {
 
     muiTableBodyRowProps: ({ row }) => ({
       onClick: (event) => {
-        console.info( row.original.dni ); //redireccionar a la ficha alumno/{dni}
+        navigate(`${row.original.dni}`);
       },
       sx: {
-        cursor: 'pointer', //you might want to change the cursor too when adding an onClick
+        cursor: 'pointer', 
       },
     }),
   });
