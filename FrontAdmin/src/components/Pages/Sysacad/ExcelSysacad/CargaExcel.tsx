@@ -21,11 +21,22 @@ function CargaExcel () {
 
     const handleFile = (file: File) => {
         //aca hago el fecth, esta funcion paso como parametro a ZonaCarga
-        setFile(file);
+        setFile(file);   //nose esto. creo que no va
         //const data = fecth
         //setData(data);
         // Pasar data a Resultado
         // Renderizar Resultado solo cuando data tiene algo
+
+        
+    // const handleFile = async (file: File) => {
+    //     const result = await fetchData('URL_DEL_SERVIDOR', file);
+    //     if (result.statusCode === 200) {
+    //         setData(result.data);
+    //         setFileUploaded(true);
+    //     } else {
+    //         console.error('Error en la solicitud:', result.statusCode);
+    //     }
+    // };
     }
 
     return (

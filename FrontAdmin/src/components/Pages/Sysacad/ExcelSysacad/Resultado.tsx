@@ -5,7 +5,7 @@ interface DataItem {
     "id": string;
     "Apellido y Nombres": string | null;
     "Celular": string | null;
-    "Tel. Resid": string | null;
+    "Tel. Resid"?: string | null;
     "Teléfono": string | null;
   }
   

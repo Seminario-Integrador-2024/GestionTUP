@@ -32,9 +32,11 @@ const ZonaCarga = ({ onFileUpload, reset }: { onFileUpload: (fileName: string) =
             setFileName(acceptedFiles[0].name);
             setIsUploadDisabled(true); // Desactiva la zona de carga
             onFileUpload(file.name); // Notifica al componente padre que se subió un archivo
+            //llamar a la funcion que hace el fetch
         }
     };
-    
+
+
     const { getRootProps, getInputProps, acceptedFiles, isDragActive } = useDropzone({
         onDrop,
         disabled: isUploadDisabled,
