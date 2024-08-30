@@ -11,14 +11,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-
-# Variables and Secrets.
 import secrets
 from datetime import timedelta
 from pathlib import Path
 
+# Variables and Secrets.
+from re import A
+
 from dotenv import load_dotenv
-from server.settings.production import EMAIL_BACKEND
+from server.settings.production import EMAIL_BACKEND, LOGIN_REDIRECT_URL
 
 load_dotenv()
 
@@ -118,6 +119,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
+    "DEFAULT_THROTTLE_RATES": {"anon": "100/day", "user": "1000/day"},
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "ALLOWED_VERSIONS": ["1.0.0"],
     "DEFAULT_VERSION": "1.0.0",
@@ -179,7 +181,7 @@ STATIC_ROOT: Path = MOUNTED_BUCKET_ROOT / "static"
 STATIC_URL: str = "/static/"
 
 MEDIA_ROOT: Path = MOUNTED_BUCKET_ROOT / "media"
-MEDIA_URL: str = "/media/"
+MEDIA_URL: str = "media/"
 
 
 # Password validation
@@ -232,25 +234,46 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=10),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
 }
 
+# Allauth settings
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 SITE_ID = 1
 
 # Django Allauth settings
 # https://docs.allauth.org/en/latest/account/configuration.html
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "EMAIL_AUTHENTICATION": True,
+        "SCOPE": ["email", "profile"],
+        "AUTH_PARAMS": {"access_type": "offline"},
+    },
+}
+LOGIN_REDIRECT_URL = "/"
+SOCIALACCOUNT_ONLY = True
 AUTHENTICATION_BACKENDS: list[str] = [
-    "users.backends.EmailOrUsernameModelBackend",
     "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
+
+
+CSRF_TRUSTED_ORIGINS = ["http://*", "https://*"]
 
 LANGUAGE_CODE = "es-ar"
 

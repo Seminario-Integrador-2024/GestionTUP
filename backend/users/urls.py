@@ -10,10 +10,13 @@ URL Patterns:
 
 Note: This module is imported and used in the project's main URL configuration file.
 """
-from django.urls import URLResolver, include, path
+from django.urls import URLPattern, URLResolver, include, path
+
+from . import views
 
 # base urls
-urlpatterns: list[URLResolver] = [
+urlpatterns: list[URLResolver | URLPattern] = [
     path("", include("dj_rest_auth.urls"), name="rest_auth"),
     path("signup/", include("dj_rest_auth.registration.urls"), name="rest_auth_signup"),
+    path("google/", views.google_login, name="google_login"),
 ]

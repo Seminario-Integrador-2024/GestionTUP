@@ -15,6 +15,9 @@ from .base import (  # ACCOUNT_AUTHENTICATION_METHOD,; ACCOUNT_EMAIL_REQUIRED,; 
     DEFAULT_AUTO_FIELD,
     EMAIL_BACKEND,
     INSTALLED_APPS,
+    LOGIN_REDIRECT_URL,
+    MEDIA_ROOT,
+    MEDIA_URL,
     MIDDLEWARE,
     REST_AUTH,
     REST_FRAMEWORK,
@@ -23,9 +26,12 @@ from .base import (  # ACCOUNT_AUTHENTICATION_METHOD,; ACCOUNT_EMAIL_REQUIRED,; 
     SIMPLE_JWT,
     SITE_ID,
     SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT,
+    SOCIALACCOUNT_ONLY,
+    SOCIALACCOUNT_PROVIDERS,
     SPECTACULAR_SETTINGS,
     STATIC_URL,
     TEMPLATES,
+    TIME_ZONE,
     WSGI_APPLICATION,
 )
 
@@ -62,11 +68,6 @@ INTERNAL_IPS: list[str] = [
 # Static files (CSS, JavaScript, images)
 logs_dir: str = os.path.join(BASE_DIR, "logs")
 os.makedirs(name=logs_dir, exist_ok=True)
-
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(seconds=60),
-}
 
 
 # Logging
