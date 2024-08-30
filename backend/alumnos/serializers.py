@@ -12,7 +12,7 @@ class AlumnoRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Alumno
-        exclude = ['telefono', 'celular', 'user', "id","cuil"]
+        exclude = ['telefono', 'celular', 'user', "id"]
     
 
     def get_alumno_link(self, obj):
@@ -25,12 +25,10 @@ class AlumnoRetrieveSerializer(serializers.ModelSerializer):
 
 class AlumnoCreateSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
-    cuil = serializers.IntegerField(required=False) 
-
+    
     class Meta:
         model = Alumno
         fields = "__all__"
-
 
     def get_email(self,obj):
         user_email = obj.user
