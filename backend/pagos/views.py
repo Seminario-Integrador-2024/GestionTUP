@@ -2,6 +2,7 @@
 from django.db.models.manager import BaseManager
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
 from rest_framework import viewsets
@@ -46,17 +47,33 @@ class CompromisoDePagoViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Compromiso no encontrado."}, status=status.HTTP_404_NOT_FOUND)
         
 
+class UltimoCompromisoDePago(APIView):
+    
+    def get(self, request):
+        ultimo_compromiso = CompromisoDePago.objects.order_by('-fecha_carga_comp_pdf').first()
+        if ultimo_compromiso is not None:
+            serializer = CompromisoDePagoSerializer(ultimo_compromiso, context={'request': request})
+            return Response(serializer.data)
+        return Response({"detail": "No data found."}, status=status.HTTP_404_NOT_FOUND) 
+
+
+
 class FirmaCompPagoAlumnoViewSets(viewsets.ModelViewSet):
     queryset: BaseManager[FirmaCompPagoAlumno] = FirmaCompPagoAlumno.objects.all()
     serializer_class = FirmaCompPagoAlumnoSerializer
 
+
 """
 
-alumno 
-compromiso_de_pago 
-fecha_firmado 
-firmado
+1-Traer el ultimo compdepag filtrar por fechacargado ✔✔✔
 
+2-Verificar si el alumno firmo el comp
+Caso1: el alumno no tiene ningun comp firmado
+    return
+Caso2: el alumno tiene 1 comp firmado
+    return
+Caso3: el alumno tiene más de un comp firmado
+    return
 
 
 """

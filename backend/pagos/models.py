@@ -176,5 +176,5 @@ class FirmaCompPagoAlumno(models.Model):
 
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
     compromiso_de_pago = models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
-    fecha_firmado = models.DateTimeField()
-    firmado = models.BooleanField()
+    fecha_firmado = models.DateTimeField(auto_now_add=True, blank=True,  null=True )
+    firmado = models.BooleanField(default=True, blank=True,  null=True)
