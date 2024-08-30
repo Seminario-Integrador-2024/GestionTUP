@@ -44,6 +44,7 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 # Create the volume mount point & give read/write access
 RUN mkdir -p /app/mnt/my-bucket/ && chown -R 1001:1001 /app/mnt/my-bucket/
 
+
 # Declare the volume
 VOLUME ["/app/mnt/my-bucket/"]
 
@@ -63,5 +64,5 @@ RUN python manage.py spectacular --color --file schema.yml --validate
 EXPOSE 8000
 
 # Run the application
-CMD ["sh", "-c", "python create_superuser.py && python manage.py migrate && gunicorn server.wsgi:application --bind 0.0.0.0:8000"]
 
+CMD ["sh", "-c", "python create_superuser.py && python manage.py migrate && gunicorn server.wsgi:application --bind 0.0.0.0:8000"]
