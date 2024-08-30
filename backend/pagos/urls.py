@@ -8,6 +8,8 @@ router = DefaultRouter()
 router.register(r"compromisos", CompromisoDePagoViewSet)
 router.register(r"pagos", PagoViewSet)
 router.register(r"cuotas", CuotaViewSet)
+router.register(r"firmas-compromisos", FirmaCompPagoAlumnoViewSets)
+
 
 urlpatterns = [
     path("", include(router.urls)),

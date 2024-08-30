@@ -44,3 +44,19 @@ class CompromisoDePagoViewSet(viewsets.ModelViewSet):
                 return Response({"detail": "El compromiso no tiene un archivo PDF asociado."}, status=status.HTTP_404_NOT_FOUND)
         except CompromisoDePago.DoesNotExist:
             return Response({"detail": "Compromiso no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class FirmaCompPagoAlumnoViewSets(viewsets.ModelViewSet):
+    queryset: BaseManager[FirmaCompPagoAlumno] = FirmaCompPagoAlumno.objects.all()
+    serializer_class = FirmaCompPagoAlumnoSerializer
+
+"""
+
+alumno 
+compromiso_de_pago 
+fecha_firmado 
+firmado
+
+
+
+"""

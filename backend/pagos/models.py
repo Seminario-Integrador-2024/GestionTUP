@@ -1,6 +1,9 @@
 
 from django.db import models
 from django.utils import timezone
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os
 
 from alumnos.models import Alumno
 
@@ -92,6 +95,13 @@ class CompromisoDePago(models.Model):
             self.comprimiso_path = self.archivo_pdf.url
             super().save(update_fields=['comprimiso_path'])
 
+@receiver(post_delete, sender=CompromisoDePago)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Borra el archivo PDF cuando se elimina la instancia del modelo.
+    """
+    if instance.archivo_pdf and os.path.isfile(instance.archivo_pdf.path):
+        os.remove(instance.archivo_pdf.path)
 
 class Cuota(models.Model):
     """
