@@ -33,69 +33,83 @@ B. cargar archivo sysacad xls en la bbdd
 6 reporte de registros agregados de Materia_Alumno
 """
 
+import json
 import re
-from time import sleep
+from typing import Callable
 
 import pandas as pd
-from django.conf import settings
-
+from django.db.models import Model
 
 # functions definitions
-def get_connection_string():
-
-    return settings.DATABASES["default"]["ENGINE"]
 
 
-def validate_excel(data: pd.DataFrame) -> pd.DataFrame:
+def validate_excel(data: pd.DataFrame) -> dict:
     """
-    Validates the data in a DataFrame against a set of rules.
+    Validates the data in a DataFrame against a set lambda functions.
 
     Args:
         data (pd.DataFrame): The DataFrame to validate.
 
     Returns:
-        bool | pd.DataFrame: A DataFrame containing the invalid rows if any, or True if all rows are valid.
+        dict: A dict containing the invalid rows if any, sorted by row number.
     """
-
+    # compile the regex patterns
+    regex_extension = r"^\s*0\s*$"
+    regex_esp = r"^\s*34\s*$"
+    regex_ingr = r"^\s*20\d\d\s*$"
+    regex_anio = regex_ingr
+    regex_legajo = r"^[\s]*[1-9]\d{4}[\s]*$"
+    regex_dni = r"^\s*\d{7,8}\s*$"
+    regex_nombres = r"[\s]*([a-zàáèéìíòóùúñçA-ZÀÁÈÉÌÍÒÓÙÚÑ]+[\s]*)+"
+    regex_ap_no = regex_nombres + r"[\s]*,?[\s]*" + regex_nombres
+    regex_comision = r"^\s*\d\s*$"
+    regex_materia = r"^\s*\d\d\d\s*$"
+    regex_no_ma = regex_nombres
+    regex_estado = r"^\s*Inscripto\s*$"
+    regex_recursa = r"^\s*(Si|No)\s*$"
+    regex_mail = r"([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)?"
+    regex_telefono = r"((\d{0,4}-?)?\d{6,10})?"
+    regex_notas = r"([\s]*[1-9]([\.,]\d{1,2})?|10[\s]*)?"
+    regex_activo = r"^\s*Activo\s*$"
     # Define the rules
-    rules = {
-        "Extensión": lambda x: isinstance(x, int) and len(str(x)) == 1 and x >= 0,
-        "Esp.": lambda x: isinstance(x, int) and len(str(x)) == 2 and x == 34,
-        "Ingr.": lambda x: isinstance(x, int) and len(str(x)) == 4 and x > 0,
-        "Año": lambda x: isinstance(x, int) and len(str(x)) == 4 and x > 0,
-        "Legajo": lambda x: isinstance(x, int) and len(str(x)) == 5 and x > 0,
-        "Documento": lambda x: isinstance(x, int) and 7 <= len(str(x)) <= 8 and x > 0,
-        # check if name and surname are not empty and only contain letters, spaces, 'ñ' and accents and reverse accents
-        "Apellido y Nombres": lambda x: isinstance(x, str)
-        and bool(
-            re.match(r"^[A-ZÑa-zñ'ÁÉÍÓÚáéíóú ]+(,[A-ZÑa-zñ'ÁÉÍÓÚáéíóú ]+)?$", str(x))
+    rules: dict[str, Callable] = {
+        "Extensión": lambda x: bool(re.compile(regex_extension).match(str(x))),
+        "Esp.": lambda x: bool(re.compile(regex_esp).match(str(x))),
+        "Ingr.": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Año": lambda x: bool(re.compile(regex_anio).match(str(x))),
+        "Legajo": lambda x: bool(re.compile(regex_legajo).match(str(x))),
+        "Documento": lambda x: bool(re.compile(regex_dni).match(str(x))),
+        "Apellido y Nombres": lambda x: bool(
+            re.match(
+                regex_ap_no,
+                str(x),
+            )
         ),
-        "Comisión": lambda x: isinstance(x, int) and len(str(x)) == 1 and x > 0,
-        "Materia": lambda x: isinstance(x, int) and len(str(x)) == 3 and x > 0,
+        "Comisión": lambda x: bool(re.compile(regex_comision).match(str(x))),
+        "Materia": lambda x: bool(re.compile(regex_materia).match(str(x))),
         "Nombre de materia": lambda x: bool(
-            re.match(r"^[A-ZÑa-zñÁÉÍÓÚáéíóú ]+$", str(x))
+            re.match(
+                regex_no_ma,
+                str(x),
+            )
         ),
-        "Estado": lambda x: x == "Inscripto",
-        "Recursa": lambda x: isinstance(x, str) and x in ["Si", "No"],
+        "Estado": lambda x: bool(re.compile(regex_estado).match(str(x))),
+        "Recursa": lambda x: bool(re.compile(regex_recursa).match(str(x))),
         "Cant.": lambda x: isinstance(x, int) and x >= 0,
-        "Mail": lambda x: pd.isna or re.match(r"^[^@]+@[^@]+\.[^@]+$", str(x)),
-        # check if cell is empty or has a valid 10 digit phone number
-        # give me all vocal with strange accents like this 'è'
-        "Celular": lambda x: pd.isna(x)
-        or (isinstance(x, float) and (7 <= len(str(x)) <= 13) and x > 0),
-        "Teléfono": lambda x: pd.isna(x)
-        or (isinstance(x, int) and (7 <= len(str(x)) <= 13) and x > 0),
+        "Mail": lambda x: re.compile(regex_mail).match(str(x)),
+        "Celular": lambda x: bool(re.compile(regex_telefono).match(str(x))),
+        "Teléfono": lambda x: bool(re.compile(regex_telefono).match(str(x))),
         "Tel. Resid": lambda x: pd.isna(x)
-        or (isinstance(x, int) and (7 <= len(str(x)) <= 13) and x > 0),
-        "Nota 1": lambda x: 0 <= x <= 10,
-        "Nota 2": lambda x: 0 <= x <= 10,
-        "Nota 3": lambda x: 0 <= x <= 10,
-        "Nota 4": lambda x: 0 <= x <= 10,
-        "Nota 5": lambda x: 0 <= x <= 10,
-        "Nota 6": lambda x: 0 <= x <= 10,
-        "Nota 7": lambda x: 0 <= x <= 10,
-        "Nota Final": lambda x: 0 <= x <= 10,
-        "Nombre": lambda x: x == "Activo",
+        or bool(re.compile(regex_telefono).match(str(x))),
+        "Nota 1": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nota 2": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nota 3": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nota 4": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nota 5": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nota 6": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nota 7": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nota Final": lambda x: bool(re.compile(regex_notas).match(str(x))),
+        "Nombre": lambda x: bool(re.compile(regex_activo).match(str(x))),
     }
 
     # Validate the data and track errors
@@ -118,14 +132,28 @@ def validate_excel(data: pd.DataFrame) -> pd.DataFrame:
             level=1
         )  # Reset the index to get the column names as a column instead of the index
         .rename(columns={0: "row"})  # Rename the column to "row"
-    )
+    )  # Convert the multi-index DataFrame to a single-index DataFrame
     invalid_rows.columns = [
         "columna",
         "error_en_fila",
-    ]  # Rename the columns to "column" and "row" respectively
-    return invalid_rows.pivot(
-        index="error_en_fila", columns="columna", values="columna"
+    ]
+    # Convert the DataFrame to a dictionary for JSON serialization
+    my_dict: dict = json.loads(
+        invalid_rows.pivot(
+            index="error_en_fila", columns="columna", values="columna"
+        ).to_json(orient="index")
     )
+    # Clean the dictionary by removing None values
+    # clean_dict: dict[int, dict] = {}
+    # for idx, fields in my_dict.items():
+    #     for (
+    #         k,
+    #         v,
+    #     ) in fields.items():
+    #         if v is not None:
+    #             clean_dict[idx] = {k: v}
+    # Return the cleaned dictionary
+    return my_dict
 
 
 # cargar archivo sysacad xls en la bbdd
@@ -134,52 +162,58 @@ from django.db import transaction
 from sqlalchemy import create_engine
 
 
-def load_excel(data: pd.DataFrame) -> pd.DataFrame:
+# Define table definitions with column lists
+# table_definitions = {
+#     "alumnos_Materia": ["Materia", "Nombre de materia"],
+#     "alumnos_Alumno": [
+#         "Mail",
+#         "Apellido y Nombres",
+#         "Legajo",
+#         "Documento",
+#         "Nombre",
+#     ],
+#     "alumnos_MateriaAlumno": ["Materia", "Documento", "Año"],
+# ... add more tables and their columns here
+# }
+# Get the database connection string from the settings
+def load_data(data_dict: dict, model_class: Model, field_mapping: dict) -> dict:
     """
-    Loads the data into the database, handling multiple tables and transactions.
-    Returns a DataFrame containing duplicate rows found in the existing database.
+    Load data into a Django model.
 
     Args:
-        data (pd.DataFrame): a DataFrame containing the data to load into the database.
+        data_dict (dict): Dictionary containing the data to load.
+        definition_table (dict): Dictionary mapping model fields to data dictionary keys.
+
+    Returns:
+        dict: Dictionary containing duplicate rows that were not added.
     """
+    # Define the field mapping
+    # reference of definition_table
+    # {
+    #     "column1":{
+    #         "row1": "value1",
+    #         "row2": "value2",
+    #         "row3": "value3",
+    #     },
+    #     "column2":{
+    #         "row1": "value1",
+    #         "row2": "value2",
+    #         "row3": "value3",
+    #     }
+    # }
 
-    # Get the connection string from Django settings
-    engine = create_engine(get_connection_string())
+    # Initialize a dictionary to store duplicate rows
+    duplicates = {}
 
-    # Define table definitions with column lists
-    table_definitions = {
-        "alumnos_Materia": ["Materia", "Nombre de materia"],
-        "alumnos_Alumno": [
-            "Mail",
-            "Apellido y Nombres",
-            "Legajo",
-            "Documento",
-            "Nombre",
-        ],
-        "alumnos_MateriaAlumno": ["Materia", "Documento", "Año"],
-        # ... add more tables and their columns here
-    }
+    for row_index, row_data in data_dict.items():
+        try:
+            model_instance = model_class(
+                **{field: row_data[key] for field, key in field_mapping.items()}
+            )
+            model_instance.save()
+        except IntegrityError:
+            duplicates[row_index] = row_data
 
-    # Initialize an empty DataFrame to store duplicate rows
-    duplicates = pd.DataFrame()
-
-    # Use a transaction to ensure all table updates are committed together
-    with transaction.atomic():
-        # Iterate over each table and its corresponding columns
-        for table_name, columns in table_definitions.items():
-            # Filter the DataFrame for the current table's columns
-            table_data = data[columns]
-
-            # Check for duplicate rows in the existing database table
-            existing_data = pd.read_sql_table(table_name, con=engine)
-            duplicate_rows = pd.merge(table_data, existing_data, how="inner")
-
-            # Append the duplicate rows to the duplicates DataFrame
-            duplicates = pd.concat([duplicates, duplicate_rows])
-
-            # Load the data into the database table, excluding duplicates
-            table_data = table_data.drop_duplicates(keep=False)
-            table_data.to_sql(table_name, con=engine, if_exists="append", index=False)
     return duplicates
 
 
@@ -191,11 +225,11 @@ if __name__ == "__main__":
     from tkinter import filedialog as fd
 
     # get file by filedialog, http post or other method
-    path: str = fd.askopenfilename(
-        title="Elija Archivo excel a validar",
-        initialdir=os.getcwd(),
-        filetypes=(("Excel files", "*.xls *.xlsx"), ("all files", "*.*")),
-    )
+    # path: str = fd.askopenfilename(
+    #     title="Elija Archivo excel a validar",
+    #     initialdir=os.getcwd(),
+    #     filetypes=(("Excel files", "*.xls *.xlsx"), ("all files", "*.*")),
+    # )
     raw_path = "/Users/carlosferreyra/Downloads/Cursantes 2 cuatrimestre.xlsx"
 
     # read the file
@@ -237,16 +271,18 @@ if __name__ == "__main__":
     )
     # make index start at 6
     df.index = df.index + COL_HEADER + 1
-
-    result = validate_excel(df)
-    # return the data as json
-    if not result.empty:
-        print("generando json con filas invalidas\n")
-        sleep(3)
-        print(result.to_json(orient="index"), end="\n")
-        sleep(3)
-        name = "invalid_rows.json"
-        result.to_json(orient="index", path_or_buf=name)
-        print(f"json guardado en {os.getcwd()}/{name}")
-    else:
-        print("All rows are valid.")
+    data_dict = df.to_dict()
+    # arows = {
+    #     row_index: {column: values[row_index] for column, values in data_dict.items()}
+    #     for row_index in data_dict[list(data_dict.keys())[0]].keys()
+    # }
+    result: dict[int, dict] = validate_excel(df)
+    # x = 2
+    # for index, columns in arows.items():
+    #     if x != 0:
+    #         for column, rows in columns.items():
+    #             print(f"{index}: {column} -> {rows}\t\n\n")
+    #         x -= 1
+    #     else:
+    #         break
+    print(result)
