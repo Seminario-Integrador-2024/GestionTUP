@@ -19,7 +19,6 @@ import { createCompromiso } from '../../../../API/Montos';
 import ModalCargarDocumento from '../ModalCargarDocumento';
 import { CheckIcon } from '@chakra-ui/icons';
 
-
 interface Compromiso {
   anio: string | number | Date;
   fecha_carga_comp_pdf: string;
@@ -77,9 +76,9 @@ const Montos = ({ compromisos }: CardCargaProps) => {
     const sortedMontos = [...compromisos].sort((a, b) => {
       const dateA = new Date(a.fecha_carga_comp_pdf);
       const dateB = new Date(b.fecha_carga_comp_pdf);
-      return dateB.getTime() - dateA.getTime(); 
+      return dateB.getTime() - dateA.getTime();
     });
-    sortedMontos[0]? setTempMonto(sortedMontos[0]): null;
+    sortedMontos[0] ? setTempMonto(sortedMontos[0]) : null;
   }, [compromisos]);
 
   const [tempMonto, setTempMonto] = useState<Compromiso>({
@@ -133,10 +132,13 @@ const Montos = ({ compromisos }: CardCargaProps) => {
                 name="cuatrimestre"
                 mb="20px"
                 bg="white"
-                onChange={(e) => setTempMonto({
-                  ...tempMonto,
-                  cuatrimestre: e.target.value,
-                })}>
+                onChange={(e) =>
+                  setTempMonto({
+                    ...tempMonto,
+                    cuatrimestre: e.target.value,
+                  })
+                }
+              >
                 <option value="1C">1er Cuatrimestre</option>
                 <option value="2C">2do Cuatrimestre</option>
               </Select>
@@ -190,12 +192,16 @@ const Montos = ({ compromisos }: CardCargaProps) => {
                 />
               </SimpleGrid>
 
-              <Flex justify="flex-end" gap="4" pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px', }}>
+              <Flex
+                justify="flex-end"
+                gap="4"
+                pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px' }}
+              >
                 <Button color="white" size="sm">
                   Guardar Cambios
                 </Button>
                 <Button
-                  bgColor={filePreview ? "green" : undefined}
+                  bgColor={filePreview ? 'green' : undefined}
                   color="white"
                   size="sm"
                   onClick={onModalCargarOpen}

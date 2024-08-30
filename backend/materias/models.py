@@ -1,5 +1,8 @@
+import datetime
+
 from alumnos.models import Alumno
 from django.db import models
+from tomlkit import date
 
 
 # Create your models here.
@@ -17,7 +20,6 @@ class Materia(models.Model):
             the subject is offered.
     """
 
-    # id_materia = models.AutoField(primary_key=True)
     codigo_materia = models.IntegerField(primary_key=True)
     anio_cursada = models.PositiveSmallIntegerField()
     anio_plan = models.PositiveSmallIntegerField()
@@ -38,6 +40,7 @@ class MateriaAlumno(models.Model):
         offrc (IntegerField): The number of times the Materia has been offered.
         atendnc (IntegerField): The number of times \
             the Alumno has attended the Materia.
+        anio (DateTimeField): The year in which the MateriaAlumno instance \
 
     Meta:
         unique_together (tuple): Specifies that the combination of \
@@ -46,15 +49,11 @@ class MateriaAlumno(models.Model):
 
     id_materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     id_alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
-    anio = models.IntegerField()
-    offrc = models.IntegerField()
-    atendnc = models.IntegerField()
+    anio = models.DateField(default=datetime.datetime.now().year)
 
     class Meta:
         """
         This class provides metadata options for the model.
         """
 
-        unique_together: tuple[tuple[str, str, str]] = (
-            ("id_materia", "id_alumno", "anio"),
-        )
+        unique_together: tuple[tuple[str, str]] = (("id_materia", "id_alumno", "anio"),)
