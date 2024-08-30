@@ -3,12 +3,14 @@ from rest_framework import status
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from yaml import serialize
 
 from .serializers import ExcelDataSerializer
 
 
 class ExcelApiView(APIView):
     parser_classes = [FileUploadParser]
+    serializer_class = ExcelDataSerializer
 
     def post(self, request, *args, **kwargs):
         file_obj = request.data["file"]
