@@ -1,11 +1,14 @@
+
+from django.core.files.base import ContentFile
+
+#  third party imports
 from rest_framework import serializers
 
+#  custom imports
+from .models import *
 
-class ExcelDataSerializer(serializers.Serializer):
-    # Define fields to match Excel columns
-    column1 = serializers.CharField(max_length=100)
-    column2 = serializers.IntegerField()
-
-    def validate(self, data):
-        # Custom validation logic here
-        return data
+class ExcelUploadSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
+    class Meta:
+        model = ExcelFile
+        fields = "__all__"
