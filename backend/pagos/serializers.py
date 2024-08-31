@@ -49,3 +49,7 @@ class CuotaSerializer(serializers.ModelSerializer):
         return representation
         
 
+class FirmaCompPagoAlumnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FirmaCompPagoAlumno
+        fields = "__all__"
