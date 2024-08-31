@@ -95,29 +95,3 @@ class FirmaCompPagoAlumnoViewSets(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-
-
-"""
-
-
-Sección "Compromiso de pago".
-Camino feliz
-1 El alumno entra a la sección "Compromiso de pago".
-2 El sistema infroma al alumno que firmó el ultimo compromiso de pago y se le muestra el pdf con detalles de fecha y hora (opcional).
-Camino alternativo
-1.1. No tiene firmado el ultimo compromiso de pago. Se le debe informar que no esta firmado y "obligarle" a que firme.
-1.2. El alumno firma.
-1.3. El se registra la firma.
-
-
-Al entrar a la seccion de "Compromiso de Pago" se debe mostar el último compromiso con la respuesta de este 
-endpoint "[1][GET] http://localhost:8000/pagos/ultimo-compr-de-pag/" 
-
-Para saber si firmo o no se le debe preguntar a este endpoint "[2][GET] http://localhost:8000/pagos/firmar-compromiso/<dni de alumno>/"
-
---Si firmó el último compromiso (el actual) se le debe mostar la fecha y hora(opcional) del día que que lo hizo (en la response del endpoint [2] esta eso),
---Si no firmó se le debe "obligar" al alumno a que firme mandando una peticioón a este endpoint 
-    "[2][PUSH] http://localhost:8000/pagos/firmar-compromiso/" con este body "{"alumno": <dni de alumno>,  "compromiso_de_pago": <id de compromiso de pago> }"
-
-
-"""
