@@ -6,8 +6,8 @@ import NewInterfaz from './Montos/NewInterfaz';
 
 function Configuracion() {
   const [montos, setMontos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState<string | null>(null); 
   const [offset, setOffset] = useState(0);
   const [limit] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
@@ -46,30 +46,19 @@ function Configuracion() {
 
   return (
     <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}>
-      <GridItem colSpan={2} mt="20px">
-        <Montos compromisos={montos} />
+      <GridItem colSpan={2} mt="20px"> 
+          <Montos compromisos={montos} />
       </GridItem>
       <GridItem colSpan={{ base: 1, md: 2 }}>
         <NewInterfaz compromisos={montos} />
       </GridItem>
       <GridItem colSpan={2} mt="20px">
         <Flex justifyContent="space-between">
-          <Button
-            onClick={handlePreviousPage}
-            isDisabled={offset === 0 ? true : false}
-            color={'white'}
-          >
+          <Button onClick={handlePreviousPage} isDisabled={offset === 0? true : false } color={"white"}>
             Anterior
           </Button>
-          <Text>
-            Página {Math.ceil(offset / limit) + 1} de{' '}
-            {Math.ceil(totalCount / limit)}
-          </Text>
-          <Button
-            onClick={handleNextPage}
-            isDisabled={offset + limit >= totalCount}
-            color={'white'}
-          >
+          <Text>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCount / limit)}</Text>
+          <Button onClick={handleNextPage} isDisabled={offset + limit >= totalCount} color={"white"}>
             Siguiente
           </Button>
         </Flex>
