@@ -29,7 +29,8 @@ class Alumno(models.Model):
     legajo = models.IntegerField()
     dni = models.IntegerField()
     estado = models.CharField(max_length=255)
-    # estado = models.ForeignKey("TipoEstado", on_delete=models.CASCADE)
+    #estado = models.ForeignKey("TipoEstado", on_delete=models.CASCADE)
+    cuil = models.IntegerField()
     anio_ingreso = models.IntegerField()
     telefono = models.IntegerField(blank=True, null=True)
     celular = models.IntegerField(blank=True, null=True)
@@ -71,7 +72,7 @@ class TipoInhabilitacion(models.Model):
             all Django models.
     """
 
-    id_tipo_inhabilitacion = models.AutoField(primary_key=True, default="Activo")
+    id_tipo_inhabilitacion = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
 
