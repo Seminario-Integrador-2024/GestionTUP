@@ -1,6 +1,6 @@
+from alumnos.models import Alumno
 from django.db import models
 
-from alumnos.models import Alumno
 
 # Create your models here.
 class Materia(models.Model):
@@ -17,14 +17,12 @@ class Materia(models.Model):
             the subject is offered.
     """
 
-    id_materia = models.AutoField(primary_key=True)
-    codigo_materia = models.IntegerField()
+    # id_materia = models.AutoField(primary_key=True)
+    codigo_materia = models.IntegerField(primary_key=True)
     anio_cursada = models.PositiveSmallIntegerField()
     anio_plan = models.PositiveSmallIntegerField()
     nombre = models.CharField(max_length=255)
     cuatrimestre = models.PositiveSmallIntegerField()
-
-
 
 
 class MateriaAlumno(models.Model):
@@ -48,6 +46,7 @@ class MateriaAlumno(models.Model):
 
     id_materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
     id_alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
+    anio = models.IntegerField()
     offrc = models.IntegerField()
     atendnc = models.IntegerField()
 
@@ -56,4 +55,6 @@ class MateriaAlumno(models.Model):
         This class provides metadata options for the model.
         """
 
-        unique_together: tuple[tuple[str, str]] = (("id_materia", "id_alumno"),)
+        unique_together: tuple[tuple[str, str, str]] = (
+            ("id_materia", "id_alumno", "anio"),
+        )
