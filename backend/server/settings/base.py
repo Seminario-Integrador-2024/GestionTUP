@@ -188,7 +188,6 @@ AUTH_USER_MODEL: str = "users.CustomUser"
 # dj-rest-auth settings (with Registration & JWT enabled)
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
 REST_AUTH = {
-    # "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
     "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # default
     "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
     # jwt settings

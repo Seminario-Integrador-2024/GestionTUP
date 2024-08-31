@@ -27,7 +27,7 @@ LABEL author="Carlos E. Ferreyra - Google Cloud Platform - Cloud Run"
 
 
 # Set environment variables
-ENV DJANGO_SETTINGS_MODULE=server.settings.base
+ENV DJANGO_SETTINGS_MODULE=server.settings.prod
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 # Copy the entire backend directory
