@@ -15,24 +15,18 @@ import secrets
 from datetime import timedelta
 from pathlib import Path
 
-# Variables and Secrets.
-from re import A
-
 from dotenv import load_dotenv
-from server.settings.production import EMAIL_BACKEND, LOGIN_REDIRECT_URL
 
+# Variables and Secrets.
 load_dotenv()
-
+DEBUG = os.getenv("DEBUG", False)
 SECRET_KEY: str = os.getenv(
     key="DJANGO_SECRET_KEY", default=secrets.token_urlsafe(nbytes=128)
 )
 
-ALLOWED_HOSTS: list[str] = ["*"]
 
+# CORS_ALLOWED_ORIGINS: list[str] = ["https://gestiontup-1.onrender.com/"]
 
-CORS_ALLOW_ALL_ORIGINS = True
-
-APPEND_SLASH = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # https://docs.djangoproject.com/en/5.0/ref/settings/#std:setting-BASE_DIR
@@ -44,7 +38,6 @@ BASE_DIR: Path = (
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
 
 # Application definition
 # https://docs.djangoproject.com/en/5.0/ref/settings/#installed-apps
@@ -136,7 +129,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.debug",
+                # add a context processor to the default list
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -197,7 +190,7 @@ AUTH_USER_MODEL: str = "users.CustomUser"
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
 REST_AUTH = {
     "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
-    #"LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # default
+    # "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",  # default
     "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
     # jwt settings
     # "JWT_SERIALIZER": "api.serializers.CustomJWTSerializerWithExpiration", custom jwt serializer
@@ -272,8 +265,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-
-CSRF_TRUSTED_ORIGINS = ["http://*", "https://*"]
 
 LANGUAGE_CODE = "es-ar"
 
@@ -412,4 +403,55 @@ SPECTACULAR_SETTINGS = {
         "url": "/api/schema/",  # URL to fetch the OpenAPI schema from
     },
     # OTHER SPECTACULAR SETTINGS
+}
+
+
+# Define logs directory
+logs_dir = os.path.join(BASE_DIR, "logs")
+
+# Create logs directory if it doesn't exist
+os.makedirs(logs_dir, exist_ok=True)
+
+# Logging configuration
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(logs_dir, "general.log"),
+            "maxBytes": 1024 * 1024 * 5,  # 5 MB
+            "backupCount": 5,
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        # Add additional loggers for your apps
+        # "app_name": {
+        #     "handlers": ["console", "file"],
+        #     "level": "INFO",
+        #     "propagate": True,
+        # },
+    },
 }
