@@ -72,7 +72,6 @@ INSTALLED_APPS: list[str] = [
     "corsheaders",
     # local apps
     "users",
-    "core",
     "pagos",
     "excel_sysacad",
     "alumnos",
