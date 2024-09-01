@@ -1,16 +1,21 @@
-version: "3.8" # Adjust if needed based on your Docker Compose version
-
 services:
   back: # Replace with your actual application name
-    build: .
+    build: . # Build the backend service
     volumes:
-      - vol:/app/mnt/my-bucket/ # Adjust the volume name if needed
+      - .:/app/code # Mount current directory to /app/code in container
     ports:
       - "8000:8000" # Expose port 8000
     environment:
-      DJANGO_SETTINGS_MODULE: server.settings.base
+      DJANGO_SETTINGS_MODULE: server.settings.dev
       PYTHONDONTWRITEBYTECODE: 1
       PYTHONUNBUFFERED: 1
+  db:
+    image: mysql:8.0 # Use official MySQL image (adjust version if needed)
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234" # Set a strong root password
+      MYSQL_DATABASE: gestiontup # Define your database name
+    volumes:
+      - mysql-data:/var/lib/mysql # Persistent storage for database data
 
 volumes:
-  vol: {} # Define an empty named volume
+  mysql-data: {} # Define named volume for persistent MySQL data

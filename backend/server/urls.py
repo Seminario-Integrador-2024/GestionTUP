@@ -23,7 +23,6 @@ from django.urls.resolvers import URLResolver
 urlpatterns: list[URLResolver] = [
     path("users/", include("users.urls")),
     path("api/", include("api.urls")),
-    path("core/", include("core.urls")),
     path("excel_sysacad/", include("excel_sysacad.urls")),
     path("excel_sysadmin/", include("excel_sysadmin.urls")),
     path("alumnos/", include("alumnos.urls")),
