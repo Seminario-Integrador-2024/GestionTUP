@@ -20,6 +20,8 @@ djangorestframework-simplejwt==5.3.1
 drf-spectacular==0.27.2
 drf-spectacular-sidecar==2024.7.1
 et-xmlfile==1.1.0
+gevent==24.2.1
+greenlet==3.0.3
 gunicorn==22.0.0
 idna==3.7
 inflection==0.5.1
@@ -27,6 +29,7 @@ isort==5.13.2
 jsonschema==4.23.0
 jsonschema-specifications==2023.12.1
 mccabe==0.7.0
+mysqlclient==2.2.4
 numpy==2.1.0
 oauthlib==3.2.2
 openpyxl==3.1.5
@@ -39,6 +42,7 @@ PyJWT==2.9.0
 pylint==3.2.6
 pylint-django==2.5.5
 pylint-plugin-utils==0.8.2
+PyMySQL==1.1.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python3-openid==3.2.0
@@ -48,6 +52,7 @@ referencing==0.35.1
 requests==2.32.3
 requests-oauthlib==2.0.0
 rpds-py==0.18.1
+setuptools==74.0.0
 six==1.16.0
 SQLAlchemy==2.0.32
 sqlparse==0.5.1
@@ -59,3 +64,5 @@ tzdata==2024.1
 uritemplate==4.1.1
 urllib3==2.2.2
 whitenoise==6.7.0
+zope.event==5.0
+zope.interface==7.0.3

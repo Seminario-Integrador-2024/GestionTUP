@@ -1,21 +1,60 @@
 services:
-  back: # Replace with your actual application name
-    build: . # Build the backend service
-    volumes:
-      - .:/app/code # Mount current directory to /app/code in container
-    ports:
-      - "8000:8000" # Expose port 8000
-    environment:
-      DJANGO_SETTINGS_MODULE: server.settings.dev
-      PYTHONDONTWRITEBYTECODE: 1
-      PYTHONUNBUFFERED: 1
-  db:
-    image: mysql:8.0 # Use official MySQL image (adjust version if needed)
-    environment:
-      MYSQL_ROOT_PASSWORD: "1234" # Set a strong root password
-      MYSQL_DATABASE: gestiontup # Define your database name
-    volumes:
-      - mysql-data:/var/lib/mysql # Persistent storage for database data
+  # -- Si quieres usar postgres, descomenta las siguientes líneas
+  # postgres:
+  #   image: postgres:16.3-alpine3.20
+  #   environment:
+  #     # POSTGRES_USER: "postgres" # ${POSTGRES_USER:-postgres} # Uncomment to set a custom username. postgres is the default created by the image
+  #     POSTGRES_PASSWORD: "postgres" # ${POSTGRES_PASSWORD:-changeme}
+  #     PGDATA: /data/postgres
+  #   volumes:
+  #     - postgres:/data/postgres
+  #   ports:
+  #     - "5432:5432"
+  #   restart: always
 
+  # -- Si quieres usar pgadmin, descomenta las siguientes líneas
+  # pgadmin:
+  #   container_name: pgadmin_container
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #     PGADMIN_CONFIG_SERVER_MODE: "False"
+  #   volumes:
+  #     - pgadmin:/var/lib/pgadmin
+  #   ports:
+  #     - "8001:80"
+  #   restart: unless-stopped
+
+  backend: # Replace with your actual application name
+    build: . # Build the backend service using the Dockerfile in the current directory
+    command: [
+        "sh",
+        "-c",
+        "python manage.py migrate && python create_superuser.py && python manage.py runserver 0.0.0.0:8000",
+        # "python create_superuser.py && python manage.py migrate && gunicorn -k server.wsgi:application --bind 0.0.0.0:8000", # doesn't work with the current setup
+      ] # Run the Django migrations and start the server
+    volumes:
+      - ./backend/:/app/ # Mount current directory to /app/code in container
+    ports:
+      - "8000:8000" # Expose port 8000 (or custom port)
+    depends_on:
+      # Depend on the database service (it can be either mysql or postgres, depending on your setup)
+      - mysql
+    restart: unless-stopped
+    environment:
+      - DJANGO_SETTINGS_MODULE=server.settings.dev # Set the Django settings module
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "db"
+      MYSQL_USER: "mysql"
+      MYSQL_PASSWORD: "mysql"
+    ports:
+      - "3306:3306"
 volumes:
-  mysql-data: {} # Define named volume for persistent MySQL data
+  # -- Si quieres usar postgres, descomenta las siguientes líneas
+  # postgres: # Define a volume for the postgres service
+  pgadmin:
+  backend:

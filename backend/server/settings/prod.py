@@ -31,16 +31,18 @@ SECRET_KEY: str = os.getenv(
 ALLOWED_HOSTS: list[str] = [
     "https://gestiontup-1.onrender.com/",  # https
     "http://gestiontup-1.onrender.com",  # http
+    "localhost",  # localhost
 ]
 
 
 # CORS settings
 # CORS Docs: https://pypi.org/project/django-cors-headers/
 CORS_ALLOWED_ORIGINS_REGEXES: list[str] = [
-    r"^https?://*\.onrender\.com$",
+    r"^https?://*\.onrender\.com$",  # https://gestiontup-1.onrender.com/
+    r"^http://localhost:\d\d\d\d$",  # http://localhost with any port
 ]
 # frontend allowed ["https://gestiontup-1.onrender.com/"]
-CSRF_TRUSTED_ORIGINS = ["http://*", "https://*"]
+# CSRF_TRUSTED_ORIGINS = ["http://*", "https://*"]
 #
 CORS_URLS_REGEX = (
     r"^https?://.*/api/.*$"  # only allow CORS for URLs that start with /api/
