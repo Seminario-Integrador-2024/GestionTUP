@@ -1,12 +1,12 @@
-import { controllers } from 'chart.js';
 import Cookies from 'js-cookie';
+const URL= import.meta.env.VITE_URL_DEV;
 
 export const FetchMontos = async (offset: number, limit:number ) => {
   try {
     const token = Cookies.get('access_token');
 
     const response = await fetch(
-      `http://localhost:8000/pagos/compromisos/?offset=${offset}&limit=${limit}`,
+      `${URL}/pagos/compromisos/?offset=${offset}&limit=${limit}`,
       {
         method: 'GET',
         headers: {
@@ -33,7 +33,7 @@ export const createCompromiso = async (compromisoData: any) => {
     const token = Cookies.get('access_token');
     console.log(compromisoData);
 
-    const response = await fetch('http://localhost:8000/pagos/compromisos/', {
+    const response = await fetch(`${URL}/pagos/compromisos/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

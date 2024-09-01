@@ -2,7 +2,7 @@ import { Flex, Image, FlexProps, Tooltip } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
 
 interface NavItemProps extends FlexProps {
-  icon?: string;
+  icon?: string | JSX.Element;
   color?: string;
   title: string;
 }
@@ -36,7 +36,13 @@ export default function NavItem({
         borderRadius="5px"
         backgroundColor={color}
       >
-        {icon && <Image src={icon} boxSize="30px" />}
+        {icon && (
+        typeof icon === 'string' ? (
+          <Image src={icon} boxSize="30px" alt={title} />
+        ) : (
+          icon
+        )
+      )}
         {!icon && (
           <Text as="b" fontSize="xs">
             {title}

@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+const URL= import.meta.env.VITE_URL_DEV;
 
 export const FetchPostMateria = async (
     codigo_materia: number,
@@ -10,7 +11,7 @@ export const FetchPostMateria = async (
     try {
       const token = Cookies.get('access_token');
 
-      const response = await fetch('http://127.0.0.1:8000/materias/', {
+      const response = await fetch(`${URL}/materias/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ export const FetchMaterias = async () => {
       const token = Cookies.get('access_token');
   
       const response = await fetch(
-        'http://127.0.0.1:8000/materias/',
+        `${URL}/materias/`,
         {
           method: 'GET',
           headers: {
@@ -67,7 +68,7 @@ export const FetchPutMateria = async (
   try {
     const token = Cookies.get('access_token');
 
-    const response = await fetch(`http://127.0.0.1:8000/materias/${codigo_materia}/`, {
+    const response = await fetch(`${URL}/materias/${codigo_materia}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ export const FetchDeleteMateria = async (codigo_materia: number) => {
   try {
     const token = Cookies.get('access_token');
 
-    const response = await fetch(`http://127.0.0.1:8000/materias/${codigo_materia}/` , {
+    const response = await fetch(`${URL}/materias/${codigo_materia}/` , {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

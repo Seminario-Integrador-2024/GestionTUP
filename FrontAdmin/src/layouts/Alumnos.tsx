@@ -1,15 +1,16 @@
 import { useRoutes } from 'react-router-dom';
-import { Box, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react';
+import { Box, Drawer, DrawerContent, useDisclosure, Text } from '@chakra-ui/react';
 import { MobileNav } from '../components/NavBar/MobileNav';
 import { SidebarContent } from '../components/NavBar/SidebarContent';
 import routes from '../routes';
+
 import Header from '../components/Header/Header';
 
-export default function Admin() {
+export default function Alumnos() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const adminRoutes = routes.filter(route => route.rol !== 'alumnos');
-  const element = useRoutes(adminRoutes);
-  const LINK_ITEMS_ = adminRoutes
+  const alumnosRoutes = routes.filter(route => route.rol !== 'admin');
+  const element = useRoutes(alumnosRoutes);
+  const LINK_ITEMS_ = alumnosRoutes
     .filter(route => route.title && route.icon && route.rol && route.path)
     .map(route => ({
       title: route.title!,
@@ -17,7 +18,7 @@ export default function Admin() {
       url: route.path,
       rol: route.rol!,
     }));
-  const LINK_ITEMS = LINK_ITEMS_.filter((link) => link.rol === 'admin');
+  const LINK_ITEMS = LINK_ITEMS_.filter((link) => link.rol === 'alumnos');
 
   return (
     <Box minH="100vh">
