@@ -88,6 +88,17 @@ class CompromisoDePago(models.Model):
     fecha_carga_comp_pdf = models.DateTimeField(max_length=10, auto_now_add=True, blank=True,  null=True)
 
     def save(self, *args, **kwargs):
+
+        try:
+            old_instance = CompromisoDePago.objects.get(pk=self.pk)
+            old_file = old_instance.archivo_pdf
+        except CompromisoDePago.DoesNotExist:
+            old_file = None
+
+        if old_file and self.archivo_pdf != old_file:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
+
         self.fecha_ultima_modif = timezone.now()
         super().save(*args, **kwargs)
 
@@ -95,11 +106,10 @@ class CompromisoDePago(models.Model):
             self.comprimiso_path = self.archivo_pdf.url
             super().save(update_fields=['comprimiso_path'])
 
+
 @receiver(post_delete, sender=CompromisoDePago)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
-    """
-    Borra el archivo PDF cuando se elimina la instancia del modelo.
-    """
+
     if instance.archivo_pdf and os.path.isfile(instance.archivo_pdf.path):
         os.remove(instance.archivo_pdf.path)
 
