@@ -6,12 +6,15 @@ import ListadoMaterias from './components/Pages/Estadisticas/SubPages/ListadoMat
 import MateriaDetalle from './components/Subjects/MateriaDetalle';
 import ListadoAlumnos from './components/Pages/Estadisticas/SubPages/ListadoAlumnos';
 import iconAlumno from './components/icons/alumno 1.png';
-import iconChat from './components/icons/burbuja-de-chat 1.png';
 import iconConfig from './components/icons/configuracion 1.png';
 import iconEstadisticas from './components/icons/grafico-de-barras 1.png';
 import iconSysAdmin from './components/icons/cargarexcel.png';
 import iconSysAcad from './components/icons/subir lista.png';
-import { title } from 'process';
+import { FaUser, FaCreditCard, FaFileContract, FaSignOutAlt } from 'react-icons/fa';
+import { BsCashCoin } from "react-icons/bs";
+import { RiContractLine } from "react-icons/ri";
+import { CiSaveDown1 } from "react-icons/ci";
+
 
 const routes = [
   {
@@ -66,21 +69,21 @@ const routes = [
     title: 'Pagos',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: iconAlumno,
+    icon: <BsCashCoin size="30px"/>,
   },
   {
     path: 'compromisoPago',
     title: 'Compromiso de Pago',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: iconAlumno,
+    icon: <RiContractLine size="30px" />,
   },
   {
-    path: 'Baja',
+    path: 'baja',
     title: 'Darse de Baja',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: iconAlumno,
+    icon: <CiSaveDown1 size="30px"/>,
   },
   {
     path: '*',

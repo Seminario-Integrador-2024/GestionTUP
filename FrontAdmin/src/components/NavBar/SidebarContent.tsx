@@ -12,7 +12,7 @@ import NavItem from './NavItem';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
-  LINK_ITEMS: { title: string; icon: JSX.Element; url: string; rol:string }[];
+  LINK_ITEMS: { title: string; icon: string | JSX.Element; url: string; rol:string }[];
 }
 
 export function SidebarContent({ onClose, LINK_ITEMS, ...rest }: SidebarProps) {
