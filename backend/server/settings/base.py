@@ -24,6 +24,7 @@ SECRET_KEY: str = os.getenv(
     key="DJANGO_SECRET_KEY", default=secrets.token_urlsafe(nbytes=128)
 )
 
+ALLOWED_HOSTS = ["localhost"]
 
 # CORS_ALLOWED_ORIGINS: list[str] = ["https://gestiontup-1.onrender.com/"]
 
