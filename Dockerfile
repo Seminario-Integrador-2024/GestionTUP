@@ -27,7 +27,6 @@ LABEL author="Carlos E. Ferreyra - Google Cloud Platform - Cloud Run"
 
 
 # Set environment variables
-ENV DJANGO_SETTINGS_MODULE=server.settings.prod
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 # Copy the entire backend directory
@@ -70,5 +69,5 @@ RUN python manage.py spectacular --color --file schema.yml --validate
 EXPOSE 8000
 # Run the application
 
-# CMD ["sh", "-c", "python create_superuser.py && python manage.py migrate && gunicorn server.wsgi:application --bind 0.0.0.0:${PORT}"]
+CMD ["sh", "-c", "python create_superuser.py && python manage.py migrate && gunicorn server.wsgi:application --bind 0.0.0.0:${PORT}"]
 # CMD ["sh", "-c", "python manage.py migrate && python create_superuser.py && python manage.py runserver 0.0.0.0:8000"]

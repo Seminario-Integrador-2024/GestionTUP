@@ -74,7 +74,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 # rest_framework settings
 REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
-    "rest_framework.permissions.IsAuthenticated",
+    "rest_framework.permissions.IsAuthenticatedOrReadOnly",
 ]
 # pip install django-storages[google]
 # Storage settings
