@@ -26,24 +26,29 @@ services:
   #     - "8001:80"
   #   restart: unless-stopped
 
-  backend: # Replace with your actual application name
-    build: . # Build the backend service using the Dockerfile in the current directory
-    command: [
-        "sh",
-        "-c",
-        "python manage.py migrate && python create_superuser.py && python manage.py runserver 0.0.0.0:8000",
-        # "python create_superuser.py && python manage.py migrate && gunicorn -k server.wsgi:application --bind 0.0.0.0:8000", # doesn't work with the current setup
-      ] # Run the Django migrations and start the server
+  backend:
+    build:
+      context: . # Use the current directory as the build context
+      dockerfile: Dockerfile # Use the Dockerfile in the current directory
+      args:
+        - DJANGO_SETTINGS_MODULE=server.settings.dev # Set the Django settings module for build
+    entrypoint: ["/entrypoint.sh"] # Override the default entrypoint
+    command: ["sh", "-c", "python manage.py runserver 0.0.0.0:8000"]
     volumes:
-      - ./backend/:/app/ # Mount current directory to /app/code in container
+      - ./backend/:/app/ # Mount current directory to /app in container
     ports:
-      - "8000:8000" # Expose port 8000 (or custom port)
+      - "8000:8000" # Expose port 8000
     depends_on:
-      # Depend on the database service (it can be either mysql or postgres, depending on your setup)
-      - mysql
-    restart: unless-stopped
+      - mysql # Depend on the MySQL service
+    restart: always
     environment:
-      - DJANGO_SETTINGS_MODULE=server.settings.dev # Set the Django settings module
+      - DJANGO_SETTINGS_MODULE=server.settings.dev # Set the Django settings module for execution
+      - DB_HOST=mysql # Set the database host to the MySQL service
+      - DB_PORT=3306 # Set the database port to 3306 (MySQL default)
+      - DB_NAME=db
+      - DB_USER=mysql
+      - DB_PASSWORD=mysql
+
   mysql:
     image: mysql:8.0
     environment:
@@ -53,8 +58,8 @@ services:
       MYSQL_PASSWORD: "mysql"
     ports:
       - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist MySQL data
+
 volumes:
-  # -- Si quieres usar postgres, descomenta las siguientes líneas
-  # postgres: # Define a volume for the postgres service
-  pgadmin:
-  backend:
+  mysql_data: # Volume for MySQL data persistence

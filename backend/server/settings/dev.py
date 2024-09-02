@@ -17,7 +17,6 @@ DEBUG_PROPAGATE_EXCEPTIONS = False
 
 ALLOWED_HOSTS: list[str] = ["*"]
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS += [
     # third party apps

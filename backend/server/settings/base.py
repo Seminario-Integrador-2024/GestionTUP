@@ -24,17 +24,17 @@ SECRET_KEY: str = os.getenv(
     key="DJANGO_SECRET_KEY", default=secrets.token_urlsafe(nbytes=128)
 )
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # CORS_ALLOWED_ORIGINS: list[str] = ["https://gestiontup-1.onrender.com/"]
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # https://docs.djangoproject.com/en/5.0/ref/settings/#std:setting-BASE_DIR
 BASE_DIR: Path = (
     Path(__file__).resolve().parent.parent
 )  # this is the root of the project
-
+PROJECT_ROOT = BASE_DIR.resolve().parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -152,9 +152,9 @@ STORAGES = {
 
 # Storage settings
 # GCP Bucket settings
-MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
+# MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
 
-os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
+# os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -162,7 +162,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         # make sqlite db file in the root of the project
-        "NAME": MOUNTED_BUCKET_ROOT / "db.sqlite3",
+        # "NAME": MOUNTED_BUCKET_ROOT / "db.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -170,16 +171,18 @@ DATABASES = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_ROOT: Path = MOUNTED_BUCKET_ROOT / "static"
-STATIC_URL: str = "/static/"
+# STATIC_ROOT: Path = MOUNTED_BUCKET_ROOT / "static"
+STATIC_ROOT: str = "staticfiles"
+STATIC_URL: str = "static/"  # default de django
 
-MEDIA_ROOT: Path = MOUNTED_BUCKET_ROOT / "media"
+# MEDIA_ROOT: Path = MOUNTED_BUCKET_ROOT / "media"
+MEDIA_ROOT: str = "media"
 MEDIA_URL: str = "media/"
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-AUTH_PASSWORD_VALIDATORS: list[str | None] = []
+AUTH_PASSWORD_VALIDATORS: list[str] = []
 
 # CUSTOM USER MODEL SETTINGS
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-user-model
