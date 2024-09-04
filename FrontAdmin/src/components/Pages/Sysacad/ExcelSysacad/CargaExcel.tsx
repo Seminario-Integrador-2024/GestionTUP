@@ -49,9 +49,9 @@ function CargaExcel () {
             <Button onClick={handleReset} variant="light">Volver a Intentar</Button>
         </Stack>
         </Stack>
-        <Stack>
+        {/* <Stack>
             { fileUploaded && <Resultado />}
-        </Stack>
+        </Stack> */}
         </Stack>
     )
 }
