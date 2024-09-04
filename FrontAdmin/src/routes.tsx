@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: 'alumnos/:dni',
-    element:  <FichaAlumno /> ,
+    element: <FichaAlumno />,
   },
   {
     path: 'estadisticas',

@@ -4,8 +4,6 @@ import Table from '../../Table/Table';
 import { esES } from '@mui/material/locale';
 import { Outlet } from 'react-router-dom';
 
-
-
 export default function Alumnos() {
   const lightTheme = createTheme({
     palette: {
@@ -14,7 +12,7 @@ export default function Alumnos() {
   });
   return (
     <ThemeProvider theme={lightTheme}>
-      <Table boolEnableRowSelection={true}/>
+      <Table boolEnableRowSelection={true} />
     </ThemeProvider>
   );
 }

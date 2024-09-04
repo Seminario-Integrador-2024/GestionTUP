@@ -3,7 +3,7 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 import {
   MaterialReactTable,
   MRT_ColumnDef,
-  useMaterialReactTable
+  useMaterialReactTable,
 } from 'material-react-table';
 import { FetchAlumnos } from '../../API/DatosAlumnosV2.ts';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
@@ -41,7 +41,7 @@ let tableHeaders = [
     muiTableHeadCellProps: { style: { color: '#fffff' } },
     enableHiding: true,
   },
-]
+];
 
 interface PropsTable extends FlexProps {
   nombre: string;
@@ -53,7 +53,7 @@ interface PropsTable extends FlexProps {
   tableHeaders: array;
 }
 
-function Table( {boolEnableRowSelection }: PropsTable ) {
+function Table({ boolEnableRowSelection }: PropsTable) {
   const [alumnos, setAlumnos] = useState<PropsTable[]>([]);
   const navigate = useNavigate();
 
@@ -70,13 +70,11 @@ function Table( {boolEnableRowSelection }: PropsTable ) {
     fetchData();
   }, []);
 
-  const columns = useMemo<MRT_ColumnDef<PropsTable>[]>(
-    () => tableHeaders,[]
-  );
+  const columns = useMemo<MRT_ColumnDef<PropsTable>[]>(() => tableHeaders, []);
 
   const table = useMaterialReactTable({
     columns,
-    data: alumnos, 
+    data: alumnos,
     enableRowSelection: boolEnableRowSelection,
     enableColumnOrdering: true,
     enableGlobalFilter: true,
@@ -93,7 +91,7 @@ function Table( {boolEnableRowSelection }: PropsTable ) {
         navigate(`${row.original.dni}`);
       },
       sx: {
-        cursor: 'pointer', 
+        cursor: 'pointer',
       },
     }),
   });
