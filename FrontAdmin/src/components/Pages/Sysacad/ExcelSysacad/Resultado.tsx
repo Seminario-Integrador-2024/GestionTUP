@@ -19,7 +19,7 @@ interface DataItem {
         id: key,
         ...value
       })) as DataItem[];
-      setData(dataArray);
+      //setData(dataArray);
     }, []);
   
     return (
