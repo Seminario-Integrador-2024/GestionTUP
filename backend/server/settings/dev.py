@@ -2,26 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-from .base import (
-    AUTH_USER_MODEL,
-    BASE_DIR,
-    CORS_ALLOW_ALL_ORIGINS,
-    DATABASES,
-    DEFAULT_AUTO_FIELD,
-    EMAIL_BACKEND,
-    INSTALLED_APPS,
-    MIDDLEWARE,
-    REST_AUTH,
-    REST_FRAMEWORK,
-    ROOT_URLCONF,
-    SECRET_KEY,
-    SIMPLE_JWT,
-    SITE_ID,
-    SPECTACULAR_SETTINGS,
-    STATIC_URL,
-    TEMPLATES,
-    WSGI_APPLICATION,
-)
+from .base import *  # noqa
 
 load_dotenv()
 
@@ -29,11 +10,13 @@ APPEND_SLASH = True
 
 DEBUG = True
 
+SECRET_KEY: str = os.getenv(
+    key="DJANGO_SECRET_KEY", default=secrets.token_urlsafe(nbytes=128)
+)
 DEBUG_PROPAGATE_EXCEPTIONS = False
 
-ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS: list[str] = ["*"]
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS += [
     # third party apps
@@ -47,51 +30,36 @@ MIDDLEWARE += [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
+TEMPLATES[0]["OPTIONS"]["context_processors"] += [
+    "django.template.context_processors.debug"
+]
+
 INTERNAL_IPS: list[str] = [
     # ...
     "127.0.0.1",
     # ...
 ]
-
-# Static files (CSS, JavaScript, images)
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        # "NAME": "postgres",
+        "NAME": os.getenv(
+            "DB_NAME", "db"
+        ),  # name of the database, same for mysql and postgres, it will be created if it doesn't exist
+        # "USER": "postgres/mysql",
+        "USER": os.getenv("DB_USER", "mysql"),
+        # "PASSWORD": "postgres/mysql",
+        "PASSWORD": os.getenv("DB_PASSWORD", "mysql"),
+        # "HOST": "postgres/mysql/some-other-docker-service-name",
+        "HOST": os.getenv("DB_HOST", "mysql"),  # name of docker-compose service
+        # "PORT": "5432/3306",
+        "PORT": os.getenv("DB_PORT", "3306"),
+    }
+}
+# logs directory for development environment and create it if it doesn't exist
 logs_dir: str = os.path.join(BASE_DIR, "logs")
 os.makedirs(name=logs_dir, exist_ok=True)
 
-# Logging
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} \
-                {process:d} {thread:d} {message}",
-            "style": "{",
-        },
-        "simple": {
-            "format": "{levelname} {message}",
-            "style": "{",
-        },
-    },
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
-        },
-        "file": {
-            "level": "INFO",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": os.path.join(logs_dir, "general.log"),
-            "maxBytes": 1024 * 1024 * 5,  # 5 MB
-            "backupCount": 5,
-            "formatter": "verbose",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console", "file"],
-            "level": "INFO",
-            "propagate": True,
-        },
-    },
-}
+
+LOGGING["handlers"]["console"]["level"] = "DEBUG"
+LOGGING["loggers"]["django"]["level"] = "DEBUG"

@@ -20,7 +20,7 @@
     - [Expanding the ESLint configuration](#expanding-the-eslint-configuration)
   - [Backend](#backend)
     - [Setting up the backend for Development](#setting-up-the-backend-for-development)
-    - [Setting up the Docker container for testing server](#setting-up-the-docker-container-for-testing-server)
+    - [Running the Backend Server Locally](#running-the-backend-server-locally)
 
 ## About the project
 
@@ -102,7 +102,7 @@ This template provides a minimal setup to get Python working in a Django web ser
   - Python 3.10 or higher
     - pip (Python package manager)
   - Docker
-    - Docker Compose (optional)
+    - Docker Compose
   - Visual Studio Code (optional - recommended)
 
 Steps to set up the backend environment:
@@ -147,7 +147,7 @@ Steps to set up the backend environment:
    python -m venv venv
    ```
 
-4. Activate the virtual environment using:
+4. And finally, activate the virtual environment:
 
    1. On macOS/Linux:
 
@@ -166,7 +166,17 @@ Steps to set up the backend environment:
 - _You can deactivate the virtual environment using the `deactivate` command, once you are done working on the project._
 - _A complete list of python dependencies can be found in the `requirements.txt` file at the root of the project._
 
-#### Setting up the Docker container for testing server
+<!-- development setup finished -->
+
+5. Now you can install the project dependencies using pip:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+6.
+
+#### Running the Backend Server Locally
 
 1. Install Docker using the official downloader [Docker Desktop](https://www.docker.com/products/docker-desktop), or using the package manager from your OS:
    1.On macOS run:
@@ -189,64 +199,22 @@ Steps to set up the backend environment:
 
    _**Note:**_ _You may also need to install Docker Compose using `brew install docker-compose` in macOS or `sudo apt-get install docker-compose` in Ubuntu/Debian_
 
-2. Build the Docker image using at the root of the project:
+2. Run the following command to deploy the backend server using docker-compose:
 
    ```bash
-   docker build -t [backend] . #replace `[backend]` with the desired image name
+   docker-compose up -d
    ```
 
-   Docker settings can be configured in the `Dockerfile` and `docker-compose.yml` files at the root of the project.
-
-3. Run the Docker container using
+3. You can access the API documentation with Swagger UI at `http://localhost:8000/api/swagger-ui/` or
+4. You can access the API documentation with ReDoc at `http://localhost:8000/api/redoc-ui/`
+5. to stop the server and remove the volumes run:
 
    ```bash
-   docker run -p 8000:8000 [backend] #replace `[backend]` with the image name used in the previous step.
+   docker-compose down -v
    ```
 
-   You can also run the container in the background using the `-d` flag or specify a different port using `-p [host_port]:8000`
-
-4. If defaults settings are used,the Django server should now be running on
+6. to stop the server and keep the volumes run:
 
    ```bash
-   http://localhost:8000/
+   docker-compose down
    ```
-
-5. You can access the Django admin panel (if the '_DEBUG_' flag is set to True):
-
-   ```bash
-   http://localhost:8000/_/` #using superuser credentials
-   ```
-
-6. You can access the API documentation with Swagger UI at `http://localhost:8000/api/swagger-ui/` or
-7. You can access the API documentation with ReDoc at `http://localhost:8000/api/redoc-ui/`
-8. to stop the container press `Ctrl + C` in the terminal where the container is running.
-
-   \*_If the container is running in the background use:_
-
-   ```bash
-   docker ps #get the container ID
-   ```
-
-   and then:
-
-   ```bash
-   docker stop [container_id] #replace `[container_id]` with the container ID
-   ```
-
-9. to restart the container use:
-
-   ```bash
-   docker start [container_id] #replace `[container_id]` with the container ID
-   ```
-
-10. to remove the image use:
-
-    ```bash
-    docker rmi [backend] #replace `[backend]` with the image name
-    ```
-
-11. to remove the container and image use:
-
-```bash
-   docker rm -f [container_id] #replace `[container_id]` with the container ID
-```

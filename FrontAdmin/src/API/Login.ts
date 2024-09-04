@@ -1,11 +1,14 @@
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
+
+const URL= import.meta.env.VITE_URL_DEV;
+
 
 export const FetchLogin = async (
   email_or_username: string,
   password: string
 ) => {
   try {
-    const response = await fetch('http://localhost:8000/users/login/', {
+    const response = await fetch(`${URL}/users/login/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,6 +28,6 @@ export const FetchLogin = async (
       throw new Error('Login failed');
     }
   } catch (error) {
-    throw new Error('Network error: ' + error);
+    throw new Error('Network error: ' );
   }
 };

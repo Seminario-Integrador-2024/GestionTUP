@@ -1,81 +1,111 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Flex,
-  Button,
-  Text,
-  useDisclosure,
-  IconButton,
-} from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
-import API from '../../../../API/Materias';
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Button, Text, useDisclosure, IconButton} from '@chakra-ui/react';
+import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons'; 
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
 import ModalComponentMateria from '../../../Modal/ModalAgregarMateria';
 import ModalEditarMateria from '../../../Modal/ModalEditarMateria';
+import { FetchPostMateria, FetchMaterias, FetchPutMateria, FetchDeleteMateria} from '../../../../API/Materias';
+import { useToast } from '../../../Toast/useToast';
 
 export default function TablaMaterias() {
-  const [materias, setMaterias] = useState<any[]>([]);
-  const [selectedMateria, setSelectedMateria] = useState<any>(null);
-  const [selectedMateriaEditar, setSelectedMateriaEditar] = useState<any>(null);
-  //Eliminar
-  const {
-    isOpen: isOpen1,
-    onOpen: onOpen1,
-    onClose: onClose1,
-  } = useDisclosure();
-  //Agregar
-  const {
-    isOpen: isOpen2,
-    onOpen: onOpen2,
-    onClose: onClose2,
-  } = useDisclosure();
-  //Editar
-  const {
-    isOpen: isOpen3,
-    onOpen: onOpen3,
-    onClose: onClose3,
-  } = useDisclosure();
+    const [materias, setMaterias] = useState<any[]>([]);
+    const [selectedMateria, setSelectedMateria] = useState<any>(null);
+    const [selectedMateriaEditar, setSelectedMateriaEditar] = useState<any>(null);
+    const showToast = useToast();
+    //Eliminar
+    const {
+        isOpen: isOpen1,
+        onOpen: onOpen1,
+        onClose: onClose1,
+    } = useDisclosure();
+    //Agregar
+    const {
+        isOpen: isOpen2,
+        onOpen: onOpen2,
+        onClose: onClose2,
+    } = useDisclosure();
+    //Editar
+    const {
+        isOpen: isOpen3,
+        onOpen: onOpen3,
+        onClose: onClose3,
+    } = useDisclosure();
 
-  useEffect(() => {
-    setMaterias(API);
-  }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await FetchMaterias();
+            setMaterias(data);
+            console.log(data);
+          };
+        fetchData();
+    }, []);
 
   const handleBorrar = (materia: any) => {
     setSelectedMateria(materia);
     onOpen1();
   };
 
-  const handleConfirmarBorrado = () => {
-    setMaterias(materias.filter((m) => m.id !== selectedMateria.id)); //Elimina del json ya traido asi no hace falta volver a hacer un GET
-    // Aca la solicitud DELETE para eliminar la materia
-    onClose1();
-  };
+    const handleConfirmarBorrado = () => {
+        // Aca la solicitud DELETE para eliminar la materia
+        try {
+            const Data = FetchDeleteMateria(selectedMateria.codigo_materia);
+            showToast('Exito', 'Materia eliminada con exito', 'success');
+            setMaterias(materias.filter(m => m.codigo_materia !== selectedMateria.codigo_materia)); // Elimina del estado
+          } catch (error) {
+            console.error('Network error', error);
+            showToast('Error', 'No se pudo eliminar la materia', 'error');
+        }
 
-  const handleAgregar = (id: string, nombre: string, plan: string) => {
-    // Aca la solicitud GET para agregar la materia
-    setMaterias([...materias, { id, nombre, plan }]);
-    onClose2();
-  };
+        onClose1();
+    };
 
-  const handleEditar = (materia: any) => {
-    setSelectedMateriaEditar(materia);
-    onOpen3();
-  };
+    const handleAgregar = (codigo_materia: string, anio_cursada: string, nombre: string, anio_plan: string, cuatrimestre:string) => {
+        // Aca la solicitud POST para agregar la materia
+        try {
+            console.log({ codigo_materia, anio_plan, nombre });
+            const Data = FetchPostMateria(parseInt(codigo_materia), parseInt(anio_cursada), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
+            console.log(Data);
+            showToast('Exito', 'Materia agregada con exito', 'success');
+          } catch (error) {
+            console.error('Network error', error);
+            showToast('Error', 'No se pudo agregar la materia', 'error');
+        }
+        setMaterias([...materias, { codigo_materia, anio_cursada, anio_plan, nombre, cuatrimestre }]);
+        onClose2();
+    }
 
-  const handleConfirmarEditar = (id: string, nombre: string, plan: string) => {
-    // Aca la solicitud PUT para editar la materia
+    const handleEditar = (materia: any) => {
+        setSelectedMateriaEditar(materia);
+        onOpen3();
+    };
 
-    const index = materias.findIndex((materia) => materia.id === id);
-    if (index !== -1) {
-      const newMaterias = [...materias];
-      newMaterias[index] = { ...newMaterias[index], nombre, plan };
-      setMaterias(newMaterias);
+    const handleConfirmarEditar = (codigo_materia:string, anio_cursado:string, nombre: string, cuatrimestre:string, anio_plan: string) => {
+        // Aca la solicitud PUT para editar la materia
+        try {
+            const Data = FetchPutMateria(parseInt(codigo_materia), parseInt(anio_cursado), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
+            console.log(Data);  
+            showToast('Exito', 'Materia editada con exito', 'success');
+
+            const index = materias.findIndex(materia => materia.codigo_materia === parseInt(codigo_materia));
+            if (index !== -1) {
+                const newMaterias = [...materias];
+                newMaterias[index] = { 
+                    ...newMaterias[index], 
+                    codigo_materia: parseInt(codigo_materia), 
+                    anio_cursada: parseInt(anio_cursado), 
+                    anio_plan: parseInt(anio_plan), 
+                    nombre, 
+                    cuatrimestre: parseInt(cuatrimestre) 
+                };
+                setMaterias(newMaterias);
+            }
+          } catch (error) {
+            console.error('Network error', error);
+            showToast('Error', 'No se pudo editar la materia', 'error');
+        }
+
+
+        onClose3();
     }
 
     onClose3();
@@ -85,56 +115,70 @@ export default function TablaMaterias() {
     <Box>
       {materias.length > 0 ? (
         <Box>
-          <Flex justifyContent="center" mb={4}>
-            <Button
-              leftIcon={<AddIcon />}
-              colorScheme="green"
-              onClick={onOpen2}
-            >
-              Agregar Materia
-            </Button>
-          </Flex>
-          <Table variant="simple">
-            <Thead>
-              <Tr bg="secundaryBg">
-                <Th>ID Materia</Th>
-                <Th>Nombre</Th>
-                <Th>Plan</Th>
-                <Th textAlign="center">Acciones</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {materias.map((materia, index) => (
-                <Tr
-                  key={index}
-                  bg={index % 2 === 0 ? 'white' : 'secundaryBg'}
-                  h={0.5}
-                >
-                  <Td>{materia.id}</Td>
-                  <Td>{materia.nombre}</Td>
-                  <Td>{materia.plan}</Td>
-                  <Td>
-                    <Flex>
-                      <IconButton
-                        aria-label="Editar"
-                        icon={<EditIcon />}
-                        colorScheme="blue"
-                        mr="2"
-                        onClick={() => handleEditar(materia)}
-                      />
-                      <IconButton
-                        aria-label="Eliminar"
-                        icon={<DeleteIcon />}
-                        colorScheme="red"
-                        variant="light"
-                        onClick={() => handleBorrar(materia)}
-                      />
-                    </Flex>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+
+                <Box>
+                <Flex justifyContent="center" mb={4}>
+                    <Button leftIcon={<AddIcon />} colorScheme="green" onClick={onOpen2}>Agregar Materia</Button>
+                </Flex>
+                <Table variant="simple">
+                    <Thead>
+                        <Tr bg="secundaryBg">
+                            <Th>ID Materia</Th>
+                            <Th>Nombre</Th>
+                            <Th>Año</Th>
+                            <Th>Cuatrimestre</Th>
+                            <Th>Plan</Th>
+                            <Th textAlign="center">Acciones</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {materias.map((materia, index) => (
+                            <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"} height="15px">
+                                <Td>{materia.codigo_materia}</Td>
+                                <Td>{materia.nombre}</Td>
+                                <Td>{materia.anio_cursada}</Td>
+                                <Td>{materia.cuatrimestre}</Td>
+                                <Td>{materia.anio_plan}</Td>
+                                <Td>
+                                    <Flex>
+                                       <IconButton
+                                            aria-label="Editar"
+                                            icon={<EditIcon />}
+                                            colorScheme="blue"
+                                            mr="2"
+                                            onClick={() => handleEditar(materia)}
+                                        />
+                                        <IconButton
+                                            aria-label="Eliminar"
+                                            icon={<DeleteIcon />}
+                                            colorScheme="red"
+                                            variant="light"
+                                            onClick={() => handleBorrar(materia)}
+                                        />
+                                    </Flex>
+                                </Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+                </Box>
+            <ModalComponent
+                isOpen={isOpen1}
+                onClose={onClose1}
+                texto={`¿Estás seguro que deseas eliminar ${selectedMateria?.nombre}?`}
+                confirmar={handleConfirmarBorrado}
+            />
+            <ModalComponentMateria
+                isOpen={isOpen2}
+                onClose={onClose2}
+                confirmar={handleAgregar}
+            />
+            <ModalEditarMateria
+                isOpen={isOpen3}
+                onClose={onClose3}
+                confirmar={handleConfirmarEditar}
+                materia={selectedMateriaEditar}
+            />
         </Box>
       ) : (
         <Text>No hay datos disponibles</Text>
