@@ -40,10 +40,10 @@ export default function TablaMaterias() {
         fetchData();
     }, []);
 
-    const handleBorrar = (materia: any) => {
-        setSelectedMateria(materia);
-        onOpen1();
-    };
+  const handleBorrar = (materia: any) => {
+    setSelectedMateria(materia);
+    onOpen1();
+  };
 
     const handleConfirmarBorrado = () => {
         // Aca la solicitud DELETE para eliminar la materia
@@ -108,8 +108,14 @@ export default function TablaMaterias() {
         onClose3();
     }
 
-    return (
+    onClose3();
+  };
+
+  return (
+    <Box>
+      {materias.length > 0 ? (
         <Box>
+
                 <Box>
                 <Flex justifyContent="center" mb={4}>
                     <Button leftIcon={<AddIcon />} colorScheme="green" onClick={onOpen2}>Agregar Materia</Button>
@@ -174,5 +180,26 @@ export default function TablaMaterias() {
                 materia={selectedMateriaEditar}
             />
         </Box>
-    );
+      ) : (
+        <Text>No hay datos disponibles</Text>
+      )}
+      <ModalComponent
+        isOpen={isOpen1}
+        onClose={onClose1}
+        texto={`¿Estás seguro que deseas eliminar ${selectedMateria?.nombre}?`}
+        confirmar={handleConfirmarBorrado}
+      />
+      <ModalComponentMateria
+        isOpen={isOpen2}
+        onClose={onClose2}
+        confirmar={handleAgregar}
+      />
+      <ModalEditarMateria
+        isOpen={isOpen3}
+        onClose={onClose3}
+        confirmar={handleConfirmarEditar}
+        materia={selectedMateriaEditar}
+      />
+    </Box>
+  );
 }
