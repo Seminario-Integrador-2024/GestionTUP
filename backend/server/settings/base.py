@@ -24,16 +24,17 @@ SECRET_KEY: str = os.getenv(
     key="DJANGO_SECRET_KEY", default=secrets.token_urlsafe(nbytes=128)
 )
 
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # CORS_ALLOWED_ORIGINS: list[str] = ["https://gestiontup-1.onrender.com/"]
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # https://docs.djangoproject.com/en/5.0/ref/settings/#std:setting-BASE_DIR
 BASE_DIR: Path = (
     Path(__file__).resolve().parent.parent
 )  # this is the root of the project
-
+PROJECT_ROOT = BASE_DIR.resolve().parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -46,19 +47,19 @@ INSTALLED_APPS: list[str] = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
+    # "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",
+    # "django.contrib.sites",
     # third party apps
     "rest_framework",
-    "rest_framework.authtoken",  # not needed since we are using jwt in dj-rest-auth
+    # "rest_framework.authtoken",  # not needed since we are using jwt in dj-rest-auth
     "dj_rest_auth",
     "allauth",
     "allauth.account",
     "dj_rest_auth.registration",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
+    # "allauth.socialaccount",
+    # "allauth.socialaccount.providers.google",
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "rest_framework_simplejwt",
@@ -151,9 +152,9 @@ STORAGES = {
 
 # Storage settings
 # GCP Bucket settings
-MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
+# MOUNTED_BUCKET_ROOT: Path = BASE_DIR.parent / "mnt/my-bucket/"
 
-os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
+# os.makedirs(MOUNTED_BUCKET_ROOT, exist_ok=True)
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -161,7 +162,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         # make sqlite db file in the root of the project
-        "NAME": MOUNTED_BUCKET_ROOT / "db.sqlite3",
+        # "NAME": MOUNTED_BUCKET_ROOT / "db.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -169,20 +171,22 @@ DATABASES = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_ROOT: Path = MOUNTED_BUCKET_ROOT / "static"
-STATIC_URL: str = "/static/"
+# STATIC_ROOT: Path = MOUNTED_BUCKET_ROOT / "static"
+STATIC_ROOT: str = "staticfiles"
+STATIC_URL: str = "static/"  # default de django
 
-MEDIA_ROOT: Path = MOUNTED_BUCKET_ROOT / "media"
+# MEDIA_ROOT: Path = MOUNTED_BUCKET_ROOT / "media"
+MEDIA_ROOT: str = "media"
 MEDIA_URL: str = "media/"
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-AUTH_PASSWORD_VALIDATORS: list[str | None] = []
+AUTH_PASSWORD_VALIDATORS: list[str] = []
 
 # CUSTOM USER MODEL SETTINGS
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-user-model
-AUTH_USER_MODEL: str = "users.CustomUser"
+AUTH_USER_MODEL: str = "users.GenericUser"
 
 
 # dj-rest-auth settings (with Registration & JWT enabled)
@@ -242,16 +246,16 @@ SITE_ID = 1
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_EMAIL_REQUIRED = True
-SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "EMAIL_AUTHENTICATION": True,
-        "SCOPE": ["email", "profile"],
-        "AUTH_PARAMS": {"access_type": "offline"},
-    },
-}
+# SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+# SOCIALACCOUNT_PROVIDERS = {
+#     "google": {
+#         "EMAIL_AUTHENTICATION": True,
+#         "SCOPE": ["email", "profile"],
+#         "AUTH_PARAMS": {"access_type": "offline"},
+#     },
+# }
 LOGIN_REDIRECT_URL = "/"
-SOCIALACCOUNT_ONLY = True
+# SOCIALACCOUNT_ONLY = True
 AUTHENTICATION_BACKENDS: list[str] = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",

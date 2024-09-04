@@ -2,10 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-
-
 from .base import *  # noqa
-
 
 load_dotenv()
 
@@ -20,7 +17,6 @@ DEBUG_PROPAGATE_EXCEPTIONS = False
 
 ALLOWED_HOSTS: list[str] = ["*"]
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS += [
     # third party apps
@@ -43,7 +39,23 @@ INTERNAL_IPS: list[str] = [
     "127.0.0.1",
     # ...
 ]
-
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        # "NAME": "postgres",
+        "NAME": os.getenv(
+            "DB_NAME", "db"
+        ),  # name of the database, same for mysql and postgres, it will be created if it doesn't exist
+        # "USER": "postgres/mysql",
+        "USER": os.getenv("DB_USER", "mysql"),
+        # "PASSWORD": "postgres/mysql",
+        "PASSWORD": os.getenv("DB_PASSWORD", "mysql"),
+        # "HOST": "postgres/mysql/some-other-docker-service-name",
+        "HOST": os.getenv("DB_HOST", "mysql"),  # name of docker-compose service
+        # "PORT": "5432/3306",
+        "PORT": os.getenv("DB_PORT", "3306"),
+    }
+}
 # logs directory for development environment and create it if it doesn't exist
 logs_dir: str = os.path.join(BASE_DIR, "logs")
 os.makedirs(name=logs_dir, exist_ok=True)

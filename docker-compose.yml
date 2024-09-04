@@ -1,21 +1,65 @@
 services:
-  back: # Replace with your actual application name
-    build: . # Build the backend service
+  # -- Si quieres usar postgres, descomenta las siguientes líneas
+  # postgres:
+  #   image: postgres:16.3-alpine3.20
+  #   environment:
+  #     # POSTGRES_USER: "postgres" # ${POSTGRES_USER:-postgres} # Uncomment to set a custom username. postgres is the default created by the image
+  #     POSTGRES_PASSWORD: "postgres" # ${POSTGRES_PASSWORD:-changeme}
+  #     PGDATA: /data/postgres
+  #   volumes:
+  #     - postgres:/data/postgres
+  #   ports:
+  #     - "5432:5432"
+  #   restart: always
+
+  # -- Si quieres usar pgadmin, descomenta las siguientes líneas
+  # pgadmin:
+  #   container_name: pgadmin_container
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #     PGADMIN_CONFIG_SERVER_MODE: "False"
+  #   volumes:
+  #     - pgadmin:/var/lib/pgadmin
+  #   ports:
+  #     - "8001:80"
+  #   restart: unless-stopped
+
+  backend:
+    build:
+      context: . # Use the current directory as the build context
+      dockerfile: Dockerfile # Use the Dockerfile in the current directory
+      args:
+        - DJANGO_SETTINGS_MODULE=server.settings.dev # Set the Django settings module for build
+    entrypoint: ["/entrypoint.sh"] # Override the default entrypoint
+    command: ["sh", "-c", "python manage.py runserver 0.0.0.0:8000"]
     volumes:
-      - .:/app/code # Mount current directory to /app/code in container
+      - ./backend/:/app/ # Mount current directory to /app in container
     ports:
       - "8000:8000" # Expose port 8000
+    depends_on:
+      - mysql # Depend on the MySQL service
+    restart: always
     environment:
-      DJANGO_SETTINGS_MODULE: server.settings.dev
-      PYTHONDONTWRITEBYTECODE: 1
-      PYTHONUNBUFFERED: 1
-  db:
-    image: mysql:8.0 # Use official MySQL image (adjust version if needed)
+      - DJANGO_SETTINGS_MODULE=server.settings.dev # Set the Django settings module for execution
+      - DB_HOST=mysql # Set the database host to the MySQL service
+      - DB_PORT=3306 # Set the database port to 3306 (MySQL default)
+      - DB_NAME=db
+      - DB_USER=mysql
+      - DB_PASSWORD=mysql
+
+  mysql:
+    image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: "1234" # Set a strong root password
-      MYSQL_DATABASE: gestiontup # Define your database name
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "db"
+      MYSQL_USER: "mysql"
+      MYSQL_PASSWORD: "mysql"
+    ports:
+      - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql # Persistent storage for database data
+      - mysql_data:/var/lib/mysql # Persist MySQL data
 
 volumes:
-  mysql-data: {} # Define named volume for persistent MySQL data
+  mysql_data: # Volume for MySQL data persistence
