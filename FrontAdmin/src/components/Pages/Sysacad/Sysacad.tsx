@@ -6,10 +6,10 @@ import CargaExcel from './ExcelSysacad/CargaExcel';
 function Sysacad() {
   return (
     <Tabs>
-  <TabList>
-    <Tab>Sysacad</Tab>
-    <Tab>Materias</Tab>
-  </TabList>
+      <TabList>
+        <Tab>Sysacad</Tab>
+        <Tab>Materias</Tab>
+      </TabList>
 
   <TabPanels>
     <TabPanel>

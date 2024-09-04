@@ -1,8 +1,11 @@
-
-from django.db import models
-from django.utils import timezone
+import os
 
 from alumnos.models import Alumno
+from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from django.utils import timezone
+
 
 class Pago(models.Model):
     """
@@ -70,19 +73,21 @@ class CompromisoDePago(models.Model):
     """
 
     id_comp_pago = models.AutoField(primary_key=True)
-    cuatrimestre = models.CharField(max_length=255, blank=True,  null=True)
-    anio = models.DateTimeField(max_length=10,  blank=True,  null=True)
-    monto_completo = models.FloatField( blank=True,  null=True)
-    monto_completo_2venc = models.FloatField( blank=True,  null=True)
-    monto_completo_3venc = models.FloatField( blank=True,  null=True)
-    matricula = models.FloatField( blank=True,  null=True)
-    cuota_reducida = models.FloatField( blank=True,  null=True)
-    cuota_reducida_2venc = models.FloatField( blank=True,  null=True)
-    cuota_reducida_3venc = models.FloatField( blank=True,  null=True)
+    cuatrimestre = models.CharField(max_length=255, blank=True, null=True)
+    anio = models.DateTimeField(max_length=10, blank=True, null=True)
+    monto_completo = models.FloatField(blank=True, null=True)
+    monto_completo_2venc = models.FloatField(blank=True, null=True)
+    monto_completo_3venc = models.FloatField(blank=True, null=True)
+    matricula = models.FloatField(blank=True, null=True)
+    cuota_reducida = models.FloatField(blank=True, null=True)
+    cuota_reducida_2venc = models.FloatField(blank=True, null=True)
+    cuota_reducida_3venc = models.FloatField(blank=True, null=True)
     comprimiso_path = models.CharField(max_length=255, blank=True, null=True)
-    archivo_pdf = models.FileField(upload_to='compromisos/', blank=True,  null=True)
-    fecha_ultima_modif = models.DateTimeField(max_length=10,  blank=True,  null=True)
-    fecha_carga_comp_pdf = models.DateTimeField(max_length=10, auto_now_add=True, blank=True,  null=True)
+    archivo_pdf = models.FileField(upload_to="compromisos/", blank=True, null=True)
+    fecha_ultima_modif = models.DateTimeField(max_length=10, blank=True, null=True)
+    fecha_carga_comp_pdf = models.DateTimeField(
+        max_length=10, auto_now_add=True, blank=True, null=True
+    )
 
     def save(self, *args, **kwargs):
         self.fecha_ultima_modif = timezone.now()
@@ -90,7 +95,16 @@ class CompromisoDePago(models.Model):
 
         if self.archivo_pdf:
             self.comprimiso_path = self.archivo_pdf.url
-            super().save(update_fields=['comprimiso_path'])
+            super().save(update_fields=["comprimiso_path"])
+
+
+@receiver(post_delete, sender=CompromisoDePago)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Borra el archivo PDF cuando se elimina la instancia del modelo.
+    """
+    if instance.archivo_pdf and os.path.isfile(instance.archivo_pdf.path):
+        os.remove(instance.archivo_pdf.path)
 
 
 class Cuota(models.Model):
@@ -118,7 +132,7 @@ class Cuota(models.Model):
     id_cuota = models.AutoField(primary_key=True)
     nro_cuota = models.IntegerField()
     recargo = models.FloatField()
-    compdepago =  models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
+    compdepago = models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
     estado = models.CharField(max_length=255)
     vencimiento = models.DateField()
     fecha_pago = models.DateField()
@@ -161,10 +175,10 @@ class FirmaCompPagoAlumno(models.Model):
         alumno (ForeignKey): The related Alumno.
         compromiso_de_pago (ForeignKey): The related CompromisoDePago.
         fecha_pago (DateTimeField): The date and time when the payment was made.
-        firmado BooleanField(): The confirmation of having signed  
+        firmado BooleanField(): The confirmation of having signed
     """
 
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
     compromiso_de_pago = models.ForeignKey(CompromisoDePago, on_delete=models.CASCADE)
-    fecha_firmado = models.DateTimeField()
-    firmado = models.BooleanField()
+    fecha_firmado = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    firmado = models.BooleanField(default=True, blank=True, null=True)

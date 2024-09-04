@@ -107,37 +107,37 @@ import {
                 <Flex direction="column" mt="10px">
                 <Text  mb={0}>Plan</Text>
                 <Input
-                    value={plan}
-                    placeholder="Plan"
-                    size='md'
-                    onChange={(e) => setPlan(e.target.value)}
-                    variant = "flushed"
-                    ml={1}
+                  value={plan}
+                  placeholder="Plan"
+                  size="md"
+                  onChange={(e) => setPlan(e.target.value)}
+                  variant="flushed"
+                  ml={1}
                 />
-                </Flex>
-                </Stack>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={handleconfirmar}
-                size="sm"
-              >
-                Aceptar
-              </Button>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={onClose}
-                variant="light"
-                size="sm"
-              >
-                Cancelar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    );
-  }
+              </Flex>
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={handleconfirmar}
+              size="sm"
+            >
+              Aceptar
+            </Button>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={onClose}
+              variant="light"
+              size="sm"
+            >
+              Cancelar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
