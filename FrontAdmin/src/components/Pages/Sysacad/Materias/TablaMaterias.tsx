@@ -33,33 +33,43 @@ export default function TablaMaterias() {
 
     useEffect(() => {
         const fetchData = async () => {
+          try {
             const data = await FetchMaterias();
             setMaterias(data);
             console.log(data);
+          } catch (error) {
+            console.error('Network error', error);
+            showToast('Error', 'No se pudieron cargar las materias', 'error');
+          }
           };
         fetchData();
     }, []);
 
-    const handleBorrar = (materia: any) => {
-        setSelectedMateria(materia);
-        onOpen1();
-    };
+  const handleBorrar = (materia: any) => {
+    setSelectedMateria(materia);
+    onOpen1();
+  };
 
-    const handleConfirmarBorrado = () => {
-        // Aca la solicitud DELETE para eliminar la materia
-        try {
-            const Data = FetchDeleteMateria(selectedMateria.codigo_materia);
-            showToast('Exito', 'Materia eliminada con exito', 'success');
-            setMaterias(materias.filter(m => m.codigo_materia !== selectedMateria.codigo_materia)); // Elimina del estado
-          } catch (error) {
-            console.error('Network error', error);
-            showToast('Error', 'No se pudo eliminar la materia', 'error');
-        }
-
-        onClose1();
-    };
+  const handleConfirmarBorrado = async () => {
+    try {
+      await FetchDeleteMateria(selectedMateria.codigo_materia);
+      showToast('Exito', 'Materia eliminada con exito', 'success');
+      setMaterias((prevMaterias) =>
+        prevMaterias.filter((m) => m.codigo_materia !== selectedMateria.codigo_materia)
+      ); // Elimina del estado
+    } catch (error) {
+      console.error('Network error', error);
+      showToast('Error', 'No se pudo eliminar la materia', 'error');
+    }
+    onClose1();
+  };
 
     const handleAgregar = (codigo_materia: string, anio_cursada: string, nombre: string, anio_plan: string, cuatrimestre:string) => {
+         // Validar si todos los campos están completos
+      if (!codigo_materia || !anio_cursada || !nombre || !anio_plan || !cuatrimestre) {
+        showToast('Error', 'No se pudo agregar la materia, todos los campos deben ser completados', 'error');
+        return;
+    }
         // Aca la solicitud POST para agregar la materia
         try {
             console.log({ codigo_materia, anio_plan, nombre });
@@ -80,6 +90,10 @@ export default function TablaMaterias() {
     };
 
     const handleConfirmarEditar = (codigo_materia:string, anio_cursado:string, nombre: string, cuatrimestre:string, anio_plan: string) => {
+      if (!codigo_materia || !anio_cursado || !nombre || !anio_plan || !cuatrimestre) {
+        showToast('Error', 'No se pudo editar la materia, todos los campos deben ser completados', 'error');
+        return;
+      }
         // Aca la solicitud PUT para editar la materia
         try {
             const Data = FetchPutMateria(parseInt(codigo_materia), parseInt(anio_cursado), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
@@ -108,7 +122,10 @@ export default function TablaMaterias() {
         onClose3();
     }
 
-    return (
+   // onClose3();
+  //};
+
+  return (
         <Box>
                 <Box>
                 <Flex justifyContent="center" mb={4}>
@@ -173,6 +190,8 @@ export default function TablaMaterias() {
                 confirmar={handleConfirmarEditar}
                 materia={selectedMateriaEditar}
             />
-        </Box>
-    );
+      </Box>
+      
+  );
+  
 }

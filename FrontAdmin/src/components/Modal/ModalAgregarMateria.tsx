@@ -9,9 +9,13 @@ import {
     Input,
     Button,
     Stack,
+    RadioGroup,
+    Radio,
+    Text,
   } from '@chakra-ui/react';
     import React, { useState } from 'react';
   
+
   interface ModalComponentProps {
     isOpen: boolean;
     onClose: () => void;
@@ -48,39 +52,47 @@ import {
             <ModalCloseButton />
             <ModalBody>
               <Stack gap={2}>
-                <Input
-                  placeholder='ID Materia'
-                  size='md'
-                  variant="flushed"
-                  value={idMateria}
-                  onChange={(e) => setIdMateria(e.target.value)}
-                />
-                <Input
-                  placeholder='Nombre'
-                  size='md'
-                  variant="flushed"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                />
-                <Input
-                  placeholder='Año'
-                  size='md'
-                  variant="flushed"
-                  value={anio_cursada}
-                  onChange={(e) => setAnioCursada(e.target.value)}
-                />
-                <Input
-                  placeholder='Cuatrimestre'
-                  size='md'
-                  variant="flushed"
-                  value={cuatrimestre}
-                  onChange={(e) => setCuatrimestre(e.target.value)}
-                />  
+                <Stack direction="row">
+                  <Input
+                    placeholder='ID Materia'
+                    size='md'
+                    variant="flushed"
+                    value={idMateria}
+                    onChange={(e) => setIdMateria(e.target.value)}
+                  />
+                  <Input
+                    placeholder='Nombre'
+                    size='md'
+                    variant="flushed"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                  />
+                </Stack>
+                < Stack direction="row" mt={5} alignItems="center">
+                  <Input
+                    placeholder='Año'
+                    size='md'
+                    w="50%"
+                    variant="flushed"
+                    value={anio_cursada}
+                    onChange={(e) => setAnioCursada(e.target.value)}
+                  />
+                  <Stack direction="column">
+                  <Text>Cuatrimestre</Text>
+                  <RadioGroup  onChange={(value) => setCuatrimestre(value.toString())}>
+                    <Stack direction="row">
+                      <Radio value="1">1</Radio>
+                      <Radio value="2">2</Radio>
+                    </Stack>
+                  </RadioGroup> 
+                  </Stack>
+                </Stack>
                 <Input
                   placeholder='Plan'
                   size='md'
                   variant="flushed"
                   value={plan}
+                  mt={5}
                   onChange={(e) => setPlan(e.target.value)}
                 />
               </Stack>
@@ -109,3 +121,4 @@ import {
       </>
     );
   }
+

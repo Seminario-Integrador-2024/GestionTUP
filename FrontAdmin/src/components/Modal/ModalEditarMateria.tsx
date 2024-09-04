@@ -11,6 +11,8 @@ import {
     Stack,
     Text,
     Flex,
+    RadioGroup,
+    Radio,
   } from '@chakra-ui/react';
   import React, { useState, useEffect } from 'react';
   
@@ -55,7 +57,8 @@ import {
             <ModalHeader>Editar {materia.nombre}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                <Stack spacing={3}>
+                <Stack spacing={4}>
+                <Stack direction="row" alignItems="center">
                 <Flex direction="column">
                     <Text>ID Materia</Text>
                     <Input
@@ -67,17 +70,19 @@ import {
                         ml={1}
                     />
                 </Flex>
-                <Flex direction="column" mt="10px">
-                <Text mb={0}>Nombre</Text>
-                <Input
-                    value={nombre}
-                    placeholder="Nombre"
-                    size='md'
-                    onChange={(e) => setNombre(e.target.value)}
-                    variant = "flushed"
-                    ml={1}
-                />
+                <Flex direction="column">
+                  <Text mb={0}>Nombre</Text>
+                  <Input
+                      value={nombre}
+                      placeholder="Nombre"
+                      size='md'
+                      onChange={(e) => setNombre(e.target.value)}
+                      variant = "flushed"
+                      ml={1}
+                  />
                 </Flex>
+                </Stack>
+                <Stack direction="row" alignItems="center">
                 <Flex direction="column" mt="10px">
                 <Text mb={0}>Año</Text>
                 <Input
@@ -89,51 +94,50 @@ import {
                     ml={1}
                 />
                 </Flex>
-                <Flex direction="column" mt="10px">
-                <Text mb={0}>Cuatrimestre</Text>
-                <Input
-                    value={cuatrimestre}
-                    placeholder="Cuatrimestre"
-                    size='md'
-                    onChange={(e) => setCuatrimestre(e.target.value)}
-                    variant = "flushed"
-                    ml={1}
-                />
-                </Flex>
+                <Stack direction="column">
+                  <Text>Cuatrimestre</Text>
+                  <RadioGroup value={cuatrimestre.toString()} onChange={(value) => setCuatrimestre(value)}>
+                    <Stack direction="row">
+                      <Radio value="1">1</Radio>
+                      <Radio value="2">2</Radio>
+                    </Stack>
+                  </RadioGroup> 
+                  </Stack>
+                </Stack>
                 <Flex direction="column" mt="10px">
                 <Text  mb={0}>Plan</Text>
                 <Input
-                    value={plan}
-                    placeholder="Plan"
-                    size='md'
-                    onChange={(e) => setPlan(e.target.value)}
-                    variant = "flushed"
-                    ml={1}
+                  value={plan}
+                  placeholder="Plan"
+                  size="md"
+                  onChange={(e) => setPlan(e.target.value)}
+                  variant="flushed"
+                  ml={1}
                 />
-                </Flex>
-                </Stack>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={handleconfirmar}
-                size="sm"
-              >
-                Aceptar
-              </Button>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={onClose}
-                variant="light"
-                size="sm"
-              >
-                Cancelar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    );
-  }
+              </Flex>
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={handleconfirmar}
+              size="sm"
+            >
+              Aceptar
+            </Button>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={onClose}
+              variant="light"
+              size="sm"
+            >
+              Cancelar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
