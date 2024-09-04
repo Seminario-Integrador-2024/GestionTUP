@@ -28,9 +28,10 @@ export const FetchMontos = async (offset: number, limit:number ) => {
   }
 };
 
-export const createCompromiso = async (compromisoData: any, selectFile: any) => {
+export const createCompromiso = async (compromisoData: any) => {
   try {
     const token = Cookies.get('access_token');
+    console.log(compromisoData);
 
     const response = await fetch(`${URL}/pagos/compromisos/`, {
       method: 'POST',
@@ -43,7 +44,6 @@ export const createCompromiso = async (compromisoData: any, selectFile: any) => 
 
     if (response.ok) {
       const data = await response.json();
-      await loadPDF(data.id_comp_pago ,selectFile);
       return data;
     } else {
       const errorResponse = await response.json();
@@ -53,29 +53,3 @@ export const createCompromiso = async (compromisoData: any, selectFile: any) => 
     throw new Error('Network error: ' + error);
   }
 };
-
-export const loadPDF = async (id :string,file: File) => {
-  try {
-    const token = Cookies.get('access_token');
-
-    const formData = new FormData();
-    formData.append('archivo_pdf', file);
-
-    const response = await fetch(`${URL}/pagos/compromisos/${id}/`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      throw new Error('Error en la respuesta del servidor');
-    }
-  } catch (error) {
-    throw new Error('Network error: ' + error);
-  }
-}

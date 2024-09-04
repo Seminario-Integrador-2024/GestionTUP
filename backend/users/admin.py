@@ -9,5 +9,8 @@ Example usage:
     admin.site.register(CustomUser)
 """
 from django.contrib import admin
+from users.models import CustomUser
 
 # Register your models here.
+
+admin.site.register(model_or_iterable=CustomUser)

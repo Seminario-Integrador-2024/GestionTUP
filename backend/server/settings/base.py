@@ -47,19 +47,19 @@ INSTALLED_APPS: list[str] = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    # "django.contrib.sessions",
+    "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "django.contrib.sites",
+    "django.contrib.sites",
     # third party apps
     "rest_framework",
-    # "rest_framework.authtoken",  # not needed since we are using jwt in dj-rest-auth
+    "rest_framework.authtoken",  # not needed since we are using jwt in dj-rest-auth
     "dj_rest_auth",
     "allauth",
     "allauth.account",
     "dj_rest_auth.registration",
-    # "allauth.socialaccount",
-    # "allauth.socialaccount.providers.google",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "rest_framework_simplejwt",
@@ -186,7 +186,7 @@ AUTH_PASSWORD_VALIDATORS: list[str] = []
 
 # CUSTOM USER MODEL SETTINGS
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-user-model
-AUTH_USER_MODEL: str = "users.GenericUser"
+AUTH_USER_MODEL: str = "users.CustomUser"
 
 
 # dj-rest-auth settings (with Registration & JWT enabled)
@@ -246,16 +246,16 @@ SITE_ID = 1
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_EMAIL_REQUIRED = True
-# SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-# SOCIALACCOUNT_PROVIDERS = {
-#     "google": {
-#         "EMAIL_AUTHENTICATION": True,
-#         "SCOPE": ["email", "profile"],
-#         "AUTH_PARAMS": {"access_type": "offline"},
-#     },
-# }
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "EMAIL_AUTHENTICATION": True,
+        "SCOPE": ["email", "profile"],
+        "AUTH_PARAMS": {"access_type": "offline"},
+    },
+}
 LOGIN_REDIRECT_URL = "/"
-# SOCIALACCOUNT_ONLY = True
+SOCIALACCOUNT_ONLY = True
 AUTHENTICATION_BACKENDS: list[str] = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
