@@ -94,7 +94,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
     >
       <SimpleGrid mt="15px">
         {montos.length > 0 ? (
-          <Table variant="simple">
+          <Table variant="striped" colorScheme="gray.700">
             <Thead>
               <Tr>
                 <Th p={1}>Año/ Cuatrimestre</Th>
@@ -111,7 +111,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
             </Thead>
             <Tbody>
               {montos.map((monto, index) => (
-                <Tr key={index}>
+                <Tr key={index} borderColor="gray.100">
                   <Td p={1}>{new Date(monto.anio).getFullYear() + " / " + monto.cuatrimestre}</Td>
                   <Td p={2}>{" $ " + monto.matricula}</Td>
                   <Td p={1}>{" $ " + monto.monto_completo}</Td>
