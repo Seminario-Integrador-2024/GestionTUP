@@ -79,7 +79,7 @@ import {
                   />
                   <Stack direction="column">
                   <Text>Cuatrimestre</Text>
-                  <RadioGroup defaultValue="1" onChange={(value) => setCuatrimestre(value.toString())}>
+                  <RadioGroup  onChange={(value) => setCuatrimestre(value.toString())}>
                     <Stack direction="row">
                       <Radio value="1">1</Radio>
                       <Radio value="2">2</Radio>
