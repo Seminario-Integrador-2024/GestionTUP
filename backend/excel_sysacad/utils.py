@@ -39,11 +39,12 @@ from typing import Callable
 
 import pandas as pd
 from django.db.models import Model
+from sqlalchemy import Boolean
 
 # functions definitions
 
 
-def validate_excel(data: pd.DataFrame) -> dict:
+def validate_excel_file(data: pd.DataFrame) -> pd.DataFrame:
     """
     Validates the data in a DataFrame against a set lambda functions.
 
@@ -137,29 +138,14 @@ def validate_excel(data: pd.DataFrame) -> dict:
         "columna",
         "error_en_fila",
     ]
-    # Convert the DataFrame to a dictionary for JSON serialization
-    my_dict: dict = json.loads(
-        invalid_rows.pivot(
-            index="error_en_fila", columns="columna", values="columna"
-        ).to_json(orient="index")
+    return invalid_rows.pivot(
+        index="error_en_fila", columns="columna", values="columna"
     )
-    # Clean the dictionary by removing None values
-    # clean_dict: dict[int, dict] = {}
-    # for idx, fields in my_dict.items():
-    #     for (
-    #         k,
-    #         v,
-    #     ) in fields.items():
-    #         if v is not None:
-    #             clean_dict[idx] = {k: v}
-    # Return the cleaned dictionary
-    return my_dict
 
 
 # cargar archivo sysacad xls en la bbdd
 
 from django.db import transaction
-from sqlalchemy import create_engine
 
 
 # Define table definitions with column lists
@@ -176,45 +162,48 @@ from sqlalchemy import create_engine
 # ... add more tables and their columns here
 # }
 # Get the database connection string from the settings
-def load_data(data_dict: dict, model_class: Model, field_mapping: dict) -> dict:
+def load_data(data: pd.DataFrame):
     """
-    Load data into a Django model.
+    Load Excel data into the database.
 
     Args:
-        data_dict (dict): Dictionary containing the data to load.
-        definition_table (dict): Dictionary mapping model fields to data dictionary keys.
-
-    Returns:
-        dict: Dictionary containing duplicate rows that were not added.
+    - data (pd.DataFrame): The data to load into the database.
+    - models (dict[str, Model]): A dictionary containing the models to load the data into.
     """
-    # Define the field mapping
-    # reference of definition_table
-    # {
-    #     "column1":{
-    #         "row1": "value1",
-    #         "row2": "value2",
-    #         "row3": "value3",
-    #     },
-    #     "column2":{
-    #         "row1": "value1",
-    #         "row2": "value2",
-    #         "row3": "value3",
-    #     }
-    # }
+    # models definitions
+    from alumnos.models import Alumno
+    from materias.models import Materia, MateriaAlumno
 
-    # Initialize a dictionary to store duplicate rows
-    duplicates = {}
-
-    for row_index, row_data in data_dict.items():
-        try:
-            model_instance = model_class(
-                **{field: row_data[key] for field, key in field_mapping.items()}
-            )
-            model_instance.save()
-        except IntegrityError:
-            duplicates[row_index] = row_data
-
-    return duplicates
+    df_records = data.to_dict()
+    # iterate over the rows
+    for index, row in df_records.items():
+        # create the Alumno instance
+        alumno = Alumno(
+            dni=row["Documento"],
+            nombre=row["Apellido y Nombres"],
+            legajo=row["Legajo"],
+            email=row["Mail"],
+            celular=row["Celular"],
+            telefono=row["Teléfono"],
+            telefono_resid=row["Tel. Resid"],
+        )
+        # create the Materia instance
+        materia = Materia(
+            codigo_materia=row["Materia"],
+            nombre=row["Nombre de materia"],
+        )
+        # create the MateriaAlumno instance
+        materia_alumno = MateriaAlumno(
+            id_materia=row["Materia"],
+            id_alumno=row["Documento"],
+            offrc=0,
+            atendnc=0,
+        )
+        # save the instances
+        with transaction.atomic():
+            alumno.save()
+            materia.save()
+            materia_alumno.save()
 
 
 if __name__ == "__main__":
@@ -276,7 +265,7 @@ if __name__ == "__main__":
     #     row_index: {column: values[row_index] for column, values in data_dict.items()}
     #     for row_index in data_dict[list(data_dict.keys())[0]].keys()
     # }
-    result: dict[int, dict] = validate_excel(df)
+    result: pd.DataFrame = validate_excel_file(df)
     # x = 2
     # for index, columns in arows.items():
     #     if x != 0:

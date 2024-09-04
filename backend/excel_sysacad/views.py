@@ -1,61 +1,34 @@
-import pandas as pd
-from rest_framework import status
-from rest_framework.parsers import FileUploadParser
+from django.db.models.manager import BaseManager
+from rest_framework import serializers, status, viewsets
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from yaml import serialize
 
+from .models import ExcelFile
 from .serializers import ExcelFileSerializer
 
 
-class ExcelFileView(APIView):
-    parser_classes = [FileUploadParser]
+class ExcelFileViewSet(viewsets.ModelViewSet):
+    queryset: BaseManager[ExcelFile] = ExcelFile.objects.all()
     serializer_class = ExcelFileSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     file_obj = request.data["file"]
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
 
-    #     # Validate if Excel file
-    #     if not file_obj.name.endswith(".xlsx") or not file_obj.name.endswith(".xls"):
-    #         return Response(
-    #             {"error": "Invalid file type"}, status=status.HTTP_400_BAD_REQUEST
-    #         )
+        try:
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
 
-    #     df = pd.read_excel(file_obj)
+            response_data = serializer.data
 
-    #     # Validate formatting
-    #     if not self.validate_formatting(df):
-    #         return Response(
-    #             {"error": "Invalid formatting"},
-    #             status=status.HTTP_412_PRECONDITION_FAILED,
-    #         )
-    #     serializer = ExcelFileSerializer(data=df.to_dict(orient="records"), many=True)
+            if "duplicates" in serializer.context:
+                response_data["duplicates"] = serializer.context["duplicates"]
+                return Response(response_data, status=status.HTTP_206_PARTIAL_CONTENT)
 
-    #     if serializer.is_valid():
-    #         added_rows = 0
-    #         not_added_rows = []
-    #         for row in serializer.validated_data:
-    #             try:
-    #                 # Try to create instance (assuming validate_formatting ensures correct data)
-    #                 MyModel.objects.create(**row)
-    #                 added_rows += 1
-    #             except IntegrityError:
-    #                 not_added_rows.append(row)
-    #         if not_added_rows:
-    #             return Response(
-    #                 {"not_added_rows": not_added_rows},
-    #                 status=status.HTTP_206_PARTIAL_CONTENT,
-    #             )
-    #         return Response(
-    #             {"total_rows_processed": added_rows}, status=status.HTTP_201_CREATED
-    #         )
-    #     else:
-    #         return Response(
-    #             serializer.errors, status=status.HTTP_412_PRECONDITION_FAILED
-    #         )
+            return Response(response_data, status=status.HTTP_201_CREATED)
 
-    # def validate_formatting(self, df):
-    #     # Custom formatting validation logic here
-    #     # For example:
-    #     expected_columns = ["column1", "column2", "column3"]
-    #     return set(df.columns) == set(expected_columns)
+        except serializers.ValidationError as exc:
+            if exc.get_codes() == "invalid_excel_file":
+                return Response(exc.detail, status=status.HTTP_412_PRECONDITION_FAILED)
+            elif exc.get_codes() == "invalid_excel_content":
+                return Response(exc.detail, status=status.HTTP_406_NOT_ACCEPTABLE)
+            else:
+                return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
