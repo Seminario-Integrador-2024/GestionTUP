@@ -12,7 +12,11 @@ class MateriaAlumnoSerializer(serializers.ModelSerializer):
         model = MateriaAlumno
         fields = "__all__"
 
-
+class AlumnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alumno
+        fields = "__all__"
+        
 class MateriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Materia
