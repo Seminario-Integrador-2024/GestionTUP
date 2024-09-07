@@ -29,7 +29,7 @@ function App() {
             element={
               <Navigate
                 replace
-                to={isAuthenticated ? (rolUser?  '/admin/estadisticas': '/alumnos/cuenta') : '/auth'}
+                to={isAuthenticated ? (rolUser?  '/admin/estadisticas': '/admin/estadisticas') : '/auth'}
               />
             }
           />

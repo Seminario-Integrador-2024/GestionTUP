@@ -105,7 +105,9 @@ function LoginPage() {
                 data-text="signin_with"
                 data-size="large"
                 data-logo_alignment="left"
+            >
             </Box>
+        </Flex>
     );
 }
 

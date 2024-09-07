@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-export const FetchDetalleAlumno = async (dni) => {
+export const FetchDetalleAlumno = async (dni: number | undefined) => {
   try {
     const token = Cookies.get('access_token');
 

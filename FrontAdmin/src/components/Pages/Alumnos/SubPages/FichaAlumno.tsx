@@ -16,11 +16,21 @@ import { FetchDetalleAlumno } from '../../../../API/DetalleAlumno.ts';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 
+interface Alumno {
+  apellido: string;
+  nombre: string;
+  dni: number;
+  legajo: number;
+  email: string;
+  telefono: number;
+  estado: string;
+}
+
 function FichaAlumno() {
   const { dni } = useParams();
-  const [alumno, setAlumno] = useState(null); // Define el estado con un valor inicial de null
+  const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<unknown>(null);
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -31,7 +41,7 @@ function FichaAlumno() {
     const fetchData = async () => {
       try {
         const data = await FetchDetalleAlumno(dni);
-        setAlumno(data); // Asegúrate de que `data.results` sea el formato correcto
+        setAlumno(data); 
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -75,7 +85,7 @@ function FichaAlumno() {
         <Text color="gray">Apellido y nombre</Text>
         <Text
           size="sm"
-          alingText="center"
+          textAlign="center"
           pl="8px"
           fontWeight="Bold"
         >{`${alumno.apellido}, ${alumno.nombre}`}</Text>
@@ -109,7 +119,7 @@ function FichaAlumno() {
         <Text color="gray" mt="20px">
           Compromiso de Pago:{' '}
         </Text>
-        <Text size="sm" alingText="center" pl="8px" fontWeight="Bold">
+        <Text size="sm" textAlign="center" pl="8px" fontWeight="Bold">
           Firmado
         </Text>
         <Text color="gray" mt="10px">

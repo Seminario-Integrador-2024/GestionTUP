@@ -14,9 +14,25 @@ import { FaUser, FaCreditCard, FaFileContract, FaSignOutAlt } from 'react-icons/
 import { BsCashCoin } from "react-icons/bs";
 import { RiContractLine } from "react-icons/ri";
 import { CiSaveDown1 } from "react-icons/ci";
-
+import Alumnos from "./components/Pages/Alumnos/Alumnos"
+import { PiStudentLight } from "react-icons/pi";
+import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno';
 
 const routes = [
+  {
+    path: 'alumnos',
+    title: 'Alumnos',
+    element: <Alumnos />,
+    icon: <PiStudentLight size="30px" />,
+    rol: 'admin',
+    children: [
+      {
+        path: ':dni',
+        element:  <FichaAlumno />,
+        rol: 'admin',
+      },
+    ],
+  },
   {
     path: 'estadisticas',
     title: 'Estadísticas', /* para el tooltip*/
