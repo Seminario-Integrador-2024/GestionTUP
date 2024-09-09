@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Drawer,
     DrawerBody,
@@ -40,6 +40,8 @@ interface DrawerInformarProps {
 
 const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotasseleccionadas }) => {
     const [file, setFile] = useState<File | null>(null);
+    const [montoAbonado, setMontoAbonado] = useState('');  //cambiar a entero
+    const [total, setTotal] = useState<number>(0);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0] as File;
@@ -56,6 +58,10 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
         onClose();
     }
 
+    useEffect(() => {
+    setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + cuota.valoradeudado, 0));
+    }, [isOpen]);
+
     return (
       <>
         <Drawer
@@ -69,13 +75,20 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
             <DrawerHeader>Informa tu pago</DrawerHeader>
   
             <DrawerBody>
-            <FormControl isRequired>
+            <Stack direction="column">
+                <Text fontWeight="bold">Cuotas seleccionadas:</Text> 
+                {cuotasseleccionadas.map((cuota, index) => (
+                    <Flex key={index} ml={1}><li>{cuota.numero}</li> </Flex>
+                ))}
+            </Stack>
+            <Text mt={4} mb={4}>Total a abonar: ${total}</Text>
+            <FormControl isRequired={true}>
                 <FormLabel>Monto Abonado</FormLabel>
                 <InputGroup>
                     <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
                       $
                     </InputLeftElement>
-                    <Input placeholder='' />
+                    <Input placeholder='' onChange={(e) => setMontoAbonado(e.target.value)} />
                 </InputGroup>
             
             <Button mt={4} color="white" rightIcon={<AttachmentIcon/>} onClick={() => document.getElementById('fileInput')?.click()}>
