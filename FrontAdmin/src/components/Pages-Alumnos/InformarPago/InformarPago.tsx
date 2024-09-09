@@ -12,6 +12,8 @@ function InformarPago() {
         onClose: onClose,
     } = useDisclosure();
 
+    const { jsx: tablaCuotasJSX, cuotasSeleccionadas } = TablaCuotas();
+
     return (
         <Stack
             alignItems="center"
@@ -19,14 +21,14 @@ function InformarPago() {
             w="100%"
             bg="white"
         >
-                <TablaCuotas />
+                {tablaCuotasJSX}
                 <Flex mt={2} w="100%" justifyContent="flex-end">
                 <Button color="white" 
                  rightIcon={<AttachmentIcon/>} 
                  onClick={onOpen}
                  >Informar Pago</Button>
                 </Flex>
-                <DrawerInformar isOpen={isOpen} onClose={onClose}/>
+                <DrawerInformar isOpen={isOpen} onClose={onClose} cuotasseleccionadas={cuotasSeleccionadas}/>
         </Stack>
     );
 }

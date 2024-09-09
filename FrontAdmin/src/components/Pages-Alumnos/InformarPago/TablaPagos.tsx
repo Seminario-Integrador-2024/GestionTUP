@@ -29,7 +29,8 @@ function TablaCuotas () {
       };
 
 
-    return (
+    return {
+        jsx: (
             <Flex
                 alignItems="center"
                 justifyContent="center"
@@ -46,7 +47,7 @@ function TablaCuotas () {
                 <Table variant="simple" width="100%">
                   <Thead>
                     <Tr mt={6}>
-                      <Th> <Checkbox p={0} borderColor="black"></Checkbox></Th>
+                      <Th></Th>
                       <Th textAlign="center" p={1}>Numero</Th>
                       <Th textAlign="center">Monto 1er Vencimiento</Th>
                       <Th textAlign="center">Monto 2do Vencimiento</Th>
@@ -61,9 +62,13 @@ function TablaCuotas () {
                   <Tbody>
                     {cuotas.map((cuota, index) => (
                       <Tr key={index} >
+                        { cuota.estado === "PAGADO" ?
+                        <Td><Checkbox isDisabled={true}></Checkbox></Td>
+                        :
                         <Td><Checkbox p={0} borderColor="black" 
                            onChange={(e) => handleCheckboxChange(cuota)} >
                         </Checkbox></Td>
+                        }
                         <Td textAlign="center" p={1}>{cuota.numero}</Td>
                         <Td textAlign="center">{"$ " + cuota.monto1erVencimiento}</Td>
                         <Td textAlign="center">{"$ " + cuota.monto2doVencimiento}</Td>
@@ -88,6 +93,8 @@ function TablaCuotas () {
             )}
         </Box>
         </Flex>
-        )
+        ),
+        cuotasSeleccionadas: cuotasSeleccionadas
     }
+}
 export default TablaCuotas;

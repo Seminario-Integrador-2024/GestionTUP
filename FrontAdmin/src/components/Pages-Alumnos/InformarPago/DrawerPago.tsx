@@ -20,12 +20,25 @@ import {
 import { useState} from 'react'
 import {AttachmentIcon} from '@chakra-ui/icons';
 
+interface Cuota {
+    id: number;
+    numero: string;
+    monto1erVencimiento: number;
+    monto2doVencimiento: number;
+    monto3erVencimiento: number;
+    valortotal: number;
+    valorpagado: number;
+    valoradeudado: number;
+    estado: string;
+  }
+
 interface DrawerInformarProps {
     isOpen: boolean;
     onClose: () => void;
+    cuotasseleccionadas: Cuota[];
 }
 
-const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose }) => {
+const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotasseleccionadas }) => {
     const [file, setFile] = useState<File | null>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +47,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose }) => {
     };
 
     const handleSave = () => {
-        
-
+        console.log("las cuotas seleccionadas son:", cuotasseleccionadas);
         onClose();
     };
 
@@ -84,9 +96,9 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose }) => {
   
             <DrawerFooter>
               <Button variant='light' mr={3} onClick={handleCancel}>
-                Cancel
+                Cancelar
               </Button>
-              <Button colorScheme='blue'>Save</Button>
+              <Button colorScheme='blue' onClick={handleSave}>Guardar</Button>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
