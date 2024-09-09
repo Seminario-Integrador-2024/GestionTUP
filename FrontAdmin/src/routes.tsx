@@ -5,6 +5,7 @@ import Sysacad from './components/Pages/Sysacad/Sysacad';
 import ListadoMaterias from './components/Pages/Estadisticas/SubPages/ListadoMaterias';
 import MateriaDetalle from './components/Subjects/MateriaDetalle';
 import ListadoAlumnos from './components/Pages/Estadisticas/SubPages/ListadoAlumnos';
+import InformarPago from './components/Pages-Alumnos/InformarPago/InformarPago';
 import iconAlumno from './components/icons/alumno 1.png';
 import iconConfig from './components/icons/configuracion 1.png';
 import iconEstadisticas from './components/icons/grafico-de-barras 1.png';
@@ -67,7 +68,7 @@ const routes = [
   {
     path: 'pagos',
     title: 'Pagos',
-    element: <ErrorPage />,
+    element: <InformarPago />,
     rol: 'alumnos',
     icon: <BsCashCoin size="30px"/>,
   },
