@@ -54,11 +54,17 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     };
 
     const handleCancel = () => {
-        setFile(null)
+
         onClose();
     }
 
+    const isFormValid = () => {
+      return (montoAbonado.trim() !== '') && (file !== null && file.name.trim() !== '');
+    };
+
     useEffect(() => {
+    setFile(null);
+    setMontoAbonado('');
     setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + cuota.valoradeudado, 0));
     }, [isOpen]);
 
@@ -83,7 +89,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
             </Stack>
             <Text mt={4} mb={4}>Total a abonar: ${total}</Text>
             <FormControl isRequired={true}>
-                <FormLabel>Monto Abonado</FormLabel>
+                <FormLabel mb={0}>Monto Abonado</FormLabel>
                 <InputGroup>
                     <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
                       $
@@ -92,7 +98,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                 </InputGroup>
             
             <Button mt={4} color="white" rightIcon={<AttachmentIcon/>} onClick={() => document.getElementById('fileInput')?.click()}>
-                Adjuntar Comprobante
+                Comprobante
             </Button>
             <Input
                 type='file'
@@ -111,7 +117,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
               <Button variant='light' mr={3} onClick={handleCancel}>
                 Cancelar
               </Button>
-              <Button colorScheme='blue' onClick={handleSave}>Guardar</Button>
+              <Button colorScheme='blue' onClick={handleSave} isDisabled={!isFormValid()}>Guardar</Button>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
