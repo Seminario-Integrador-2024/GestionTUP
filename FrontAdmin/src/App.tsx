@@ -15,7 +15,7 @@ function App() {
 
   const { isAuthenticated, rolUser } = useAuth();
   console.log(isAuthenticated, rolUser);
-
+/*samu*/
 
   return (
     <ChakraProvider theme={theme}>
