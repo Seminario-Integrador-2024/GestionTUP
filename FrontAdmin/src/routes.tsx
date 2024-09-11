@@ -14,7 +14,7 @@ import { FaUser, FaCreditCard, FaFileContract, FaSignOutAlt } from 'react-icons/
 import { BsCashCoin } from "react-icons/bs";
 import { RiContractLine } from "react-icons/ri";
 import { CiSaveDown1 } from "react-icons/ci";
-
+import CompromisoDePago from './components/Pages/Alumnos/SubPages/CompromisoDePago';
 
 const routes = [
   {
@@ -69,13 +69,13 @@ const routes = [
     title: 'Pagos',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: <BsCashCoin size="30px"/>,
+    icon: <BsCashCoin size="30px" />,
   },
   {
     path: 'compromisoPago',
     title: 'Compromiso de Pago',
-    element: <ErrorPage />,
-    rol: 'alumnos',
+    element: <CompromisoDePago />,
+    rol: 'admin',
     icon: <RiContractLine size="30px" />,
   },
   {
@@ -83,7 +83,7 @@ const routes = [
     title: 'Darse de Baja',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: <CiSaveDown1 size="30px"/>,
+    icon: <CiSaveDown1 size="30px" />,
   },
   {
     path: '*',
