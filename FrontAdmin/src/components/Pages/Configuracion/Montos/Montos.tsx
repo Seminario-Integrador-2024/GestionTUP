@@ -182,9 +182,20 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
               mt={4}
               position="relative"
             >
+            <Flex justify="space-between" gap="4" pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px', }}>
               <Text mb="20px" fontSize="2xl" fontWeight="bold">
                 Cuatrimestre
               </Text>
+              <Button
+                  bgColor={filePreview ? "green" : undefined}
+                  color="white"
+                  size="sm"
+                  onClick={onModalCargarOpen}
+                  leftIcon={filePreview ? <CheckIcon /> : undefined}
+                >
+                  Cargar Documento
+                </Button>
+              </Flex>
               <Select
                 placeholder= 'Selecciona un cuatrimestre'
                 name="cuatrimestre"
@@ -251,15 +262,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 <Button color="white" size="sm" onClick={()=>{handleSave()}}>
                   Guardar Cambios
                 </Button>
-                <Button
-                  bgColor={filePreview ? "green" : undefined}
-                  color="white"
-                  size="sm"
-                  onClick={onModalCargarOpen}
-                  leftIcon={filePreview ? <CheckIcon /> : undefined}
-                >
-                  Cargar Documento
-                </Button>
+               
                 <Button
                   colorScheme="blue"
                   color="white"

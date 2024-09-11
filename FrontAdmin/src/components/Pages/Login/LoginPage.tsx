@@ -54,7 +54,7 @@ function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await FetchLogin(username, password);
+      //await FetchLogin(username, password);
       onLogin();
       showToast('Bienvenido', 'Inicio de sesión exitoso', 'success');
     } catch (error) {
