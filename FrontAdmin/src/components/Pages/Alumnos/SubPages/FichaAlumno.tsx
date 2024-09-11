@@ -40,8 +40,11 @@ function FichaAlumno() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await FetchDetalleAlumno(dni);
-        setAlumno(data); 
+        if (dni) {
+          const dniNumber = parseInt(dni, 10); // Convierte a número
+          const data = await FetchDetalleAlumno(dniNumber);
+          setAlumno(data);
+        }
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);

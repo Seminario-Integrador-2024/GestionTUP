@@ -25,13 +25,10 @@ const routes = [
     element: <Alumnos />,
     icon: <PiStudentLight size="30px" />,
     rol: 'admin',
-    children: [
-      {
-        path: ':dni',
-        element:  <FichaAlumno />,
-        rol: 'admin',
-      },
-    ],
+  },
+  {
+    path: 'alumnos/:dni',
+    element:  <FichaAlumno /> ,
   },
   {
     path: 'estadisticas',

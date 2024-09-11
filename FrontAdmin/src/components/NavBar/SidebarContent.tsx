@@ -44,7 +44,7 @@ export function SidebarContent({ onClose, LINK_ITEMS, ...rest }: SidebarProps) {
               icon={link.icon}
               title={link.title}
               color={
-                location.pathname === `/${link.rol}/` + link.url
+                location.pathname.startsWith('/admin/' + link.url)
                   ? 'secundary'
                   : 'white'
               }
