@@ -4,25 +4,26 @@ const URL= import.meta.env.VITE_URL_DEV;
 
 
 export const FetchLogin = async (
-  email_or_username: string,
-  password: string
+  password: string,
+  account: string,
 ) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/users/login/`, {
+    const response = await fetch(`http://localhost:8000/api/auth/login/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email_or_username, password }),
+      body: JSON.stringify({password, account }),
     });
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data)
       Cookies.set('access_token', data.access);
       Cookies.set('refresh_token', data.refresh);
       Cookies.set('access_expiration', data.access_expiration);
       Cookies.set('refresh_expiration', data.refresh_expiration);
-      Cookies.set('username', data.user.username);
+      Cookies.set('username', data.user.dni); 
       return data;
     } else {
       throw new Error('Login failed');
