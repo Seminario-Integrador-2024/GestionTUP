@@ -13,8 +13,7 @@ import data from '../../API/DatosAlumnos.ts'; //simulando que es una api
 
 // Definir un tipo para los datos de los alumnos
 interface Alumno {
-  apellido: string;
-  nombre: string;
+  fullname: string;
   legajo: number;
   dni: number;
   situacion: string;
@@ -23,13 +22,8 @@ interface Alumno {
 
 const tableHeaders: MRT_ColumnDef<Alumno>[] = [
   {
-    accessorKey: 'apellido',
-    header: 'APELLIDO',
-    enableHiding: true,
-  },
-  {
-    accessorKey: 'nombre',
-    header: 'NOMBRES',
+    accessorKey: 'full_name',
+    header: 'APELLIDO Y NOMBRE',
     enableHiding: true,
   },
   {
@@ -60,11 +54,11 @@ interface PropsTable extends FlexProps {
 }
 
 function Table({ boolEnableRowSelection }: PropsTable) {
-  //const [alumnos, setAlumnos] = useState<Alumno[]>([]); //para la llamada a la api del back
-  const [alumnos, setAlumnos] = useState<Alumno[]>(data); // Usa el arreglo importado directamente
+  const [alumnos, setAlumnos] = useState<Alumno[]>([]); //para la llamada a la api del back
+  //const [alumnos, setAlumnos] = useState<Alumno[]>(data); // Usa el arreglo importado directamente
   const navigate = useNavigate();
 
-  /*
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,7 +71,7 @@ function Table({ boolEnableRowSelection }: PropsTable) {
 
     fetchData();
   }, []);
-*/
+
 
   const columns = useMemo<MRT_ColumnDef<Alumno>[]>(() => tableHeaders, []);
 
