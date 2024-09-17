@@ -14,10 +14,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !Cookies.get('access_token') ? false : true
   );
-  const [rolUser, setRolUser] = useState(Cookies.get('username') === 'admin' ? true : false);
+  const [rolUser, setRolUser] = useState(Cookies.get('username') === '12345678' ? true : false);
 
   const onLogin = () => {
-    setRolUser(Cookies.get('username') === 'admin' ? true : false);
+    setRolUser(Cookies.get('username') === '12345678' ? true : false);
     setIsAuthenticated(true);
     
   };
