@@ -3,20 +3,13 @@ import {
   Box,
   Flex,
   Button,
-  FormControl,
-  Heading,
-  Input,
   useColorModeValue,
-  Link,
-  Image,
   Spinner,
   Divider,
   Text,
 } from '@chakra-ui/react';
 import { FetchLogin } from '../../../API/Login';
 import { useAuth } from '../../../Context';
-import fondoLogin from '../../icons/utn-portada-transformed.jpeg';
-import imgLogin from '../../icons/Logos TUP_Mesa de trabajo 1.png';
 import { useToast } from '../../Toast/useToast';
 
 function LoginPage() {
@@ -26,8 +19,6 @@ function LoginPage() {
   const { onLogin } = useAuth();
   const showToast = useToast();
 
-  const titleColor = useColorModeValue('black', 'white');
-  const textColor = useColorModeValue('black', 'white');
 
   useEffect(() => {
     // Load Google Sign-In API script
