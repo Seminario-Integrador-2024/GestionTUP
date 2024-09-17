@@ -1,41 +1,33 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Input,
-  Button,
-  Stack,
-  Text,
-  Flex,
-} from '@chakra-ui/react';
-import React, { useState, useEffect } from 'react';
-
-interface ModalComponentProps {
-  isOpen: boolean;
-  onClose: () => void;
-  confirmar: (
-    codigo_materia: string,
-    anio_cursado: string,
-    nombre: string,
-    cuatrimestre: string,
-    anio_plan: string
-  ) => void;
-  materia: any;
-}
-export default function ModalEditarMateria({
-  isOpen,
-  onClose,
-  confirmar,
-  materia,
-}: ModalComponentProps) {
-  const handleconfirmar = () => {
-    confirmar(codigo_materia, anio_cursado, nombre, cuatrimestre, plan);
-    onClose();
-  };
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    Input,
+    Button,
+    Stack,
+    Text,
+    Flex,
+    RadioGroup,
+    Radio,
+  } from '@chakra-ui/react';
+  import React, { useState, useEffect } from 'react';
+  
+  interface ModalComponentProps {
+    isOpen: boolean;
+    onClose: () => void;
+    confirmar: (codigo_materia:string, anio_cursado:string, nombre: string, cuatrimestre:string, anio_plan: string) => void;
+    materia: any;
+  }
+  export default function ModalEditarMateria({ isOpen, onClose, confirmar, materia, }: ModalComponentProps) {
+   
+    const handleconfirmar = () => {
+      confirmar(codigo_materia, anio_cursado, nombre, cuatrimestre, plan);
+      onClose();
+    };
 
   const [codigo_materia, setCodigoMateria] = useState('');
   const [nombre, setNombre] = useState('');
@@ -53,42 +45,45 @@ export default function ModalEditarMateria({
     }
   }, [materia]);
 
-  if (!materia) {
-    return null;
-  }
-
-  return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Editar {materia.nombre}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Stack spacing={3}>
-              <Flex direction="column">
-                <Text>ID Materia</Text>
-                <Input
-                  value={codigo_materia}
-                  placeholder="Materia ID"
-                  size="md"
-                  onChange={(e) => setCodigoMateria(e.target.value)}
-                  variant="flushed"
-                  ml={1}
-                />
-              </Flex>
-              <Flex direction="column" mt="10px">
-                <Text mb={0}>Nombre</Text>
-                <Input
-                  value={nombre}
-                  placeholder="Nombre"
-                  size="md"
-                  onChange={(e) => setNombre(e.target.value)}
-                  variant="flushed"
-                  ml={1}
-                />
-              </Flex>
-              <Flex direction="column" mt="10px">
+    if (!materia) {
+        return null;
+      }
+  
+    return (
+      <>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Editar {materia.nombre}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+                <Stack spacing={4}>
+                <Stack direction="row" alignItems="center">
+                <Flex direction="column">
+                    <Text>ID Materia</Text>
+                    <Input
+                        value={codigo_materia}
+                        placeholder="Materia ID"
+                        size='md'
+                        onChange={(e) => setCodigoMateria(e.target.value)}
+                        variant = "flushed"
+                        ml={1}
+                    />
+                </Flex>
+                <Flex direction="column">
+                  <Text mb={0}>Nombre</Text>
+                  <Input
+                      value={nombre}
+                      placeholder="Nombre"
+                      size='md'
+                      onChange={(e) => setNombre(e.target.value)}
+                      variant = "flushed"
+                      ml={1}
+                  />
+                </Flex>
+                </Stack>
+                <Stack direction="row" alignItems="center">
+                <Flex direction="column" mt="10px">
                 <Text mb={0}>Año</Text>
                 <Input
                   value={anio_cursado}
@@ -98,20 +93,19 @@ export default function ModalEditarMateria({
                   variant="flushed"
                   ml={1}
                 />
-              </Flex>
-              <Flex direction="column" mt="10px">
-                <Text mb={0}>Cuatrimestre</Text>
-                <Input
-                  value={cuatrimestre}
-                  placeholder="Cuatrimestre"
-                  size="md"
-                  onChange={(e) => setCuatrimestre(e.target.value)}
-                  variant="flushed"
-                  ml={1}
-                />
-              </Flex>
-              <Flex direction="column" mt="10px">
-                <Text mb={0}>Plan</Text>
+                </Flex>
+                <Stack direction="column">
+                  <Text>Cuatrimestre</Text>
+                  <RadioGroup value={cuatrimestre.toString()} onChange={(value) => setCuatrimestre(value)}>
+                    <Stack direction="row">
+                      <Radio value="1">1</Radio>
+                      <Radio value="2">2</Radio>
+                    </Stack>
+                  </RadioGroup> 
+                  </Stack>
+                </Stack>
+                <Flex direction="column" mt="10px">
+                <Text  mb={0}>Plan</Text>
                 <Input
                   value={plan}
                   placeholder="Plan"

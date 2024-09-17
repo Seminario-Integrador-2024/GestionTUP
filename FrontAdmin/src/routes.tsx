@@ -5,6 +5,7 @@ import Sysacad from './components/Pages/Sysacad/Sysacad';
 import ListadoMaterias from './components/Pages/Estadisticas/SubPages/ListadoMaterias';
 import MateriaDetalle from './components/Subjects/MateriaDetalle';
 import ListadoAlumnos from './components/Pages/Estadisticas/SubPages/ListadoAlumnos';
+import InformarPago from './components/Pages-Alumnos/InformarPago/InformarPago';
 import iconAlumno from './components/icons/alumno 1.png';
 import iconConfig from './components/icons/configuracion 1.png';
 import iconEstadisticas from './components/icons/grafico-de-barras 1.png';
@@ -21,7 +22,7 @@ import { RiContractLine } from 'react-icons/ri';
 import { CiSaveDown1 } from 'react-icons/ci';
 import Alumnos from './components/Pages/Alumnos/Alumnos';
 import { PiStudentLight } from 'react-icons/pi';
-import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno';
+import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno';import CompromisoDePago from './components/Pages/Alumnos/SubPages/CompromisoDePago';
 
 const routes = [
   {
@@ -85,15 +86,15 @@ const routes = [
   {
     path: 'pagos',
     title: 'Pagos',
-    element: <ErrorPage />,
+    element: <InformarPago />,
     rol: 'alumnos',
-    icon: <BsCashCoin size="30px" />,
+    icon: <BsCashCoin size="30px"  />,
   },
   {
     path: 'compromisoPago',
     title: 'Compromiso de Pago',
-    element: <ErrorPage />,
-    rol: 'alumnos',
+    element: <CompromisoDePago />,
+    rol: 'admin',
     icon: <RiContractLine size="30px" />,
   },
   {
@@ -101,7 +102,7 @@ const routes = [
     title: 'Darse de Baja',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: <CiSaveDown1 size="30px" />,
+    icon: <CiSaveDown1 size="30px"  />,
   },
   {
     path: '*',
