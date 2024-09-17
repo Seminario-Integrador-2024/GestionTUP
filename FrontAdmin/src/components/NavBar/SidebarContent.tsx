@@ -12,13 +12,18 @@ import NavItem from './NavItem';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
-  LINK_ITEMS: { title: string; icon: string | JSX.Element; url: string; rol:string }[];
+  LINK_ITEMS: {
+    title: string;
+    icon: string | JSX.Element;
+    url: string;
+    rol: string;
+  }[];
 }
 
 export function SidebarContent({ onClose, LINK_ITEMS, ...rest }: SidebarProps) {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const location = useLocation();
- 
+
   return (
     <Box
       borderRight="1px"

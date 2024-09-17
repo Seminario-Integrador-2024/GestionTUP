@@ -50,7 +50,7 @@ const tableHeaders: MRT_ColumnDef<Alumno>[] = [
 ];
 
 interface PropsTable extends FlexProps {
-  boolEnableRowSelection: boolean; 
+  boolEnableRowSelection: boolean;
 }
 
 function Table({ boolEnableRowSelection }: PropsTable) {
@@ -58,12 +58,11 @@ function Table({ boolEnableRowSelection }: PropsTable) {
   //const [alumnos, setAlumnos] = useState<Alumno[]>(data); // Usa el arreglo importado directamente
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await FetchAlumnos();
-        setAlumnos(data.results); 
+        setAlumnos(data.results);
       } catch (error) {
         console.error('Error al obtener los datos', error);
       }
@@ -71,7 +70,6 @@ function Table({ boolEnableRowSelection }: PropsTable) {
 
     fetchData();
   }, []);
-
 
   const columns = useMemo<MRT_ColumnDef<Alumno>[]>(() => tableHeaders, []);
 

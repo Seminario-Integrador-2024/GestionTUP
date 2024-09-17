@@ -14,12 +14,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !Cookies.get('access_token') ? false : true
   );
-  const [rolUser, setRolUser] = useState(Cookies.get('username') === '12345678' ? true : false);
+  const [rolUser, setRolUser] = useState(
+    Cookies.get('username') === '12345678' ? true : false
+  );
 
   const onLogin = () => {
     setRolUser(Cookies.get('username') === '12345678' ? true : false);
     setIsAuthenticated(true);
-    
   };
 
   const onLogout = () => {
@@ -30,11 +31,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove('username');
     console.log('logout');
     setIsAuthenticated(false);
-    
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, onLogin, onLogout, rolUser }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, onLogin, onLogout, rolUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

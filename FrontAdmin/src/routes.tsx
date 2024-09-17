@@ -10,12 +10,17 @@ import iconConfig from './components/icons/configuracion 1.png';
 import iconEstadisticas from './components/icons/grafico-de-barras 1.png';
 import iconSysAdmin from './components/icons/cargarexcel.png';
 import iconSysAcad from './components/icons/subir lista.png';
-import { FaUser, FaCreditCard, FaFileContract, FaSignOutAlt } from 'react-icons/fa';
-import { BsCashCoin } from "react-icons/bs";
-import { RiContractLine } from "react-icons/ri";
-import { CiSaveDown1 } from "react-icons/ci";
-import Alumnos from "./components/Pages/Alumnos/Alumnos"
-import { PiStudentLight } from "react-icons/pi";
+import {
+  FaUser,
+  FaCreditCard,
+  FaFileContract,
+  FaSignOutAlt,
+} from 'react-icons/fa';
+import { BsCashCoin } from 'react-icons/bs';
+import { RiContractLine } from 'react-icons/ri';
+import { CiSaveDown1 } from 'react-icons/ci';
+import Alumnos from './components/Pages/Alumnos/Alumnos';
+import { PiStudentLight } from 'react-icons/pi';
 import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno';
 
 const routes = [
@@ -28,13 +33,13 @@ const routes = [
   },
   {
     path: 'alumnos/:dni',
-    element:  <FichaAlumno /> ,
+    element: <FichaAlumno />,
   },
   {
     path: 'estadisticas',
-    title: 'Estadísticas', /* para el tooltip*/
+    title: 'Estadísticas' /* para el tooltip*/,
     element: <Estadisticas />,
-    rol: 'admin',         /* para la activación de rutas segun el rol */
+    rol: 'admin' /* para la activación de rutas segun el rol */,
     icon: iconEstadisticas,
     children: [
       {
@@ -82,7 +87,7 @@ const routes = [
     title: 'Pagos',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: <BsCashCoin size="30px"/>,
+    icon: <BsCashCoin size="30px" />,
   },
   {
     path: 'compromisoPago',
@@ -96,7 +101,7 @@ const routes = [
     title: 'Darse de Baja',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: <CiSaveDown1 size="30px"/>,
+    icon: <CiSaveDown1 size="30px" />,
   },
   {
     path: '*',

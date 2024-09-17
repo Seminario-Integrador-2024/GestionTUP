@@ -11,44 +11,50 @@ import {
   Button,
   Text,
   useDisclosure,
-  IconButton
+  IconButton,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons'; 
+import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import ModalComponent from '../../../Modal/ModalConfirmarCambios';
 import ModalComponentMateria from '../../../Modal/ModalAgregarMateria';
 import ModalEditarMateria from '../../../Modal/ModalEditarMateria';
-import { FetchPostMateria, FetchMaterias, FetchPutMateria, FetchDeleteMateria } from '../../../../API/Materias';
+import {
+  FetchPostMateria,
+  FetchMaterias,
+  FetchPutMateria,
+  FetchDeleteMateria,
+} from '../../../../API/Materias';
 import { useToast } from '../../../Toast/useToast';
 
 interface Materia {
-  codigo_materia: number; 
+  codigo_materia: number;
   nombre: string;
-  anio_cursada: number; 
-  cuatrimestre: number; 
-  anio_plan: number; 
+  anio_cursada: number;
+  cuatrimestre: number;
+  anio_plan: number;
 }
 
 export default function TablaMaterias() {
   const [materias, setMaterias] = useState<Materia[]>([]);
   const [selectedMateria, setSelectedMateria] = useState<Materia | null>(null);
-  const [selectedMateriaEditar, setSelectedMateriaEditar] = useState<Materia | null>(null);
+  const [selectedMateriaEditar, setSelectedMateriaEditar] =
+    useState<Materia | null>(null);
   const showToast = useToast();
 
   // Modal handlers
   const {
     isOpen: isOpen1,
     onOpen: onOpen1,
-    onClose: onClose1
+    onClose: onClose1,
   } = useDisclosure();
   const {
     isOpen: isOpen2,
     onOpen: onOpen2,
-    onClose: onClose2
+    onClose: onClose2,
   } = useDisclosure();
   const {
     isOpen: isOpen3,
     onOpen: onOpen3,
-    onClose: onClose3
+    onClose: onClose3,
   } = useDisclosure();
 
   useEffect(() => {
@@ -74,7 +80,11 @@ export default function TablaMaterias() {
       try {
         await FetchDeleteMateria(selectedMateria.codigo_materia);
         showToast('Éxito', 'Materia eliminada con éxito', 'success');
-        setMaterias(materias.filter(m => m.codigo_materia !== selectedMateria.codigo_materia));
+        setMaterias(
+          materias.filter(
+            (m) => m.codigo_materia !== selectedMateria.codigo_materia
+          )
+        );
       } catch (error) {
         console.error('Error deleting materia:', error);
         showToast('Error', 'No se pudo eliminar la materia', 'error');
@@ -83,52 +93,86 @@ export default function TablaMaterias() {
     }
   };
 
-  const handleAgregar = async (codigo_materia: string, anio_cursada: string, nombre: string, anio_plan: string, cuatrimestre: string) => {
+  const handleAgregar = async (
+    codigo_materia: string,
+    anio_cursada: string,
+    nombre: string,
+    anio_plan: string,
+    cuatrimestre: string
+  ) => {
     try {
       // Convertir cadenas a números
       const codigo = parseInt(codigo_materia, 10);
       const anioCursada = parseInt(anio_cursada, 10);
       const anioPlan = parseInt(anio_plan, 10);
       const cuatrimestreNum = parseInt(cuatrimestre, 10);
-  
+
       // Pasar los números a la función
-      await FetchPostMateria(codigo, anioCursada, anioPlan, nombre, cuatrimestreNum);
+      await FetchPostMateria(
+        codigo,
+        anioCursada,
+        anioPlan,
+        nombre,
+        cuatrimestreNum
+      );
       showToast('Éxito', 'Materia agregada con éxito', 'success');
-  
-      setMaterias([...materias, { codigo_materia: codigo, anio_cursada: anioCursada, anio_plan: anioPlan, nombre, cuatrimestre: cuatrimestreNum }]);
+
+      setMaterias([
+        ...materias,
+        {
+          codigo_materia: codigo,
+          anio_cursada: anioCursada,
+          anio_plan: anioPlan,
+          nombre,
+          cuatrimestre: cuatrimestreNum,
+        },
+      ]);
     } catch (error) {
       console.error('Error adding materia:', error);
       showToast('Error', 'No se pudo agregar la materia', 'error');
     }
     onClose2();
   };
-  
-  
+
   const handleEditar = (materia: Materia) => {
     setSelectedMateriaEditar(materia);
     onOpen3();
   };
 
-  const handleConfirmarEditar = async (codigo_materia: string, anio_cursado: string, nombre: string, cuatrimestre: string, anio_plan: string) => {
+  const handleConfirmarEditar = async (
+    codigo_materia: string,
+    anio_cursado: string,
+    nombre: string,
+    cuatrimestre: string,
+    anio_plan: string
+  ) => {
     try {
       // Convertir cadenas a números
       const codigo = parseInt(codigo_materia, 10);
       const anioCursado = parseInt(anio_cursado, 10);
       const anioPlan = parseInt(anio_plan, 10);
       const cuatrimestreNum = parseInt(cuatrimestre, 10);
-  
-      await FetchPutMateria(codigo, anioCursado, anioPlan, nombre, cuatrimestreNum);
+
+      await FetchPutMateria(
+        codigo,
+        anioCursado,
+        anioPlan,
+        nombre,
+        cuatrimestreNum
+      );
       showToast('Éxito', 'Materia editada con éxito', 'success');
-  
-      const index = materias.findIndex(materia => materia.codigo_materia === codigo);
+
+      const index = materias.findIndex(
+        (materia) => materia.codigo_materia === codigo
+      );
       if (index !== -1) {
         const newMaterias = [...materias];
-        newMaterias[index] = { 
-          codigo_materia: codigo, 
-          anio_cursada: anioCursado, 
-          anio_plan: anioPlan, 
-          nombre, 
-          cuatrimestre: cuatrimestreNum 
+        newMaterias[index] = {
+          codigo_materia: codigo,
+          anio_cursada: anioCursado,
+          anio_plan: anioPlan,
+          nombre,
+          cuatrimestre: cuatrimestreNum,
         };
         setMaterias(newMaterias);
       }
@@ -138,14 +182,19 @@ export default function TablaMaterias() {
     }
     onClose3();
   };
-  
 
   return (
     <Box>
       {materias.length > 0 ? (
         <Box>
           <Flex justifyContent="center" mb={4}>
-            <Button leftIcon={<AddIcon />} colorScheme="green" onClick={onOpen2}>Agregar Materia</Button>
+            <Button
+              leftIcon={<AddIcon />}
+              colorScheme="green"
+              onClick={onOpen2}
+            >
+              Agregar Materia
+            </Button>
           </Flex>
           <Table variant="simple">
             <Thead>
@@ -160,7 +209,11 @@ export default function TablaMaterias() {
             </Thead>
             <Tbody>
               {materias.map((materia, index) => (
-                <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"} height="15px">
+                <Tr
+                  key={index}
+                  bg={index % 2 === 0 ? 'white' : 'secundaryBg'}
+                  height="15px"
+                >
                   <Td>{materia.codigo_materia}</Td>
                   <Td>{materia.nombre}</Td>
                   <Td>{materia.anio_cursada}</Td>

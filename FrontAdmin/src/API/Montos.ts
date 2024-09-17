@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
-const URL= import.meta.env.VITE_URL_DEV;
+const URL = import.meta.env.VITE_URL_DEV;
 
-export const FetchMontos = async (offset: number, limit:number ) => {
+export const FetchMontos = async (offset: number, limit: number) => {
   try {
     const token = Cookies.get('access_token');
 
@@ -47,7 +47,9 @@ export const createCompromiso = async (compromisoData: any) => {
       return data;
     } else {
       const errorResponse = await response.json();
-      throw new Error('Error en la respuesta del servidor: ' + JSON.stringify(errorResponse));
+      throw new Error(
+        'Error en la respuesta del servidor: ' + JSON.stringify(errorResponse)
+      );
     }
   } catch (error) {
     throw new Error('Network error: ' + error);

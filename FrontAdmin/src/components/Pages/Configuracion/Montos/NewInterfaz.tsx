@@ -52,7 +52,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
     const sortedMontos = [...compromisos].sort((a, b) => {
       const dateA = new Date(a.fecha_carga_comp_pdf);
       const dateB = new Date(b.fecha_carga_comp_pdf);
-      return dateB.getTime() - dateA.getTime(); 
+      return dateB.getTime() - dateA.getTime();
     });
     setMontos(sortedMontos);
   }, [compromisos]);
@@ -65,7 +65,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Buscando PDF en: ", url);
+      console.log('Buscando PDF en: ', url);
       const blob = await response.blob();
       const pdfUrl = URL.createObjectURL(blob);
       setPdfUrl(pdfUrl);
@@ -112,19 +112,29 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
             <Tbody>
               {montos.map((monto, index) => (
                 <Tr key={index}>
-                  <Td p={1}>{new Date(monto.anio).getFullYear() + " / " + monto.cuatrimestre}</Td>
-                  <Td p={2}>{" $ " + monto.matricula}</Td>
-                  <Td p={1}>{" $ " + monto.monto_completo}</Td>
-                  <Td p={1}>{" $ " + monto.monto_completo_2venc}</Td>
-                  <Td p={1}>{" $ " + monto.monto_completo_3venc}</Td>
-                  <Td p={1}>{" $ " + monto.cuota_reducida}</Td>
-                  <Td p={1}>{" $ " + monto.cuota_reducida_2venc}</Td>
-                  <Td p={1}>{" $ " + monto.cuota_reducida_3venc}</Td>
                   <Td p={1}>
-                    {new Date(monto.fecha_carga_comp_pdf).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' })}
+                    {new Date(monto.anio).getFullYear() +
+                      ' / ' +
+                      monto.cuatrimestre}
+                  </Td>
+                  <Td p={2}>{' $ ' + monto.matricula}</Td>
+                  <Td p={1}>{' $ ' + monto.monto_completo}</Td>
+                  <Td p={1}>{' $ ' + monto.monto_completo_2venc}</Td>
+                  <Td p={1}>{' $ ' + monto.monto_completo_3venc}</Td>
+                  <Td p={1}>{' $ ' + monto.cuota_reducida}</Td>
+                  <Td p={1}>{' $ ' + monto.cuota_reducida_2venc}</Td>
+                  <Td p={1}>{' $ ' + monto.cuota_reducida_3venc}</Td>
+                  <Td p={1}>
+                    {new Date(monto.fecha_carga_comp_pdf).toLocaleString(
+                      'es-ES',
+                      { dateStyle: 'short', timeStyle: 'short' }
+                    )}
                   </Td>
                   <Td p={1}>
-                    <Button colorScheme="blue" onClick={() => handleViewPdf(monto.archivo_pdf_url)}>
+                    <Button
+                      colorScheme="blue"
+                      onClick={() => handleViewPdf(monto.archivo_pdf_url)}
+                    >
                       Ver pdf
                     </Button>
                   </Td>
@@ -138,7 +148,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
       </SimpleGrid>
       <Modal isOpen={isOpen} onClose={handleCloseModal} size="xl">
         <ModalOverlay />
-        <ModalContent maxW="80%"  mt='10px'>
+        <ModalContent maxW="80%" mt="10px">
           <ModalHeader>PDF</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -156,4 +166,3 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
 };
 
 export default NewInterfaz;
-  

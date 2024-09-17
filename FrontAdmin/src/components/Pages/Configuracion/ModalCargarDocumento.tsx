@@ -17,7 +17,7 @@ import { useState } from 'react';
 interface Compromiso {
   fecha_carga_comp_pdf: string;
   cuatrimestre: string;
-  archivo_pdf_url?: string; 
+  archivo_pdf_url?: string;
   id_comp_pago: number;
   matricula: number;
   monto_completo: number;
@@ -37,16 +37,19 @@ interface ModalProps {
   setSelectedFile: any;
 }
 
-const ModalCargarDocumento: React.FC<ModalProps> = ({ isOpen, onClose, setFilePreview, selectedFile, setSelectedFile }) => {
+const ModalCargarDocumento: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  setFilePreview,
+  selectedFile,
+  setSelectedFile,
+}) => {
   const [tempFilePreview, setTempFilePreview] = useState<string | null>(null);
- 
 
   const handleCargar = () => {
     setFilePreview(tempFilePreview);
     onClose();
   };
-
- 
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2x1">
@@ -55,12 +58,25 @@ const ModalCargarDocumento: React.FC<ModalProps> = ({ isOpen, onClose, setFilePr
         <ModalCloseButton />
         <ModalHeader>Cargar Compromiso de Pago</ModalHeader>
         <ModalBody mb="30px">
-          <Dropzone setFilePreview={setTempFilePreview} setSelectedFile={setSelectedFile} filePreview={tempFilePreview} />
+          <Dropzone
+            setFilePreview={setTempFilePreview}
+            setSelectedFile={setSelectedFile}
+            filePreview={tempFilePreview}
+          />
           <Flex justifyContent="center" mt="20px">
             <Button color="white" mt="20px" size="sm" onClick={handleCargar}>
               Cargar
             </Button>
-            <Button color="white" mt="20px" size="sm" ml="20px" onClick={() => {setTempFilePreview(null), setFilePreview(null)}} isActive={tempFilePreview ? false : true}>
+            <Button
+              color="white"
+              mt="20px"
+              size="sm"
+              ml="20px"
+              onClick={() => {
+                setTempFilePreview(null), setFilePreview(null);
+              }}
+              isActive={tempFilePreview ? false : true}
+            >
               Volver a intentar
             </Button>
           </Flex>

@@ -28,5 +28,4 @@ const data: Alumno[] = [
   },
 ];
 
-
 export default data;
