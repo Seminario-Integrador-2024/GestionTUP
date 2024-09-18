@@ -39,7 +39,7 @@ import { useToast } from '../../Toast/useToast';
 // react template for google button
 
 function LoginPage() {
-  const [username, setUsername] = useState('');
+  const [account, setUseraccount] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +54,7 @@ function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await FetchLogin(username, password);
+      await FetchLogin(password, account);
       onLogin();
       showToast('Bienvenido', 'Inicio de sesión exitoso', 'success');
     } catch (error) {
@@ -123,8 +123,8 @@ function LoginPage() {
                     boxShadow: 'none',
                   }}
                   _hover={{ borderColor: '0f183f' }}
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={account}
+                  onChange={(e) => setUseraccount(e.target.value)}
                 />
                 <Input
                   borderRadius="0"

@@ -9,15 +9,21 @@ import { FetchAlumnos } from '../../API/DatosAlumnosV2.ts';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { useNavigate } from 'react-router-dom';
 
-let tableHeaders = [
+import data from '../../API/DatosAlumnos.ts'; //simulando que es una api
+
+// Definir un tipo para los datos de los alumnos
+interface Alumno {
+  fullname: string;
+  legajo: number;
+  dni: number;
+  situacion: string;
+  anioIngreso: number;
+}
+
+const tableHeaders: MRT_ColumnDef<Alumno>[] = [
   {
-    accessorKey: 'apellido',
-    header: 'APELLIDO',
-    enableHiding: true,
-  },
-  {
-    accessorKey: 'nombre',
-    header: 'NOMBRES',
+    accessorKey: 'full_name',
+    header: 'APELLIDO Y NOMBRE',
     enableHiding: true,
   },
   {
@@ -44,17 +50,12 @@ let tableHeaders = [
 ];
 
 interface PropsTable extends FlexProps {
-  nombre: string;
-  legajo: number;
-  dni: number;
-  estado: string;
-  anio_ingreso: number;
-  boolEnableRowSelection: bool;
-  tableHeaders: array;
+  boolEnableRowSelection: boolean;
 }
 
 function Table({ boolEnableRowSelection }: PropsTable) {
-  const [alumnos, setAlumnos] = useState<PropsTable[]>([]);
+  const [alumnos, setAlumnos] = useState<Alumno[]>([]); //para la llamada a la api del back
+  //const [alumnos, setAlumnos] = useState<Alumno[]>(data); // Usa el arreglo importado directamente
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,7 +71,7 @@ function Table({ boolEnableRowSelection }: PropsTable) {
     fetchData();
   }, []);
 
-  const columns = useMemo<MRT_ColumnDef<PropsTable>[]>(() => tableHeaders, []);
+  const columns = useMemo<MRT_ColumnDef<Alumno>[]>(() => tableHeaders, []);
 
   const table = useMaterialReactTable({
     columns,
@@ -85,9 +86,8 @@ function Table({ boolEnableRowSelection }: PropsTable) {
       },
     },
     localization: MRT_Localization_ES,
-
     muiTableBodyRowProps: ({ row }) => ({
-      onClick: (event) => {
+      onClick: () => {
         navigate(`${row.original.dni}`);
       },
       sx: {

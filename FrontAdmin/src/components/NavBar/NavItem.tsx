@@ -36,13 +36,12 @@ export default function NavItem({
         borderRadius="5px"
         backgroundColor={color}
       >
-        {icon && (
-        typeof icon === 'string' ? (
-          <Image src={icon} boxSize="30px" alt={title} />
-        ) : (
-          icon
-        )
-      )}
+        {icon &&
+          (typeof icon === 'string' ? (
+            <Image src={icon} boxSize="30px" alt={title} />
+          ) : (
+            icon
+          ))}
         {!icon && (
           <Text as="b" fontSize="xs">
             {title}

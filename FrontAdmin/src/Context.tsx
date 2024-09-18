@@ -15,7 +15,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !Cookies.get('access_token') ? false : true
   );
-  const [rolUser, setRolUser] = useState(Cookies.get('username') === 'admin' ? true : false);
+  const [rolUser, setRolUser] = useState(
+    Cookies.get('username') === '12345678' ? true : false
+  );
   let refreshTimeout: NodeJS.Timeout;
 
   const refreshToken = async () => {
@@ -63,7 +65,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const onLogin = () => {
-    setRolUser(Cookies.get('username') === 'admin' ? true : false);
+    setRolUser(Cookies.get('username') === '12345678' ? true : false);
     setIsAuthenticated(true);
     const accessExpiration = Cookies.get('access_expiration');
     if (accessExpiration) {
@@ -100,7 +102,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [isAuthenticated]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, onLogin, onLogout, rolUser }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, onLogin, onLogout, rolUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

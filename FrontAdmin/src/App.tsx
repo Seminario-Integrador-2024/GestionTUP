@@ -16,20 +16,29 @@ function App() {
   const { isAuthenticated, rolUser } = useAuth();
   console.log(isAuthenticated, rolUser);
 
-
   return (
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Routes>
           {!isAuthenticated && <Route path="/auth/*" element={<Auth />} />}
-          {isAuthenticated && rolUser && <Route path="/admin/*" element={<Admin />} />}
-          {isAuthenticated && !rolUser && <Route path="/alumnos/*" element={<Alumnos />} />}
+          {isAuthenticated && rolUser && (
+            <Route path="/admin/*" element={<Admin />} />
+          )}
+          {isAuthenticated && !rolUser && (
+            <Route path="/alumnos/*" element={<Alumnos />} />
+          )}
           <Route
             path="/*"
             element={
               <Navigate
                 replace
-                to={isAuthenticated ? (rolUser?  '/admin/estadisticas': '/alumnos/cuenta') : '/auth'}
+                to={
+                  isAuthenticated
+                    ? rolUser
+                      ? '/admin/estadisticas'
+                      : '/admin/estadisticas'
+                    : '/auth'
+                }
               />
             }
           />

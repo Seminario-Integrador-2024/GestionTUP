@@ -33,15 +33,15 @@ import {
     const [cuatrimestre, setCuatrimestre] = useState('');
     const [anio_cursada, setAnioCursada] = useState('');
 
-    const handleconfirmar = () => {
-      confirmar(idMateria, anio_cursada, nombre, plan, cuatrimestre);
-      setIdMateria('');
-      setNombre('');
-      setPlan('');
-      setCuatrimestre('');
-      setAnioCursada('');
-      onClose();
-    };
+  const handleconfirmar = () => {
+    confirmar(idMateria, anio_cursada, nombre, plan, cuatrimestre);
+    setIdMateria('');
+    setNombre('');
+    setPlan('');
+    setCuatrimestre('');
+    setAnioCursada('');
+    onClose();
+  };
 
     return (
       <>
