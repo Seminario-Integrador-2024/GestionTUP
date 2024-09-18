@@ -8,7 +8,7 @@ export const FetchExcel = async (excelFile: File) => {
     formData.append('file', excelFile);
 
     const response = await fetch(
-      `${URL}//`,
+      `http://localhost:8000/api/excels/`,
       {
         method: 'POST',
         headers: {
@@ -22,12 +22,16 @@ export const FetchExcel = async (excelFile: File) => {
       const data = await response.json();
       return data;
     } else {
-      throw new Error('Error en la respuesta del servidor');
+      const errorResponse = await response.json();
+      throw new Error(
+         JSON.stringify(errorResponse)
+      );
     }
-  } catch (error) {
-    throw new Error('Network error: ' + error);
+  } catch (error: any) {
+    throw new Error('' + error);
   }
 };
+
 
 const data =
 {
