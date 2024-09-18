@@ -79,9 +79,9 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
     const sortedMontos = [...compromisos].sort((a, b) => {
       const dateA = new Date(a.fecha_carga_comp_pdf);
       const dateB = new Date(b.fecha_carga_comp_pdf);
-      return dateB.getTime() - dateA.getTime(); 
+      return dateB.getTime() - dateA.getTime();
     });
-    sortedMontos[0]? setTempMonto(sortedMontos[0]): null;
+    sortedMontos[0] ? setTempMonto(sortedMontos[0]) : null;
   }, [compromisos]);
 
   const getCurrentDateTime = () => {
@@ -201,10 +201,13 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 name="cuatrimestre"
                 mb="20px"
                 bg="white"
-                onChange={(e) => setTempMonto({
-                  ...tempMonto,
-                  cuatrimestre: e.target.value,
-                })}>
+                onChange={(e) =>
+                  setTempMonto({
+                    ...tempMonto,
+                    cuatrimestre: e.target.value,
+                  })
+                }
+              >
                 <option value="1C">1er Cuatrimestre</option>
                 <option value="2C">2do Cuatrimestre</option>
               </Select>
@@ -262,7 +265,15 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 <Button color="white" size="sm" onClick={()=>{handleSave()}}>
                   Guardar Cambios
                 </Button>
-               
+                <Button
+                  bgColor={filePreview ? 'green' : undefined}
+                  color="white"
+                  size="sm"
+                  onClick={onModalCargarOpen}
+                  leftIcon={filePreview ? <CheckIcon /> : undefined}
+                >
+                  Cargar Documento
+                </Button>
                 <Button
                   colorScheme="blue"
                   color="white"

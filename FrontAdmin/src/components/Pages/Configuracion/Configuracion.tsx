@@ -6,8 +6,8 @@ import NewInterfaz from './Montos/NewInterfaz';
 
 function Configuracion() {
   const [montos, setMontos] = useState([]);
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState<string | null>(null); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const [limit] = useState(10);
   const [totalCount, setTotalCount] = useState(0);

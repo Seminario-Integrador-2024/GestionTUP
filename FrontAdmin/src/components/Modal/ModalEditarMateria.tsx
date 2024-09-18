@@ -29,21 +29,21 @@ import {
       onClose();
     };
 
-    const [codigo_materia, setCodigoMateria] = useState('');
-    const [nombre, setNombre] = useState('');
-    const [cuatrimestre, setCuatrimestre] = useState('');
-    const [plan, setPlan] = useState('');
-    const [anio_cursado, setAnioCursado] = useState('');
+  const [codigo_materia, setCodigoMateria] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [cuatrimestre, setCuatrimestre] = useState('');
+  const [plan, setPlan] = useState('');
+  const [anio_cursado, setAnioCursado] = useState('');
 
-    useEffect(() => {
-        if (materia) {
-        setCodigoMateria(materia.codigo_materia);
-        setNombre(materia.nombre);
-        setCuatrimestre(materia.cuatrimestre);
-        setPlan(materia.anio_plan);
-        setAnioCursado(materia.anio_cursada);
-        }
-    }, [materia]);
+  useEffect(() => {
+    if (materia) {
+      setCodigoMateria(materia.codigo_materia);
+      setNombre(materia.nombre);
+      setCuatrimestre(materia.cuatrimestre);
+      setPlan(materia.anio_plan);
+      setAnioCursado(materia.anio_cursada);
+    }
+  }, [materia]);
 
     if (!materia) {
         return null;
@@ -86,12 +86,12 @@ import {
                 <Flex direction="column" mt="10px">
                 <Text mb={0}>Año</Text>
                 <Input
-                    value={anio_cursado}
-                    placeholder="Año"
-                    size='md'
-                    onChange={(e) => setAnioCursado(e.target.value)}
-                    variant = "flushed"
-                    ml={1}
+                  value={anio_cursado}
+                  placeholder="Año"
+                  size="md"
+                  onChange={(e) => setAnioCursado(e.target.value)}
+                  variant="flushed"
+                  ml={1}
                 />
                 </Flex>
                 <Stack direction="column">

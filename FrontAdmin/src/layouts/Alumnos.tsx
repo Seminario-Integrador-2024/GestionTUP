@@ -1,5 +1,11 @@
 import { useRoutes } from 'react-router-dom';
-import { Box, Drawer, DrawerContent, useDisclosure, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Drawer,
+  DrawerContent,
+  useDisclosure,
+  Text,
+} from '@chakra-ui/react';
 import { MobileNav } from '../components/NavBar/MobileNav';
 import { SidebarContent } from '../components/NavBar/SidebarContent';
 import routes from '../routes';
@@ -8,11 +14,11 @@ import Header from '../components/Header/Header';
 
 export default function Alumnos() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const alumnosRoutes = routes.filter(route => route.rol !== 'admin');
+  const alumnosRoutes = routes.filter((route) => route.rol !== 'admin');
   const element = useRoutes(alumnosRoutes);
   const LINK_ITEMS_ = alumnosRoutes
-    .filter(route => route.title && route.icon && route.rol && route.path)
-    .map(route => ({
+    .filter((route) => route.title && route.icon && route.rol && route.path)
+    .map((route) => ({
       title: route.title!,
       icon: route.icon!,
       url: route.path,
@@ -36,7 +42,7 @@ export default function Alumnos() {
         size="xs"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} LINK_ITEMS={LINK_ITEMS}/>
+          <SidebarContent onClose={onClose} LINK_ITEMS={LINK_ITEMS} />
         </DrawerContent>
       </Drawer>
       <Box pos="relative" zIndex="10">

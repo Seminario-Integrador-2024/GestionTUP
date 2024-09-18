@@ -12,7 +12,11 @@ export default function Alumnos() {
   });
   return (
     <ThemeProvider theme={lightTheme}>
-      <Table boolEnableRowSelection={true} />
+      <Flex>
+        <Box flex="1">
+          <Table boolEnableRowSelection={true} />
+        </Box>
+      </Flex>
     </ThemeProvider>
   );
 }

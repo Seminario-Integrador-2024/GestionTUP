@@ -7,11 +7,11 @@ import Header from '../components/Header/Header';
 
 export default function Admin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const adminRoutes = routes.filter(route => route.rol !== 'alumnos');
+  const adminRoutes = routes.filter((route) => route.rol !== 'alumnos');
   const element = useRoutes(adminRoutes);
   const LINK_ITEMS_ = adminRoutes
-    .filter(route => route.title && route.icon && route.rol && route.path)
-    .map(route => ({
+    .filter((route) => route.title && route.icon && route.rol && route.path)
+    .map((route) => ({
       title: route.title!,
       icon: route.icon!,
       url: route.path,
@@ -35,7 +35,7 @@ export default function Admin() {
         size="xs"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} LINK_ITEMS={LINK_ITEMS}/>
+          <SidebarContent onClose={onClose} LINK_ITEMS={LINK_ITEMS} />
         </DrawerContent>
       </Drawer>
       <Box pos="relative" zIndex="10">
