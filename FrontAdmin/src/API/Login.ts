@@ -22,9 +22,12 @@ export const FetchLogin = async (password: string, account: string) => {
       Cookies.set('username', data.user.dni);
       return data;
     } else {
-      throw new Error('Login failed');
+      const errorResponse = await response.json();
+      throw new Error(
+         JSON.stringify(errorResponse)
+      );
     }
-  } catch (error) {
-    throw new Error('Network error: ');
+  } catch (error: any) {
+    throw new Error('' + error);
   }
 };
