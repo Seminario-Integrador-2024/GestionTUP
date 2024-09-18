@@ -22,7 +22,7 @@ import { RiContractLine } from 'react-icons/ri';
 import { CiSaveDown1 } from 'react-icons/ci';
 import Alumnos from './components/Pages/Alumnos/Alumnos';
 import { PiStudentLight } from 'react-icons/pi';
-import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno';import CompromisoDePago from './components/Pages/Alumnos/SubPages/CompromisoDePago';
+import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno'; import CompromisoDePago from './components/Pages-Alumnos/CompromisoDePago';
 
 const routes = [
   {
@@ -88,7 +88,7 @@ const routes = [
     title: 'Pagos',
     element: <InformarPago />,
     rol: 'alumnos',
-    icon: <BsCashCoin size="30px"  />,
+    icon: <BsCashCoin size="30px" />,
   },
   {
     path: 'compromisoPago',
@@ -102,7 +102,7 @@ const routes = [
     title: 'Darse de Baja',
     element: <ErrorPage />,
     rol: 'alumnos',
-    icon: <CiSaveDown1 size="30px"  />,
+    icon: <CiSaveDown1 size="30px" />,
   },
   {
     path: '*',
