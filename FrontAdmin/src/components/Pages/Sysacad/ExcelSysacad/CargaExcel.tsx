@@ -1,6 +1,6 @@
 import { Stack, Text, Button } from '@chakra-ui/react';
 import ZonaCarga from './ZonaCarga';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Resultado from './Resultado';
 import Cookies from 'js-cookie';
 
@@ -8,7 +8,9 @@ function CargaExcel() {
     const [fileUploaded, setFileUploaded] = useState(false);
     const [reset, setReset] = useState(false);
     const [file, setFile] = useState<File | null>(null);  
-    const [data, setData] = useState<any[]>([]); 
+    const [fileAux, setFileAux] = useState<File | null>(null);
+    const [data, setData] = useState<string[]>([]); 
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleFileUpload = (fileName: string) => {
         setFileUploaded(true);  
@@ -19,15 +21,14 @@ function CargaExcel() {
         formData.append('excel', file);
 
         try {
+            setIsLoading(true);
             const token = Cookies.get('tokennn');
             const response = await fetch(
                 `http://localhost:8000/api/excels/`,  
                 {
                     method: 'POST',
-                    
                     headers: {
                         Authorization: `Bearer ${token}`,  
-                        
                     },
                     body: formData,
                 }
@@ -35,7 +36,6 @@ function CargaExcel() {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log(result);
                 setData(result);  
                 setFileUploaded(true);  
             } else {
@@ -44,6 +44,8 @@ function CargaExcel() {
             }
         } catch (error: any) {
             console.error('Error al subir el archivo:', error);
+        }finally {
+            setIsLoading(false);
         }
     };
 
@@ -56,8 +58,11 @@ function CargaExcel() {
     const handleReset = () => {
         setFileUploaded(false);  
         setFile(null);  
+        setData([]);  
+        setFileAux(null);
     };
 
+ 
     return (
         <Stack direction="column" align="center">
             <Stack direction="column" spacing={4} align="center" bg="secundaryBg" padding={5} borderRadius={10} w={550}>
@@ -67,18 +72,21 @@ function CargaExcel() {
                     reset={reset}
                     cargar={fileUploaded}
                     setFile={setFile}  
+                    fileAux={fileAux}
+                    setFileAux={setFileAux}
                 />
                 <Stack direction="row" padding={2} gap={4}>
-                    <Button onClick={handleUploadClick} color="white" isDisabled={!fileUploaded} _hover={{ bg: "secundaryHover" }}>Cargar</Button>
+                    <Button onClick={handleUploadClick} color="white" isDisabled={!fileUploaded} _hover={{ bg: "secundaryHover" }}>
+                        {isLoading ? 'Procesando...' : 'Cargar'}
+                    
+                    </Button>
                     <Button onClick={handleReset} variant="light">Volver a Intentar</Button>
                 </Stack>
             </Stack>
-            {data.length > 0 && (
-                <Stack>
-                    ¿
-                    <Resultado data={data} />
-                </Stack>
-            )}
+            
+            <Stack>
+                <Resultado data={data} />
+            </Stack>
         </Stack>
     );
 }
