@@ -223,6 +223,7 @@ function FichaAlumno() {
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
+          ml={5}
         >
           <Box
             borderRadius={8}
@@ -240,7 +241,7 @@ function FichaAlumno() {
               <Table variant="simple" width="100%">
                 <Thead>
                   <Tr mt={6}>
-                    <Th></Th>
+                    
                     <Th textAlign="center" p={1}>
                       Numero
                     </Th>
@@ -254,19 +255,7 @@ function FichaAlumno() {
                 <Tbody>
                   {cuotas.map((cuota, index) => (
                     <Tr key={index}>
-                      {cuota.estado === 'PAGADO' ? (
-                        <Td>
-                          <Checkbox isDisabled={true}></Checkbox>
-                        </Td>
-                      ) : (
-                        <Td>
-                          <Checkbox
-                            p={0}
-                            borderColor="black"
-                            // onChange={(e) => handleCheckboxChange(cuota)}
-                          ></Checkbox>
-                        </Td>
-                      )}
+                      
                       <Td textAlign="center" p={1}>
                         {cuota.numero}
                       </Td>

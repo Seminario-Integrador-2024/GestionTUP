@@ -37,7 +37,7 @@ function App() {
                   isAuthenticated
                     ? rolUser
                       ? '/admin/estadisticas'
-                      : '/admin/estadisticas'
+                      : '/alumnos/pagos'
                     : '/auth'
                 }
               />

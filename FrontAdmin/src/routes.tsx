@@ -94,7 +94,7 @@ const routes = [
     path: 'compromisoPago',
     title: 'Compromiso de Pago',
     element: <CompromisoDePago />,
-    rol: 'admin',
+    rol: 'alumnos',
     icon: <RiContractLine size="30px" />,
   },
   {

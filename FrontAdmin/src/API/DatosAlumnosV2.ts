@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 
 export const FetchAlumnos = async () => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
     const response = await fetch('http://localhost:8000/api/alumnos/', {
       method: 'GET',
