@@ -175,7 +175,7 @@ function FichaAlumno() {
           Número DNI:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno.dni}
+          {new Intl.NumberFormat().format(alumno.dni)}
         </Text>
         <Text color="gray" mt="10px">
           Legajo:
