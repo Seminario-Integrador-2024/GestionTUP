@@ -4,7 +4,7 @@ export const FetchAlumnos = async () => {
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch('http://localhost:8000/api/alumnos/', {
+    const response = await fetch('http://localhost:8000/api/alumnos/?limit=9999', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
