@@ -3,8 +3,10 @@
 # django imports
 from django.conf import settings
 from django.db import models
+from users.models import GenericUser
 
-class Administrador(models.Model):
+
+class Administrador(GenericUser):
     """
     Represents an administrator.
 
@@ -17,8 +19,7 @@ class Administrador(models.Model):
             of the administrator.
     """
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    dni = models.IntegerField()
+    # dni = models.IntegerField()
 
 
 class Rol(models.Model):

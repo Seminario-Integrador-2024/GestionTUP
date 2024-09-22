@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
 import {
   Box,
-  Text,
-  FlexProps,
-  Heading,
-  Flex,
   TableContainer,
-  TableCaption,
   Thead,
   Table,
   Tr,
   Th,
   Tbody,
-  Td,
-  Tfoot,
+
 } from '@chakra-ui/react';
 
 export default function ListadoAlumnos() {

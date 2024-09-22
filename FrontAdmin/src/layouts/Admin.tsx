@@ -3,18 +3,28 @@ import { Box, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react';
 import { MobileNav } from '../components/NavBar/MobileNav';
 import { SidebarContent } from '../components/NavBar/SidebarContent';
 import routes from '../routes';
-
 import Header from '../components/Header/Header';
 
 export default function Admin() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const element = useRoutes(routes);
+  const adminRoutes = routes.filter((route) => route.rol !== 'alumnos');
+  const element = useRoutes(adminRoutes);
+  const LINK_ITEMS_ = adminRoutes
+    .filter((route) => route.title && route.icon && route.rol && route.path)
+    .map((route) => ({
+      title: route.title!,
+      icon: route.icon!,
+      url: route.path,
+      rol: route.rol!,
+    }));
+  const LINK_ITEMS = LINK_ITEMS_.filter((link) => link.rol === 'admin');
 
   return (
     <Box minH="100vh">
       <SidebarContent
         onClose={onClose}
         display={{ base: 'none', md: 'block' }}
+        LINK_ITEMS={LINK_ITEMS}
       />
       <Drawer
         autoFocus={false}
@@ -25,7 +35,7 @@ export default function Admin() {
         size="xs"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose} LINK_ITEMS={LINK_ITEMS} />
         </DrawerContent>
       </Drawer>
       <Box pos="relative" zIndex="10">

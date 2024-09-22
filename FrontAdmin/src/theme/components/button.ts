@@ -1,7 +1,3 @@
-import { background } from '@chakra-ui/react';
-import { color } from 'chart.js/helpers';
-import { ImTextColor } from 'react-icons/im';
-
 export const buttonStyles = {
   components: {
     Button: {

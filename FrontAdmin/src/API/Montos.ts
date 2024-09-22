@@ -1,12 +1,12 @@
-import { controllers } from 'chart.js';
 import Cookies from 'js-cookie';
+const URL = import.meta.env.VITE_URL_DEV;
 
 export const FetchMontos = async (offset: number, limit: number) => {
   try {
     const token = Cookies.get('access_token');
 
     const response = await fetch(
-      `https://gestiontup-42tx6kvt3q-uc.a.run.app/pagos/compromisos/?offset=${offset}&limit=${limit}`,
+      `${URL}/pagos/compromisos/?offset=${offset}&limit=${limit}`,
       {
         method: 'GET',
         headers: {
@@ -28,12 +28,11 @@ export const FetchMontos = async (offset: number, limit: number) => {
   }
 };
 
-export const createCompromiso = async (compromisoData: any) => {
+export const createCompromiso = async (compromisoData: any, selectFile: any) => {
   try {
     const token = Cookies.get('access_token');
-    console.log(compromisoData);
 
-    const response = await fetch('https://gestiontup-42tx6kvt3q-uc.a.run.app/pagos/compromisos/', {
+    const response = await fetch(`${URL}/pagos/compromisos/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,6 +43,7 @@ export const createCompromiso = async (compromisoData: any) => {
 
     if (response.ok) {
       const data = await response.json();
+      await loadPDF(data.id_comp_pago ,selectFile);
       return data;
     } else {
       const errorResponse = await response.json();
@@ -55,3 +55,29 @@ export const createCompromiso = async (compromisoData: any) => {
     throw new Error('Network error: ' + error);
   }
 };
+
+export const loadPDF = async (id :string,file: File) => {
+  try {
+    const token = Cookies.get('access_token');
+
+    const formData = new FormData();
+    formData.append('archivo_pdf', file);
+
+    const response = await fetch(`${URL}/pagos/compromisos/${id}/`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error('Error en la respuesta del servidor');
+    }
+  } catch (error) {
+    throw new Error('Network error: ' + error);
+  }
+}

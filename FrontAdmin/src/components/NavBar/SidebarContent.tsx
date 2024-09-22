@@ -8,14 +8,19 @@ import {
   BoxProps,
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
-import { LINK_ITEMS } from './LinksItems';
 import NavItem from './NavItem';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
+  LINK_ITEMS: {
+    title: string;
+    icon: string | JSX.Element;
+    url: string;
+    rol: string;
+  }[];
 }
 
-export function SidebarContent({ onClose, ...rest }: SidebarProps) {
+export function SidebarContent({ onClose, LINK_ITEMS, ...rest }: SidebarProps) {
   const [isLargerThanMd] = useMediaQuery('(min-width: 768px)');
   const location = useLocation();
 
@@ -44,7 +49,7 @@ export function SidebarContent({ onClose, ...rest }: SidebarProps) {
               icon={link.icon}
               title={link.title}
               color={
-                location.pathname === '/admin/' + link.url
+                location.pathname.startsWith('/admin/' + link.url)
                   ? 'secundary'
                   : 'white'
               }

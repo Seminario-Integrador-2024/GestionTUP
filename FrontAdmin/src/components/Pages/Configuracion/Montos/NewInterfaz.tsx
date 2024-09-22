@@ -94,7 +94,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
     >
       <SimpleGrid mt="15px">
         {montos.length > 0 ? (
-          <Table variant="simple">
+          <Table variant="striped" colorScheme="gray.700">
             <Thead>
               <Tr>
                 <Th p={1}>Año/ Cuatrimestre</Th>

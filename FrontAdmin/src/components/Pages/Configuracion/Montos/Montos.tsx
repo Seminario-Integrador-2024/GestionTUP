@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -18,6 +18,8 @@ import { AddIcon } from '@chakra-ui/icons';
 import { createCompromiso } from '../../../../API/Montos';
 import ModalCargarDocumento from '../ModalCargarDocumento';
 import { CheckIcon } from '@chakra-ui/icons';
+import { useToast } from '@chakra-ui/react';
+
 
 interface Compromiso {
   anio: string | number | Date;
@@ -36,6 +38,7 @@ interface Compromiso {
 
 interface CardCargaProps {
   compromisos: Compromiso[];
+  fetchMontos: () => void;
 }
 
 const MontoInput = ({
@@ -62,7 +65,7 @@ const MontoInput = ({
   </Flex>
 );
 
-const Montos = ({ compromisos }: CardCargaProps) => {
+const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isModalCargarOpen,
@@ -81,8 +84,14 @@ const Montos = ({ compromisos }: CardCargaProps) => {
     sortedMontos[0] ? setTempMonto(sortedMontos[0]) : null;
   }, [compromisos]);
 
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    return now.toISOString(); 
+  };
+  
+
   const [tempMonto, setTempMonto] = useState<Compromiso>({
-    anio: '',
+    anio: getCurrentDateTime(),
     fecha_carga_comp_pdf: '',
     cuatrimestre: '',
     archivo_pdf_url: '',
@@ -96,6 +105,8 @@ const Montos = ({ compromisos }: CardCargaProps) => {
     cuota_reducida_3venc: 0,
   });
 
+  const toast = useToast();
+
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
     setTempMonto({
@@ -103,6 +114,53 @@ const Montos = ({ compromisos }: CardCargaProps) => {
       [name]: parseInt(value.replace(/\D/g, ''), 10) || 0,
     });
   };
+
+  const handleSave = async () => {
+    if (!selectedFile) {
+      toast({
+        title: 'Error',
+        description: 'Por favor, selecciona un archivo PDF antes de guardar.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    if (tempMonto.cuatrimestre === '') {
+      toast({
+        title: 'Error',
+        description: 'Por favor, selecciona un cuatrimestre antes de guardar.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+    try {
+      await createCompromiso(tempMonto, selectedFile);
+     
+      onClose();
+      toast({
+        title: 'Éxito',
+        description: 'Compromiso creado exitosamente.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      fetchMontos();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Error al crear el compromiso.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      console.error(error);
+    }
+  };
+
 
   return (
     <>
@@ -124,11 +182,22 @@ const Montos = ({ compromisos }: CardCargaProps) => {
               mt={4}
               position="relative"
             >
+            <Flex justify="space-between" gap="4" pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px', }}>
               <Text mb="20px" fontSize="2xl" fontWeight="bold">
                 Cuatrimestre
               </Text>
+              <Button
+                  bgColor={filePreview ? "green" : undefined}
+                  color="white"
+                  size="sm"
+                  onClick={onModalCargarOpen}
+                  leftIcon={filePreview ? <CheckIcon /> : undefined}
+                >
+                  Cargar Documento
+                </Button>
+              </Flex>
               <Select
-                placeholder="Selecciona un cuatrimestre"
+                placeholder= 'Selecciona un cuatrimestre'
                 name="cuatrimestre"
                 mb="20px"
                 bg="white"
@@ -192,12 +261,8 @@ const Montos = ({ compromisos }: CardCargaProps) => {
                 />
               </SimpleGrid>
 
-              <Flex
-                justify="flex-end"
-                gap="4"
-                pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px' }}
-              >
-                <Button color="white" size="sm">
+              <Flex justify="flex-end" gap="4" pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px', }}>
+                <Button color="white" size="sm" onClick={()=>{handleSave()}}>
                   Guardar Cambios
                 </Button>
                 <Button

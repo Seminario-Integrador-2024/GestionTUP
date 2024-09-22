@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+const URL = import.meta.env.VITE_URL_DEV;
 
 export const FetchPostMateria = async (
   codigo_materia: number,
@@ -8,9 +9,9 @@ export const FetchPostMateria = async (
   cuatrimestre: number
 ) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
-    const response = await fetch('https://gestiontup-42tx6kvt3q-uc.a.run.app/materias/', {
+    const response = await fetch(`http://localhost:8000/api/materias/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,9 +42,9 @@ export const FetchPostMateria = async (
 
 export const FetchMaterias = async () => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
-    const response = await fetch('http://127.0.0.1:8000/materias/', {
+    const response = await fetch(`http://localhost:8000/api/materias/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -70,25 +71,22 @@ export const FetchPutMateria = async (
   cuatrimestre: number
 ) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
-    const response = await fetch(
-      `http://127.0.0.1:8000/materias/${codigo_materia}/`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          codigo_materia,
-          anio_cursada,
-          anio_plan,
-          nombre,
-          cuatrimestre,
-        }),
-      }
-    );
+    const response = await fetch(`http://localhost:8000/api/materias/${codigo_materia}/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        codigo_materia,
+        anio_cursada,
+        anio_plan,
+        nombre,
+        cuatrimestre,
+      }),
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -106,18 +104,15 @@ export const FetchPutMateria = async (
 
 export const FetchDeleteMateria = async (codigo_materia: number) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
-    const response = await fetch(
-      `http://127.0.0.1:8000/materias/${codigo_materia}/`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`http://localhost:8000/api/materias/${codigo_materia}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (response.ok) {
       return; //nose si lo dejo o que hago
