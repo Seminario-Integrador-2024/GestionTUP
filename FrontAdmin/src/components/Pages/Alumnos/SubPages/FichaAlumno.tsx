@@ -22,9 +22,13 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material';
 import logoUser from '../../../icons/logo-user.png';
 import { useNavigate } from 'react-router-dom';
-import { FetchDetalleAlumno } from '../../../../API/DetalleAlumno.ts';
+import {
+  FetchDetalleAlumno,
+  FetchMateriasAlumno,
+} from '../../../../API/DetalleAlumno.ts';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 
 interface Alumno {
   full_name: string;
@@ -35,9 +39,18 @@ interface Alumno {
   estado: string;
 }
 
+interface Materia {
+  codigo_materia: number;
+  anio_cursada: number;
+  anio_plan: number;
+  nombre: string;
+  cuatrimestre: number;
+}
+
 function FichaAlumno() {
   const { dni } = useParams();
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
+  const [materias, setMaterias] = useState<Materia[]>([]); // Define el estado con un valor inicial de null
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
   const navigate = useNavigate();
@@ -51,8 +64,10 @@ function FichaAlumno() {
       try {
         if (dni) {
           const dniNumber = parseInt(dni, 10); // Convierte a número
-          const data = await FetchDetalleAlumno(dniNumber);
-          setAlumno(data);
+          const dataDetalle = await FetchDetalleAlumno(dniNumber);
+          const dataMaterias = await FetchMateriasAlumno(dniNumber);
+          setAlumno(dataDetalle);
+          setMaterias(dataMaterias);
         }
       } catch (error) {
         setError(error);
@@ -241,7 +256,6 @@ function FichaAlumno() {
               <Table variant="simple" width="100%">
                 <Thead>
                   <Tr mt={6}>
-                    
                     <Th textAlign="center" p={1}>
                       Numero
                     </Th>
@@ -255,7 +269,6 @@ function FichaAlumno() {
                 <Tbody>
                   {cuotas.map((cuota, index) => (
                     <Tr key={index}>
-                      
                       <Td textAlign="center" p={1}>
                         {cuota.numero}
                       </Td>
@@ -291,6 +304,47 @@ function FichaAlumno() {
               </Table>
             ) : (
               <Text>No hay datos disponibles</Text>
+            )}
+          </Box>
+
+          <Box
+            borderRadius={8}
+            borderColor={'gray.200'}
+            borderStyle={'solid'}
+            borderWidth={1}
+            p={3}
+            ml="30px"
+            mt="30px"
+            w="100%"
+          >
+            {materias.length > 0 ? (
+              <Table variant="simple" width="100%">
+                <Thead>
+                  <Tr mt={6}>
+                    <Th textAlign="center">Materia</Th>
+                    <Th textAlign="center">Año de cursada</Th>
+                    <Th textAlign="center">Cuatrimestre</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {materias?.map((materia, index) => (
+                      <Tr
+                        key={index}
+                        onClick={() =>
+                          navigate(`/admin/sysacad/`) //Aca tendriamos que ver a donde se lo redirige
+                        }
+                        cursor="pointer"
+                        _hover={{ bg: "gray.50" }}
+                      >
+                        <Td textAlign="center">{materia.nombre}</Td>
+                        <Td textAlign="center">{materia.anio_cursada}</Td>
+                        <Td textAlign="center">{materia.cuatrimestre}</Td>
+                      </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            ) : (
+              <Text>No hay datos de materias disponibles</Text>
             )}
           </Box>
         </Flex>
