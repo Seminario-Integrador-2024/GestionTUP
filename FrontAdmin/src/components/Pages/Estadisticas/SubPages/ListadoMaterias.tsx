@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent } from 'react';
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import React, { useState, ChangeEvent, useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import CustomSelect from './Seleccion';
 import { LINK_MATERIAS } from '../../../Subjects/LinksMaterias';
+import { FetchMaterias } from '../../../../API/Materias';
 
 type Cuatrimestre = 'primer-cuatrimestre' | 'segundo-cuatrimestre';
 
@@ -19,7 +20,7 @@ const opcionesCuatrimestre = [
   { value: 'segundo-cuatrimestre', label: 'Segundo Cuatrimestre' },
 ];
 
-const materias: Record<Cuatrimestre, string[]> = {
+/* const materias: Record<Cuatrimestre, string[]> = {
   'primer-cuatrimestre': [
     'Programación I',
     'Arquitectura y Sistemas Operativos',
@@ -42,7 +43,7 @@ const materias: Record<Cuatrimestre, string[]> = {
     'Gestión de Desarrollo de Software',
     'Trabajo Final Integrador',
   ],
-};
+}; */
 
 interface MateriaLink {
   title: string;
@@ -58,26 +59,46 @@ const ListadoMaterias: React.FC = () => {
     setSemester(event.target.value as Cuatrimestre);
   };
 
-  const handleMateriaClick = (materia: string) => {
-    const materiaLink = LINK_MATERIAS.find(
-      (item: MateriaLink) => item.title === materia
-    );
-
-    if (materiaLink) {
-      navigate(materiaLink.url);
-    } else {
-      console.error('URL de materia no encontrada para:', materia);
-    }
+  const handleMateriaClick = (materia: number) => {
+      const url = `${materia}`;
+      navigate(url);
   };
 
-  const filteredSubjects = cuatrimestre ? materias[cuatrimestre] : [];
 
-  // Extrae los paths de LINK_MATERIAS
-  const detailPaths = LINK_MATERIAS.map(link => link.url);
+  const [materias, setMaterias] = useState<Materia[]>([]); // Define el tipo explícitamente
 
-  // Verifica si la ruta actual incluye alguno de los paths de detalle
-  const isInDetailView = detailPaths.some(path => location.pathname.includes(path));
+  interface Materia {
+    anio_cursada: number;
+    anio_plan: number;
+    codigo_materia: number;
+    cuatrimestre: number;
+    nombre: string;
+  }
 
+  const filteredSubjects = materias.filter((materia: Materia) => {
+    if (cuatrimestre === 'primer-cuatrimestre') {
+      return materia.cuatrimestre === 1;
+    }
+    if (cuatrimestre === 'segundo-cuatrimestre') {
+      return materia.cuatrimestre === 2;
+    }
+    return false; // Si no hay cuatrimestre seleccionado
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await FetchMaterias();
+        setMaterias(data);
+        console.log(data);
+      } catch (error) {
+        console.error('Network error', error);
+        /* showToast('Error', 'No se pudieron cargar las materias', 'error'); */
+      }
+      };
+    fetchData();
+  }, []);
+  
   return (
     <Container maxW="container.md" p={4}>
       <VStack spacing={6} align="start">
@@ -101,14 +122,14 @@ const ListadoMaterias: React.FC = () => {
             <List spacing={3}>
               {filteredSubjects.map((materia) => (
                 <ListItem
-                  key={materia}
+                  key={materia.codigo_materia}
                   p={2}
                   borderRadius="md"
                   _hover={{ bg: 'gray.100', cursor: 'pointer' }}
-                  onClick={() => handleMateriaClick(materia)}
+                  onClick={() => handleMateriaClick(materia.codigo_materia)}
                 >
                   <Text fontSize="md" color="gray.700">
-                    {materia}
+                    {materia.nombre}
                   </Text>
                 </ListItem>
               ))}
