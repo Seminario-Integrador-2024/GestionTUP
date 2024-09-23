@@ -19,6 +19,7 @@ import {
   } from '@chakra-ui/react'
 import { useState} from 'react'
 import {AttachmentIcon} from '@chakra-ui/icons';
+import { FetchPostPago } from '../../../API-Alumnos/Pagos';
 
 interface Cuota {
     id: number;
@@ -51,6 +52,12 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
     const handleSave = () => {
        // Aca hay que hacer el post al backend
+       try{
+           const numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
+           FetchPostPago(numerosCuotas, parseInt(montoAbonado), file, comentarios);
+       } catch (error) {
+           console.error('Error:', error);
+       }
        // Ver como volver a renderizar la tabla de cuotas
         onClose();
     };

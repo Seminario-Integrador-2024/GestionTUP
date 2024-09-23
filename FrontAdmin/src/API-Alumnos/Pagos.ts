@@ -1,4 +1,41 @@
+import Cookies from 'js-cookie';
 
+export const FetchPostPago = async (
+    cuotas: any,
+    montoInformado: number,
+    archivo: File | null,   // ver como mandar el archivo
+    comentario: string
+) => {
+    try {
+        const token = Cookies.get('tokennn');
+        const dni = Cookies.get('dni');
+        
+        const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                cuotas,
+                montoInformado,
+                archivo,
+                comentario,
+            }),
+        });
+        
+        if (response.ok) {
+            return;
+        } else {
+            const errorData = await response.json();
+            throw new Error(
+                `Error en la respuesta del servidor: ${errorData.message}`
+            );
+        }
+    } catch (error) {
+        console.error('Network error:', error);
+    }
+};
 
 const cuotas = [
     {
