@@ -23,6 +23,24 @@ import { CiSaveDown1 } from 'react-icons/ci';
 import Alumnos from './components/Pages/Alumnos/Alumnos';
 import { PiStudentLight } from 'react-icons/pi';
 import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno'; import CompromisoDePago from './components/Pages-Alumnos/CompromisoDePago';
+import ProgramacionUno from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ProgramacionUno';
+import Matematica from './components/Pages/Estadisticas/SubPages/PaginasMaterias/Matematica';
+import ArquitecturaSO from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ArquitecturaSO';
+import OrganizacionEmpresarial from './components/Pages/Estadisticas/SubPages/PaginasMaterias/OrganizacionEmpresarial';
+import ProgramacionTres from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ProgramacionTres';
+import BaseDeDatosDos from './components/Pages/Estadisticas/SubPages/PaginasMaterias/BaseDeDatosDos';
+import MetodologiaSistemas from './components/Pages/Estadisticas/SubPages/PaginasMaterias/MetodologiaSistemas';
+import InglesDos from './components/Pages/Estadisticas/SubPages/PaginasMaterias/InglesDos';
+import ProgramacionDos from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ProgramacionDos';
+import ProbabilidadEstadistica from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ProbabilidadEstadistica';
+import BaseDeDatos from './components/Pages/Estadisticas/SubPages/PaginasMaterias/BaseDeDatos';
+import Ingles from './components/Pages/Estadisticas/SubPages/PaginasMaterias/Ingles';
+import ProgramacionCuatro from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ProgramacionCuatro';
+import MetodologiaSistemasDos from './components/Pages/Estadisticas/SubPages/PaginasMaterias/MetodologiaSistemasDos';
+import IntroduccionAnalisisDatos from './components/Pages/Estadisticas/SubPages/PaginasMaterias/IntroduccionAnalisisDatos';
+import Legislacion from './components/Pages/Estadisticas/SubPages/PaginasMaterias/Legislacion';
+import GestionDS from './components/Pages/Estadisticas/SubPages/PaginasMaterias/GestionDS';
+import TFI from './components/Pages/Estadisticas/SubPages/PaginasMaterias/TFI';
 
 const routes = [
   {
@@ -37,7 +55,7 @@ const routes = [
     element: <FichaAlumno />,
   },
   {
-    path: 'estadisticas',
+    path: 'estadisticas/*',
     title: 'Estadísticas' /* para el tooltip*/,
     element: <Estadisticas />,
     rol: 'admin' /* para la activación de rutas segun el rol */,
@@ -47,6 +65,80 @@ const routes = [
         path: 'alumnos-que-cursan-materia',
         element: <ListadoMaterias />,
         rol: 'admin',
+        children: [
+          {
+            path: 'programacion-uno',
+            element: <ProgramacionUno />,
+          },
+          {
+            path: 'arquitectura-y-sistemas-operativos',
+            element: <ArquitecturaSO />,
+          },
+          {
+            path: 'matematica',
+            element: <Matematica />,
+          },
+          {
+            path: 'organizacion-empresarial',
+            element: <OrganizacionEmpresarial />,
+          },
+          {
+            path: 'programacion-tres',
+            element: <ProgramacionTres />,
+          },
+          {
+            path: 'base-de-datos-dos',
+            element: <BaseDeDatosDos />,
+          },
+          {
+            path: 'metodologia-de-sistemas',
+            element: <MetodologiaSistemas />,
+          },
+          {
+            path: 'ingles-dos',
+            element: <InglesDos />,
+          },
+          {
+            path: 'programacion-dos',
+            element: <ProgramacionDos />,
+          },
+          {
+            path: 'probabilidad-y-estadistica',
+            element: <ProbabilidadEstadistica />,
+          },
+          {
+            path: 'base-de-datos',
+            element: <BaseDeDatos />,
+          },
+          {
+            path: 'ingles-uno',
+            element: <Ingles />,
+          },
+          {
+            path: 'programacion-cuatro',
+            element: <ProgramacionCuatro />,
+          },
+          {
+            path: 'metodologia-de-sistemas-dos',
+            element: <MetodologiaSistemasDos />,
+          },
+          {
+            path: 'introduccion-al-analisis-de-datos',
+            element: <IntroduccionAnalisisDatos />,
+          },
+          {
+            path: 'legislacion',
+            element: <Legislacion />,
+          },
+          {
+            path: 'gestion-desarrollo-software',
+            element: <GestionDS />,
+          },
+          {
+            path: 'trabajo-final-integrador',
+            element: <TFI />,
+          },
+        ],
       },
       {
         path: 'estadisticas/alumnos-que-cursan-materia/:url',
