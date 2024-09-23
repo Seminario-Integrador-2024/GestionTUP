@@ -10,6 +10,7 @@ function TablaCuotas () {
     const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
 
     useEffect(() => {
+        // Aca se deberia hacer el fetch de las cuotas del alumno
         setCuotas(Cuotas)   
     }, [])
 
@@ -48,12 +49,12 @@ function TablaCuotas () {
                   <Thead>
                     <Tr mt={6}>
                       <Th></Th>
-                      <Th textAlign="center" p={1}>Numero</Th>
-                      <Th textAlign="center">Fecha Vencimiento</Th>
+                      <Th textAlign="center" p={1}>Cuota</Th>
+                      <Th textAlign="center">Fecha Primer VTO.</Th>
                       <Th textAlign="center">Valor Actual</Th>
                       <Th textAlign="center">Valor Pagado</Th>
+                      <Th textAlign="center">Valor Informado</Th>
                       <Th textAlign="center">Valor Adeudado</Th>
-                      <Th textAlign="center">Estado</Th>
                     
                     </Tr>
                   </Thead>
@@ -71,14 +72,11 @@ function TablaCuotas () {
                         <Td textAlign="center">{cuota.fechaVencimiento}</Td>
                         <Td textAlign="center">{"$ " + cuota.montoactual}</Td>
                         <Td textAlign="center">{"$ " + cuota.valorpagado}</Td>
-                        <Td textAlign="center">{"$ " + cuota.valoradeudado}</Td>
-                        { cuota.estado === "ADEUDADO" ?
-                        <Td textAlign="center"> <Badge colorScheme='red'>{cuota.estado}</Badge></Td>
-                        :
-                        cuota.estado === "INFORMADO" ?
-                        <Td textAlign="center"> <Badge colorScheme='yellow'>{cuota.estado}</Badge></Td>
-                        :
-                        <Td textAlign="center"> <Badge colorScheme='green'>{cuota.estado}</Badge></Td>
+                        <Td textAlign="center">{"$ " + cuota.valorinformado}</Td>
+                        { cuota.estado !== "PAGADO" ?
+                        <Td textAlign="center">{"$ " + (cuota.montoactual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                        : 
+                        <Td textAlign="center">{"$ " + 0}</Td>
                         }
                       </Tr>
                     ))}

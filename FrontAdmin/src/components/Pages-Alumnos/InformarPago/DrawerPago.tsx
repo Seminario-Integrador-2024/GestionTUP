@@ -41,6 +41,7 @@ interface DrawerInformarProps {
 const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotasseleccionadas }) => {
     const [file, setFile] = useState<File | null>(null);
     const [montoAbonado, setMontoAbonado] = useState('');  //cambiar a entero
+    const [comentarios, setComentarios] = useState('');
     const [total, setTotal] = useState<number>(0);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,12 +50,12 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     };
 
     const handleSave = () => {
-        console.log("las cuotas seleccionadas son:", cuotasseleccionadas);
+       // Aca hay que hacer el post al backend
+       // Ver como volver a renderizar la tabla de cuotas
         onClose();
     };
 
     const handleCancel = () => {
-
         onClose();
     }
 
@@ -65,7 +66,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     useEffect(() => {
     setFile(null);
     setMontoAbonado('');
-    setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + cuota.valoradeudado, 0));
+    setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoactual - cuota.valorpagado - cuota.valorinformado), 0));
     }, [isOpen]);
 
     return (
@@ -98,19 +99,24 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                 </InputGroup>
             
             <Button mt={4} color="white" rightIcon={<AttachmentIcon/>} onClick={() => document.getElementById('fileInput')?.click()}>
-                Comprobante
+              Comprobante
             </Button>
             <Input
-                type='file'
-                id='fileInput'
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
+              type='file'
+              id='fileInput'
+              accept='image/*'
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
             />
              {file && <Stack direction="column">
                 <Text fontWeight="bold" mt={6}>Archivo cargado:</Text> 
                 <Flex ml={1}><li>{file.name}</li> </Flex>
             </Stack>}
             </FormControl>
+            <Stack gap={0}>
+              <FormLabel mt={4} mb={0}>Comentarios</FormLabel>
+              <Input placeholder='' mt={0}  onChange={(e) => setComentarios(e.target.value)} />
+            </Stack>
             </DrawerBody>
   
             <DrawerFooter>

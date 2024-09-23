@@ -26,11 +26,12 @@ function InformarPago() {
             bg="white"
         >
              <Card>
-                    <CardBody>
+                    <CardBody bg={'secundary'} mt={2}>
                         <Flex
                             alignItems="center"
                             justifyContent="center"
                             flexDirection="column"
+                            
                         >
                             <Text> Estado de cuenta al:</Text>
                             <Text fontWeight="bold"> {fechaDeHoy} </Text>

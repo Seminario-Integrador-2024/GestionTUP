@@ -5,16 +5,16 @@ const cuotas = [
         numero: 0,
         montoactual: 0,        
         fechaVencimiento: '2024-03-10',        
-        valorpagado: 10000,        
-        valoradeudado: 0,        
+        valorpagado: 10000, 
+        valorinformado: 0,        
         estado: "PAGADO",
     },
     {
         numero: 1,
         montoactual: 10000,        
         fechaVencimiento: '2024-03-10',        
-        valorpagado: 5000,        
-        valoradeudado: 5000,
+        valorpagado: 0,        
+        valorinformado: 5000,
         estado: "INFORMADO",
     },
     {
@@ -22,7 +22,7 @@ const cuotas = [
         montoactual: 10000,        
         fechaVencimiento: '2024-04-10',
         valorpagado: 0,
-        valoradeudado: 10000,
+        valorinformado: 0,
         estado: "ADEUDADO",
     },
     {
@@ -30,7 +30,7 @@ const cuotas = [
         montoactual: 10000,        
         fechaVencimiento: '2024-05-10',
         valorpagado: 0,
-        valoradeudado: 10000,
+        valorinformado: 0,
         estado: "ADEUDADO",
     },
     {
@@ -38,7 +38,7 @@ const cuotas = [
         montoactual: 10000,        
         fechaVencimiento: '2024-06-10',
         valorpagado: 0,
-        valoradeudado: 10000,
+        valorinformado: 0,
         estado: "ADEUDADO",
     },
     {
@@ -46,7 +46,7 @@ const cuotas = [
         montoactual: 10000,        
         fechaVencimiento: '2024-07-10',
         valorpagado: 0,
-        valoradeudado: 10000,
+        valorinformado: 0,
         estado: "ADEUDADO",
     }
 ];
