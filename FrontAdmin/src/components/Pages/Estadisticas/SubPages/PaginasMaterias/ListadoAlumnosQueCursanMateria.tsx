@@ -1,7 +1,7 @@
 import React from 'react';
 import Tabla from './Tabla';
 
-const ProgramacionDos = () => {
+const ListadoAlumnosQueCursanMateria = () => {
   const headers = ['Nombre', 'Legajo', 'DNI', 'Situación', 'Año Ingreso'];
 
   const data = [
@@ -25,4 +25,4 @@ const ProgramacionDos = () => {
   return <Tabla headers={headers} data={data} />;
 };
 
-export default ProgramacionDos;
+export default ListadoAlumnosQueCursanMateria;
