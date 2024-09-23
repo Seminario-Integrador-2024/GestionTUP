@@ -2,6 +2,8 @@ import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Badge, Checkbox, Inpu
 import { EditIcon, DeleteIcon, AddIcon, SearchIcon } from '@chakra-ui/icons'; 
 import Cuotas from '../../../API-Alumnos/Pagos';
 import {useState , useEffect} from 'react';
+import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
+import { get } from 'http';
 
 
 function TablaCuotas () {
@@ -11,7 +13,16 @@ function TablaCuotas () {
 
     useEffect(() => {
         // Aca se deberia hacer el fetch de las cuotas del alumno
-        setCuotas(Cuotas)   
+        const getCuotas = async () => {
+        try {
+            const cuotas = await FetchGetCuotas();
+            setCuotas(cuotas);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        }
+        getCuotas();
+        // setCuotas(Cuotas)   
     }, [])
 
     useEffect(() => {
