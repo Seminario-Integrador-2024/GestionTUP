@@ -20,7 +20,7 @@ const opcionesCuatrimestre = [
   { value: 'segundo-cuatrimestre', label: 'Segundo Cuatrimestre' },
 ];
 
-const materias: Record<Cuatrimestre, string[]> = {
+/* const materias: Record<Cuatrimestre, string[]> = {
   'primer-cuatrimestre': [
     'Programación I',
     'Arquitectura y Sistemas Operativos',
@@ -43,7 +43,7 @@ const materias: Record<Cuatrimestre, string[]> = {
     'Gestión de Desarrollo de Software',
     'Trabajo Final Integrador',
   ],
-};
+}; */
 
 interface MateriaLink {
   title: string;
@@ -58,17 +58,11 @@ const ListadoMaterias: React.FC = () => {
     setSemester(event.target.value as Cuatrimestre);
   };
 
-  const handleMateriaClick = (materia: string) => {
-    const materiaLink = LINK_MATERIAS.find(
-      (item: MateriaLink) => item.title === materia
-    );
+  const handleMateriaClick = (materia: number) => {
 
-    if (materiaLink) {
-      const url = `${materiaLink.url}`;
+      const url = `${materia}`;
       navigate(url);
-    } else {
-      console.error('URL de materia no encontrada para:', materia);
-    }
+
   };
 
 
@@ -130,7 +124,7 @@ const ListadoMaterias: React.FC = () => {
                   p={2}
                   borderRadius="md"
                   _hover={{ bg: 'gray.100', cursor: 'pointer' }}
-                  onClick={() => handleMateriaClick(materia.nombre)}
+                  onClick={() => handleMateriaClick(materia.codigo_materia)}
                 >
                   <Text fontSize="md" color="gray.700">
                     {materia.nombre}
