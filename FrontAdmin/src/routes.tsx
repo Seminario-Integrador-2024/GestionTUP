@@ -145,6 +145,11 @@ const routes = [
         element: <ListadoAlumnos />,
         rol: 'admin',
       },
+      {
+        path: 'alumnos-que-cursan-materia/:url',
+        element: <ProgramacionUno />,
+        rol: 'admin',
+      },
     ],
   },
   {
