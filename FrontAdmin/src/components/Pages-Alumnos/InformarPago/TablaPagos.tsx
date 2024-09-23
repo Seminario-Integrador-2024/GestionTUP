@@ -49,10 +49,8 @@ function TablaCuotas () {
                     <Tr mt={6}>
                       <Th></Th>
                       <Th textAlign="center" p={1}>Numero</Th>
-                      <Th textAlign="center">Monto 1er Vencimiento</Th>
-                      <Th textAlign="center">Monto 2do Vencimiento</Th>
-                      <Th textAlign="center">Monto 3er Vencimiento</Th>
-                      <Th textAlign="center">Valor Total</Th>
+                      <Th textAlign="center">Fecha Vencimiento</Th>
+                      <Th textAlign="center">Valor Actual</Th>
                       <Th textAlign="center">Valor Pagado</Th>
                       <Th textAlign="center">Valor Adeudado</Th>
                       <Th textAlign="center">Estado</Th>
@@ -70,10 +68,8 @@ function TablaCuotas () {
                         </Checkbox></Td>
                         }
                         <Td textAlign="center" p={1}>{cuota.numero}</Td>
-                        <Td textAlign="center">{"$ " + cuota.monto1erVencimiento}</Td>
-                        <Td textAlign="center">{"$ " + cuota.monto2doVencimiento}</Td>
-                        <Td textAlign="center">{"$ " + cuota.monto3erVencimiento}</Td>
-                        <Td textAlign="center">{"$ " + cuota.valortotal}</Td>
+                        <Td textAlign="center">{cuota.fechaVencimiento}</Td>
+                        <Td textAlign="center">{"$ " + cuota.montoactual}</Td>
                         <Td textAlign="center">{"$ " + cuota.valorpagado}</Td>
                         <Td textAlign="center">{"$ " + cuota.valoradeudado}</Td>
                         { cuota.estado === "ADEUDADO" ?
