@@ -81,11 +81,11 @@ function TablaCuotas () {
                         }
                         <Td textAlign="center" p={1}>{cuota.numero}</Td>
                         <Td textAlign="center">{cuota.fechaVencimiento}</Td>
-                        <Td textAlign="center">{"$ " + cuota.montoactual}</Td>
+                        <Td textAlign="center">{"$ " + cuota.montoActual}</Td>
                         <Td textAlign="center">{"$ " + cuota.valorpagado}</Td>
                         <Td textAlign="center">{"$ " + cuota.valorinformado}</Td>
                         { cuota.estado !== "PAGADO" ?
-                        <Td textAlign="center">{"$ " + (cuota.montoactual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                        <Td textAlign="center">{"$ " + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
                         : 
                         <Td textAlign="center">{"$ " + 0}</Td>
                         }
@@ -94,7 +94,7 @@ function TablaCuotas () {
                   </Tbody>
                 </Table>
             ) : (
-              <Text>No hay datos disponibles</Text>
+              <Text>No hay datos disponibles. Por favor, Firmar el compromiso de pago.</Text>
             )}
         </Box>
         </Flex>

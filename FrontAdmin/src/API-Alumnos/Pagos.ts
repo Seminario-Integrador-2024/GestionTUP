@@ -40,9 +40,10 @@ export const FetchPostPago = async (
 export const FetchGetCuotas = async () => {
     try {
         const token = Cookies.get('tokennn');
-        const dni = Cookies.get('dni');
+        //const dni = Cookies.get('dni');
+        const dni = 36770618;
         
-        const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
+        const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=6&offset=0/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

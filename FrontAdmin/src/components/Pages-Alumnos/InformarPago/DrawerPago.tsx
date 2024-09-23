@@ -73,7 +73,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     useEffect(() => {
     setFile(null);
     setMontoAbonado('');
-    setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoactual - cuota.valorpagado - cuota.valorinformado), 0));
+    setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0));
     }, [isOpen]);
 
     return (
