@@ -28,7 +28,7 @@ const opcionesCuatrimestre = [
     'Organización Empresarial',
     'Programación III',
     'Base de Datos II',
-    'Metodología de Sistemas II',
+    'Metodología de Sistemas I',
     'Ingles II',
   ],
   'segundo-cuatrimestre': [
@@ -53,16 +53,15 @@ interface MateriaLink {
 const ListadoMaterias: React.FC = () => {
   const [cuatrimestre, setSemester] = useState<Cuatrimestre | ''>('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSemesterChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSemester(event.target.value as Cuatrimestre);
   };
 
   const handleMateriaClick = (materia: number) => {
-
       const url = `${materia}`;
       navigate(url);
-
   };
 
 
@@ -100,22 +99,25 @@ const ListadoMaterias: React.FC = () => {
     fetchData();
   }, []);
   
-  
   return (
     <Container maxW="container.md" p={4}>
       <VStack spacing={6} align="start">
-        <Heading as="h1" size="lg">
-          Listado de Materias
-        </Heading>
-        <Box w="full">
-          <CustomSelect
-            placeholder="Seleccionar Cuatrimestre"
-            options={opcionesCuatrimestre}
-            value={cuatrimestre}
-            onChange={handleSemesterChange}
-          />
-        </Box>
-        {cuatrimestre && (
+        {!isInDetailView && ( // Solo muestra el título si no estamos en una vista de detalle
+          <Heading as="h1" size="lg">
+            Listado de Materias
+          </Heading>
+        )}
+        {!isInDetailView && ( // Solo muestra el select si no estamos en una vista de detalle
+          <Box w="full">
+            <CustomSelect
+              placeholder="Seleccionar Cuatrimestre"
+              options={opcionesCuatrimestre}
+              value={cuatrimestre}
+              onChange={handleSemesterChange}
+            />
+          </Box>
+        )}
+        {!isInDetailView && cuatrimestre && ( // Solo muestra la lista si no estamos en una vista de detalle
           <Box w="full">
             <List spacing={3}>
               {filteredSubjects.map((materia) => (
@@ -134,6 +136,7 @@ const ListadoMaterias: React.FC = () => {
             </List>
           </Box>
         )}
+        <Outlet />
       </VStack>
     </Container>
   );
