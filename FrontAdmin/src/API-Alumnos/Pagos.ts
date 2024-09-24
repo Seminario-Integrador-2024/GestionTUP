@@ -15,7 +15,7 @@ export const FetchPostPago = async (
         const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
