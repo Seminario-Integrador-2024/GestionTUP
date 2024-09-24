@@ -21,6 +21,7 @@ import { DownloadIcon, ViewIcon } from '@chakra-ui/icons';
 import { FetchCompromisos, FetchUltimoCompromiso, FirmarCompromiso } from "../../API-Alumnos/Compromiso";
 import {useEffect, useState} from 'react';
 import {formatoFechaISOaDDMMAAAA} from "../../utils/general";
+import { useToast } from "../Toast/useToast";
 import Cookies from 'js-cookie';
 
 export default function CompromisoDePago() {
@@ -28,8 +29,9 @@ export default function CompromisoDePago() {
 const [compromisos, setCompromisos] = useState([]);
 const [ultimoCompromiso, setUltimoCompromiso] = useState(false);
 const [ultimo, setUltimo] = useState<any>([]);
-const [isLoaded, setIsLoaded] = useState(false);
+const [refresh, setRefresh] = useState(false);
 const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+const showToast = useToast();
 
 const handleViewPdf = async (url: string) => {
     try {
@@ -70,9 +72,7 @@ useEffect(() => {
     }
     fetchUltimoCompromiso();
 
-
-
-}, []);
+}, [refresh]);
 
 
 useEffect(() => {
@@ -95,6 +95,8 @@ useEffect(() => {
 const handleFirmar = async () => {
     try {
         await FirmarCompromiso();
+        setRefresh(!refresh);
+        showToast('Exito', 'Compromiso de pago firmado con exito', 'success');
     }
     catch (error) {
         console.log(error);

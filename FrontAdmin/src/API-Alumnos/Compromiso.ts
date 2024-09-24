@@ -1,10 +1,11 @@
 import Cookies from 'js-cookie'
+// los dni son la mama de lo hardcodeado
 
 export const FetchCompromisos = async () => {
  try {
     const token = Cookies.get('tokennn');
     // const dni = Cookies.get('dni)
-    const dni = 36770618;
+    const dni = 36562786;
     const response = await fetch(`http://localhost:8000/api/firmas/firmas-de-alumno/${dni}/`, {
             method: 'GET',
             headers: {
@@ -47,8 +48,8 @@ export const FetchUltimoCompromiso = async () => {
 export const FirmarCompromiso = async () => {
     try {
         const token = Cookies.get('tokennn');
-        const dni = 36770618;
-        const response = await fetch(`http://localhost:8000/api/firmar-compromiso/${dni}/`, {
+        const dni = 36562786;
+        const response = await fetch(`http://localhost:8000/api/firmas/firmar-compromiso/${dni}/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
