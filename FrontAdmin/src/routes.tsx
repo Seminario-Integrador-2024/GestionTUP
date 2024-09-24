@@ -48,18 +48,13 @@ const routes = [
         path: 'alumnos-que-cursan-materia',
         element: <ListadoMaterias />,
         rol: 'admin',
-        children: [
-          {
-            path: 'matematica',
-            element: <ListadoAlumnosQueCursanMateria />,
-          },
-        ],
-      },
-      {
-        path: 'estadisticas/alumnos-que-cursan-materia/:url',
-        element: <ListadoAlumnos />,
+
+      },{
+        path: 'alumnos-que-cursan-materia/:codigo_materia',
+        element: <ListadoAlumnosQueCursanMateria />,
         rol: 'admin',
-      },
+
+      }
     ],
   },
   {
