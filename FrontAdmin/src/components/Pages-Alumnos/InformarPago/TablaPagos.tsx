@@ -30,11 +30,11 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
    // const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
 
    
-   useEffect(() => {
-    console.log("refresh en tabla pagos", refresh);
-    setCuotasSeleccionadas([]);
-    console.log("las cuotas seleccionadas", cuotasSeleccionadas);
- }, [refresh]);
+//    useEffect(() => {
+//     console.log("refresh en tabla pagos", refresh);
+//     setCuotasSeleccionadas([]);
+//     console.log("las cuotas seleccionadas", cuotasSeleccionadas);
+//  }, [refresh]);
 
     useEffect(() => {
         // Aca se deberia hacer el fetch de las cuotas del alumno
@@ -53,15 +53,33 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
 
 
     // Funcion para manejar el cambio de estado de los checkbox, si el esatdo anterior es true, lo elimina del array, si es false lo agrega
-    const handleCheckboxChange = (cuota: Cuota) => {
+    // const handleCheckboxChange = (cuota: Cuota) => {
+    //   setCuotasSeleccionadas((prevSeleccionadas) => {
+    //       if (prevSeleccionadas.includes(cuota)) {
+    //           return prevSeleccionadas.filter((item) => item !== cuota);
+    //       } else {
+    //           return [...prevSeleccionadas, cuota];
+    //       }
+    //   });
+    // };
+
+    const handleCheckboxChange = (cuota?: Cuota) => {
       setCuotasSeleccionadas((prevSeleccionadas) => {
-          if (prevSeleccionadas.includes(cuota)) {
+          if (refresh) {
+              return []; // Limpiar cuotas seleccionadas si refresh cambia
+          }
+          if (cuota && prevSeleccionadas.includes(cuota)) {
               return prevSeleccionadas.filter((item) => item !== cuota);
-          } else {
+          } else if (cuota) {
               return [...prevSeleccionadas, cuota];
           }
+          return prevSeleccionadas;
       });
-    };
+  };
+
+  useEffect(() => {
+      handleCheckboxChange(); // Llamar a la función cuando refresh cambie
+  }, [refresh]);
 
 
     return (
