@@ -37,6 +37,13 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
 //  }, [refresh]);
 
     useEffect(() => {
+      // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
+      if (refresh) {
+        window.location.reload();
+      }
+    }, [refresh]);
+
+    useEffect(() => {
         // Aca se deberia hacer el fetch de las cuotas del alumno
         const getCuotas = async () => {
         try {
@@ -63,23 +70,17 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     //   });
     // };
 
-    const handleCheckboxChange = (cuota?: Cuota) => {
+    const handleCheckboxChange = (cuota: Cuota) => {
       setCuotasSeleccionadas((prevSeleccionadas) => {
-          if (refresh) {
-              return []; // Limpiar cuotas seleccionadas si refresh cambia
-          }
-          if (cuota && prevSeleccionadas.includes(cuota)) {
+          if (prevSeleccionadas.includes(cuota)) {
               return prevSeleccionadas.filter((item) => item !== cuota);
-          } else if (cuota) {
+          } else {
               return [...prevSeleccionadas, cuota];
           }
-          return prevSeleccionadas;
       });
-  };
+    };
 
-  useEffect(() => {
-      handleCheckboxChange(); // Llamar a la función cuando refresh cambie
-  }, [refresh]);
+ 
 
 
     return (
