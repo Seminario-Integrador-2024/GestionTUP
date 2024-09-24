@@ -38,12 +38,6 @@ const ListadoMaterias: React.FC = () => {
     setSemester(event.target.value as Cuatrimestre);
   };
 
-  // Maneja el clic en una materia, navegando a la ruta de detalle con el código de materia
-  const handleMateriaClick = (codigo_materia: number) => {
-    const url = `${codigo_materia}`; // Genera la ruta dinámica basada en el código de materia
-    navigate(url);
-  };
-
   // Filtra las materias según el cuatrimestre seleccionado
   const filteredSubjects = materias.filter((materia: Materia) => {
     if (cuatrimestre === 'primer-cuatrimestre') {
@@ -92,7 +86,7 @@ const ListadoMaterias: React.FC = () => {
                   p={2}
                   borderRadius="md"
                   _hover={{ bg: 'gray.100', cursor: 'pointer' }}
-                  onClick={() => handleMateriaClick(materia.codigo_materia)}
+                  onClick={() => navigate(`${materia.codigo_materia}`)}
                 >
                   <Text fontSize="md" color="gray.700">
                     {materia.nombre} {/* Muestra el nombre de la materia */}
