@@ -5,11 +5,36 @@ import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
 import { get } from 'http';
 
+interface Cuota {
+  id: number;
+  numero: string;
+  monto1erVencimiento: number;
+  monto2doVencimiento: number;
+  monto3erVencimiento: number;
+  valortotal: number;
+  valorpagado: number;
+  valoradeudado: number;
+  estado: string;
+}
 
-function TablaCuotas () {
+interface TablaCuotasProps {
+  refresh: boolean;
+  setCuotasSeleccionadas: React.Dispatch<React.SetStateAction<Cuota[]>>;
+  cuotasSeleccionadas: Cuota[];
+}
+
+
+function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: TablaCuotasProps) {
 
     const [cuotas, setCuotas] = useState<any[]>([]); 
-    const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
+   // const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
+
+   
+   useEffect(() => {
+    console.log("refresh en tabla pagos", refresh);
+    setCuotasSeleccionadas([]);
+    console.log("las cuotas seleccionadas", cuotasSeleccionadas);
+ }, [refresh]);
 
     useEffect(() => {
         // Aca se deberia hacer el fetch de las cuotas del alumno
@@ -22,27 +47,24 @@ function TablaCuotas () {
         }
         }
         getCuotas();
+        
         // setCuotas(Cuotas)   
-    }, [])
+    }, [refresh])
 
-    useEffect(() => {
-        console.log(cuotasSeleccionadas)  
-    }, [cuotasSeleccionadas])
 
     // Funcion para manejar el cambio de estado de los checkbox, si el esatdo anterior es true, lo elimina del array, si es false lo agrega
-    const handleCheckboxChange = (cuota:any) => {
-        setCuotasSeleccionadas((prevSeleccionadas) => {
+    const handleCheckboxChange = (cuota: Cuota) => {
+      setCuotasSeleccionadas((prevSeleccionadas) => {
           if (prevSeleccionadas.includes(cuota)) {
-            return prevSeleccionadas.filter((item) => item !== cuota);
+              return prevSeleccionadas.filter((item) => item !== cuota);
           } else {
-            return [...prevSeleccionadas, cuota];
+              return [...prevSeleccionadas, cuota];
           }
-        });
-      };
+      });
+    };
 
 
-    return {
-        jsx: (
+    return (
             <Flex
                 alignItems="center"
                 justifyContent="center"
@@ -98,8 +120,7 @@ function TablaCuotas () {
             )}
         </Box>
         </Flex>
-        ),
-        cuotasSeleccionadas: cuotasSeleccionadas
+    );
     }
-}
+
 export default TablaCuotas;

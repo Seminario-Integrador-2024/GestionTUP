@@ -67,6 +67,9 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
             // onRefresh();
        }
        // Ver como volver a renderizar la tabla de cuotas
+        if (onRefresh) {
+          onRefresh();
+          console.log('onRefresh');} 
         onClose();
     };
 
