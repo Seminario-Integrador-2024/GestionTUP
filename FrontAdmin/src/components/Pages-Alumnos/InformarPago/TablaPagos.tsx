@@ -94,7 +94,7 @@ function TablaCuotas () {
                   </Tbody>
                 </Table>
             ) : (
-              <Text>No hay datos disponibles. Por favor, Firmar el compromiso de pago.</Text>
+              <Text>No hay cuotas para mostrar. Por favor, firmar el compromiso de pago.</Text>
             )}
         </Box>
         </Flex>

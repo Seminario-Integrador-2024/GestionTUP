@@ -20,6 +20,7 @@ import {
 import { useState} from 'react'
 import {AttachmentIcon} from '@chakra-ui/icons';
 import { FetchPostPago } from '../../../API-Alumnos/Pagos';
+import {useToast} from '../../Toast/useToast';
 
 interface Cuota {
     id: number;
@@ -37,13 +38,16 @@ interface DrawerInformarProps {
     isOpen: boolean;
     onClose: () => void;
     cuotasseleccionadas: Cuota[];
+    onRefresh?: () => void;
 }
 
-const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotasseleccionadas }) => {
+const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotasseleccionadas, onRefresh }) => {
     const [file, setFile] = useState<File | null>(null);
     const [montoAbonado, setMontoAbonado] = useState('');  //cambiar a entero
     const [comentarios, setComentarios] = useState('');
     const [total, setTotal] = useState<number>(0);
+    const [nro_transferencia, setNroTransferencia] = useState<number>(0);
+    const showToast = useToast();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0] as File;
@@ -55,8 +59,12 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
        try{
            const numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
            FetchPostPago(numerosCuotas, parseInt(montoAbonado), file, comentarios);
+            showToast('Pago informado', 'El pago se ha informado correctamente', 'success');
+            // onRefresh();
        } catch (error) {
            console.error('Error:', error);
+            showToast('Error', 'Ha ocurrido un error al informar el pago', 'error');
+            // onRefresh();
        }
        // Ver como volver a renderizar la tabla de cuotas
         onClose();
@@ -67,7 +75,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     }
 
     const isFormValid = () => {
-      return (montoAbonado.trim() !== '') && (file !== null && file.name.trim() !== '');
+      return (montoAbonado.trim() !== '') && (file !== null && file.name.trim() !== '' && nro_transferencia !== 0);
     };
 
     useEffect(() => {
@@ -104,9 +112,17 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                     </InputLeftElement>
                     <Input placeholder='' onChange={(e) => setMontoAbonado(e.target.value)} />
                 </InputGroup>
-            
-            <Button mt={4} color="white" rightIcon={<AttachmentIcon/>} onClick={() => document.getElementById('fileInput')?.click()}>
-              Comprobante
+            <Stack gap={0}>
+              <FormLabel mt={4} mb={0}>Nro. Tranferencia</FormLabel>
+              <Input placeholder='' mt={0}  onChange={(e) => setNroTransferencia(Number(e.target.value))} />
+            </Stack>
+            </FormControl>
+            <Stack gap={0}>
+              <FormLabel mt={4} mb={0}>Comentarios</FormLabel>
+              <Input placeholder='' mt={0}  onChange={(e) => setComentarios(e.target.value)} />
+            </Stack>
+            <Button mt={6} color="white" rightIcon={<AttachmentIcon/>} onClick={() => document.getElementById('fileInput')?.click()}>
+              Adjuntar Comprobante
             </Button>
             <Input
               type='file'
@@ -119,11 +135,6 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                 <Text fontWeight="bold" mt={6}>Archivo cargado:</Text> 
                 <Flex ml={1}><li>{file.name}</li> </Flex>
             </Stack>}
-            </FormControl>
-            <Stack gap={0}>
-              <FormLabel mt={4} mb={0}>Comentarios</FormLabel>
-              <Input placeholder='' mt={0}  onChange={(e) => setComentarios(e.target.value)} />
-            </Stack>
             </DrawerBody>
   
             <DrawerFooter>

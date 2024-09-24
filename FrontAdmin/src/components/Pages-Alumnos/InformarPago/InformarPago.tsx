@@ -2,6 +2,7 @@ import React from "react";
 import TablaCuotas from "./TablaPagos";
 import { Flex, Button, Text, Stack, Card, CardBody } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
+import {useState} from 'react';
 import {AttachmentIcon} from '@chakra-ui/icons';
 import DrawerInformar from "./DrawerPago";
 import {obtenerFechaDeHoy} from '../../../utils/general';
@@ -15,6 +16,12 @@ function InformarPago() {
 
     const { jsx: tablaCuotasJSX, cuotasSeleccionadas } = TablaCuotas();
     const [fechaDeHoy, setFechaDeHoy] = React.useState(obtenerFechaDeHoy());
+    const [refresh, setRefresh] = useState(false); 
+
+    const handleRefresh = () => {
+        setRefresh(!refresh); 
+        // pasar el refresh a la tabla de cuotas
+    };
 
     return (
 
@@ -45,7 +52,7 @@ function InformarPago() {
                  onClick={onOpen}
                  >Informar Pago</Button>
                 </Flex>
-                <DrawerInformar isOpen={isOpen} onClose={onClose} cuotasseleccionadas={cuotasSeleccionadas}/>
+                <DrawerInformar isOpen={isOpen} onClose={onClose} cuotasseleccionadas={cuotasSeleccionadas} onRefresh={handleRefresh}/>
         </Stack>
     );
 }

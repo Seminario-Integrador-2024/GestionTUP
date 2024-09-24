@@ -8,7 +8,9 @@ export const FetchPostPago = async (
 ) => {
     try {
         const token = Cookies.get('tokennn');
-        const dni = Cookies.get('dni');
+        //const dni = Cookies.get('dni');
+        const dni = 36562786;
+        const nro_transferencia = 0;
         
         const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
             method: 'POST',
@@ -17,10 +19,12 @@ export const FetchPostPago = async (
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
+                alumno: dni,
                 cuotas,
-                montoInformado,
-                archivo,
+                monto_informado: montoInformado,
+                ticket: archivo,
                 comentario,
+                nro_transferencia,
             }),
         });
         
@@ -41,7 +45,7 @@ export const FetchGetCuotas = async () => {
     try {
         const token = Cookies.get('tokennn');
         //const dni = Cookies.get('dni');
-        const dni = 36770618;
+        const dni = 36562786;
         
         const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=6&offset=0/`, {
             method: 'GET',
