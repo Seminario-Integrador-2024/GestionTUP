@@ -16,6 +16,7 @@ export const FetchLogin = async (password: string, account: string) => {
       const data = await response.json();
       console.log(data);
       Cookies.set('tokennn', data.access);
+      Cookies.set('dni', data.user.dni);
       Cookies.set('refresh_token', data.refresh);
       Cookies.set('access_expiration', data.access_expiration);
       Cookies.set('refresh_expiration', data.refresh_expiration);

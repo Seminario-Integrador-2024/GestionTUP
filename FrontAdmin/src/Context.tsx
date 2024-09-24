@@ -80,6 +80,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove('access_expiration');
     Cookies.remove('refresh_expiration');
     Cookies.remove('username');
+    Cookies.remove('dni');
     console.log('logout');
     setIsAuthenticated(false);
     if (refreshTimeout) {
