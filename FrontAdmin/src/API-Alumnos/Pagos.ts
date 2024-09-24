@@ -3,49 +3,50 @@ import Cookies from 'js-cookie';
 export const FetchPostPago = async (
     cuotas: any,
     montoInformado: number,
-    archivo: File | null,   // ver como mandar el archivo
+    archivo: File | null,   // Archivo a enviar
     comentario: string
 ) => {
     try {
         const token = Cookies.get('tokennn');
-        //const dni = Cookies.get('dni');
-        const dni = 36562786;
+        const dni = 42790229;  // Puedes obtener esto desde las cookies también
         const nro_transferencia = 0;
-        
+
+        // Crea un nuevo objeto FormData
+        const formData = new FormData();
+        formData.append('alumno', dni);
+        formData.append('cuotas', cuotas);
+        formData.append('monto_informado', montoInformado);
+        formData.append('ticket', archivo); // El archivo
+        formData.append('comentario', comentario);
+        formData.append('nro_transferencia', nro_transferencia);
+
+        // Realiza la solicitud fetch
         const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, // Mantén el token
+                // No establezcas 'Content-Type', FormData lo manejará automáticamente
             },
-            body: JSON.stringify({
-                alumno: dni,
-                cuotas,
-                monto_informado: montoInformado,
-                ticket: archivo,
-                comentario,
-                nro_transferencia,
-            }),
+            body: formData,
         });
         
         if (response.ok) {
-            return;
+            return await response.json(); // Retorna la respuesta en formato JSON
         } else {
             const errorData = await response.json();
-            throw new Error(
-                `Error en la respuesta del servidor: ${errorData.message}`
-            );
+            throw new Error(`Error en la respuesta del servidor: ${errorData.message}`);
         }
     } catch (error) {
         console.error('Network error:', error);
     }
 };
 
+
 export const FetchGetCuotas = async () => {
     try {
         const token = Cookies.get('tokennn');
         //const dni = Cookies.get('dni');
-        const dni = 36562786;
+        const dni = 42790229;
         
         const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=6&offset=0/`, {
             method: 'GET',
