@@ -78,12 +78,17 @@ useEffect(() => {
 useEffect(() => {
     if (compromisos.length > 0) {
         setUltimo(compromisos[compromisos.length - 1]);
-        console.log(ultimo);
-        if (ultimo.firmo_ultimo_compromiso === true) {
-        setUltimoCompromiso(true);
-        }
     }
 }, [compromisos]);
+
+useEffect(() => {
+    if (ultimo) {
+        console.log(ultimo);
+        if (ultimo.firmo_ultimo_compromiso === true) {
+            setUltimoCompromiso(true);
+        }
+    }
+}, [ultimo]);
 
 
 
@@ -99,32 +104,38 @@ const handleFirmar = async () => {
 
 return (
 
-<Flex justifyContent={"center"} alignItems={"center"} direction={"column"} p={5}>
-
+<Flex justifyContent={"center"} alignItems={"center"} direction={"column"}>
+                {ultimoCompromiso && <Flex justifyContent={"center"} alignItems={"center"} direction={"column"} bg={"#DEF9C4"} p={5} borderRadius={5} mb={4} mt={4}>
+                <Text color="#387F39" fontWeight="bold" fontSize="sm">
+                        El compromiso de pago del periodo actual ya se encuentra firmado ({formatoFechaISOaDDMMAAAA(ultimo.fecha_firmado)}).
+                </Text>
+                </Flex>
+                }
+            <Flex direction={"column"}>
+                
             <Flex justify="center">
                 <Box
                     border="1px"
                     borderColor="gray.200"
                     p={4}
                     borderRadius="md"
+                    w={"100%"}
                 >
-                    {pdfUrl && <iframe src={pdfUrl} width="800px" height="600px" />}
+                    {pdfUrl && <iframe src={pdfUrl} width="1000px" height="400px" />}
                 </Box>
             </Flex>
 
-            {/* Botón "Firmar" centrado */}
-            <Flex justify="center" ml={64} mt={4}>
+            
+            <Flex justifyContent={"flex-end"}  mt={4} mb={4} flex={1} width={"100%"}>
                 <Button colorScheme="teal" isDisabled={ultimoCompromiso} onClick={() => handleFirmar()}>Firmar</Button>
             </Flex>
+            </Flex>
 
-            <Flex mb={5} justifyContent={"center"} alignItems={"center"}>
-                {/* Tabla en el medio */}
-                <Box flex="1">
-                    {ultimoCompromiso && 
-                    <Text color="red.500" fontWeight="bold" mb={2} fontSize="sm">
-                        El compromiso de pago ya se encuentra firmado ({formatoFechaISOaDDMMAAAA(ultimo.fecha_firmado)}).
-                    </Text>
-                    }
+            <Flex mb={5} justifyContent={"center"} alignItems={"center"} w={"85%"} direction={"column"}>
+                <Flex justifyContent={"flex-start"} w={"100%"}>
+                    <Text fontWeight="bold" fontSize="xl" mb={2}>Historial compromisos de pago Firmados</Text>
+                </Flex>
+                <Box flex={1} w={"100%"}>
                     <TableContainer
                         border="2px"
                         borderColor="#BABABA" // Borde gris claro para la tabla
@@ -135,8 +146,8 @@ return (
                         <Table variant="unstyled" size="sm">
                             <Thead>
                                 <Tr borderBottom="1px" borderColor="#BABABA">
-                                    <Th textAlign="center" fontWeight="bold"  borderBottom="1px" borderColor="#BABABA">Numero Compromiso</Th>
-                                    <Th textAlign="center" fontWeight="bold"  borderBottom="1px" borderColor="#BABABA">Fecha</Th>
+                                    <Th textAlign="center" fontWeight="bold"  borderBottom="1px" borderColor="#BABABA">Periodo</Th>
+                                    <Th textAlign="center" fontWeight="bold"  borderBottom="1px" borderColor="#BABABA">Fecha Firma</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>

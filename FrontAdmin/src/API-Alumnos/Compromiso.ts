@@ -5,7 +5,7 @@ export const FetchCompromisos = async () => {
     const token = Cookies.get('tokennn');
     // const dni = Cookies.get('dni)
     const dni = 36770618;
-    const response = await fetch(`http://localhost:8000/api/firmas-de-alumno/${dni}/`, {
+    const response = await fetch(`http://localhost:8000/api/firmas/firmas-de-alumno/${dni}/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
