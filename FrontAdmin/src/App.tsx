@@ -37,7 +37,7 @@ function App() {
                 to={
                   isAuthenticated
                     ? isAdmin
-                      ? '/admin/estadisticas'
+                      ? '/admin/alumnos'
                       : '/alumnos/cuenta'
                     : '/auth'
                 }
