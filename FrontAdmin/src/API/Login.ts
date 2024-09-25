@@ -9,7 +9,7 @@ export const FetchLogin = async (password: string, account: string) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ password, account }),
+      body: JSON.stringify({ email: account ,password }),
     });
 
     if (response.ok) {

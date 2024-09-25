@@ -10,7 +10,7 @@ export const FetchPostPago = async (
     try {
         const token = Cookies.get('tokennn');
         //const dni = Cookies.get('dni');
-        const dni = 42790229;  // Puedes obtener esto desde las cookies también
+        const dni = 36562786;  // Puedes obtener esto desde las cookies también
 
         // Crea un nuevo objeto FormData
         const formData = new FormData();
@@ -29,17 +29,16 @@ export const FetchPostPago = async (
         console.log('Nro transferencia:', nro_transferencia);
 
         // Realiza la solicitud fetch
-        const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
+        const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}/`, {
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${token}`, // Mantén el token
-                // No establezcas 'Content-Type', FormData lo manejará automáticamente
+                Authorization: `Bearer ${token}`, 
             },
             body: formData,
         });
         
         if (response.ok) {
-            return await response.json(); // Retorna la respuesta en formato JSON
+            return await response.json(); 
         } else {
             const errorData = await response.json();
             throw new Error(`Error en la respuesta del servidor: ${errorData.message}`);
@@ -54,7 +53,7 @@ export const FetchGetCuotas = async () => {
     try {
         const token = Cookies.get('tokennn');
         //const dni = Cookies.get('dni');
-        const dni = 42790229;
+        const dni = 36562786;
         
         const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=6&offset=0/`, {
             method: 'GET',
