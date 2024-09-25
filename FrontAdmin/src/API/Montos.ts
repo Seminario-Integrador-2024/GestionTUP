@@ -75,9 +75,12 @@ export const loadPDF = async (id :string,file: File) => {
       const data = await response.json();
       return data;
     } else {
-      throw new Error('Error en la respuesta del servidor');
+      const errorResponse = await response.json();
+      throw new Error(
+        'Error en la respuesta del servidor: ' + JSON.stringify(errorResponse)
+      );
     }
   } catch (error) {
-    throw new Error('Network error: ' + error);
+    throw new Error('Network error: ' +  JSON.stringify(error));
   }
-}
+};

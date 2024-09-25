@@ -15,7 +15,7 @@ function App() {
   const { isAuthenticated, rolUser } = useAuth();
   console.log(isAuthenticated, rolUser);
   const isAdmin = rolUser.includes('staff') || rolUser.includes('superuser');
-  // const isAlumno = rolUser.includes('alumno');
+  const isAlumno = rolUser.includes('alumno');
 
 
   return (
@@ -26,7 +26,7 @@ function App() {
           {isAuthenticated && isAdmin && (
               <Route path="/admin/*" element={<Admin />} />
             )}
-            {isAuthenticated && !isAdmin && (
+            {isAuthenticated && isAlumno && (
               <Route path="/alumnos/*" element={<Alumnos />} />
             )}
           <Route
@@ -38,7 +38,7 @@ function App() {
                   isAuthenticated
                     ? isAdmin
                       ? '/admin/alumnos'
-                      : '/alumnos/cuenta'
+                      : isAlumno? '/alumnos/cuenta' : '/auth'
                     : '/auth'
                 }
               />

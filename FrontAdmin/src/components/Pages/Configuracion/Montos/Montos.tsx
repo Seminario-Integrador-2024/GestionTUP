@@ -34,6 +34,9 @@ interface Compromiso {
   cuota_reducida: number;
   cuota_reducida_2venc: number;
   cuota_reducida_3venc: number;
+  fecha_vencimiento_1: number;
+  fecha_vencimiento_2: number;
+  fecha_vencimiento_3: number;
 }
 
 interface CardCargaProps {
@@ -103,6 +106,9 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
     cuota_reducida: 0,
     cuota_reducida_2venc: 0,
     cuota_reducida_3venc: 0,
+    fecha_vencimiento_1: 0,
+    fecha_vencimiento_2: 0,
+    fecha_vencimiento_3: 0,
   });
 
   const toast = useToast();
@@ -138,6 +144,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       return;
     }
     try {
+      console.log('paso por aca');
       await createCompromiso(tempMonto, selectedFile);
      
       onClose();

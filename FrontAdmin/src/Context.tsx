@@ -14,7 +14,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    !Cookies.get('access_token') ? false : true
+    !Cookies.get('tokennn') ? false : true
   );
   const [rolUser, setRolUser] = useState<String[]>([]);
   let refreshTimeout: NodeJS.Timeout;
