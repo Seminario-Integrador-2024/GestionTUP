@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 const URL = import.meta.env.VITE_URL_DEV;
 
 export const FetchLogin = async (password: string, account: string) => {
+  console.log(account, password);
   try {
     const response = await fetch(`http://localhost:8000/api/auth/login/`, {
       method: 'POST',
@@ -15,11 +16,15 @@ export const FetchLogin = async (password: string, account: string) => {
     if (response.ok) {
       const data = await response.json();
       console.log(data);
+      const roles = data.user.roles;
+      localStorage.setItem('userRol', JSON.stringify(roles));
+      
       Cookies.set('tokennn', data.access);
       Cookies.set('refresh_token', data.refresh);
       Cookies.set('access_expiration', data.access_expiration);
       Cookies.set('refresh_expiration', data.refresh_expiration);
       Cookies.set('username', data.user.dni);
+
       return data;
     } else {
       const errorResponse = await response.json();

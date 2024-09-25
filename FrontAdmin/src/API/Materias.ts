@@ -11,7 +11,7 @@ export const FetchPostMateria = async (
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`http://localhost:8000/api/materias/`, {
+    const response = await fetch(`${URL}/materias/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export const FetchMaterias = async () => {
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`http://localhost:8000/api/materias/`, {
+    const response = await fetch(`${URL}/materias/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ export const FetchPutMateria = async (
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`http://localhost:8000/api/materias/${codigo_materia}/`, {
+    const response = await fetch(`${URL}/materias/${codigo_materia}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export const FetchDeleteMateria = async (codigo_materia: number) => {
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`http://localhost:8000/api/materias/${codigo_materia}/`, {
+    const response = await fetch(`${URL}/materias/${codigo_materia}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -124,5 +124,28 @@ export const FetchDeleteMateria = async (codigo_materia: number) => {
     }
   } catch (error) {
     console.error('Network error:', error);
+  }
+};
+
+export const FetchAlumnosMaterias = async (codigo_materia: number) => {
+  try {
+    const token = Cookies.get('tokennn');
+
+    const response = await fetch(`http://localhost:8000/api/materias/${codigo_materia}/alumnos/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error('Error en la respuesta del servidor');
+    }
+  } catch (error) {
+    throw new Error('Network error: ' + error);
   }
 };

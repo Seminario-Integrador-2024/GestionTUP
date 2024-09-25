@@ -2,7 +2,7 @@ export const LINK_MATERIAS = [
   { url: 'programacion-uno', title: 'Programación I' },
   {
     url: 'arquitectura-y-sistemas-operativos',
-    title: 'Arquitectura y Sistemas Operativos',
+    title: 'Arquitectura y Sistemas Operativos'
   },
   { url: 'matematica', title: 'Matemática' },
   { url: 'organizacion-empresarial', title: 'Organización Empresarial' },
@@ -15,15 +15,15 @@ export const LINK_MATERIAS = [
   { url: 'base-de-datos', title: 'Base de Datos' },
   { url: 'ingles-uno', title: 'Ingles I' },
   { url: 'programacion-cuatro', title: 'Programación IV' },
-  { url: 'metodologia-de-sistemas-dos', title: 'Metodología de Sistemas II' },
+  { url: 'metodologia-de-sistemas', title: 'Metodología de Sistemas I' },
   {
-    url: 'introducción-al-analisis-de-datos',
-    title: 'Introducción al Análisis de Datos',
+    url: 'introduccion-al-analisis-de-datos',
+    title: 'Introducción al Análisis de Datos'
   },
   { url: 'legislacion', title: 'Legislación' },
   {
     url: 'gestion-desarrollo-software',
-    title: 'Gestión de Desarrollo de Software',
+    title: 'Gestión de Desarrollo de Software'
   },
   { url: 'trabajo-final-integrador', title: 'Trabajo Final Integrador' },
 ];
