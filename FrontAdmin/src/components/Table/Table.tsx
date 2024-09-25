@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Flex, FlexProps } from '@chakra-ui/react';
+import { Flex, FlexProps, Spinner,Box  } from '@chakra-ui/react';
 import {
   MaterialReactTable,
   MRT_ColumnDef,
@@ -59,15 +59,19 @@ interface PropsTable extends FlexProps {
 function Table({ boolEnableRowSelection }: PropsTable) {
   const [alumnos, setAlumnos] = useState<Alumno[]>([]); //para la llamada a la api del back
   //const [alumnos, setAlumnos] = useState<Alumno[]>(data); // Usa el arreglo importado directamente
+  const [loading, setLoading] = useState<boolean>(true); // Estado de carga
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true); // Iniciar carga
         const data = await FetchAlumnos();
         setAlumnos(data.results);
+        setLoading(false); // Iniciar carga
       } catch (error) {
         console.error('Error al obtener los datos', error);
+        setLoading(false); // Finalizar carga
       }
     };
 
@@ -98,7 +102,24 @@ function Table({ boolEnableRowSelection }: PropsTable) {
       },
     }),
   });
+  // Renderizar el spinner si está cargando
+  if (loading) {
+    return (
+      <Flex justifyContent="center" alignItems="center" mt="40px">
+        <Spinner
+          w="35px"
+          h="35px"
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='blue.500'
+          size='xl'
+        />
+      </Flex>
+    );
+  } 
 
+  // Renderizar la tabla una vez que se hayan cargado los datos
   return <MaterialReactTable table={table} />;
 }
 

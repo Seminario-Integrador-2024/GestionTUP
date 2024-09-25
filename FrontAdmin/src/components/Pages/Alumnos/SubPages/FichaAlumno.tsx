@@ -18,6 +18,11 @@ import {
   Checkbox,
   Input,
   Tag,
+  Tabs, 
+  TabList, 
+  Tab,
+  TabPanels,
+  TabPanel,
 } from '@chakra-ui/react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import logoUser from '../../../icons/logo-user.png';
@@ -122,86 +127,7 @@ function FichaAlumno() {
   if (!alumno) {
     return <Text>No se encontraron datos.</Text>;
   }
-  /*
-  const cuotas = [
-    {
-      numero: 0,
-      montoActual: 0,
-      fechaVencimiento: '2024-03-10',
-      valorinformado: 10000,
-      valorpagado: 10000,
-      valoradeudado: 0,
-      estado: 'PAGADO',
-    },
-    {
-      numero: 1,
-      montoActual: 10000,
-      fechaVencimiento: '2024-03-10',
-      valorinformado: 5000,
-      valorpagado: 5000,
-      valoradeudado: 5000,
-      estado: 'INFORMADO',
-    },
-    {
-      numero: 2,
-      montoActual: 10000,
-      fechaVencimiento: '2024-04-10',
-      valorinformado: 0,
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-    {
-      numero: 3,
-      montoActual: 10000,
-      fechaVencimiento: '2024-05-10',
-      valorinformado: 0,
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-    {
-      numero: 4,
-      montoActual: 10000,
-      fechaVencimiento: '2024-06-10',
-      valorinformado: 0,
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-    {
-      numero: 5,
-      montoActual: 10000,
-      fechaVencimiento: '2024-07-10',
-      valorinformado: 0,
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-  ];*/
-  /*
-  const [cuotas, setCuotas] = useState<any[]>([]); 
-    const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
-
-    useEffect(() => {
-        setCuotas(cuotas)   
-    }, [])
-
-    useEffect(() => {
-        console.log(cuotasSeleccionadas)  
-    }, [cuotasSeleccionadas])
-   
-    // Funcion para manejar el cambio de estado de los checkbox, si el esatdo anterior es true, lo elimina del array, si es false lo agrega
-    const handleCheckboxChange = (cuota:any) => {
-        setCuotasSeleccionadas((prevSeleccionadas) => {
-          if (prevSeleccionadas.includes(cuota)) {
-            return prevSeleccionadas.filter((item) => item !== cuota);
-          } else {
-            return [...prevSeleccionadas, cuota];
-          }
-        });
-      };
-  */
+  
   return (
     
     <Flex mt="20px">
@@ -266,7 +192,7 @@ function FichaAlumno() {
           Ultimo Periodo Cursado
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          2024 - 1C
+        {`${materias[0].anio_cursada} / ${materias[0].cuatrimestre}C`}
         </Text>
         
       </Box>
@@ -287,84 +213,93 @@ function FichaAlumno() {
             ml="30px"
             w="100%"
           >
-            <Tag m="20px" p="10px">
-              Estado de cuenta al {(new Date().toLocaleDateString())}
-            </Tag>
-            {cuotas.length > 1 ? (
-              <Table variant="simple" width="100%">
-                <Thead>
-                  <Tr mt={6}>
+            <Tabs>
+              <TabList>
+                <Tab>Estado de cuenta</Tab>
+                <Tab>Materias que cursa</Tab>
+              </TabList>
 
-                    <Th textAlign="center" p={1}>
-                      Numero
-                    </Th>
-                    <Th textAlign="center">Fecha Primer Vto.</Th>
-                    <Th textAlign="center">Valor Actual</Th>
-                    <Th textAlign="center">Valor Pagado</Th>
-                    <Th textAlign="center">Valor Informado</Th>
-                    <Th textAlign="center">Valor Adeudado</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {cuotas && cuotas.map((cuota, index) => (
-                    <Tr key={index}>
-                      <Td textAlign="center" p={1}>
-                        {cuota.numero}
-                      </Td>
-                      <Td textAlign="center">{cuota.fechaVencimiento}</Td>
-                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
-                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
-                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            ) : (
-              <Text minW="50vw" textAlign="center" padding="20px">No existen cuotas del cuatrimestre en curso. Verifique que el compromiso de pago este firmado.</Text>
-            )}
+              <TabPanels>
+                <TabPanel minW="50vw">
+                      <Tag m="20px" p="10px">
+                    Estado de cuenta al {(new Date().toLocaleDateString())}
+                  </Tag>
+                  {cuotas.length > 1 ? (
+                    <Table variant="simple" width="100%">
+                      <Thead>
+                        <Tr mt={6}>
+
+                          <Th textAlign="center" p={1}>
+                            Numero
+                          </Th>
+                          <Th textAlign="center">Fecha Primer Vto.</Th>
+                          <Th textAlign="center">Valor Actual</Th>
+                          <Th textAlign="center">Valor Pagado</Th>
+                          <Th textAlign="center">Valor Informado</Th>
+                          <Th textAlign="center">Valor Adeudado</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {cuotas && cuotas.map((cuota, index) => (
+                          <Tr key={index}>
+                            <Td textAlign="center" p={1}>
+                              {cuota.numero}
+                            </Td>
+                            <Td textAlign="center">{cuota.fechaVencimiento}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  ) : (
+                    <Text  textAlign="center" padding="20px">No existen cuotas del cuatrimestre en curso. El alumno no firmo el compromiso de pago del periodo actual.</Text>
+                  )}
+                </TabPanel>
+                
+                <TabPanel minW="50vw">
+                      {materias.length > 0 ? (
+                        <Table variant="simple" width="100%">
+                          <Thead>
+                            <Tr mt={6}>
+                              <Th textAlign="center">Codigo de materia</Th>
+                              <Th textAlign="center">Nombre</Th>
+                              <Th textAlign="center">Año de cursada</Th>
+                              <Th textAlign="center">Plan</Th>
+                              <Th textAlign="center">Cuatrimestre</Th>
+                            </Tr>
+                          </Thead>
+                          <Tbody>
+                            {materias?.map((materia, index) => (
+                                <Tr
+                                  key={index}
+                                  onClick={() =>
+                                    navigate(`#`) //Aca tendriamos que ver a donde se lo redirige
+                                  }
+                                  cursor="pointer"
+                                  _hover={{ bg: "gray.50" }}
+                                >
+                                    <Td textAlign="center">{materia.codigo_materia}</Td>
+                                    <Td textAlign="center">{materia.nombre}</Td>
+                                    <Td textAlign="center">{materia.anio_cursada}</Td>
+                                    <Td textAlign="center">{materia.anio_plan}</Td>
+                                    <Td textAlign="center">{materia.cuatrimestre}</Td>
+                                </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
+                      ) : (
+                        <Text>El alumno no se encuentra cursando materias en el cuatrimestre en curso.</Text>
+                      )}
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+
           </Box>
 
-          <Box
-            borderRadius={8}
-            borderColor={'gray.200'}
-            borderStyle={'solid'}
-            borderWidth={1}
-            p={3}
-            ml="30px"
-            mt="30px"
-            w="100%"
-          >
-            {materias.length > 0 ? (
-              <Table variant="simple" width="100%">
-                <Thead>
-                  <Tr mt={6}>
-                    <Th textAlign="center">Materia</Th>
-                    <Th textAlign="center">Año de cursada</Th>
-                    <Th textAlign="center">Cuatrimestre</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {materias?.map((materia, index) => (
-                      <Tr
-                        key={index}
-                        onClick={() =>
-                          navigate(`/admin/sysacad/`) //Aca tendriamos que ver a donde se lo redirige
-                        }
-                        cursor="pointer"
-                        _hover={{ bg: "gray.50" }}
-                      >
-                        <Td textAlign="center">{materia.nombre}</Td>
-                        <Td textAlign="center">{materia.anio_cursada}</Td>
-                        <Td textAlign="center">{materia.cuatrimestre}</Td>
-                      </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            ) : (
-              <Text>No hay datos de materias disponibles</Text>
-            )}
-          </Box>
+         
         </Flex>
       </Box>
     </Flex>
