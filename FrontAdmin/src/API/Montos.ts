@@ -3,7 +3,7 @@ const URL = import.meta.env.VITE_URL_DEV;
 
 export const FetchMontos = async (offset: number, limit: number) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
     const response = await fetch(
       `${URL}/pagos/compromisos/?offset=${offset}&limit=${limit}`,
@@ -30,7 +30,7 @@ export const FetchMontos = async (offset: number, limit: number) => {
 
 export const createCompromiso = async (compromisoData: any, selectFile: any) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
     const response = await fetch(`${URL}/pagos/compromisos/`, {
       method: 'POST',
@@ -58,7 +58,7 @@ export const createCompromiso = async (compromisoData: any, selectFile: any) => 
 
 export const loadPDF = async (id :string,file: File) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
     const formData = new FormData();
     formData.append('archivo_pdf', file);

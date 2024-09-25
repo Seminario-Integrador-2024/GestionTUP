@@ -15,6 +15,7 @@ export const FetchLogin = async (password: string, account: string) => {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data);
       const roles = data.user.roles;
       localStorage.setItem('userRol', JSON.stringify(roles));
       
