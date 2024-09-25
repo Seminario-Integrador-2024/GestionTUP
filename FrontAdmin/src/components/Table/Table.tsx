@@ -35,6 +35,9 @@ const tableHeaders: MRT_ColumnDef<Alumno>[] = [
     accessorKey: 'dni',
     header: 'DNI',
     enableHiding: true,
+    Cell: ({ cell }) => (
+      <span>{new Intl.NumberFormat('es-ES').format(cell.getValue<number>())}</span>
+    ),
   },
   {
     accessorKey: 'estado',
