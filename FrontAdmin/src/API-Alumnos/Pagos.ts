@@ -21,6 +21,13 @@ export const FetchPostPago = async (
         formData.append('comentario', comentario);
         formData.append('nro_transferencia', nro_transferencia);
 
+        console.log('FormData:', formData);
+        console.log('Archivo:', archivo);
+        console.log('Cuotas:', cuotas);
+        console.log('Monto informado:', montoInformado);
+        console.log('Comentario:', comentario);
+        console.log('Nro transferencia:', nro_transferencia);
+
         // Realiza la solicitud fetch
         const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
             method: 'POST',

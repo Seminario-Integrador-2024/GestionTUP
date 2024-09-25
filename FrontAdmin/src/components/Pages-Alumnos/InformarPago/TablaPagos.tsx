@@ -122,11 +122,11 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                         }
                         <Td textAlign="center" p={1}>{cuota.numero}</Td>
                         <Td textAlign="center">{cuota.fechaVencimiento}</Td>
-                        <Td textAlign="center">{"$ " + cuota.montoActual}</Td>
-                        <Td textAlign="center">{"$ " + cuota.valorpagado}</Td>
-                        <Td textAlign="center">{"$ " + cuota.valorinformado}</Td>
+                        <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.montoActual)}</Td>
+                        <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorpagado)}</Td>
+                        <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
                         { cuota.estado !== "PAGADO" ?
-                        <Td textAlign="center">{"$ " + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                        <Td textAlign="center">{"$ " +  new Intl.NumberFormat('es-ES').format((cuota.montoActual - cuota.valorpagado - cuota.valorinformado))}</Td>
                         : 
                         <Td textAlign="center">{"$ " + 0}</Td>
                         }
