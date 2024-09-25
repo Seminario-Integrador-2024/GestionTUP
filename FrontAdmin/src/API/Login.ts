@@ -10,7 +10,7 @@ export const FetchLogin = async (password: string, account: string) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ password, account }),
+      body: JSON.stringify({ email: account ,password }),
     });
 
     if (response.ok) {
@@ -20,6 +20,7 @@ export const FetchLogin = async (password: string, account: string) => {
       localStorage.setItem('userRol', JSON.stringify(roles));
       
       Cookies.set('tokennn', data.access);
+      Cookies.set('dni', data.user.dni);
       Cookies.set('refresh_token', data.refresh);
       Cookies.set('access_expiration', data.access_expiration);
       Cookies.set('refresh_expiration', data.refresh_expiration);
