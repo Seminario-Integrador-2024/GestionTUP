@@ -11,32 +11,12 @@ import {
   Image,
   Spinner,
 } from '@chakra-ui/react';
-import { FetchLogin } from '../../../API/Login';
+
 import { useAuth } from '../../../Context';
 import fondoLogin from '../../icons/utn-portada-transformed.jpeg';
 import imgLogin from '../../icons/Logos TUP_Mesa de trabajo 1.png';
 import { useToast } from '../../Toast/useToast';
-/* 
-<div
-      id="g_id_onload"
-      data-client_id="357174677577-tjdmodvoomhh16hgnt98hgug223nts3e.apps.googleusercontent.com"
-      data-context="signup"
-      data-ux_mode="redirect"
-      data-login_uri="http://127.0.0.1:8000"
-      data-itp_support="true"
-    ></div>
 
-    <div
-      class="g_id_signin"
-      data-type="standard"
-      data-shape="pill"
-      data-theme="filled_blue"
-      data-text="signin_with"
-      data-size="large"
-      data-logo_alignment="left"
-    ></div>
-*/
-// react template for google button
 
 function LoginPage() {
   const [account, setUseraccount] = useState('');
@@ -54,8 +34,7 @@ function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await FetchLogin(password, account);
-      onLogin();
+      await onLogin(password, account); 
       showToast('Bienvenido', 'Inicio de sesión exitoso', 'success');
     } catch (error) {
       console.error('Network error', error);

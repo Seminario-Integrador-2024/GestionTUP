@@ -1,11 +1,12 @@
 import { createContext, useState, ReactNode, useContext, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { FetchLogin } from './API/Login';
 const URL= import.meta.env.VITE_URL_DEV;
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  rolUser: boolean;
-  onLogin: () => void;
+  rolUser: String[];
+  onLogin: (password: string, account: string) => Promise<void>;
   onLogout: () => void;
 }
 
@@ -15,9 +16,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !Cookies.get('access_token') ? false : true
   );
-  const [rolUser, setRolUser] = useState(
-    Cookies.get('username') === '12345678' ? true : false
-  );
+  const [rolUser, setRolUser] = useState<String[]>([]);
   let refreshTimeout: NodeJS.Timeout;
 
   const refreshToken = async () => {
@@ -64,14 +63,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const onLogin = () => {
-    setRolUser(Cookies.get('username') === '12345678' ? true : false);
+  const onLogin = async (password: string, account: string) => {
+    await FetchLogin(password, account);
+    setRolUser(JSON.parse(localStorage.getItem('userRol') || '[]'));
     setIsAuthenticated(true);
     const accessExpiration = Cookies.get('access_expiration');
     if (accessExpiration) {
       TokenRefresh(accessExpiration);
     }
-    
   };
 
   const onLogout = () => {
@@ -81,6 +80,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove('refresh_expiration');
     Cookies.remove('username');
     Cookies.remove('dni');
+    localStorage.removeItem('userRol');
     console.log('logout');
     setIsAuthenticated(false);
     if (refreshTimeout) {

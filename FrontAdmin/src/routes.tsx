@@ -23,6 +23,7 @@ import { CiSaveDown1 } from 'react-icons/ci';
 import Alumnos from './components/Pages/Alumnos/Alumnos';
 import { PiStudentLight } from 'react-icons/pi';
 import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno'; import CompromisoDePago from './components/Pages-Alumnos/CompromisoDePago';
+import ListadoAlumnosQueCursanMateria from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ListadoAlumnosQueCursanMateria';
 
 const routes = [
   {
@@ -37,7 +38,7 @@ const routes = [
     element: <FichaAlumno />,
   },
   {
-    path: 'estadisticas',
+    path: 'estadisticas/*',
     title: 'Estadísticas' /* para el tooltip*/,
     element: <Estadisticas />,
     rol: 'admin' /* para la activación de rutas segun el rol */,
@@ -47,12 +48,13 @@ const routes = [
         path: 'alumnos-que-cursan-materia',
         element: <ListadoMaterias />,
         rol: 'admin',
-      },
-      {
-        path: 'estadisticas/alumnos-que-cursan-materia/:url',
-        element: <ListadoAlumnos />,
+
+      },{
+        path: 'alumnos-que-cursan-materia/:codigo_materia',
+        element: <ListadoAlumnosQueCursanMateria />,
         rol: 'admin',
-      },
+
+      }
     ],
   },
   {
