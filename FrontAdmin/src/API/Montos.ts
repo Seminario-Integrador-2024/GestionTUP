@@ -32,7 +32,7 @@ export const createCompromiso = async (compromisoData: any, selectFile: any) => 
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`${URL}/pagos/compromisos/`, {
+    const response = await fetch(`http://localhost:8000/api/compromisos/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
