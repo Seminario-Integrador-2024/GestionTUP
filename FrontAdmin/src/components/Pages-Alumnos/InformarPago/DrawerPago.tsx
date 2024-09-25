@@ -58,7 +58,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
        // Aca hay que hacer el post al backend
        try{
            const numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
-           FetchPostPago(numerosCuotas, parseInt(montoAbonado), file, comentarios);
+           FetchPostPago(numerosCuotas, parseInt(montoAbonado), file, comentarios, nro_transferencia);
             showToast('Pago informado', 'El pago se ha informado correctamente', 'success');
             // onRefresh();
        } catch (error) {

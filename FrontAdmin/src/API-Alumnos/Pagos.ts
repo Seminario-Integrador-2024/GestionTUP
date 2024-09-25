@@ -4,12 +4,13 @@ export const FetchPostPago = async (
     cuotas: any,
     montoInformado: number,
     archivo: File | null,   // Archivo a enviar
-    comentario: string
+    comentario: string,
+    nro_transferencia: number
 ) => {
     try {
         const token = Cookies.get('tokennn');
+        //const dni = Cookies.get('dni');
         const dni = 42790229;  // Puedes obtener esto desde las cookies también
-        const nro_transferencia = 0;
 
         // Crea un nuevo objeto FormData
         const formData = new FormData();

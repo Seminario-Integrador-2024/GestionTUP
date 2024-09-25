@@ -36,12 +36,12 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
 //     console.log("las cuotas seleccionadas", cuotasSeleccionadas);
 //  }, [refresh]);
 
-    useEffect(() => {
-      // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
-      if (refresh) {
-        window.location.reload();
-      }
-    }, [refresh]);
+    // useEffect(() => {
+    //   // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
+    //   if (refresh) {
+    //     window.location.reload();
+    //   }
+    // }, [refresh]);
 
     useEffect(() => {
         // Aca se deberia hacer el fetch de las cuotas del alumno
