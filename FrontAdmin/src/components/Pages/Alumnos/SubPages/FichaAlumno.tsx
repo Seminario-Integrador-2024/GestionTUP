@@ -23,6 +23,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import logoUser from '../../../icons/logo-user.png';
 import { useNavigate } from 'react-router-dom';
 import { FetchDetalleAlumno } from '../../../../API/DetalleAlumno.ts';
+import { FetchEstadoCuenta } from '../../../../API/EstadoCuentaAlumno.ts';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 
@@ -35,9 +36,20 @@ interface Alumno {
   estado: string;
 }
 
+interface Cuota {
+  numero: number;
+  montoActual: number;
+  fechaVencimiento: string;
+  valorpagado: number;
+  estado: number;
+  tipocuota: string;
+  valorinformado: number;
+}
+
 function FichaAlumno() {
   const { dni } = useParams();
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
+  const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
   const navigate = useNavigate();
@@ -47,7 +59,7 @@ function FichaAlumno() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDetalleAlumno = async () => {
       try {
         if (dni) {
           const dniNumber = parseInt(dni, 10); // Convierte a número
@@ -62,8 +74,24 @@ function FichaAlumno() {
       }
     };
 
+    const fetchEstadoCuentaAlumno = async () => {
+      try {
+        if (dni) {
+          const dniNumber = parseInt(dni, 10); // Convierte a número
+          const data = await FetchEstadoCuenta(dniNumber);
+          setCuotas(data);
+        }
+      } catch (error) {
+        setError(error);
+        console.error('Error al obtener los datos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (dni) {
-      fetchData();
+      fetchDetalleAlumno();
+      fetchEstadoCuentaAlumno();
     }
   }, [dni]); // Incluye `dni` como dependencia
 
@@ -78,11 +106,13 @@ function FichaAlumno() {
   if (!alumno) {
     return <Text>No se encontraron datos.</Text>;
   }
+  /*
   const cuotas = [
     {
       numero: 0,
       montoActual: 0,
       fechaVencimiento: '2024-03-10',
+      valorinformado: 10000,
       valorpagado: 10000,
       valoradeudado: 0,
       estado: 'PAGADO',
@@ -91,6 +121,7 @@ function FichaAlumno() {
       numero: 1,
       montoActual: 10000,
       fechaVencimiento: '2024-03-10',
+      valorinformado: 5000,
       valorpagado: 5000,
       valoradeudado: 5000,
       estado: 'INFORMADO',
@@ -99,6 +130,7 @@ function FichaAlumno() {
       numero: 2,
       montoActual: 10000,
       fechaVencimiento: '2024-04-10',
+      valorinformado: 0,
       valorpagado: 0,
       valoradeudado: 10000,
       estado: 'ADEUDADO',
@@ -107,6 +139,7 @@ function FichaAlumno() {
       numero: 3,
       montoActual: 10000,
       fechaVencimiento: '2024-05-10',
+      valorinformado: 0,
       valorpagado: 0,
       valoradeudado: 10000,
       estado: 'ADEUDADO',
@@ -115,6 +148,7 @@ function FichaAlumno() {
       numero: 4,
       montoActual: 10000,
       fechaVencimiento: '2024-06-10',
+      valorinformado: 0,
       valorpagado: 0,
       valoradeudado: 10000,
       estado: 'ADEUDADO',
@@ -123,11 +157,12 @@ function FichaAlumno() {
       numero: 5,
       montoActual: 10000,
       fechaVencimiento: '2024-07-10',
+      valorinformado: 0,
       valorpagado: 0,
       valoradeudado: 10000,
       estado: 'ADEUDADO',
     },
-  ];
+  ];*/
   /*
   const [cuotas, setCuotas] = useState<any[]>([]); 
     const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
@@ -152,6 +187,7 @@ function FichaAlumno() {
       };
   */
   return (
+    
     <Flex mt="20px">
       <Button
         position="absolute"
@@ -210,12 +246,13 @@ function FichaAlumno() {
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
           {alumno.estado}
         </Text>
-        <Text color="gray" mt="10px">
-          Deuda:
+        <Text color="gray" mt="20px">
+          Ultimo Periodo Cursado
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          -
+          2024 - 1C
         </Text>
+        
       </Box>
 
       <Box>
@@ -235,62 +272,37 @@ function FichaAlumno() {
             w="100%"
           >
             <Tag m="20px" p="10px">
-              Estado de cuenta al 18/09/2024{' '}
+              Estado de cuenta al {(new Date().toLocaleDateString())}
             </Tag>
-            {cuotas.length > 0 ? (
+            {cuotas.length > 1 ? (
               <Table variant="simple" width="100%">
                 <Thead>
                   <Tr mt={6}>
                     
-                    <Th textAlign="center" p={1}>
-                      Numero
-                    </Th>
+                    <Th textAlign="center">Cuota</Th>
                     <Th textAlign="center">Fecha Primer Vto.</Th>
                     <Th textAlign="center">Valor Actual</Th>
                     <Th textAlign="center">Valor Pagado</Th>
+                    <Th textAlign="center">Valor Informado</Th>
                     <Th textAlign="center">Valor Adeudado</Th>
-                    <Th textAlign="center">Estado</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {cuotas.map((cuota, index) => (
+                  {cuotas && cuotas.map((cuota, index) => (
                     <Tr key={index}>
                       
-                      <Td textAlign="center" p={1}>
-                        {cuota.numero}
-                      </Td>
+                      <Td textAlign="center">{cuota.numero}</Td>
                       <Td textAlign="center">{cuota.fechaVencimiento}</Td>
-                      <Td textAlign="center">{'$ ' + cuota.montoActual}</Td>
-                      <Td textAlign="center">{'$ ' + cuota.valorpagado}</Td>
-                      <Td textAlign="center">{'$ ' + cuota.valoradeudado}</Td>
-                      {cuota.estado === 'ADEUDADO' ? (
-                        <Td textAlign="center">
-                          {' '}
-                          <Badge colorScheme="red" minW="85px">
-                            {cuota.estado}
-                          </Badge>
-                        </Td>
-                      ) : cuota.estado === 'INFORMADO' ? (
-                        <Td textAlign="center">
-                          {' '}
-                          <Badge colorScheme="yellow" minW="85px">
-                            {cuota.estado}
-                          </Badge>
-                        </Td>
-                      ) : (
-                        <Td textAlign="center">
-                          {' '}
-                          <Badge colorScheme="green" minW="85px">
-                            {cuota.estado}
-                          </Badge>
-                        </Td>
-                      )}
+                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
+                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
+                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
+                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado)}</Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table>
             ) : (
-              <Text>No hay datos disponibles</Text>
+              <Text minW="50vw" textAlign="center" padding="20px">No existen cuotas del cuatrimestre en curso. Verifique que el compromiso de pago este firmado.</Text>
             )}
           </Box>
         </Flex>
