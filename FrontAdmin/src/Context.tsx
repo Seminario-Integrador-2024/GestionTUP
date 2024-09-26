@@ -39,7 +39,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.log('Token refreshed');
         const data = await response.json();
         console.log(data);
-        Cookies.set('access_token', data.access);
+        Cookies.set('tokennn', data.access);
         Cookies.set('refresh_token', data.refresh);
         Cookies.set('access_expiration', data.access_expiration);
         Cookies.set('refresh_expiration', data.refresh_expiration);
@@ -67,6 +67,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     await FetchLogin(password, account);
     setRolUser(JSON.parse(localStorage.getItem('userRol') || '[]'));
     setIsAuthenticated(true);
+    
     const accessExpiration = Cookies.get('access_expiration');
     if (accessExpiration) {
       TokenRefresh(accessExpiration);
@@ -74,15 +75,32 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const onLogout = () => {
-    Cookies.remove('access_token');
-    Cookies.remove('refresh_token');
-    Cookies.remove('access_expiration');
-    Cookies.remove('refresh_expiration');
-    Cookies.remove('username');
-    Cookies.remove('dni');
-    localStorage.removeItem('userRol');
     console.log('logout');
+    
+    // Verificar y eliminar cookies
+    const cookiesToRemove = [
+      'tokennn',
+      'refresh_token',
+      'access_expiration',
+      'refresh_expiration',
+      'username',
+      'dni'
+    ];
+  
+    cookiesToRemove.forEach(cookie => {
+      if (Cookies.get(cookie)) {
+        Cookies.remove(cookie, { path: '/', domain: window.location.hostname });
+        console.log(`Cookie ${cookie} eliminada`);
+      } else {
+        console.log(`Cookie ${cookie} no encontrada`);
+      }
+    });
+  
+    // Eliminar item de localStorage
+    localStorage.removeItem('userRol');
     setIsAuthenticated(false);
+  
+    // Limpiar timeout de refresh
     if (refreshTimeout) {
       clearTimeout(refreshTimeout);
     }
