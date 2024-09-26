@@ -64,13 +64,24 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const onLogin = async (password: string, account: string) => {
-    await FetchLogin(password, account);
-    setRolUser(JSON.parse(localStorage.getItem('userRol') || '[]'));
-    setIsAuthenticated(true);
-    
-    const accessExpiration = Cookies.get('access_expiration');
-    if (accessExpiration) {
-      TokenRefresh(accessExpiration);
+    try {
+      await FetchLogin(password, account);
+      setRolUser(JSON.parse(localStorage.getItem('userRol') || '[]'));
+      setIsAuthenticated(true);
+      
+      const accessExpiration = Cookies.get('access_expiration');
+      if (accessExpiration) {
+        TokenRefresh(accessExpiration);
+      }
+    } catch (error) {
+      console.error('Error durante el inicio de sesión:', error);
+      if (error instanceof Error) {
+        throw new Error(
+          error.message || 'Error durante el inicio de sesión, intente nuevamente'
+        );
+      } else {
+        throw new Error('Error durante el inicio de sesión, intente nuevamente');
+      }
     }
   };
 
