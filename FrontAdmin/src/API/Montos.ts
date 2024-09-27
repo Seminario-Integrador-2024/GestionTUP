@@ -6,7 +6,7 @@ export const FetchMontos = async (offset: number, limit: number) => {
     const token = Cookies.get('tokennn');
 
     const response = await fetch(
-      `${URL}/pagos/compromisos/?offset=${offset}&limit=${limit}`,
+      `${URL}/compromisos/`,
       {
         method: 'GET',
         headers: {
@@ -63,7 +63,7 @@ export const loadPDF = async (id :string,file: File) => {
     const formData = new FormData();
     formData.append('archivo_pdf', file);
 
-    const response = await fetch(`${URL}/pagos/compromisos/${id}/`, {
+    const response = await fetch(`${URL}/compromisos/${id}/`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
