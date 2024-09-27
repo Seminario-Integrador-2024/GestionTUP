@@ -9,8 +9,8 @@ export const FetchPostPago = async (
 ) => {
     try {
         const token = Cookies.get('tokennn');
-        //const dni = Cookies.get('dni');
-        const dni = 36562786;  // Puedes obtener esto desde las cookies también
+        const dni = Cookies.get('dni');
+        // const dni = 36562786;  // Puedes obtener esto desde las cookies también
 
         // Crea un nuevo objeto FormData
         const formData = new FormData();
@@ -52,8 +52,8 @@ export const FetchPostPago = async (
 export const FetchGetCuotas = async () => {
     try {
         const token = Cookies.get('tokennn');
-        //const dni = Cookies.get('dni');
-        const dni = 36562786;
+        const dni = Cookies.get('dni');
+        // const dni = 36562786;
         
         const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=6&offset=0/`, {
             method: 'GET',
@@ -73,57 +73,3 @@ export const FetchGetCuotas = async () => {
         throw new Error('Network error: ' + error);
     }
 };
-
-const cuotas = [
-    {
-        numero: 0,
-        montoactual: 0,        
-        fechaVencimiento: '2024-03-10',        
-        valorpagado: 10000, 
-        valorinformado: 0,        
-        estado: "PAGADO",
-    },
-    {
-        numero: 1,
-        montoactual: 10000,        
-        fechaVencimiento: '2024-03-10',        
-        valorpagado: 0,        
-        valorinformado: 5000,
-        estado: "INFORMADO",
-    },
-    {
-        numero: 2,
-        montoactual: 10000,        
-        fechaVencimiento: '2024-04-10',
-        valorpagado: 0,
-        valorinformado: 0,
-        estado: "ADEUDADO",
-    },
-    {
-        numero: 3,
-        montoactual: 10000,        
-        fechaVencimiento: '2024-05-10',
-        valorpagado: 0,
-        valorinformado: 0,
-        estado: "ADEUDADO",
-    },
-    {
-        numero: 4,
-        montoactual: 10000,        
-        fechaVencimiento: '2024-06-10',
-        valorpagado: 0,
-        valorinformado: 0,
-        estado: "ADEUDADO",
-    },
-    {
-        numero: 5,
-        montoactual: 10000,        
-        fechaVencimiento: '2024-07-10',
-        valorpagado: 0,
-        valorinformado: 0,
-        estado: "ADEUDADO",
-    }
-];
-
-export default cuotas;
-    
