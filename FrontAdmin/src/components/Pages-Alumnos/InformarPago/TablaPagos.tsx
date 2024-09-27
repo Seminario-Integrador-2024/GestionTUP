@@ -1,6 +1,5 @@
 import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Badge, Checkbox, Input} from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, AddIcon, SearchIcon } from '@chakra-ui/icons'; 
-import Cuotas from '../../../API-Alumnos/Pagos';
 import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
 import { get } from 'http';
@@ -56,31 +55,18 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
         getCuotas();
         
         // setCuotas(Cuotas)   
-    }, [refresh])
-
-
-    // Funcion para manejar el cambio de estado de los checkbox, si el esatdo anterior es true, lo elimina del array, si es false lo agrega
-    // const handleCheckboxChange = (cuota: Cuota) => {
-    //   setCuotasSeleccionadas((prevSeleccionadas) => {
-    //       if (prevSeleccionadas.includes(cuota)) {
-    //           return prevSeleccionadas.filter((item) => item !== cuota);
-    //       } else {
-    //           return [...prevSeleccionadas, cuota];
-    //       }
-    //   });
-    // };
-
+    }, [refresh]);  
+   
     const handleCheckboxChange = (cuota: Cuota) => {
       setCuotasSeleccionadas((prevSeleccionadas) => {
           if (prevSeleccionadas.includes(cuota)) {
-              return prevSeleccionadas.filter((item) => item !== cuota);
+                return prevSeleccionadas.filter((item, idx) => item !== cuota && idx <= cuotas.indexOf(cuota));
           } else {
               return [...prevSeleccionadas, cuota];
           }
       });
+      
     };
-
- 
 
 
     return (
@@ -113,11 +99,16 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   <Tbody>
                     {cuotas.map((cuota, index) => (
                       <Tr key={index} >
-                        { cuota.estado === "PAGADO" ?
+                        { cuota.estado === "Pagada" ?
                         <Td><Checkbox isDisabled={true}></Checkbox></Td>
                         :
-                        <Td><Checkbox p={0} borderColor="black" 
-                           onChange={(e) => handleCheckboxChange(cuota)} >
+                        <Td><Checkbox
+                        p={0}
+                        borderColor="black"
+                        isChecked={cuotasSeleccionadas.includes(cuota)}
+                        isDisabled={cuotas.slice(0, index).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota))}
+                        onChange={() => handleCheckboxChange(cuota)}
+                        >
                         </Checkbox></Td>
                         }
                         <Td textAlign="center" p={1}>{cuota.numero}</Td>
@@ -125,7 +116,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.montoActual)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorpagado)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
-                        { cuota.estado !== "PAGADO" ?
+                        { cuota.estado !== "Pagada" ?
                         <Td textAlign="center">{"$ " +  new Intl.NumberFormat('es-ES').format((cuota.montoActual - cuota.valorpagado - cuota.valorinformado))}</Td>
                         : 
                         <Td textAlign="center">{"$ " + 0}</Td>

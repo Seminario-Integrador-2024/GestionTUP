@@ -28,8 +28,9 @@ interface Cuota {
     monto1erVencimiento: number;
     monto2doVencimiento: number;
     monto3erVencimiento: number;
-    valortotal: number;
+    montoActual: number;
     valorpagado: number;
+    valorinformado: number;
     valoradeudado: number;
     estado: string;
   }
@@ -87,6 +88,10 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0));
     }, [isOpen]);
 
+    useEffect(() => {
+      setMontoAbonado(total.toLocaleString());
+    }, [total]);
+
     return (
       <>
         <Drawer
@@ -101,19 +106,21 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
   
             <DrawerBody>
             <Stack direction="column">
-                <Text fontWeight="bold">Cuotas seleccionadas:</Text> 
+                <Text fontWeight="normal">Cuotas seleccionadas:</Text> 
                 {cuotasseleccionadas.map((cuota, index) => (
                     <Flex key={index} ml={1}><li>{cuota.numero}</li> </Flex>
                 ))}
             </Stack>
-            <Text mt={4} mb={4}>Total a abonar: ${total}</Text>
+            <Text mt={4}>Total a abonar:</Text>
+            <Text mb={4} mt={4} fontWeight={600} textAlign={"center"} fontSize={22}>{"$" + new Intl.NumberFormat('es-ES').format(total)}</Text>
+          
             <FormControl isRequired={true}>
                 <FormLabel mb={0}>Monto Abonado</FormLabel>
                 <InputGroup>
                     <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
                       $
                     </InputLeftElement>
-                    <Input placeholder='' onChange={(e) => setMontoAbonado(e.target.value)} />
+                    <Input placeholder='' defaultValue={montoAbonado} onChange={(e) => setMontoAbonado(e.target.value)} />
                 </InputGroup>
             <Stack gap={0}>
               <FormLabel mt={4} mb={0}>Nro. Tranferencia</FormLabel>
