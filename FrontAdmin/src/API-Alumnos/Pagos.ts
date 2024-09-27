@@ -10,7 +10,6 @@ export const FetchPostPago = async (
     try {
         const token = Cookies.get('tokennn');
         const dni = Cookies.get('dni');
-        // const dni = 36562786;  // Puedes obtener esto desde las cookies también
 
         // Crea un nuevo objeto FormData
         const formData = new FormData();
@@ -53,7 +52,6 @@ export const FetchGetCuotas = async () => {
     try {
         const token = Cookies.get('tokennn');
         const dni = Cookies.get('dni');
-        // const dni = 36562786;
         
         const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=6&offset=0/`, {
             method: 'GET',

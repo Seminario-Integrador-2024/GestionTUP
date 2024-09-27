@@ -28,9 +28,8 @@ interface Cuota {
     monto1erVencimiento: number;
     monto2doVencimiento: number;
     monto3erVencimiento: number;
-    montoActual: number;
+    valortotal: number;
     valorpagado: number;
-    valorinformado: number;
     valoradeudado: number;
     estado: string;
   }
