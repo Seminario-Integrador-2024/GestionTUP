@@ -23,7 +23,7 @@ export const FetchLogin = async (password: string, account: string) => {
       Cookies.set('refresh_token', data.refresh);
       Cookies.set('access_expiration', data.access_expiration);
       Cookies.set('refresh_expiration', data.refresh_expiration);
-
+      Cookies.set('full_name', data.user.full_name);
 
       return data;
     } else {
