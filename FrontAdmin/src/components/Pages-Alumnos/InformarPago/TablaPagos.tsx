@@ -1,8 +1,7 @@
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Badge, Checkbox, Input} from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon, SearchIcon } from '@chakra-ui/icons'; 
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, Input} from '@chakra-ui/react'; 
 import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
-import { get } from 'http';
+import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
 
 interface Cuota {
   id: number;
@@ -112,7 +111,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                         </Checkbox></Td>
                         }
                         <Td textAlign="center" p={1}>{cuota.numero}</Td>
-                        <Td textAlign="center">{cuota.fechaVencimiento}</Td>
+                        <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.montoActual)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorpagado)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>

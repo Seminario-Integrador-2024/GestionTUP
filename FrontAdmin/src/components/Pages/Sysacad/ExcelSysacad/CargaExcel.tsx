@@ -83,7 +83,7 @@ function CargaExcel() {
                     <Button onClick={handleReset} variant="light">Volver a Intentar</Button>
                 </Stack>
             </Stack>
-            
+            {isLoading && <Text>Este proceso puede tardar unos minutos...</Text>}
             <Stack>
                 <Resultado data={data} />
             </Stack>
