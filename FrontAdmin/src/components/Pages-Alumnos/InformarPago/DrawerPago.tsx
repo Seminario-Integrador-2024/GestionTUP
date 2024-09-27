@@ -81,6 +81,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
            window.open(googleFormUrl, '_blank');
 
            showToast('Pago informado', 'El pago se ha informado correctamente, continuar en el google forms', 'success');
+           
             // onRefresh();
        } catch (error) {
            console.error('Error:', error);

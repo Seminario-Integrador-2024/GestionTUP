@@ -51,6 +51,9 @@ export function SidebarContent({ onClose, LINK_ITEMS, ...rest }: SidebarProps) {
               color={
                 location.pathname.startsWith('/admin/' + link.url)
                   ? 'secundary'
+                  :  
+                location.pathname.startsWith('/alumnos/' + link.url)
+                  ? 'secundary'
                   : 'white'
               }
             />
