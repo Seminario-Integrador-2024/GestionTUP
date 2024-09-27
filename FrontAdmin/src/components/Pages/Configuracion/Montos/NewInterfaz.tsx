@@ -59,7 +59,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
 
   const handleViewPdf = async (url: string) => {
     try {
-      const token = Cookies.get('access_token');
+      const token = Cookies.get('tokennn');
       const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,

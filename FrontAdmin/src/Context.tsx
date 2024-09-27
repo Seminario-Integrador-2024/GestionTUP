@@ -13,10 +13,11 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !Cookies.get('tokennn') ? false : true
-  );
   const [rolUser, setRolUser] = useState<String[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    (!Cookies.get('tokennn') ) ? false : true
+  );
+  
   let refreshTimeout: NodeJS.Timeout;
 
   const refreshToken = async () => {
