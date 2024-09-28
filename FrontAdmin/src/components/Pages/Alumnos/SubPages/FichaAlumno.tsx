@@ -44,7 +44,8 @@ interface Alumno {
   legajo: number;
   email: string;
   telefono: number;
-  estado: string;
+  estado_academico: string;
+  estado_financiero: string;
 }
 
 
@@ -210,7 +211,7 @@ function FichaAlumno() {
           Estado:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {alumno.estado}
+          {alumno.estado_financiero}
         </Text>
         <Text color="gray" mt="20px">
           Ultimo Periodo Cursado
