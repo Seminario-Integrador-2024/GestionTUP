@@ -25,14 +25,7 @@ interface TablaCuotasProps {
 function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: TablaCuotasProps) {
 
     const [cuotas, setCuotas] = useState<any[]>([]); 
-   // const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
-
-   
-//    useEffect(() => {
-//     console.log("refresh en tabla pagos", refresh);
-//     setCuotasSeleccionadas([]);
-//     console.log("las cuotas seleccionadas", cuotasSeleccionadas);
-//  }, [refresh]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     // useEffect(() => {
     //   // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
@@ -42,19 +35,20 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     // }, [refresh]);
 
     useEffect(() => {
-        // Aca se deberia hacer el fetch de las cuotas del alumno
-        const getCuotas = async () => {
-        try {
-            const cuotas = await FetchGetCuotas();
-            setCuotas(cuotas);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-        }
-        getCuotas();
-        
-        // setCuotas(Cuotas)   
-    }, [refresh]);  
+      const getCuotas = async () => {
+          setLoading(true);
+          try {
+              const cuotas = await FetchGetCuotas();
+              setCuotas([]);
+              setCuotas(cuotas);
+          } catch (error) {
+              console.error('Error:', error);
+          } finally {
+              setLoading(false);
+          }
+      };
+      getCuotas();
+  }, [refresh]);
    
     const handleCheckboxChange = (cuota: Cuota) => {
       setCuotasSeleccionadas((prevSeleccionadas) => {
@@ -66,7 +60,6 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
       });
       
     };
-
 
     return (
             <Flex
@@ -81,7 +74,10 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                 borderWidth={1}
                 p={3}
             >
-            {cuotas.length > 0 ? (
+            {loading ? (
+                    <Skeleton height="400px" w="750px" />
+                ) : (
+             cuotas.length > 0 ? (
                 <Table variant="simple" width="100%">
                   <Thead>
                     <Tr mt={6}>
@@ -126,7 +122,9 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                 </Table>
             ) : (
               <Text>No hay cuotas para mostrar. Por favor, firmar el compromiso de pago.</Text>
+            )
             )}
+          
         </Box>
         </Flex>
     );

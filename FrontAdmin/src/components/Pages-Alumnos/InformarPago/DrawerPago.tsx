@@ -72,7 +72,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
        // Aca hay que hacer el post al backend
        try{
            const numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
-           // FetchPostPago(numerosCuotas, parseInt(montoAbonado), file, comentarios, nro_transferencia);
+           FetchPostPago(numerosCuotas, parseInt(montoAbonado), comentarios);
 
            const dni = Cookies.get('dni');
            const fullName = Cookies.get('full_name');
@@ -82,7 +82,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
            showToast('Pago informado', 'El pago se ha informado correctamente, continuar en el google forms', 'success');
            
-            // onRefresh();
+            onRefresh();
        } catch (error) {
            console.error('Error:', error);
             showToast('Error', 'Ha ocurrido un error al informar el pago', 'error');

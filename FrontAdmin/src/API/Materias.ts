@@ -11,7 +11,7 @@ export const FetchPostMateria = async (
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`${URL}/materias/`, {
+    const response = await fetch(`http://localhost:8000/api/materias/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export const FetchMaterias = async () => {
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`${URL}/materias/`, {
+    const response = await fetch(`http://localhost:8000/api/materias/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
