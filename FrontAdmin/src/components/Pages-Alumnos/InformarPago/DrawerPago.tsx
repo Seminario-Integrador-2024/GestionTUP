@@ -45,7 +45,7 @@ interface DrawerInformarProps {
 }
 
 const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotasseleccionadas, onRefresh }) => {
-    const [montoAbonado, setMontoAbonado] = useState('');  //cambiar a entero
+    const [montoAbonado, setMontoAbonado] = useState<number>(0); 
     const [comentarios, setComentarios] = useState('');
     const [total, setTotal] = useState<number>(0);
     const showToast = useToast();
@@ -72,7 +72,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
        // Aca hay que hacer el post al backend
        try{
            const numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
-           FetchPostPago(numerosCuotas, parseInt(montoAbonado), comentarios);
+           FetchPostPago(numerosCuotas, montoAbonado, comentarios);
 
            const dni = Cookies.get('dni');
            const fullName = Cookies.get('full_name');
@@ -100,17 +100,20 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     }
 
     const isFormValid = () => {
-      return (montoAbonado.trim() !== '');
+      return (montoAbonado > 0 && montoAbonado <= total);
     };
 
+    
     useEffect(() => {
-    setMontoAbonado('');
-    setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0));
-    }, [isOpen]);
+      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0);
+      setTotal(calculatedTotal);
+      setMontoAbonado(calculatedTotal); // Inicializa montoAbonado con el valor de total
+  }, [isOpen, cuotasseleccionadas]);
 
-    useEffect(() => {
-      setMontoAbonado(total.toLocaleString());
-    }, [total]);
+  
+    // useEffect(() => {
+    //   setMontoAbonado(total);
+    // }, [total]);
 
     return (
       <>
@@ -140,7 +143,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                     <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
                       $
                     </InputLeftElement>
-                    <Input placeholder='' value={montoAbonado} onChange={(e) => setMontoAbonado(e.target.value)} />
+                    <Input placeholder='' value={montoAbonado} onChange={(e) => setMontoAbonado(parseInt(e.target.value))} />
                 </InputGroup>
             
             </FormControl>
