@@ -22,6 +22,14 @@ export function obtenerFechaDeHoy(): string {
   return `${dia}/${mes}/${anio}`;
 }
 
+export function obtenerFechaForm(): string {
+  const hoy = new Date();
+  const dia = String(hoy.getDate()).padStart(2, '0');
+  const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
+  const anio = hoy.getFullYear();
+  return `${anio}-${mes}-${dia}`;
+}
+
 interface Categoria {
   tipo: string;
   fecha: string; // Suponiendo que la fecha se almacena como string

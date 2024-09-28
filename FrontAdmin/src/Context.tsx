@@ -96,7 +96,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       'access_expiration',
       'refresh_expiration',
       'username',
-      'dni'
+      'dni',
+      'full_name',
     ];
   
     cookiesToRemove.forEach(cookie => {
