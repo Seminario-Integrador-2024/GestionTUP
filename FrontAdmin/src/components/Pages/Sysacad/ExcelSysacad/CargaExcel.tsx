@@ -1,8 +1,11 @@
-import { Stack, Text, Button } from '@chakra-ui/react';
+import { Stack, Text, Button, Flex, Box, TableContainer, Table, Thead, Th, Tbody, Tr, Td, IconButton } from '@chakra-ui/react';
 import ZonaCarga from './ZonaCarga';
 import { useState, useEffect } from 'react';
 import Resultado from './Resultado';
 import Cookies from 'js-cookie';
+import { FetchHistorialExcel } from '../../../../API/Sysacad';
+import { formatoFechaISOaDDMMAAAA } from '../../../../utils/general';
+import {DownloadIcon} from '@chakra-ui/icons';
 
 function CargaExcel() {
     const [fileUploaded, setFileUploaded] = useState(false);
@@ -11,6 +14,7 @@ function CargaExcel() {
     const [fileAux, setFileAux] = useState<File | null>(null);
     const [data, setData] = useState<string[]>([]); 
     const [isLoading, setIsLoading] = useState(false);
+    const [excels, setExcels] = useState<any[]>([]);
 
     const handleFileUpload = (fileName: string) => {
         setFileUploaded(true);  
@@ -62,6 +66,18 @@ function CargaExcel() {
         setFileAux(null);
     };
 
+    useEffect(() => {
+        const getHistorial = async () => {
+            try {
+                const historial = await FetchHistorialExcel();
+                setExcels(historial);  
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        getHistorial();
+    }, []);
+
  
     return (
         <Stack direction="column" align="center">
@@ -87,6 +103,47 @@ function CargaExcel() {
             <Stack>
                 <Resultado data={data} />
             </Stack>
+
+            <Flex mb={5} mt={10} justifyContent={"center"} alignItems={"center"} w={"100%"} direction={"column"}>
+                <Flex justifyContent={"flex-start"} w={"100%"}>
+                    <Text fontWeight="bold" fontSize="xl" mb={2}>Historial de archivos cargados</Text>
+                </Flex>
+                <Box flex={1} w={"100%"}>
+                    <TableContainer
+                        border="2px"
+                        borderColor="#BABABA" // Borde gris claro para la tabla
+                        borderRadius="md"
+                        width="100%"
+                        height="100%"
+                    >
+                        <Table variant="unstyled" size="sm">
+                            <Thead>
+                                <Tr borderBottom="1px" borderColor="#BABABA" p={5}>
+                                    <Th textAlign="center" fontWeight="bold"  borderBottom="1px" borderColor="#BABABA">Numero</Th>
+                                    <Th textAlign="center" fontWeight="bold"  borderBottom="1px" borderColor="#BABABA">Cargado el</Th>
+                                    <Th textAlign="center" fontWeight="bold"  borderBottom="1px" borderColor="#BABABA" w={"10%"}>Descargar</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                { excels.map((excel: any, index) => (
+                                    <Tr  borderColor="#BABABA" key={index}>
+                                        <Td textAlign="center" >{excel.id}</Td>
+                                        <Td textAlign="center" >{formatoFechaISOaDDMMAAAA(excel.uploaded_at)}</Td>
+                                        <Td textAlign="center" >
+                                            <IconButton 
+                                             colorScheme="blue"
+                                            aria-label="Descargar"
+                                            icon={<DownloadIcon/>}
+                                            onClick={() => window.open(`${excel.excel}`, '_blank')}
+                                            />
+                                        </Td>
+                                    </Tr>
+                                )) }
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
+                </Box>
+            </Flex>
         </Stack>
     );
 }

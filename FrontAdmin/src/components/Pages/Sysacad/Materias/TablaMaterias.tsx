@@ -148,7 +148,7 @@ export default function TablaMaterias() {
                                 <Td>{materia.codigo_materia}</Td>
                                 <Td>{materia.nombre}</Td>
                                 
-                                <Td>{materia.cuatrimestre}</Td>
+                                <Td textAlign={"center"}>{materia.cuatrimestre}</Td>
                                 <Td>{materia.anio_plan}</Td>
                                 <Td>
                                     <Flex>
