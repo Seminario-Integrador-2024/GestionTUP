@@ -71,8 +71,9 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     const handleSave = () => {
        // Aca hay que hacer el post al backend
        try{
-           const numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
-           FetchPostPago(numerosCuotas, montoAbonado, comentarios);
+            let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
+            numerosCuotas = numerosCuotas.sort((a, b) => parseInt(a) - parseInt(b)); // Ordenar de menor a mayor
+            FetchPostPago(numerosCuotas, montoAbonado, comentarios);
 
            const dni = Cookies.get('dni');
            const fullName = Cookies.get('full_name');
