@@ -32,9 +32,11 @@ import {
   FetchDetalleAlumno,
   FetchMateriasAlumno,
 } from '../../../../API/DetalleAlumno.ts';
+import { FetchCompromisosAlumno } from '../../../../API-Alumnos/Compromiso.ts';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
+import {formatoFechaISOaDDMMAAAA} from '../../../../utils/general';
 
 interface Alumno {
   full_name: string;
@@ -71,6 +73,7 @@ function FichaAlumno() {
   const [materias, setMaterias] = useState<Materia[]>([]); // Define el estado con un valor inicial de null
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
+  const [firmoCompromiso, setFirmoCompromiso] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -100,7 +103,8 @@ function FichaAlumno() {
         if (dni) {
           const dniNumber = parseInt(dni, 10); // Convierte a número
           const data = await FetchEstadoCuenta(dniNumber);
-          setCuotas(data);
+          const sortedCuotas = data.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
+          setCuotas(sortedCuotas);
         }
       } catch (error) {
         setError(error);
@@ -110,10 +114,30 @@ function FichaAlumno() {
       }
     };
 
+    const fetchCompromiso = async () => {
+    try {
+      if (!dni) return
+      const dniNumber = parseInt(dni, 10); // Convierte a número
+      const firmas = await FetchCompromisosAlumno(dniNumber);
+      if (firmas.length > 0) {
+      
+        if (firmas[0].firmo_ultimo_compromiso === true) {
+          
+          setFirmoCompromiso(true);
+        }
+      }
+    } catch (error) { 
+      console.error('Error al obtener los datos', error);
+    }
+    }
+
     if (dni) {
       fetchDetalleAlumno();
       fetchEstadoCuentaAlumno();
+      fetchCompromiso();
     }
+    
+
   }, [dni]); // Incluye `dni` como dependencia
 
   if (loading) {
@@ -180,7 +204,7 @@ function FichaAlumno() {
           Compromiso de Pago:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          Firmado
+          {firmoCompromiso ? 'Firmado' : 'No firmado'}
         </Text>
         <Text color="gray" mt="10px">
           Estado:
@@ -228,7 +252,6 @@ function FichaAlumno() {
                     <Table variant="simple" width="100%">
                       <Thead>
                         <Tr mt={6}>
-
                           <Th textAlign="center" p={1}>
                             Numero
                           </Th>
@@ -245,7 +268,7 @@ function FichaAlumno() {
                             <Td textAlign="center" p={1}>
                               {cuota.numero}
                             </Td>
-                            <Td textAlign="center">{cuota.fechaVencimiento}</Td>
+                            <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
