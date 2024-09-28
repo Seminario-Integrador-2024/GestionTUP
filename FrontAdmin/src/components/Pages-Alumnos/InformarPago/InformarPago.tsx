@@ -49,7 +49,7 @@ function InformarPago() {
             bg="white"
         >
              <Card>
-                    <CardBody bg={'secundary'} mt={2}>
+                    <CardBody bg={'secundaryBg'} mt={2}>
                         <Flex
                             alignItems="center"
                             justifyContent="center"

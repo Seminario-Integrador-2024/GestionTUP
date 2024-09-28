@@ -12,7 +12,7 @@ import {
     Td,
     IconButton,
     Flex,
-    Link,
+    Skeleton,
     TableContainer,
     Icon,
     Button
@@ -123,7 +123,8 @@ return (
                     borderRadius="md"
                     w={"100%"}
                 >
-                    {pdfUrl && <iframe src={pdfUrl} width="1000px" height="400px" />}
+                    {pdfUrl ? <iframe src={pdfUrl} width="1000px" height="400px" />
+                    : <Skeleton height="400px" w={"1000px"}/>}
                 </Box>
             </Flex>
 
