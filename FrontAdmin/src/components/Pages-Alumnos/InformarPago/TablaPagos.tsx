@@ -1,9 +1,7 @@
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Badge, Checkbox, Input} from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon, SearchIcon } from '@chakra-ui/icons'; 
-import Cuotas from '../../../API-Alumnos/Pagos';
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, Input} from '@chakra-ui/react'; 
 import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
-import { get } from 'http';
+import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
 
 interface Cuota {
   id: number;
@@ -27,14 +25,7 @@ interface TablaCuotasProps {
 function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: TablaCuotasProps) {
 
     const [cuotas, setCuotas] = useState<any[]>([]); 
-   // const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
-
-   
-//    useEffect(() => {
-//     console.log("refresh en tabla pagos", refresh);
-//     setCuotasSeleccionadas([]);
-//     console.log("las cuotas seleccionadas", cuotasSeleccionadas);
-//  }, [refresh]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     // useEffect(() => {
     //   // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
@@ -44,44 +35,31 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     // }, [refresh]);
 
     useEffect(() => {
-        // Aca se deberia hacer el fetch de las cuotas del alumno
-        const getCuotas = async () => {
-        try {
-            const cuotas = await FetchGetCuotas();
-            setCuotas(cuotas);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-        }
-        getCuotas();
-        
-        // setCuotas(Cuotas)   
-    }, [refresh])
-
-
-    // Funcion para manejar el cambio de estado de los checkbox, si el esatdo anterior es true, lo elimina del array, si es false lo agrega
-    // const handleCheckboxChange = (cuota: Cuota) => {
-    //   setCuotasSeleccionadas((prevSeleccionadas) => {
-    //       if (prevSeleccionadas.includes(cuota)) {
-    //           return prevSeleccionadas.filter((item) => item !== cuota);
-    //       } else {
-    //           return [...prevSeleccionadas, cuota];
-    //       }
-    //   });
-    // };
-
+      const getCuotas = async () => {
+          setLoading(true);
+          try {
+              const cuotas = await FetchGetCuotas();
+              const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => parseInt(a.numero) - parseInt(b.numero));      // Si cambia el numero de cuota no olvidar cambiar aca
+              setCuotas(sortedCuotas);
+          } catch (error) {
+              console.error('Error:', error);
+          } finally {
+              setLoading(false);
+          }
+      };
+      getCuotas();
+  }, [refresh]);
+   
     const handleCheckboxChange = (cuota: Cuota) => {
       setCuotasSeleccionadas((prevSeleccionadas) => {
           if (prevSeleccionadas.includes(cuota)) {
-              return prevSeleccionadas.filter((item) => item !== cuota);
+                return prevSeleccionadas.filter((item, idx) => item !== cuota && idx <= cuotas.indexOf(cuota));
           } else {
               return [...prevSeleccionadas, cuota];
           }
       });
+      
     };
-
- 
-
 
     return (
             <Flex
@@ -96,7 +74,10 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                 borderWidth={1}
                 p={3}
             >
-            {cuotas.length > 0 ? (
+            {loading ? (
+                    <Skeleton height="400px" w="750px" />
+                ) : (
+             cuotas.length > 0 ? (
                 <Table variant="simple" width="100%">
                   <Thead>
                     <Tr mt={6}>
@@ -113,19 +94,24 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   <Tbody>
                     {cuotas.map((cuota, index) => (
                       <Tr key={index} >
-                        { cuota.estado === "PAGADO" ?
+                        { cuota.estado === "Pagada" ?
                         <Td><Checkbox isDisabled={true}></Checkbox></Td>
                         :
-                        <Td><Checkbox p={0} borderColor="black" 
-                           onChange={(e) => handleCheckboxChange(cuota)} >
+                        <Td><Checkbox
+                        p={0}
+                        borderColor="black"
+                        isChecked={cuotasSeleccionadas.includes(cuota)}
+                        isDisabled={cuotas.slice(0, index).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota))}
+                        onChange={() => handleCheckboxChange(cuota)}
+                        >
                         </Checkbox></Td>
                         }
                         <Td textAlign="center" p={1}>{cuota.numero}</Td>
-                        <Td textAlign="center">{cuota.fechaVencimiento}</Td>
+                        <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.montoActual)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorpagado)}</Td>
                         <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
-                        { cuota.estado !== "PAGADO" ?
+                        { cuota.estado !== "Pagada" ?
                         <Td textAlign="center">{"$ " +  new Intl.NumberFormat('es-ES').format((cuota.montoActual - cuota.valorpagado - cuota.valorinformado))}</Td>
                         : 
                         <Td textAlign="center">{"$ " + 0}</Td>
@@ -136,7 +122,9 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                 </Table>
             ) : (
               <Text>No hay cuotas para mostrar. Por favor, firmar el compromiso de pago.</Text>
+            )
             )}
+          
         </Box>
         </Flex>
     );

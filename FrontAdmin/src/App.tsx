@@ -14,8 +14,8 @@ function App() {
 
   const { isAuthenticated, rolUser } = useAuth();
   console.log(isAuthenticated, rolUser);
-  const isAdmin = rolUser.includes('staff') || rolUser.includes('superuser');
-  const isAlumno = rolUser.includes('alumno');
+  const isAdmin = rolUser.includes('staff') || rolUser.includes('Administradores');
+  const isAlumno = rolUser.includes('Alumno');
 
 
   return (

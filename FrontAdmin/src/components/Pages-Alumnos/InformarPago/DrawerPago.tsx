@@ -16,11 +16,14 @@ import {
     Text,
     Stack,
     Flex,
+    Icon,
   } from '@chakra-ui/react'
 import { useState} from 'react'
-import {AttachmentIcon} from '@chakra-ui/icons';
+import {AttachmentIcon, InfoIcon, InfoOutlineIcon} from '@chakra-ui/icons';
 import { FetchPostPago } from '../../../API-Alumnos/Pagos';
+import Cookies from 'js-cookie';
 import {useToast} from '../../Toast/useToast';
+import {obtenerFechaForm} from '../../../utils/general';
 
 interface Cuota {
     id: number;
@@ -42,25 +45,45 @@ interface DrawerInformarProps {
 }
 
 const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotasseleccionadas, onRefresh }) => {
-    const [file, setFile] = useState<File | null>(null);
-    const [montoAbonado, setMontoAbonado] = useState('');  //cambiar a entero
+    const [montoAbonado, setMontoAbonado] = useState<number>(0); 
     const [comentarios, setComentarios] = useState('');
     const [total, setTotal] = useState<number>(0);
-    const [nro_transferencia, setNroTransferencia] = useState<number>(0);
     const showToast = useToast();
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0] as File;
-        setFile(file);
-    };
+    const obtenerMesesDeCuotas = (numerosCuotas: number[]): string[] => {
+      const meses: { [key: number]: string } = {
+          0: 'Matrícula',
+          1: 'Marzo',
+          2: 'Abril',
+          3: 'Mayo',
+          4: 'Junio',
+          5: 'Julio',
+          6: 'Agosto',
+          7: 'Septiembre',
+          8: 'Octubre',
+          9: 'Noviembre'
+      };
+  
+      return numerosCuotas.map(numero => meses[numero] || 'Mes desconocido');
+  };
+
 
     const handleSave = () => {
        // Aca hay que hacer el post al backend
        try{
-           const numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
-           FetchPostPago(numerosCuotas, parseInt(montoAbonado), file, comentarios, nro_transferencia);
-            showToast('Pago informado', 'El pago se ha informado correctamente', 'success');
-            // onRefresh();
+            let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
+            numerosCuotas = numerosCuotas.sort((a, b) => parseInt(a) - parseInt(b)); // Ordenar de menor a mayor
+            FetchPostPago(numerosCuotas, montoAbonado, comentarios);
+
+           const dni = Cookies.get('dni');
+           const fullName = Cookies.get('full_name');
+           const fechaHoy = obtenerFechaForm();
+           const googleFormUrl =  `https://docs.google.com/forms/d/e/1FAIpQLSfNe4krjpaC7I_9FA7Do3MAuQr7eC9wF5zVHIgOV2XeqzAAnA/viewform?usp=pp_url&entry.1045781291=${fullName}&entry.839337160=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.1065046570=${dni}&entry.1651003915=${encodeURIComponent(fechaHoy)}&entry.180139663=${obtenerMesesDeCuotas(numerosCuotas)}&entry.463277821=${comentarios}`;
+           window.open(googleFormUrl, '_blank');
+
+           showToast('Pago informado', 'El pago se ha informado correctamente, continuar en el google forms', 'success');
+           
+            onRefresh();
        } catch (error) {
            console.error('Error:', error);
             showToast('Error', 'Ha ocurrido un error al informar el pago', 'error');
@@ -78,14 +101,20 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     }
 
     const isFormValid = () => {
-      return (montoAbonado.trim() !== '') && (file !== null && file.name.trim() !== '' && nro_transferencia !== 0);
+      return (montoAbonado > 0 && montoAbonado <= total);
     };
 
+    
     useEffect(() => {
-    setFile(null);
-    setMontoAbonado('');
-    setTotal(cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0));
-    }, [isOpen]);
+      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0);
+      setTotal(calculatedTotal);
+      setMontoAbonado(calculatedTotal); // Inicializa montoAbonado con el valor de total
+  }, [isOpen, cuotasseleccionadas]);
+
+  
+    // useEffect(() => {
+    //   setMontoAbonado(total);
+    // }, [total]);
 
     return (
       <>
@@ -101,45 +130,33 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
   
             <DrawerBody>
             <Stack direction="column">
-                <Text fontWeight="bold">Cuotas seleccionadas:</Text> 
+                <Text fontWeight="normal">Cuotas seleccionadas:</Text> 
                 {cuotasseleccionadas.map((cuota, index) => (
                     <Flex key={index} ml={1}><li>{cuota.numero}</li> </Flex>
                 ))}
             </Stack>
-            <Text mt={4} mb={4}>Total a abonar: ${total}</Text>
+            <Text mt={4}>Total a abonar:</Text>
+            <Text mb={4} mt={4} fontWeight={600} textAlign={"center"} fontSize={22}>{"$" + new Intl.NumberFormat('es-ES').format(total)}</Text>
+          
             <FormControl isRequired={true}>
                 <FormLabel mb={0}>Monto Abonado</FormLabel>
                 <InputGroup>
                     <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
                       $
                     </InputLeftElement>
-                    <Input placeholder='' onChange={(e) => setMontoAbonado(e.target.value)} />
+                    <Input placeholder='' value={montoAbonado} onChange={(e) => setMontoAbonado(parseInt(e.target.value))} />
                 </InputGroup>
-            <Stack gap={0}>
-              <FormLabel mt={4} mb={0}>Nro. Tranferencia</FormLabel>
-              <Input placeholder='' mt={0}  onChange={(e) => setNroTransferencia(Number(e.target.value))} />
-            </Stack>
+            
             </FormControl>
             <Stack gap={0}>
               <FormLabel mt={4} mb={0}>Comentarios</FormLabel>
               <Input placeholder='' mt={0}  onChange={(e) => setComentarios(e.target.value)} />
             </Stack>
-            <Button mt={6} color="white" rightIcon={<AttachmentIcon/>} onClick={() => document.getElementById('fileInput')?.click()}>
-              Adjuntar Comprobante
-            </Button>
-            <Input
-              type='file'
-              id='fileInput'
-              accept='image/*'
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
-             {file && <Stack direction="column">
-                <Text fontWeight="bold" mt={6}>Archivo cargado:</Text> 
-                <Flex ml={1}><li>{file.name}</li> </Flex>
-            </Stack>}
+            <Stack bg={'secundaryBg'} direction={'row'} alignItems={'center'} borderRadius={5} mt={4} mb={4} p={4} gap={4}>
+                <Icon as={InfoOutlineIcon} w={7} h={7} />
+                <Text as={'i'}>Al seleccionar Guardar se lo redirigira al google forms para que pueda continuar con el informe del pago</Text>
+            </Stack>
             </DrawerBody>
-  
             <DrawerFooter>
               <Button variant='light' mr={3} onClick={handleCancel}>
                 Cancelar
