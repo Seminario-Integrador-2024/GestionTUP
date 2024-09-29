@@ -70,7 +70,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
       console.log('Comparando fechas');
       console.log(fechaVenc);
       console.log(fechaActual);
-      return fechaActual >= fechaVenc;
+      return fechaActual > fechaVenc;
     };
 
     return (
