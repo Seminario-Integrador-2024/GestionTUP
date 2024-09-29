@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Heading, Input, Flex, Button } from '@chakra-ui/react';
+import {formatoFechaAAAAMMaMMAAAA} from '../../../../../utils/general';
+import { useNavigate } from 'react-router-dom';
 
 export default function Select() {
     const [selectedMonth, setSelectedMonth] = useState('');
+    const [fecha, setFecha] = useState('');
+    const navigate = useNavigate();
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMonth(event.target.value);
+        setFecha(formatoFechaAAAAMMaMMAAAA(event.target.value));
+
     };
 
     return (
@@ -18,8 +24,10 @@ export default function Select() {
                 value={selectedMonth}
                 onChange={handleMonthChange}
             />
-            <Flex  justifyContent={"flex-end"}>
-                <Button colorScheme='blue' variant={"solid"}>Solicitar</Button>
+            <Flex  justifyContent={"flex-end"} mt={1}>
+                <Button colorScheme='blue' variant={"solid"}
+                 onClick={() => navigate(`/admin/estadisticas/cuotas/${fecha}`)}
+                >Solicitar</Button>
             </Flex>
         </Flex>
     );

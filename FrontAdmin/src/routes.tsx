@@ -63,7 +63,7 @@ const routes = [
         rol: 'admin',
       },
       {
-        path  : 'cuotas/:cuota',
+        path  : 'cuotas/:fecha',
         element: <Listado />,
         rol: 'admin',
       },

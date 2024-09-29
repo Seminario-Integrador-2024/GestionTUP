@@ -37,15 +37,15 @@ export default function SubMenuContent({
               hasArrow
               borderRadius="10px">
             <span>
-          <ItemSubMenu
-            title={item.title}
-            color={
-              location.pathname === '/admin/estadisticas/' + item.url
+              <ItemSubMenu
+              title={item.title}
+              color={
+                location.pathname.startsWith('/admin/estadisticas/' + item.url)
                 ? 'secundary'
                 : 'white'
-            }
-          />
-          </span>
+              }
+              />
+            </span>
           </Tooltip>
         </Link>
       ))}

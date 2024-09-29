@@ -73,7 +73,7 @@ export const FetchPutMateria = async (
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`${URL}/materias/${codigo_materia}/`, {
+    const response = await fetch(`http://localhost:8000/api/materias/${codigo_materia}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export const FetchDeleteMateria = async (codigo_materia: number) => {
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`${URL}/materias/${codigo_materia}/`, {
+    const response = await fetch(`http://localhost:8000/api/materias/${codigo_materia}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

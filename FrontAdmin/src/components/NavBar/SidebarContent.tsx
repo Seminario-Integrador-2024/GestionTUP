@@ -44,20 +44,22 @@ export function SidebarContent({ onClose, LINK_ITEMS, ...rest }: SidebarProps) {
         mt="70px"
       >
         {LINK_ITEMS.map((link, key) => (
-          <Link key={key} to={link.url} onClick={onClose}>
+            <Link key={key} to={link.url} onClick={onClose}>
+            <span>
             <NavItem
               icon={link.icon}
               title={link.title}
               color={
-                location.pathname.startsWith('/admin/' + link.url)
-                  ? 'secundary'
-                  :  
-                location.pathname.startsWith('/alumnos/' + link.url)
-                  ? 'secundary'
-                  : 'white'
+              location.pathname.startsWith('/admin/' + link.url)
+                ? 'secundary'
+                :  
+              location.pathname.startsWith('/alumnos/' + link.url)
+                ? 'secundary'
+                : 'white'
               }
             />
-          </Link>
+            </span>
+            </Link>
         ))}
       </Flex>
     </Box>
