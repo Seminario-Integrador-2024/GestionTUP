@@ -27,11 +27,11 @@ export const AbonaronCuota = async (fecha: string) => {
     }
 };
 
-export const NoAbonaronCuota = async (fecha: string) => {
+export const NoAbonaronCuota = async (fecha: string, limit: number, offset:number) => {
     try {
 
     const token = Cookies.get('tokennn');
-    const response = await fetch(`http://localhost:8000/api/alumnos/no-pagaron-cuota/${fecha}/`, {
+    const response = await fetch(`http://localhost:8000/api/alumnos/no-pagaron-cuota/${fecha}/?limit=${limit}&offset=${offset}&ordering=full_name`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
