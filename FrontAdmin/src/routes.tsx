@@ -24,6 +24,7 @@ import Alumnos from './components/Pages/Alumnos/Alumnos';
 import { PiStudentLight } from 'react-icons/pi';
 import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno'; import CompromisoDePago from './components/Pages-Alumnos/CompromisoDePago';
 import ListadoAlumnosQueCursanMateria from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ListadoAlumnosQueCursanMateria';
+import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
 
 const routes = [
   {
@@ -81,7 +82,7 @@ const routes = [
   {
     path: 'cuenta',
     title: 'Cuenta',
-    element: <ErrorPage />,
+    element: <EstadoCuenta />,
     rol: 'alumnos',
     icon: iconAlumno,
   },

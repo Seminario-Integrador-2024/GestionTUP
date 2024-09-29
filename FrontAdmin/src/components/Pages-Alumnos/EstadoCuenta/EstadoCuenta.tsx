@@ -1,42 +1,24 @@
-import { useParams } from 'react-router-dom';
-import {
-  Flex,
-  Box,
-  Image,
-  Heading,
-  Text,
-  Spacer,
-  useColorModeValue,
-  Button,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Badge,
-  Checkbox,
-  Input,
-  Tag,
-  Tabs, 
-  TabList, 
-  Tab,
-  TabPanels,
-  TabPanel,
-} from '@chakra-ui/react';
-import { createTheme, ThemeProvider } from '@mui/material';
-import logoUser from '../../../icons/logo-user.png';
-import { useNavigate } from 'react-router-dom';
-import { FetchEstadoCuenta } from '../../../../API/EstadoCuentaAlumno.ts';
-import {
-  FetchDetalleAlumno,
-  FetchMateriasAlumno,
-} from '../../../../API/DetalleAlumno.ts';
-import { FetchCompromisosAlumno } from '../../../../API-Alumnos/Compromiso.ts';
-import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
-import {formatoFechaISOaDDMMAAAA} from '../../../../utils/general';
+import React from "react";
+import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
+import {useState, useEffect} from 'react';
+import {AttachmentIcon} from '@chakra-ui/icons';
+import {obtenerFechaDeHoy} from '../../../utils/general';
+import {FetchDetalleAlumno} from '../../../API/DetalleAlumno'
+import {FetchCompromisos} from '../../../API-Alumnos/Compromiso'
+import Cookies from 'js-cookie';
+
+interface Cuota {
+    id: number;
+    numero: string;
+    monto1erVencimiento: number;
+    monto2doVencimiento: number;
+    monto3erVencimiento: number;
+    valortotal: number;
+    valorpagado: number;
+    valoradeudado: number;
+    estado: string;
+}
 
 interface Alumno {
   full_name: string;
@@ -46,50 +28,32 @@ interface Alumno {
   telefono: number;
   estado_academico: string;
   estado_financiero: string;
+  ultimo_cursado: string;
 }
 
-
-interface Cuota {
-  numero: number;
-  montoActual: number;
-  fechaVencimiento: string;
-  valorpagado: number;
-  estado: number;
-  tipocuota: string;
-  valorinformado: number;
+interface Compromiso { 
+  id: number,
+  compromiso_de_pago: string,
+  fecha_firmado: string,
+  firmado: boolean,
+  alumno: number,
+  firmo_ultimo_compromiso: boolean,
 }
+
+function InformarPago() {
   
-interface Materia {
-  codigo_materia: number;
-  anio_cursada: number;
-  anio_plan: number;
-  nombre: string;
-  cuatrimestre: number;
-}
-
-function FichaAlumno() {
-  const { dni } = useParams();
+  
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
+  const [compromiso, setCompromiso] = useState<Compromiso[]>([]); // Define el estado con un valor inicial de null
   const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
-  const [materias, setMaterias] = useState<Materia[]>([]); // Define el estado con un valor inicial de null
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
-  const [firmoCompromiso, setFirmoCompromiso] = useState<boolean>(false);
-  const navigate = useNavigate();
-
-  const handleBackClick = () => {
-    navigate(-1); // Retrocede en el historial de navegación
-  };
 
   useEffect(() => {
     const fetchDetalleAlumno = async (dni: any) => {
       try {
-        if (dni) {
-          const dataDetalle = await FetchDetalleAlumno(dni);
-          const dataMaterias = await FetchMateriasAlumno(dni);
-          setAlumno(dataDetalle);
-          setMaterias(dataMaterias);
-        }
+        const data = await FetchDetalleAlumno(dni);
+        setAlumno(data);
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -97,15 +61,11 @@ function FichaAlumno() {
         setLoading(false);
       }
     };
-
-    const fetchEstadoCuentaAlumno = async () => {
+    
+    const fetchCompromisos = async () => {
       try {
-        if (dni) {
-          const dniNumber = parseInt(dni, 10); // Convierte a número
-          const data = await FetchEstadoCuenta(dniNumber);
-          const sortedCuotas = data.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
-          setCuotas(sortedCuotas);
-        }
+        const data = await FetchCompromisos();
+        setCompromiso(data);
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -114,56 +74,36 @@ function FichaAlumno() {
       }
     };
 
-    const fetchCompromiso = async () => {
-    try {
-      if (!dni) return
-      const dniNumber = parseInt(dni, 10); // Convierte a número
-      const firmas = await FetchCompromisosAlumno(dniNumber);
-      if (firmas.length > 0) {
-      
-        if (firmas[0].firmo_ultimo_compromiso === true) {
-          
-          setFirmoCompromiso(true);
-        }
-      }
-    } catch (error) { 
-      console.error('Error al obtener los datos', error);
-    }
-    }
-
-    if (dni) {
-      fetchDetalleAlumno(dni);
-      fetchEstadoCuentaAlumno();
-      fetchCompromiso();
-    }
+    const dni = Cookies.get('dni');
+    fetchDetalleAlumno(dni);
+    fetchCompromisos();
     
+   
+  }, []); 
+ 
+    const [fechaDeHoy, setFechaDeHoy] = React.useState(obtenerFechaDeHoy());
+    const [refresh, setRefresh] = useState(false); 
+    const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<Cuota[]>([]);
 
-  }, [dni]); // Incluye `dni` como dependencia
+    const handleRefresh = () => {
+        setRefresh(!refresh); 
+    };
 
-  if (loading) {
-    return <Text>Cargando...</Text>;
-  }
-
-  if (error) {
-    return <Text>Error al cargar los datos.</Text>;
-  }
-
-  if (!alumno) {
-    return <Text>No se encontraron datos.</Text>;
-  }
+    // Este alumnoinfo sirve para setear cuando alumno es null que me muestre algo al menos
+    const alumnoInfo = alumno || {
+    full_name: '-',
+    dni: '-',
+    legajo: '-',
+    email: '-',
+    telefono: '-',
+    estado_financiero: '-',
+    ultimo_cursado: '-'
+  };
   
-  return (
-    
+    return (
+            
     <Flex mt="20px">
-      <Button
-        position="absolute"
-        left="120"
-        color="white"
-        size="sm"
-        onClick={handleBackClick}
-      >
-        <ArrowLeftIcon mr="10px" /> Volver{' '}
-      </Button>
+
       <Box borderRight="1px solid #cbd5e0" w="20%" minH="80vh" p="20px">
         <Text color="gray" mt="30px">
           Apellido y nombre
@@ -172,72 +112,111 @@ function FichaAlumno() {
           size="sm"
           pl="8px"
           fontWeight="Bold"
-        >{`${alumno.full_name}`}</Text>
+        >
+          {alumnoInfo.full_name}
+        </Text>
         <Text color="gray" mt="10px">
           Número DNI:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {new Intl.NumberFormat().format(alumno.dni)}
+          {alumnoInfo.dni}
         </Text>
         <Text color="gray" mt="10px">
           Legajo:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno.legajo}
+        {alumnoInfo.legajo}
         </Text>
         <Text color="gray" mt="10px">
           Email:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno.email}
+        {alumnoInfo.email}  
         </Text>
         <Text color="gray" mt="10px">
           Celular
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {alumno.telefono}
+        {alumnoInfo.telefono}
         </Text>
 
         <hr></hr>
 
         <Text color="gray" mt="20px">
-          Compromiso de Pago:
+          Último Compromiso de Pago:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {firmoCompromiso ? 'Firmado' : 'No firmado'}
+          {compromiso && compromiso[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
         </Text>
         <Text color="gray" mt="10px">
           Estado:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {alumno.estado_financiero}
+         {alumno?.estado_financiero}
         </Text>
         <Text color="gray" mt="20px">
           Ultimo Periodo Cursado
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-        {`${materias[0].anio_cursada} / ${materias[0].cuatrimestre}C`}
+        {alumnoInfo.ultimo_cursado}
         </Text>
-        
       </Box>
+      
+      <Tabs>
+              <TabList>
+                <Tab>Estado de cuenta</Tab>
+              </TabList>
 
-      <Box>
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-          ml={5}
-        >
-          <Box
-            borderRadius={8}
-            borderColor={'gray.200'}
-            borderStyle={'solid'}
-            borderWidth={1}
-            p={3}
-            ml="30px"
-            w="100%"
-          >
-            <Tabs>
+              <TabPanels>
+                <TabPanel minW="50vw">
+                      <Tag m="20px" p="10px">
+                    Estado de cuenta al {fechaDeHoy} 
+                  </Tag>
+                  {cuotas.length > 1 ? (
+                    <Table variant="simple" width="100%">
+                      <Thead>
+                        <Tr mt={6}>
+                          <Th textAlign="center" p={1}>
+                            Numero
+                          </Th>
+                          <Th textAlign="center">Fecha Primer Vto.</Th>
+                          <Th textAlign="center">Valor Actual</Th>
+                          <Th textAlign="center">Valor Pagado</Th>
+                          <Th textAlign="center">Valor Informado</Th>
+                          <Th textAlign="center">Valor Adeudado</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {cuotas && cuotas.map((cuota, index) => (
+                          <Tr key={index}>
+                            <Td textAlign="center" p={1}>
+                              {cuota.numero}
+                            </Td>
+                            <Td textAlign="center">{}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  ) : (
+                    <Text  textAlign="center" padding="20px">No existen cuotas del cuatrimestre en curso. El alumno no firmo el compromiso de pago del periodo actual.</Text>
+                  )}
+                </TabPanel>
+              
+              </TabPanels>
+      </Tabs>
+
+    </Flex>
+    );
+}
+
+export default InformarPago;
+
+/*
+      <Tabs>
               <TabList>
                 <Tab>Estado de cuenta</Tab>
                 <Tab>Materias que cursa</Tab>
@@ -246,7 +225,7 @@ function FichaAlumno() {
               <TabPanels>
                 <TabPanel minW="50vw">
                       <Tag m="20px" p="10px">
-                    Estado de cuenta al {(new Date().toLocaleDateString())}
+                    Estado de cuenta al {fechaDeHoy} 
                   </Tag>
                   {cuotas.length > 1 ? (
                     <Table variant="simple" width="100%">
@@ -318,15 +297,5 @@ function FichaAlumno() {
                       )}
                 </TabPanel>
               </TabPanels>
-            </Tabs>
-
-          </Box>
-
-         
-        </Flex>
-      </Box>
-    </Flex>
-  );
-}
-
-export default FichaAlumno;
+      </Tabs>
+*/
