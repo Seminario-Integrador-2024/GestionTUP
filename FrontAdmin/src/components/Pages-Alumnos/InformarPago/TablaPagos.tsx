@@ -52,13 +52,25 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
    
     const handleCheckboxChange = (cuota: Cuota) => {
       setCuotasSeleccionadas((prevSeleccionadas) => {
+          const cuotaIndex = cuotas.indexOf(cuota);
           if (prevSeleccionadas.includes(cuota)) {
-                return prevSeleccionadas.filter((item, idx) => item !== cuota && idx <= cuotas.indexOf(cuota));
+            return prevSeleccionadas.filter((item) => cuotas.indexOf(item) < cuotaIndex);
           } else {
               return [...prevSeleccionadas, cuota];
           }
       });
       
+    };
+
+    const CuotasInformadas = cuotas.filter((cuota) => cuota.estado === "Pagada completamente");
+
+    const CompararFechas = (fechaVencimiento: string): boolean => {
+      const fechaActual = new Date();
+      const fechaVenc = new Date(fechaVencimiento);
+      console.log('Comparando fechas');
+      console.log(fechaVenc);
+      console.log(fechaActual);
+      return fechaActual > fechaVenc;
     };
 
     return (
@@ -93,15 +105,16 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   </Thead>
                   <Tbody>
                     {cuotas.map((cuota, index) => (
-                      <Tr key={index} >
-                        { cuota.estado === "Pagada" ?
+                        <Tr key={index} >
+                        { CuotasInformadas.includes(cuota) ?
                         <Td><Checkbox isDisabled={true}></Checkbox></Td>
                         :
                         <Td><Checkbox
                         p={0}
-                        borderColor="black"
+                        borderColor={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                        colorScheme={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
                         isChecked={cuotasSeleccionadas.includes(cuota)}
-                        isDisabled={cuotas.slice(0, index).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota))}
+                        isDisabled={cuotas.slice(0, index).filter(item => !CuotasInformadas.includes(item)).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota))}
                         onChange={() => handleCheckboxChange(cuota)}
                         >
                         </Checkbox></Td>

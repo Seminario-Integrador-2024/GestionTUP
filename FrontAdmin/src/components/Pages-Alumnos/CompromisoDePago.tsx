@@ -54,7 +54,7 @@ useEffect(() => {
     const fetchCompromisos = async () => {
         try{
         const data = await FetchCompromisos();
-        setCompromisos(data);
+        setCompromisos(data.results);
         console.log(data);
         } catch (error) {
             console.log(error)
