@@ -19,6 +19,8 @@ export default function Listado() {
     const headers = ['Nombre',  'DNI', 'Situación'];
     const [limit1] = useState(10);
     const [offset1, setOffset1] = useState(0);
+    const [limit2] = useState(10);
+    const [offset2, setOffset2] = useState(0);
 
     const handleNextPage = () => {
         if (offset1 + limit1 < totalNoAbonaron) {
@@ -31,15 +33,21 @@ export default function Listado() {
           setOffset1(offset1 - limit1);
         }
     };
+
+    const handleNextPage2 = () => {
+        if (offset2 + limit2 < totalabonaron) {
+          setOffset1(offset2 + limit2);
+        }
+      };
+    
+      const handlePreviousPage2 = () => {
+        if (offset2 > 0) {
+          setOffset1(offset2 - limit2);
+        }
+    };
     
 
     useEffect(() => {
-
-        const fetchAbonaron = async (fecha: string) => {
-            const data = await AbonaronCuota(fecha);
-            setAbonaron(data.results);
-            setTotalAbonaron(data.count);
-        }
 
         const fetchNoAbonaron = async (fecha: string) => {
             const data = await NoAbonaronCuota(fecha, limit1, offset1);
@@ -50,10 +58,25 @@ export default function Listado() {
         if (fecha === undefined) {
             return;
         }
-        fetchAbonaron(fecha);
         fetchNoAbonaron(fecha);
 
     }, [limit1, offset1]);
+
+    useEffect(() => {
+
+        const fetchAbonaron = async (fecha: string) => {
+            const data = await AbonaronCuota(fecha);
+            setAbonaron(data.results);
+            setTotalAbonaron(data.count);
+        }
+
+        if (fecha === undefined) {
+            return;
+        }
+        fetchAbonaron(fecha);
+
+    }, [limit2, offset2]);
+
 
     return (
         <Flex w={"100%"}
@@ -75,6 +98,17 @@ export default function Listado() {
                                     <Tag colorScheme="secundaryBg" size="lg"> Periodo: {fecha} </Tag>
                                 </Flex>
                                     <Tabla headers={headers} data={abonaron} /> 
+                                    <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >
+                                            <Flex justifyContent="space-between" alignItems={"center"}>
+                                            <Button onClick={handlePreviousPage2} isDisabled={offset2 === 0} color="white" leftIcon={<ArrowLeftIcon/>}>
+                                                Anterior
+                                            </Button>
+                                            <Text textAlign={"center"} mb={0}>Página {Math.ceil(offset2 / limit2) + 1} de {Math.ceil(totalabonaron / limit2)}</Text>
+                                            <Button onClick={handleNextPage2} isDisabled={offset2 + limit2 >= totalabonaron} color="white" rightIcon={<ArrowRightIcon/>}>
+                                                Siguiente
+                                            </Button>
+                                            </Flex>
+                                    </Box>
                                 </Flex>
                             : <p>No hay datos para mostrar</p>}
                         </Flex>
