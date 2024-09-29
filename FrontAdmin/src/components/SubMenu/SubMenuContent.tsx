@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Text, FlexProps, Heading } from '@chakra-ui/react';
+import { Box, Tooltip, FlexProps, Heading } from '@chakra-ui/react';
 import ItemSubMenu from './ItemSubMenu';
 import { ITEMS_SUBMENU } from './LinksSubMenu';
 import { Link, useLocation, Outlet, useRoutes } from 'react-router-dom';
@@ -25,6 +25,18 @@ export default function SubMenuContent({
 
       {ITEMS_SUBMENU.map((item, index) => (
         <Link key={index} to={item.url} onClick={onClose}>
+          <Tooltip label={item.tooltip}
+              placement="right"
+              pt="8px"
+              pb="8px"
+              pl="20px"
+              pr="20px"
+              ml="8px"
+              bg="secundaryHover"
+              color="black"
+              hasArrow
+              borderRadius="10px">
+            <span>
           <ItemSubMenu
             title={item.title}
             color={
@@ -33,6 +45,8 @@ export default function SubMenuContent({
                 : 'white'
             }
           />
+          </span>
+          </Tooltip>
         </Link>
       ))}
     </Box>
