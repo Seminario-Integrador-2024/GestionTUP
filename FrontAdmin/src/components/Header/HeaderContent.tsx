@@ -9,16 +9,29 @@ import {
   IconButton,
   Box,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import imgLogo from '../icons/Logos TUP_Mesa de trabajo 1.png';
 import logoUser from '../icons/logo-user.png';
 import { FiMenu } from 'react-icons/fi';
 import { useAuth } from '../../Context';
 import Cookies from 'js-cookie';
+import Perfil from '../Modal/Perfil';
 
 export function HeaderContent({ onOpen }: { onOpen: any }) {
   const { onLogout } = useAuth();
   const user = Cookies.get('full_name');
+  const {
+    isOpen: isOpen1,
+    onOpen: onOpen1,
+    onClose: onClose1,
+  } = useDisclosure();
+
+  const handleConfirmar = () => {
+    console.log('confirmar');
+    // TODO: Implementar la lógica de confirmar
+  }
+
   return (
     <Flex
       borderBottom="1px"
@@ -53,13 +66,19 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
           <Image src={logoUser} w="100%"></Image>
         </MenuButton>
         <MenuList>
-          <MenuItem color="gray" pointerEvents="none">
+          <MenuItem 
+            onClick={onOpen1}>
             Ver Perfil
           </MenuItem>
           <MenuItem onClick={() => onLogout()}>Cerrar sesión</MenuItem>
         </MenuList>
         </Flex>
       </Menu>
+      <Perfil 
+      isOpen={isOpen1}
+      onClose={onClose1}
+      confirmar={handleConfirmar}
+      />
     </Flex>
   );
 }
