@@ -6,7 +6,7 @@ export const FetchMontos = async (offset: number, limit: number) => {
     const token = Cookies.get('tokennn');
 
     const response = await fetch(
-      `${URL}/compromisos/`,
+      `http://localhost:8000/api/compromisos/`,
       {
         method: 'GET',
         headers: {
