@@ -23,17 +23,6 @@ export default function Contraseña({ isOpen, onClose }: ModalComponentProps) {
    
 
     useEffect (() => {
-        const fetchDetalleAlumno = async () => {
-            try {
-                const dni = Cookies.get('dni');
-                const data = await FetchDetalleAlumno(parseInt(dni!));
-                setData(data);
-               
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchDetalleAlumno();
         setContraseña('');
         setContraseña2('');
         setError('');
