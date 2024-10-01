@@ -51,8 +51,10 @@ export default function Listado() {
 
         const fetchNoAbonaron = async (fecha: string) => {
             const data = await NoAbonaronCuota(fecha, limit1, offset1);
+            if (data.results.length > 0) {
             setNoAbonaron(data.results);
             setTotalNoAbonaron(data.count);
+            }
         }
 
         if (fecha === undefined) {
@@ -66,8 +68,11 @@ export default function Listado() {
 
         const fetchAbonaron = async (fecha: string) => {
             const data = await AbonaronCuota(fecha);
+            if (data.results.length > 0) {
             setAbonaron(data.results);
             setTotalAbonaron(data.count);
+            }
+
         }
 
         if (fecha === undefined) {

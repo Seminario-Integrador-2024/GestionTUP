@@ -2,6 +2,7 @@ import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, I
 import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
 import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
+import { motion } from 'framer-motion';
 
 interface Cuota {
   id: number;
@@ -105,7 +106,18 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   </Thead>
                   <Tbody>
                     {cuotas.map((cuota, index) => (
-                        <Tr key={index} >
+                          <motion.tr
+                          key={index}
+                          animate={{
+                            //opacity: CompararFechas(cuota.fechaVencimiento) ? [1, 0.5, 1] : 1,
+                            backgroundColor: CompararFechas(cuota.fechaVencimiento) ? ['#FFFFFF', '#FFAAAA', '#FF8A8A'] : 'transparent',
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatType: 'reverse',
+                          }}
+                        >
                         { CuotasInformadas.includes(cuota) ?
                         <Td><Checkbox isDisabled={true}></Checkbox></Td>
                         :
@@ -129,7 +141,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                         : 
                         <Td textAlign="center">{"$ " + 0}</Td>
                         }
-                      </Tr>
+                     </motion.tr>
                     ))}
                   </Tbody>
                 </Table>
