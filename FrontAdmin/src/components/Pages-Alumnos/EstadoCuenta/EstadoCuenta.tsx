@@ -3,22 +3,24 @@ import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels
 import { useDisclosure } from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
 import {AttachmentIcon} from '@chakra-ui/icons';
-import {obtenerFechaDeHoy} from '../../../utils/general';
+import { IoEyeOutline } from "react-icons/io5";
+import {obtenerFechaDeHoy, formatoFechaISOaDDMMAAAA} from '../../../utils/general';
 import {FetchDetalleAlumno} from '../../../API/DetalleAlumno'
 import {FetchCompromisos} from '../../../API-Alumnos/Compromiso'
+import {FetchResumenPagos} from '../../../API-Alumnos/Pagos'
+import {FetchCuotas} from '../../../API-Alumnos/Cuotas'
 import Cookies from 'js-cookie';
 
 interface Cuota {
-    id: number;
     numero: string;
-    monto1erVencimiento: number;
-    monto2doVencimiento: number;
-    monto3erVencimiento: number;
-    valortotal: number;
+    montoActual: number;
+    fechaVencimiento: string;
     valorpagado: number;
-    valoradeudado: number;
     estado: string;
+    tipocuota: string;
+    valorinformado: number;
 }
+
 
 interface Alumno {
   full_name: string;
@@ -40,11 +42,33 @@ interface Compromiso {
   firmo_ultimo_compromiso: boolean,
 }
 
+interface CompromisoResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Compromiso[];
+}
+
+interface Pagos {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: PagosResponse[];
+}
+
+interface PagosResponse{
+  monto_informado: number,
+  estado: string, 
+  fecha: string, 
+  cuotas: string,
+}
+
 function InformarPago() {
   
   
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
-  const [compromiso, setCompromiso] = useState<Compromiso[]>([]); // Define el estado con un valor inicial de null
+  const [compromiso, setCompromiso] = useState<CompromisoResponse >(); // Define el estado con un valor inicial de null
+  const [pagos, setPagos] = useState<Pagos[]>([]); //arranca vacio
   const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
@@ -65,7 +89,31 @@ function InformarPago() {
     const fetchCompromisos = async () => {
       try {
         const data = await FetchCompromisos();
-        setCompromiso(data);
+      } catch (error) {
+        setError(error);
+        console.error('Error al obtener los datos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchPagos = async () => {
+      try {
+        const data = await FetchResumenPagos();
+        setPagos(data);
+      } catch (error) {
+        setError(error);
+        console.error('Error al obtener los datos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchCuotas = async () => {
+      try {
+        const data = await FetchCuotas();
+        console.log('cuotas:', data)
+        setCuotas(data);
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -77,6 +125,8 @@ function InformarPago() {
     const dni = Cookies.get('dni');
     fetchDetalleAlumno(dni);
     fetchCompromisos();
+    fetchPagos();
+    fetchCuotas();
     
    
   }, []); 
@@ -146,7 +196,7 @@ function InformarPago() {
           Último Compromiso de Pago:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {compromiso && compromiso[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
+          {compromiso && compromiso.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
         </Text>
         <Text color="gray" mt="10px">
           Estado:
@@ -162,7 +212,7 @@ function InformarPago() {
         </Text>
       </Box>
       
-      <Tabs>
+      <Tabs ml="30px">
               <TabList>
                 <Tab>Estado de cuenta</Tab>
               </TabList>
@@ -172,7 +222,7 @@ function InformarPago() {
                       <Tag m="20px" p="10px">
                     Estado de cuenta al {fechaDeHoy} 
                   </Tag>
-                  {cuotas.length > 1 ? (
+                  {cuotas.length > 0 ? (
                     <Table variant="simple" width="100%">
                       <Thead>
                         <Tr mt={6}>
@@ -189,14 +239,71 @@ function InformarPago() {
                       <Tbody>
                         {cuotas && cuotas.map((cuota, index) => (
                           <Tr key={index}>
-                            <Td textAlign="center" p={1}>
-                              {cuota.numero}
-                            </Td>
-                            <Td textAlign="center">{}</Td>
+                            <Td textAlign="center">{cuota.numero}</Td>
+                            <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                            <Td textAlign="center" p="8px">{
+                              cuota.estado === 'Paga' ? 
+                              <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => (console.log('clic enable'))}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
+                              :<Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>}
+                              </Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  ) : (
+                    <Text  textAlign="center" padding="20px">No existen cuotas para el alumno.</Text>
+                  )}
+                </TabPanel>
+              
+              </TabPanels>
+      </Tabs>
+                
+    </Flex>
+    );
+}
+
+export default InformarPago;
+
+/*
+           <Tabs ml="30px">
+              <TabList>
+                <Tab>Estado de cuenta</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel minW="50vw">
+                      <Tag m="20px" p="10px">
+                    Estado de cuenta al {fechaDeHoy} 
+                  </Tag>
+                  {pagos.length > 1 ? (
+                    <Table variant="simple" width="100%">
+                      <Thead>
+                        <Tr mt={6}>
+                          <Th textAlign="center" p={1}>
+                            Numero
+                          </Th>
+                          <Th textAlign="center">Fecha Primer Vto.</Th>
+                          <Th textAlign="center">Valor Actual</Th>
+                          <Th textAlign="center">Valor Pagado</Th>
+                          <Th textAlign="center">Valor Informado</Th>
+                          <Th textAlign="center">Valor Adeudado</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {pagos && pagos.map((pago, index) => (
+                          <Tr key={index}>
+                            <Td textAlign="center" p={1}>
+                              {pago.numero}
+                            </Td>
+                            <Td textAlign="center">{}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.montoActual)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.valorpagado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.valorinformado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.montoActual - pago.valorpagado - pago.valorinformado)}</Td>
                           </Tr>
                         ))}
                       </Tbody>
@@ -206,96 +313,6 @@ function InformarPago() {
                   )}
                 </TabPanel>
               
-              </TabPanels>
-      </Tabs>
-
-    </Flex>
-    );
-}
-
-export default InformarPago;
-
-/*
-      <Tabs>
-              <TabList>
-                <Tab>Estado de cuenta</Tab>
-                <Tab>Materias que cursa</Tab>
-              </TabList>
-
-              <TabPanels>
-                <TabPanel minW="50vw">
-                      <Tag m="20px" p="10px">
-                    Estado de cuenta al {fechaDeHoy} 
-                  </Tag>
-                  {cuotas.length > 1 ? (
-                    <Table variant="simple" width="100%">
-                      <Thead>
-                        <Tr mt={6}>
-                          <Th textAlign="center" p={1}>
-                            Numero
-                          </Th>
-                          <Th textAlign="center">Fecha Primer Vto.</Th>
-                          <Th textAlign="center">Valor Actual</Th>
-                          <Th textAlign="center">Valor Pagado</Th>
-                          <Th textAlign="center">Valor Informado</Th>
-                          <Th textAlign="center">Valor Adeudado</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {cuotas && cuotas.map((cuota, index) => (
-                          <Tr key={index}>
-                            <Td textAlign="center" p={1}>
-                              {cuota.numero}
-                            </Td>
-                            <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
-                          </Tr>
-                        ))}
-                      </Tbody>
-                    </Table>
-                  ) : (
-                    <Text  textAlign="center" padding="20px">No existen cuotas del cuatrimestre en curso. El alumno no firmo el compromiso de pago del periodo actual.</Text>
-                  )}
-                </TabPanel>
-                
-                <TabPanel minW="50vw">
-                      {materias.length > 0 ? (
-                        <Table variant="simple" width="100%">
-                          <Thead>
-                            <Tr mt={6}>
-                              <Th textAlign="center">Codigo de materia</Th>
-                              <Th textAlign="center">Nombre</Th>
-                              <Th textAlign="center">Año de cursada</Th>
-                              <Th textAlign="center">Plan</Th>
-                              <Th textAlign="center">Cuatrimestre</Th>
-                            </Tr>
-                          </Thead>
-                          <Tbody>
-                            {materias?.map((materia, index) => (
-                                <Tr
-                                  key={index}
-                                  onClick={() =>
-                                    navigate(`#`) //Aca tendriamos que ver a donde se lo redirige
-                                  }
-                                  cursor="pointer"
-                                  _hover={{ bg: "gray.50" }}
-                                >
-                                    <Td textAlign="center">{materia.codigo_materia}</Td>
-                                    <Td textAlign="center">{materia.nombre}</Td>
-                                    <Td textAlign="center">{materia.anio_cursada}</Td>
-                                    <Td textAlign="center">{materia.anio_plan}</Td>
-                                    <Td textAlign="center">{materia.cuatrimestre}</Td>
-                                </Tr>
-                            ))}
-                          </Tbody>
-                        </Table>
-                      ) : (
-                        <Text>El alumno no se encuentra cursando materias en el cuatrimestre en curso.</Text>
-                      )}
-                </TabPanel>
               </TabPanels>
       </Tabs>
 */
