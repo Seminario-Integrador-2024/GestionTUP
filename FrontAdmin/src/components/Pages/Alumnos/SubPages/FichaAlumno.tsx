@@ -119,10 +119,8 @@ function FichaAlumno() {
       if (!dni) return
       const dniNumber = parseInt(dni, 10); // Convierte a número
       const firmas = await FetchCompromisosAlumno(dniNumber);
-      if (firmas.length > 0) {
-      
-        if (firmas[0].firmo_ultimo_compromiso === true) {
-          
+      if (firmas.results.length > 0) {
+        if (firmas.results[0].firmo_ultimo_compromiso === true) {
           setFirmoCompromiso(true);
         }
       }

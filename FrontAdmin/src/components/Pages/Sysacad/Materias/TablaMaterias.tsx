@@ -35,7 +35,7 @@ export default function TablaMaterias() {
         const fetchData = async () => {
           try {
             const data = await FetchMaterias();
-            setMaterias(data);
+            setMaterias(data.results);
             console.log(data);
           } catch (error) {
             console.error('Network error', error);

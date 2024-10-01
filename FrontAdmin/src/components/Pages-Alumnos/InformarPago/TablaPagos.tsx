@@ -2,6 +2,7 @@ import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, I
 import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
 import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
+import { motion } from 'framer-motion';
 
 interface Cuota {
   id: number;
@@ -27,12 +28,12 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     const [cuotas, setCuotas] = useState<any[]>([]); 
     const [loading, setLoading] = useState<boolean>(true);
 
-    // useEffect(() => {
-    //   // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
-    //   if (refresh) {
-    //     window.location.reload();
-    //   }
-    // }, [refresh]);
+    useEffect(() => {
+      // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
+      if (refresh) {
+        window.location.reload();
+      }
+    }, [refresh]);
 
     useEffect(() => {
       const getCuotas = async () => {
@@ -52,13 +53,22 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
    
     const handleCheckboxChange = (cuota: Cuota) => {
       setCuotasSeleccionadas((prevSeleccionadas) => {
+          const cuotaIndex = cuotas.indexOf(cuota);
           if (prevSeleccionadas.includes(cuota)) {
-                return prevSeleccionadas.filter((item, idx) => item !== cuota && idx <= cuotas.indexOf(cuota));
+            return prevSeleccionadas.filter((item) => cuotas.indexOf(item) < cuotaIndex);
           } else {
               return [...prevSeleccionadas, cuota];
           }
       });
       
+    };
+
+    const CuotasInformadas = cuotas.filter((cuota) => cuota.estado === "Pagada completamente");
+
+    const CompararFechas = (fechaVencimiento: string): boolean => {
+      const fechaActual = new Date();
+      const fechaVenc = new Date(fechaVencimiento);
+      return fechaActual > fechaVenc;
     };
 
     return (
@@ -93,15 +103,27 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   </Thead>
                   <Tbody>
                     {cuotas.map((cuota, index) => (
-                      <Tr key={index} >
-                        { cuota.estado === "Pagada" ?
+                          <motion.tr
+                          key={index}
+                          animate={{
+                            //opacity: CompararFechas(cuota.fechaVencimiento) ? [1, 0.5, 1] : 1,
+                            backgroundColor: CompararFechas(cuota.fechaVencimiento) ? ['#FFFFFF', '#FFAAAA', '#FF8A8A'] : 'transparent',
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatType: 'reverse',
+                          }}
+                        >
+                        { CuotasInformadas.includes(cuota) ?
                         <Td><Checkbox isDisabled={true}></Checkbox></Td>
                         :
                         <Td><Checkbox
                         p={0}
-                        borderColor="black"
+                        borderColor={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                        colorScheme={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
                         isChecked={cuotasSeleccionadas.includes(cuota)}
-                        isDisabled={cuotas.slice(0, index).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota))}
+                        isDisabled={cuotas.slice(0, index).filter(item => !CuotasInformadas.includes(item)).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota))}
                         onChange={() => handleCheckboxChange(cuota)}
                         >
                         </Checkbox></Td>
@@ -116,7 +138,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                         : 
                         <Td textAlign="center">{"$ " + 0}</Td>
                         }
-                      </Tr>
+                     </motion.tr>
                     ))}
                   </Tbody>
                 </Table>
