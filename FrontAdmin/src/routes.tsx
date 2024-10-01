@@ -27,6 +27,7 @@ import ListadoAlumnosQueCursanMateria from './components/Pages/Estadisticas/SubP
 import Select from './components/Pages/Estadisticas/SubPages/Cuotas/Select';
 import Listado from './components/Pages/Estadisticas/SubPages/Cuotas/Listado';
 import path from 'path';
+import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
 
 const routes = [
   {
@@ -94,7 +95,7 @@ const routes = [
   {
     path: 'cuenta',
     title: 'Cuenta',
-    element: <ErrorPage />,
+    element: <EstadoCuenta />,
     rol: 'alumnos',
     icon: iconAlumno,
   },
