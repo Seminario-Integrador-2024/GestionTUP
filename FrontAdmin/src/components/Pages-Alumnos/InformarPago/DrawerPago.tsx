@@ -70,10 +70,11 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
     const handleSave = () => {
        // Aca hay que hacer el post al backend
+       const guardar = async () => {
        try{
             let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
             numerosCuotas = numerosCuotas.sort((a, b) => parseInt(a) - parseInt(b)); // Ordenar de menor a mayor
-            FetchPostPago(numerosCuotas, montoAbonado, comentarios);
+            await FetchPostPago(numerosCuotas, montoAbonado, comentarios);
 
            const dni = Cookies.get('dni');
            const fullName = Cookies.get('full_name');
@@ -83,17 +84,18 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
            showToast('Pago informado', 'El pago se ha informado correctamente, continuar en el google forms', 'success');
            
-            onRefresh();
+           //onRefresh();
        } catch (error) {
            console.error('Error:', error);
             showToast('Error', 'Ha ocurrido un error al informar el pago', 'error');
             // onRefresh();
+       } finally {
+          if (onRefresh) {
+          onRefresh()};
        }
-       // Ver como volver a renderizar la tabla de cuotas
-        if (onRefresh) {
-          onRefresh();
-          console.log('onRefresh');} 
-        onClose();
+      };
+    guardar();
+    onClose();
     };
 
     const handleCancel = () => {
