@@ -28,12 +28,12 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     const [cuotas, setCuotas] = useState<any[]>([]); 
     const [loading, setLoading] = useState<boolean>(true);
 
-    // useEffect(() => {
-    //   // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
-    //   if (refresh) {
-    //     window.location.reload();
-    //   }
-    // }, [refresh]);
+    useEffect(() => {
+      // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
+      if (refresh) {
+        window.location.reload();
+      }
+    }, [refresh]);
 
     useEffect(() => {
       const getCuotas = async () => {
@@ -68,9 +68,6 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     const CompararFechas = (fechaVencimiento: string): boolean => {
       const fechaActual = new Date();
       const fechaVenc = new Date(fechaVencimiento);
-      console.log('Comparando fechas');
-      console.log(fechaVenc);
-      console.log(fechaActual);
       return fechaActual > fechaVenc;
     };
 
