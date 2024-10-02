@@ -73,7 +73,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
        const guardar = async () => {
        try{
             let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.id_cuota);
-            numerosCuotas = numerosCuotas.sort((a, b) => parseInt(a) - parseInt(b)); // Ordenar de menor a mayor
+            numerosCuotas = numerosCuotas.sort((a, b) => a - b); // Ordenar de menor a mayor
             await FetchPostPago(numerosCuotas, montoAbonado, comentarios);
 
            const dni = Cookies.get('dni');
