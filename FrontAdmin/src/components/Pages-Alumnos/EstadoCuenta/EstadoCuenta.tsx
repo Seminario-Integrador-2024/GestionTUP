@@ -12,13 +12,17 @@ import {FetchCuotas} from '../../../API-Alumnos/Cuotas'
 import Cookies from 'js-cookie';
 
 interface Cuota {
-    numero: string;
+    id_cuota: number,
+    nro_cuota: number;
+    fecha_informado: string,
+    numero: number,
     montoActual: number;
     fechaVencimiento: string;
     valorpagado: number;
     estado: string;
     tipocuota: string;
     valorinformado: number;
+    monto: number;
 }
 
 
@@ -49,18 +53,18 @@ interface CompromisoResponse {
   results: Compromiso[];
 }
 
-interface Pagos {
+interface Pago {
+  monto_informado: number;
+  estado: string;
+  fecha: string;
+  cuotas: Cuota[];
+  comentario: string;
+}
+interface PagosResponse {
   count: number;
   next: string | null;
   previous: string | null;
-  results: PagosResponse[];
-}
-
-interface PagosResponse{
-  monto_informado: number,
-  estado: string, 
-  fecha: string, 
-  cuotas: string,
+  results: Pago[]; // Esta es la propiedad que contiene los pagos
 }
 
 function InformarPago() {
@@ -68,8 +72,9 @@ function InformarPago() {
   
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
   const [compromiso, setCompromiso] = useState<CompromisoResponse >(); // Define el estado con un valor inicial de null
-  const [pagos, setPagos] = useState<Pagos[]>([]); //arranca vacio
+  const [pagos, setPagos] = useState<PagosResponse | null>(null);
   const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
+  const [detail, showDetail] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
 
@@ -100,6 +105,7 @@ function InformarPago() {
     const fetchPagos = async () => {
       try {
         const data = await FetchResumenPagos();
+        console.log('Resumen pagos', data)
         setPagos(data);
       } catch (error) {
         setError(error);
@@ -112,7 +118,7 @@ function InformarPago() {
     const fetchCuotas = async () => {
       try {
         const data = await FetchCuotas();
-        console.log('cuotas:', data)
+        console.log('Cuotas:', data)
         setCuotas(data);
       } catch (error) {
         setError(error);
@@ -135,6 +141,7 @@ function InformarPago() {
     const [refresh, setRefresh] = useState(false); 
     const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<Cuota[]>([]);
 
+
     const handleRefresh = () => {
         setRefresh(!refresh); 
     };
@@ -149,7 +156,16 @@ function InformarPago() {
     estado_financiero: '-',
     ultimo_cursado: '-'
   };
-  
+
+  /*
+  const encontrarPagosPorCuota = (pagos: PagosResponse | null, detail: number): Pago | undefined => {
+    return pagos?.results.filter(pago =>
+      pago.cuotas.some(cuota => cuota.id_cuota === detail),
+    );
+    
+  };
+
+  const pagosFiltrados = encontrarPagosPorCuota(pagos, detail);*/
     return (
             
     <Flex mt="20px">
@@ -246,9 +262,11 @@ function InformarPago() {
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
                             <Td textAlign="center" p="8px">{
-                              cuota.estado === 'Paga' ? 
-                              <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => (console.log('clic enable'))}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
-                              :<Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>}
+                              cuota.estado === 'Impaga' ? 
+                              <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
+                              :
+                              <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => showDetail(cuota.id_cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
+                              }
                               </Td>
                           </Tr>
                         ))}
@@ -260,8 +278,40 @@ function InformarPago() {
                 </TabPanel>
               
               </TabPanels>
+              {detail != null ? 
+              <Box minH="80vh" p="20px">
+                <Table variant="simple" width="100%"  border="1px solid #cbd5e0">
+                      <Thead >
+                        <Text p="20px">Detalle Pago</Text>
+                        <Tr mt={6}>
+                          <Th textAlign="center" p={1}>Cuota</Th>
+                          <Th textAlign="center" p={1}>Capital Original</Th>
+                          <Th textAlign="center" p={1}>Capital con Mora</Th>
+                          <Th textAlign="center" p={1}>Fecha de Informe</Th>
+                          <Th textAlign="center" p={1}>Valor Pagado</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                      {pagos?.results
+                        .filter(pago => pago.cuotas[0].id_cuota === detail) // Filtra los pagos que cumplen la condición
+                        .map(pago => (
+                          <Tr key={pago.cuotas[0].id_cuota}> {/* Asegúrate de usar una clave única para cada fila */}
+                            <Td textAlign="center">{pago.cuotas[0].nro_cuota}</Td>
+                            <Td textAlign="center">{pago.cuotas[0].monto}</Td>
+                            <Td textAlign="center"></Td>
+                            <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
+                            <Td textAlign="center">{pago.monto_informado}</Td>
+                          </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+              </Box> 
+              : 
+              <Box></Box>
+              }
+              
       </Tabs>
-                
+      
     </Flex>
     );
 }
