@@ -26,7 +26,7 @@ import {useToast} from '../../Toast/useToast';
 import {obtenerFechaForm} from '../../../utils/general';
 
 interface Cuota {
-    id: number;
+    id_cuota: number;
     numero: string;
     monto1erVencimiento: number;
     monto2doVencimiento: number;
@@ -72,7 +72,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
        // Aca hay que hacer el post al backend
        const guardar = async () => {
        try{
-            let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.numero);
+            let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.id_cuota);
             numerosCuotas = numerosCuotas.sort((a, b) => parseInt(a) - parseInt(b)); // Ordenar de menor a mayor
             await FetchPostPago(numerosCuotas, montoAbonado, comentarios);
 
