@@ -35,7 +35,7 @@ export default function TablaMaterias() {
         const fetchData = async () => {
           try {
             const data = await FetchMaterias();
-            setMaterias(data);
+            setMaterias(data.results);
             console.log(data);
           } catch (error) {
             console.error('Network error', error);
@@ -134,9 +134,9 @@ export default function TablaMaterias() {
                 <Table variant="simple">
                     <Thead>
                         <Tr bg="secundaryBg">
-                            <Th>ID Materia</Th>
+                            <Th>Cod. Materia</Th>
                             <Th>Nombre</Th>
-                            <Th>Año</Th>
+                            
                             <Th>Cuatrimestre</Th>
                             <Th>Plan</Th>
                             <Th textAlign="center">Acciones</Th>
@@ -147,8 +147,8 @@ export default function TablaMaterias() {
                             <Tr key={index} bg={index % 2 === 0 ? "white" : "secundaryBg"} height="15px">
                                 <Td>{materia.codigo_materia}</Td>
                                 <Td>{materia.nombre}</Td>
-                                <Td>{materia.anio_cursada}</Td>
-                                <Td>{materia.cuatrimestre}</Td>
+                                
+                                <Td textAlign={"center"}>{materia.cuatrimestre}</Td>
                                 <Td>{materia.anio_plan}</Td>
                                 <Td>
                                     <Flex>
