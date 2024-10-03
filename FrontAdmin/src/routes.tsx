@@ -24,6 +24,7 @@ import Alumnos from './components/Pages/Alumnos/Alumnos';
 import { PiStudentLight } from 'react-icons/pi';
 import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno'; import CompromisoDePago from './components/Pages-Alumnos/CompromisoDePago';
 import ListadoAlumnosQueCursanMateria from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ListadoAlumnosQueCursanMateria';
+import AlumnosCompromisoPago from './components/Pages/Estadisticas/SubPages/Alumnos-que-fimaron-compromiso-de-pago';
 import Select from './components/Pages/Estadisticas/SubPages/Cuotas/Select';
 import Listado from './components/Pages/Estadisticas/SubPages/Cuotas/Listado';
 import path from 'path';
@@ -53,7 +54,13 @@ const routes = [
         element: <ListadoMaterias />,
         rol: 'admin',
 
-      },{
+      },
+      {
+        path: 'alumnos-que-firmaron-compromiso-de-pago',
+        element: <AlumnosCompromisoPago />,
+        rol: 'admin',
+      },
+      {
         path: 'alumnos-que-cursan-materia/:codigo_materia',
         element: <ListadoAlumnosQueCursanMateria />,
         rol: 'admin',
