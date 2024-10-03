@@ -7,6 +7,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import {obtenerFechaDeHoy, formatoFechaISOaDDMMAAAA} from '../../../utils/general';
 import {FetchDetalleAlumno} from '../../../API/DetalleAlumno'
 import {FetchCompromisos} from '../../../API-Alumnos/Compromiso'
+import {FetchDetalleCompromiso} from '../../../API-Alumnos/Compromiso'
 import {FetchResumenPagos} from '../../../API-Alumnos/Pagos'
 import {FetchCuotas} from '../../../API-Alumnos/Cuotas'
 import Cookies from 'js-cookie';
@@ -51,6 +52,9 @@ interface CompromisoResponse {
   next: string | null;
   previous: string | null;
   results: Compromiso[];
+  monto_completo: number;
+  monto_completo_2venc: number, 
+  monto_completo_3venc: number,
 }
 
 interface Pago {
@@ -71,7 +75,8 @@ function InformarPago() {
   
   
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
-  const [compromiso, setCompromiso] = useState<CompromisoResponse >(); // Define el estado con un valor inicial de null
+  const [compromisoFirmado, setCompromiso] = useState<CompromisoResponse >(); // Define el estado con un valor inicial de null
+  const [detalleCompromiso, setDetalleCompromiso] = useState<CompromisoResponse >(); 
   const [pagos, setPagos] = useState<PagosResponse | null>(null);
   const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
   const [detail, showDetail] = useState<number | null>(null);
@@ -82,6 +87,7 @@ function InformarPago() {
     const fetchDetalleAlumno = async (dni: any) => {
       try {
         const data = await FetchDetalleAlumno(dni);
+        console.log('detalle alumno: ', data)
         setAlumno(data);
       } catch (error) {
         setError(error);
@@ -91,9 +97,24 @@ function InformarPago() {
       }
     };
     
-    const fetchCompromisos = async () => {
+    const fetchCompromisoFirmado = async () => {
       try {
         const data = await FetchCompromisos();
+        setCompromiso(data)
+        console.log('data: ', data)
+      } catch (error) {
+        setError(error);
+        console.error('Error al obtener los datos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchDetalleCompromiso = async (id: any) => {
+      try {
+        const data = await FetchDetalleCompromiso(id);
+        setDetalleCompromiso(data)
+        console.log('detalle del compromiso;' , data)
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -130,9 +151,11 @@ function InformarPago() {
 
     const dni = Cookies.get('dni');
     fetchDetalleAlumno(dni);
-    fetchCompromisos();
+    fetchCompromisoFirmado();
     fetchPagos();
     fetchCuotas();
+    compromisoFirmado != null ? fetchDetalleCompromiso(compromisoFirmado?.results[0].id) : null
+
     
    
   }, []); 
@@ -157,15 +180,35 @@ function InformarPago() {
     ultimo_cursado: '-'
   };
 
-  /*
-  const encontrarPagosPorCuota = (pagos: PagosResponse | null, detail: number): Pago | undefined => {
-    return pagos?.results.filter(pago =>
-      pago.cuotas.some(cuota => cuota.id_cuota === detail),
-    );
-    
+  const verificarMora = (fecha: string) => {
+    const [year, month, day] = fecha.split('-');
+  
+    const dia = parseInt(day, 10);
+
+    if (dia > 15) {
+      return  2
+    } else if (dia > 10) {
+      return  1
+    } else {
+      return  0
+    }
   };
 
-  const pagosFiltrados = encontrarPagosPorCuota(pagos, detail);*/
+  const mostrarMonto = (fecha: string) => {
+    const mora = verificarMora(fecha); //poner fecha en formato 'aaaa-mm-dd' para simular la mora 
+  
+    switch (mora) {
+      case 0:
+        return detalleCompromiso?.monto_completo;
+      case 1:
+        return detalleCompromiso?.monto_completo_2venc; 
+      case 2:
+        return detalleCompromiso?.monto_completo_3venc;
+      default:
+        return 0; // Manejo de error o default
+    }
+  };
+
     return (
             
     <Flex mt="20px">
@@ -212,7 +255,7 @@ function InformarPago() {
           Último Compromiso de Pago:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {compromiso && compromiso.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
+          {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
         </Text>
         <Text color="gray" mt="10px">
           Estado:
@@ -282,25 +325,38 @@ function InformarPago() {
               <Box minH="80vh" p="20px">
                 <Table variant="simple" width="100%"  border="1px solid #cbd5e0">
                       <Thead >
-                        <Text p="20px">Detalle Pago</Text>
+                        <Text p="20px">Detalle pago</Text>
                         <Tr mt={6}>
                           <Th textAlign="center" p={1}>Cuota</Th>
-                          <Th textAlign="center" p={1}>Capital Original</Th>
-                          <Th textAlign="center" p={1}>Capital con Mora</Th>
+                          <Th textAlign="center" p={1}>Valor Original Cuota</Th>
+                          <Th textAlign="center" p={1}>Mora</Th>
+                          <Th textAlign="center" p={1}>Cuota con Mora</Th>
                           <Th textAlign="center" p={1}>Fecha de Informe</Th>
                           <Th textAlign="center" p={1}>Valor Pagado</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
                       {pagos?.results
-                        .filter(pago => pago.cuotas[0].id_cuota === detail) // Filtra los pagos que cumplen la condición
+                        .filter(pago => 
+                          pago.cuotas.length > 0 && 
+                          pago.cuotas.some(cuota => cuota.id_cuota === detail) // Verifica si alguna cuota cumple la condición
+                        )
                         .map(pago => (
-                          <Tr key={pago.cuotas[0].id_cuota}> {/* Asegúrate de usar una clave única para cada fila */}
-                            <Td textAlign="center">{pago.cuotas[0].nro_cuota}</Td>
-                            <Td textAlign="center">{pago.cuotas[0].monto}</Td>
-                            <Td textAlign="center"></Td>
-                            <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
-                            <Td textAlign="center">{pago.monto_informado}</Td>
+                          <Tr key={pago.monto_informado}>
+                            {pago.cuotas.map(cuota => (
+                              cuota.id_cuota === detail ? ( // Verifica cada cuota para mostrar solo las que coinciden
+                                <>
+                                  <Td textAlign="center">{cuota.nro_cuota}</Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(detalleCompromiso?.monto_completo ?? 0)}</Td>
+                                  <Td textAlign="center">
+                                  {'$ ' + new Intl.NumberFormat('es-ES').format((mostrarMonto(pago.fecha) ?? 0) - (detalleCompromiso?.monto_completo ?? 0)) }
+                                    </Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
+                                  <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.monto_informado > cuota.monto ? cuota.monto : pago.monto_informado)}</Td>
+                                </>
+                              ) : null
+                            ))}
                           </Tr>
                         ))}
                     </Tbody>
