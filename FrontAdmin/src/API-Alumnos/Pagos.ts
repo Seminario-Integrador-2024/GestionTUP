@@ -65,7 +65,7 @@ export const FetchResumenPagos = async () => {
       const token = Cookies.get('tokennn');
       const dni = Cookies.get('dni');
       
-      const response = await fetch(`http://localhost:8000/api/pagos/alumno/resumen_pagos/${dni}/`, {
+      const response = await fetch(`http://localhost:8000/api/pagos/alumno/resumen_pagos/${dni}`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
