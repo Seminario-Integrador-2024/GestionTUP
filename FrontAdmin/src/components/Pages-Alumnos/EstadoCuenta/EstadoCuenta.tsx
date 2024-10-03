@@ -21,9 +21,10 @@ interface Cuota {
     fechaVencimiento: string;
     valorpagado: number;
     estado: string;
-    tipocuota: string;
+    tipo: string;
     valorinformado: number;
     monto: number;
+    cuota_completa: boolean,
 }
 
 
@@ -39,7 +40,7 @@ interface Alumno {
 }
 
 interface Compromiso { 
-  id: number,
+  id_compromiso_de_pago: number,
   compromiso_de_pago: string,
   fecha_firmado: string,
   firmado: boolean,
@@ -55,6 +56,10 @@ interface CompromisoResponse {
   monto_completo: number;
   monto_completo_2venc: number, 
   monto_completo_3venc: number,
+  cuota_reducida: number, 
+  cuota_reducida_2venc: number,
+  cuota_reducida_3venc: number,
+  matricula: number,
 }
 
 interface Pago {
@@ -87,7 +92,6 @@ function InformarPago() {
     const fetchDetalleAlumno = async (dni: any) => {
       try {
         const data = await FetchDetalleAlumno(dni);
-        console.log('detalle alumno: ', data)
         setAlumno(data);
       } catch (error) {
         setError(error);
@@ -101,7 +105,6 @@ function InformarPago() {
       try {
         const data = await FetchCompromisos();
         setCompromiso(data)
-        console.log('data: ', data)
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -114,7 +117,6 @@ function InformarPago() {
       try {
         const data = await FetchDetalleCompromiso(id);
         setDetalleCompromiso(data)
-        console.log('detalle del compromiso;' , data)
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -126,7 +128,6 @@ function InformarPago() {
     const fetchPagos = async () => {
       try {
         const data = await FetchResumenPagos();
-        console.log('Resumen pagos', data)
         setPagos(data);
       } catch (error) {
         setError(error);
@@ -139,8 +140,7 @@ function InformarPago() {
     const fetchCuotas = async () => {
       try {
         const data = await FetchCuotas();
-        console.log('Cuotas:', data)
-        setCuotas(data);
+        setCuotas(data.results);
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
@@ -154,7 +154,7 @@ function InformarPago() {
     fetchCompromisoFirmado();
     fetchPagos();
     fetchCuotas();
-    compromisoFirmado != null ? fetchDetalleCompromiso(compromisoFirmado?.results[0].id) : null
+    compromisoFirmado != null ? fetchDetalleCompromiso(compromisoFirmado?.results[0].id_compromiso_de_pago) : null
 
     
    
@@ -182,7 +182,6 @@ function InformarPago() {
 
   const verificarMora = (fecha: string) => {
     const [year, month, day] = fecha.split('-');
-  
     const dia = parseInt(day, 10);
 
     if (dia > 15) {
@@ -194,16 +193,16 @@ function InformarPago() {
     }
   };
 
-  const mostrarMonto = (fecha: string) => {
+  const mostrarMontoConMora = (fecha: string, cuota_completa: boolean) => {
     const mora = verificarMora(fecha); //poner fecha en formato 'aaaa-mm-dd' para simular la mora 
   
     switch (mora) {
       case 0:
-        return detalleCompromiso?.monto_completo;
+        return cuota_completa ? detalleCompromiso?.monto_completo : detalleCompromiso?.cuota_reducida;
       case 1:
-        return detalleCompromiso?.monto_completo_2venc; 
+        return cuota_completa ? detalleCompromiso?.monto_completo_2venc : detalleCompromiso?.cuota_reducida_2venc; 
       case 2:
-        return detalleCompromiso?.monto_completo_3venc;
+        return cuota_completa ? detalleCompromiso?.monto_completo_3venc : detalleCompromiso?.cuota_reducida_3venc; 
       default:
         return 0; // Manejo de error o default
     }
@@ -305,10 +304,11 @@ function InformarPago() {
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
                             <Td textAlign="center" p="8px">{
-                              cuota.estado === 'Impaga' ? 
+                              cuota.valorinformado > 0 || cuota.valorpagado > 0  ? 
+                                <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => showDetail(cuota.id_cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
+                              : 
                               <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
-                              :
-                              <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => showDetail(cuota.id_cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
+                              
                               }
                               </Td>
                           </Tr>
@@ -343,13 +343,13 @@ function InformarPago() {
                         )
                         .map(pago => (
                           <Tr key={pago.monto_informado}>
-                            {pago.cuotas.map(cuota => (
+                            {pago.cuotas.map  (cuota => (
                               cuota.id_cuota === detail ? ( // Verifica cada cuota para mostrar solo las que coinciden
                                 <>
                                   <Td textAlign="center">{cuota.nro_cuota}</Td>
-                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(detalleCompromiso?.monto_completo ?? 0)}</Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (detalleCompromiso?.monto_completo ?? 0) )}</Td>
                                   <Td textAlign="center">
-                                  {'$ ' + new Intl.NumberFormat('es-ES').format((mostrarMonto(pago.fecha) ?? 0) - (detalleCompromiso?.monto_completo ?? 0)) }
+                                  {'$ ' + new Intl.NumberFormat('es-ES').format((mostrarMontoConMora(pago.fecha, cuota.cuota_completa) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) }
                                     </Td>
                                   <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                   <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
