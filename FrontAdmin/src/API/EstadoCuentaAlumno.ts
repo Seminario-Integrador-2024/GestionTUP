@@ -14,7 +14,7 @@ export const FetchEstadoCuenta = async (dni: number) => {
 
     if (response.ok) {
       const data = await response.json();
-      return data;
+      return data.results;
     } else {
       throw new Error('Error en la respuesta del servidor');
     }
