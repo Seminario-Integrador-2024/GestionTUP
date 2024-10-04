@@ -69,6 +69,7 @@ interface Pago {
   cuotas: Cuota[];
   comentario: string;
 }
+
 interface PagosResponse {
   count: number;
   next: string | null;
@@ -77,10 +78,9 @@ interface PagosResponse {
 }
 
 function InformarPago() {
-  
-  
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
   const [compromisoFirmado, setCompromiso] = useState<CompromisoResponse >(); // Define el estado con un valor inicial de null
+  const [idCuotaSeleccionada, setIdCuotaSeleccionada] = useState<number | null>(null);
   const [detalleCompromiso, setDetalleCompromiso] = useState<CompromisoResponse >(); 
   const [pagos, setPagos] = useState<PagosResponse | null>(null);
   const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
@@ -101,7 +101,7 @@ function InformarPago() {
       }
     };
     
-    const fetchCompromisoFirmado = async () => {
+    const fetchCompromiso  = async () => {
       try {
         const data = await FetchCompromisos();
         setCompromiso(data)
@@ -151,18 +151,39 @@ function InformarPago() {
 
     const dni = Cookies.get('dni');
     fetchDetalleAlumno(dni);
-    fetchCompromisoFirmado();
+    fetchCompromiso();
     fetchPagos();
     fetchCuotas();
-    compromisoFirmado != null ? fetchDetalleCompromiso(compromisoFirmado?.results[0].id_compromiso_de_pago) : null
 
     
+
+ 
    
   }, []); 
+
+    useEffect(() => {
+      if (idCuotaSeleccionada !== null && compromisoFirmado) {
+        const fetchDetalleCompromiso = async () => {
+          try {
+            const detalleData = await FetchDetalleCompromiso(compromisoFirmado.results[0].id_compromiso_de_pago);
+            setDetalleCompromiso(detalleData);
+          } catch (error) {
+            console.error('Error al obtener el detalle del compromiso', error);
+          }
+        };
+  
+        fetchDetalleCompromiso();
+      }
+    }, [idCuotaSeleccionada, compromisoFirmado]);
  
+    const handleDetailPay = (idCuota: number) => {
+      showDetail(idCuota)
+      setIdCuotaSeleccionada(idCuota);
+    };
+
+    
     const [fechaDeHoy, setFechaDeHoy] = React.useState(obtenerFechaDeHoy());
     const [refresh, setRefresh] = useState(false); 
-    const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<Cuota[]>([]);
 
 
     const handleRefresh = () => {
@@ -207,6 +228,7 @@ function InformarPago() {
         return 0; // Manejo de error o default
     }
   };
+
 
     return (
             
@@ -305,7 +327,7 @@ function InformarPago() {
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
                             <Td textAlign="center" p="8px">{
                               cuota.valorinformado > 0 || cuota.valorpagado > 0  ? 
-                                <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => showDetail(cuota.id_cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
+                                <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota.id_cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
                               : 
                               <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
                               
@@ -341,8 +363,8 @@ function InformarPago() {
                           pago.cuotas.length > 0 && 
                           pago.cuotas.some(cuota => cuota.id_cuota === detail) // Verifica si alguna cuota cumple la condición
                         )
-                        .map(pago => (
-                          <Tr key={pago.monto_informado}>
+                        .map((pago, index) => (
+                          <Tr key={index}>
                             {pago.cuotas.map  (cuota => (
                               cuota.id_cuota === detail ? ( // Verifica cada cuota para mostrar solo las que coinciden
                                 <>
