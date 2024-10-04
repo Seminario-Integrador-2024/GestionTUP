@@ -58,7 +58,6 @@ const AlumnosConCompromiso: React.FC = () => {
                 ))}
               </List>
             </Box>
-            <h1>Prueba 2</h1>
           </TabPanels>
         </Tabs>
       </VStack>
