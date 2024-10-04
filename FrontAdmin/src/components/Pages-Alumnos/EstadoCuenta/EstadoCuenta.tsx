@@ -154,13 +154,13 @@ function InformarPago() {
     fetchCompromiso();
     fetchPagos();
     fetchCuotas();
-
     
+   
 
  
    
   }, []); 
-
+ 
     useEffect(() => {
       if (idCuotaSeleccionada !== null && compromisoFirmado) {
         const fetchDetalleCompromiso = async () => {
@@ -229,7 +229,7 @@ function InformarPago() {
     }
   };
 
-
+  
     return (
             
     <Flex mt="20px">
@@ -389,7 +389,7 @@ function InformarPago() {
               }
               
       </Tabs>
-      
+                
     </Flex>
     );
 }
