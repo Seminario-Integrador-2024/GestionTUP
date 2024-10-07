@@ -107,7 +107,7 @@ function InformarPago() {
 
     const fetchCuotas = async () => {
       try {
-        const data = await FetchCuotas(); //limit, offset
+        const data = await FetchCuotas(limit, offset); //limit, offset
         setCuotas(data.results);
         setTotalCuotas(data.count);
       } catch (error) {
@@ -140,6 +140,7 @@ function InformarPago() {
     const fetchCompromiso  = async () => {
       try {
         const data = await FetchCompromisos();
+        console.log(' compromiso:', data)
         setCompromiso(data)
       } catch (error) {
         setError(error);
@@ -179,6 +180,7 @@ function InformarPago() {
         const fetchDetalleCompromiso = async () => {
           try {
             const detalleData = await FetchDetalleCompromiso(compromisoFirmado.results[0].id_compromiso_de_pago);
+            console.log('detalle compromiso:', detalleData)
             setDetalleCompromiso(detalleData);
           } catch (error) {
             console.error('Error al obtener el detalle del compromiso', error);
@@ -318,21 +320,26 @@ function InformarPago() {
                           </Tr>
                         ))}
                       </Tbody>
-                      <Box> 
-                          <Button onClick={handlePreviousPage} isDisabled={offset === 0} color="white"  leftIcon={<ArrowLeftIcon/>}>
-                                Anterior
-                          </Button>
-                          <Text textAlign={"center"} mb={0}>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCuotas / limit)}</Text>
-                          <Button onClick={handleNextPage} isDisabled={offset + limit >= totalCuotas} color="white" rightIcon={<ArrowRightIcon/>}>
-                              Siguiente
-                          </Button>
-                      </Box>
-                      
                     </Table>
+
+                    
                   ) : (
                     <Text  textAlign="center" padding="20px">No existen cuotas para el alumno.</Text>
                   )}
+                  
       </Box>
+                  <Box w="90%" mt="20px" ml="70px">
+                      <Flex justifyContent="space-between" > 
+                          <Button onClick={handlePreviousPage} isDisabled={offset === 0} _hover="none" color="white"  leftIcon={<ArrowLeftIcon/>}>
+                                Anterior
+                          </Button>
+                          <Text textAlign={"center"} mb={0}>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCuotas / limit)}</Text>
+                          <Button onClick={handleNextPage} isDisabled={offset + limit >= totalCuotas} _hover="none" color="white" rightIcon={<ArrowRightIcon/>}>
+                              Siguiente
+                          </Button>
+                      </Flex>
+                  </Box>
+
               {detail != null ? 
               <Box display={"flex"} justifyContent={"center"} flex={1} w={"100%"}>
               <Box flexDirection={"column"} p={5}>
