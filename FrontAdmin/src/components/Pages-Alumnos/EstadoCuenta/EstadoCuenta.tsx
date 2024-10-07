@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
-import {AttachmentIcon} from '@chakra-ui/icons';
+import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon} from '@chakra-ui/icons';
 import { IoEyeOutline } from "react-icons/io5";
 import {obtenerFechaDeHoy, formatoFechaISOaDDMMAAAA} from '../../../utils/general';
 import {FetchDetalleAlumno} from '../../../API/DetalleAlumno'
@@ -84,9 +84,45 @@ function InformarPago() {
   const [detalleCompromiso, setDetalleCompromiso] = useState<CompromisoResponse >(); 
   const [pagos, setPagos] = useState<PagosResponse | null>(null);
   const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
+  const [totalCuotas, setTotalCuotas] = useState<number>(0);
   const [detail, showDetail] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
+  const [limit] = useState(5);
+  const [offset, setOffset1] = useState(0);
+
+  const handleNextPage = () => {
+    if (offset + limit < totalCuotas) {
+      setOffset1(offset + limit);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (offset > 0) {
+      setOffset1(offset - limit);
+    }
+  };
+
+  useEffect(() => {
+
+    const fetchCuotas = async () => {
+      try {
+        const data = await FetchCuotas(); //limit, offset
+        setCuotas(data.results);
+        setTotalCuotas(data.count);
+      } catch (error) {
+        setError(error);
+        console.error('Error al obtener los datos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCuotas()
+
+  }, [limit, offset]);
+
+
 
   useEffect(() => {
     const fetchDetalleAlumno = async (dni: any) => {
@@ -113,18 +149,6 @@ function InformarPago() {
       }
     };
 
-    const fetchDetalleCompromiso = async (id: any) => {
-      try {
-        const data = await FetchDetalleCompromiso(id);
-        setDetalleCompromiso(data)
-      } catch (error) {
-        setError(error);
-        console.error('Error al obtener los datos', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     const fetchPagos = async () => {
       try {
         const data = await FetchResumenPagos();
@@ -137,23 +161,12 @@ function InformarPago() {
       }
     };
 
-    const fetchCuotas = async () => {
-      try {
-        const data = await FetchCuotas();
-        setCuotas(data.results);
-      } catch (error) {
-        setError(error);
-        console.error('Error al obtener los datos', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+
 
     const dni = Cookies.get('dni');
     fetchDetalleAlumno(dni);
     fetchCompromiso();
     fetchPagos();
-    fetchCuotas();
     
    
 
@@ -336,6 +349,16 @@ function InformarPago() {
                           </Tr>
                         ))}
                       </Tbody>
+                      <Box> 
+                          <Button onClick={handlePreviousPage} isDisabled={offset === 0} color="white"  leftIcon={<ArrowLeftIcon/>}>
+                                Anterior
+                          </Button>
+                          <Text textAlign={"center"} mb={0}>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCuotas / limit)}</Text>
+                          <Button onClick={handleNextPage} isDisabled={offset + limit >= totalCuotas} color="white" rightIcon={<ArrowRightIcon/>}>
+                              Siguiente
+                          </Button>
+                      </Box>
+                      
                     </Table>
                   ) : (
                     <Text  textAlign="center" padding="20px">No existen cuotas para el alumno.</Text>
