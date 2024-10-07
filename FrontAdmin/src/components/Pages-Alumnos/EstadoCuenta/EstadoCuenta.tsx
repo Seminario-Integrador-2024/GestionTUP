@@ -232,81 +232,50 @@ function InformarPago() {
   
     return (
             
-    <Flex mt="20px">
+    <Flex mt="20px" flexDirection={"column"} justifyContent={"center"}>
 
-      <Box borderRight="1px solid #cbd5e0" w="20%" minH="80vh" p="20px">
-        <Text color="gray" mt="30px">
-          Apellido y nombre
-        </Text>
-        <Text
-          size="sm"
-          pl="8px"
-          fontWeight="Bold"
-        >
-          {alumnoInfo.full_name}
-        </Text>
-        <Text color="gray" mt="10px">
-          Número DNI:
-        </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumnoInfo.dni}
-        </Text>
-        <Text color="gray" mt="10px">
-          Legajo:
-        </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold">
-        {alumnoInfo.legajo}
-        </Text>
-        <Text color="gray" mt="10px">
-          Email:
-        </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold">
-        {alumnoInfo.email}  
-        </Text>
-        <Text color="gray" mt="10px">
-          Celular
-        </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-        {alumnoInfo.telefono}
-        </Text>
-
-        <hr></hr>
-
-        <Text color="gray" mt="20px">
-          Último Compromiso de Pago:
-        </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
-        </Text>
-        <Text color="gray" mt="10px">
-          Estado:
-        </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-         {alumno?.estado_financiero}
-        </Text>
-        <Text color="gray" mt="20px">
-          Ultimo Periodo Cursado
-        </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-        {alumnoInfo.ultimo_cursado}
-        </Text>
+      <Box w={"100%"} mb={3}>
+        <Tag p="10px" w={"100%"} fontSize={18} fontWeight={"semibold"} textAlign={"center"} justifyContent={"center"}>
+          Estado de cuenta al {fechaDeHoy} 
+        </Tag>
       </Box>
-      
-      <Tabs ml="30px">
-              <TabList>
-                <Tab>Estado de cuenta</Tab>
-              </TabList>
 
-              <TabPanels>
-                <TabPanel minW="50vw">
-                      <Tag m="20px" p="10px">
-                    Estado de cuenta al {fechaDeHoy} 
-                  </Tag>
+      <Box  w="100%" mb={7} display={"flex"} gap={2} flexDirection={"row"} alignItems={"center"} justifyContent={"center"}>
+        <Tag w={"100%"} p="10px" fontSize={16}>
+          <Text color="gray">
+            Último Compromiso de Pago:
+          </Text>
+          <Text size="sm" pl="8px" fontWeight="semibold">
+            {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
+          </Text>
+        </Tag>
+        <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_financiero === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
+          <Text color="gray">
+            Estado:
+          </Text>
+          <Text size="sm" pl="8px" fontWeight="semibold">
+          {alumno?.estado_financiero}
+          </Text>
+        </Tag>
+        <Tag w={"100%"} p="10px" fontSize={16}>
+          <Text color="gray">
+            Ultimo Periodo Cursado
+          </Text>
+          <Text size="sm" pl="8px" fontWeight="semibold">
+          {alumnoInfo.ultimo_cursado}
+          </Text>
+        </Tag>
+      </Box>
+      <Box  w={"100%"} display={"flex"} justifyContent={"center"}  >
                   {cuotas.length > 0 ? (
-                    <Table variant="simple" width="100%">
+                    <Table variant="simple" width="90%" borderColor={"gray.200"}
+                    borderStyle={"solid"}
+                    borderWidth={1}
+                    p={5}
+                    >
                       <Thead>
                         <Tr mt={6}>
-                          <Th textAlign="center" p={1}>
+                          <Th textAlign="center" >
                             Numero
                           </Th>
                           <Th textAlign="center">Fecha Primer Vto.</Th>
@@ -314,6 +283,7 @@ function InformarPago() {
                           <Th textAlign="center">Valor Pagado</Th>
                           <Th textAlign="center">Valor Informado</Th>
                           <Th textAlign="center">Valor Adeudado</Th>
+                          <Th textAlign="center">Detalle</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
@@ -330,7 +300,6 @@ function InformarPago() {
                                 <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota.id_cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
                               : 
                               <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
-                              
                               }
                               </Td>
                           </Tr>
@@ -340,21 +309,20 @@ function InformarPago() {
                   ) : (
                     <Text  textAlign="center" padding="20px">No existen cuotas para el alumno.</Text>
                   )}
-                </TabPanel>
-              
-              </TabPanels>
+      </Box>
               {detail != null ? 
-              <Box minH="80vh" p="20px">
-                <Table variant="simple" width="100%"  border="1px solid #cbd5e0">
+              <Box display={"flex"} justifyContent={"center"} flex={1} w={"100%"}>
+              <Box flexDirection={"column"} p={5}>
+                <Text mb={2} fontSize={18}>Detalle cuota</Text>
+                <Table variant="simple" width="100%" border="1px solid #cbd5e0" p={5}>
                       <Thead >
-                        <Text p="20px">Detalle pago</Text>
                         <Tr mt={6}>
-                          <Th textAlign="center" p={1}>Cuota</Th>
-                          <Th textAlign="center" p={1}>Valor Original Cuota</Th>
-                          <Th textAlign="center" p={1}>Mora</Th>
-                          <Th textAlign="center" p={1}>Cuota con Mora</Th>
-                          <Th textAlign="center" p={1}>Fecha de Informe</Th>
-                          <Th textAlign="center" p={1}>Valor Pagado</Th>
+                          <Th textAlign="center" >Cuota</Th>
+                          <Th textAlign="center" >Valor Original Cuota</Th>
+                          <Th textAlign="center" >Mora</Th>
+                          <Th textAlign="center" >Cuota con Mora</Th>
+                          <Th textAlign="center" >Fecha de Informe</Th>
+                          <Th textAlign="center" >Valor Pagado</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
@@ -384,11 +352,10 @@ function InformarPago() {
                     </Tbody>
                 </Table>
               </Box> 
+              </Box>
               : 
               <Box></Box>
               }
-              
-      </Tabs>
                 
     </Flex>
     );
