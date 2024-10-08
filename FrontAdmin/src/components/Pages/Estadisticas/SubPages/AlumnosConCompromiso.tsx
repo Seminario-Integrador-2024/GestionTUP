@@ -1,65 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Tab,
-  TabList,
-  TabPanels,
-  Tabs,
   VStack,
   List,
   ListItem,
   Spinner,
-  useTab,
 } from '@chakra-ui/react';
-import { FetchAlumnos } from '../../../../API/DatosAlumnosV2';
+import { FetchFirmantes } from '../../../../API/AlumnosCompromisoPago';
 
 interface Alumnos {
-  nombre: string;
+  full_name: string;
   legajo: number;
   dni: number;
-  situacion: string;
+  estado_financiero: string;
   anio_ingreso: number;
 }
 
 const AlumnosConCompromiso: React.FC = () => {
   const [alumnos, setAlumnos] = useState<Alumnos[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAlumnos = async () => {
+    const fetchFirmantes = async () => {
       try {
-        const response = await FetchAlumnos();
-        if (!response.ok) {
-          throw new Error('Error al obtener los alumnos');
-        }
-        const data: Alumnos[] = await response.json();
+        const data: Alumnos[] = await FetchFirmantes();
         setAlumnos(data);
       } catch (error) {
+        setError('Error al obtener los alumnos');
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAlumnos();
-  }, );
+    fetchFirmantes();
+  }, []);
+
+  if (loading) {
+    return <Spinner size="xl" />;
+  }
+
+  if (error) {
+    return <Box color="red.500">{error}</Box>;
+  }
 
   return (
     <Box p={5}>
       <VStack spacing={4} align="stretch">
-        <Tabs variant="enclosed" isLazy>
-          <TabPanels>
-            <Box>
-              <List spacing={3}>
-                {alumnos.map(alumno => (
-                  <ListItem key={alumno.legajo}>
-                    {alumno.nombre} (Legajo: {alumno.legajo}, DNI: {alumno.dni}, Situacion: {alumno.situacion}, Año Ingreso: {alumno.anio_ingreso})
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          </TabPanels>
-        </Tabs>
+        <List spacing={3}>
+          {alumnos.map(alumno => (
+            <ListItem key={alumno.legajo}>
+              {alumno.full_name} (Legajo: {alumno.legajo}, DNI: {alumno.dni}, Situación: {alumno.estado_financiero}, Año Ingreso: {alumno.anio_ingreso})
+            </ListItem>
+          ))}
+        </List>
       </VStack>
     </Box>
   );

@@ -11,13 +11,13 @@ import {
   Spinner,
   useTab,
 } from '@chakra-ui/react';
-import { FetchAlumnos } from '../../../../API/DatosAlumnosV2';
+import { FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
 
 interface Alumnos {
-  nombre: string;
+  full_name: string;
   legajo: number;
   dni: number;
-  situacion: string;
+  estado_financiero: string;
   anio_ingreso: number;
 }
 
@@ -26,9 +26,9 @@ const AlumnosConCompromiso: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchAlumnos = async () => {
+    const fetchNoFirmantes = async () => {
       try {
-        const response = await FetchAlumnos();
+        const response = await FetchNoFirmantes();
         if (!response.ok) {
           throw new Error('Error al obtener los alumnos');
         }
@@ -41,7 +41,7 @@ const AlumnosConCompromiso: React.FC = () => {
       }
     };
 
-    fetchAlumnos();
+    fetchNoFirmantes();
   }, );
 
   return (
@@ -53,7 +53,7 @@ const AlumnosConCompromiso: React.FC = () => {
               <List spacing={3}>
                 {alumnos.map(alumno => (
                   <ListItem key={alumno.legajo}>
-                    {alumno.nombre} (Legajo: {alumno.legajo}, DNI: {alumno.dni}, Situacion: {alumno.situacion}, Año Ingreso: {alumno.anio_ingreso})
+                    {alumno.full_name} (Legajo: {alumno.legajo}, DNI: {alumno.dni}, Situacion: {alumno.estado_financiero}, Año Ingreso: {alumno.anio_ingreso})
                   </ListItem>
                 ))}
               </List>
