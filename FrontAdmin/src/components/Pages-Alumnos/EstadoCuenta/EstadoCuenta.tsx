@@ -367,7 +367,7 @@ function InformarPago() {
                               cuota.id_cuota === detail ? ( // Verifica cada cuota para mostrar solo las que coinciden
                                 <>
                                   <Td textAlign="center">{cuota.nro_cuota}</Td>
-                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (detalleCompromiso?.monto_completo ?? 0) )}</Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) )}</Td>
                                   <Td textAlign="center">
                                   {'$ ' + new Intl.NumberFormat('es-ES').format((mostrarMontoConMora(pago.fecha, cuota.cuota_completa) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) }
                                     </Td>
