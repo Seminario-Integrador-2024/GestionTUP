@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  VStack,
-  List,
-  ListItem,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
   Spinner,
+  Alert,
 } from '@chakra-ui/react';
 import { FetchFirmantes } from '../../../../API/AlumnosCompromisoPago';
 
@@ -42,20 +46,33 @@ const AlumnosConCompromiso: React.FC = () => {
   }
 
   if (error) {
-    return <Box color="red.500">{error}</Box>;
+    return <Alert status="error">{error}</Alert>;
   }
 
   return (
     <Box p={5}>
-      <VStack spacing={4} align="stretch">
-        <List spacing={3}>
+      <Table variant="striped" colorScheme="teal">
+        <Thead>
+          <Tr>
+            <Th>Nombre Completo</Th>
+            <Th>Legajo</Th>
+            <Th>DNI</Th>
+            <Th>Situación Financiera</Th>
+            <Th>Año de Ingreso</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {alumnos.map(alumno => (
-            <ListItem key={alumno.legajo}>
-              {alumno.full_name} (Legajo: {alumno.legajo}, DNI: {alumno.dni}, Situación: {alumno.estado_financiero}, Año Ingreso: {alumno.anio_ingreso})
-            </ListItem>
+            <Tr key={alumno.legajo}>
+              <Td>{alumno.full_name}</Td>
+              <Td>{alumno.legajo}</Td>
+              <Td>{alumno.dni}</Td>
+              <Td>{alumno.estado_financiero}</Td>
+              <Td>{alumno.anio_ingreso}</Td>
+            </Tr>
           ))}
-        </List>
-      </VStack>
+        </Tbody>
+      </Table>
     </Box>
   );
 };
