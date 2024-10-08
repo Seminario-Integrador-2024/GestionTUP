@@ -21,7 +21,7 @@ const AlumnosCompromisoPago: React.FC = () => {
             }}
             _focus={{ boxShadow: "none" }}
           >
-            Alumnos que firmaron Compromiso de Pago
+            Firmaron
           </Tab>
           <Tab
             _selected={{
@@ -34,7 +34,7 @@ const AlumnosCompromisoPago: React.FC = () => {
             }}
             _focus={{ boxShadow: "none" }}
           >
-            Alumnos que no firmaron Compromiso de Pago
+            No firmaron
           </Tab>
         </TabList>
 

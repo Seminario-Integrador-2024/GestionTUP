@@ -16,7 +16,7 @@ interface Alumno {
   fullname: string;
   legajo: number;
   dni: number;
-  situacion: string;
+  estado_academico: string;
   anioIngreso: number;
 }
 
@@ -40,8 +40,8 @@ const tableHeaders: MRT_ColumnDef<Alumno>[] = [
     ),
   },
   {
-    accessorKey: 'estado',
-    header: 'SITUACIÓN',
+    accessorKey: 'estado_academico',
+    header: 'ESTADO ACADÉMICO',
     enableHiding: true,
   },
   {
@@ -67,6 +67,7 @@ function Table({ boolEnableRowSelection }: PropsTable) {
       try {
         setLoading(true); // Iniciar carga
         const data = await FetchAlumnos();
+        console.log(data)
         setAlumnos(data.results);
         setLoading(false); // Iniciar carga
       } catch (error) {
