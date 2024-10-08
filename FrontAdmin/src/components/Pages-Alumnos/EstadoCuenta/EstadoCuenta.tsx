@@ -324,7 +324,7 @@ function InformarPago() {
 
                     
                   ) : (
-                    <Text  textAlign="center" padding="20px">No existen cuotas para el alumno.</Text>
+                    <Text  textAlign="center" padding="20px">Aún no tienes cuotas generadas. <br />Verifica la firma del compromiso de pago para generar tus cuotas.</Text>
                   )}
                   
       </Box>

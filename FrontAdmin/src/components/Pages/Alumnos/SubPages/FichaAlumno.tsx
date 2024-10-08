@@ -276,7 +276,7 @@ function FichaAlumno() {
                       </Tbody>
                     </Table>
                   ) : (
-                    <Text  textAlign="center" padding="20px">No existen cuotas del cuatrimestre en curso. El alumno no firmo el compromiso de pago del periodo actual.</Text>
+                    <Text  textAlign="center" padding="20px">No existen cuotas. El alumno no firmo el compromiso de pago del periodo actual.</Text>
                   )}
                 </TabPanel>
                 
