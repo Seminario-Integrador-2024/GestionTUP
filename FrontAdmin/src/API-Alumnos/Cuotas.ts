@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
 
-export const FetchCuotas = async () => {
+export const FetchCuotas = async (limit: number, offset:number) => {
     try {
         const token = Cookies.get('tokennn');
         const dni = Cookies.get('dni');
         
-        const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/`, {
+        const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=${limit}&offset=${offset}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
