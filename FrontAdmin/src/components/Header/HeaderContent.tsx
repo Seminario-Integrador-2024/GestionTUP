@@ -71,7 +71,7 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
           color="white"
         />
         <Flex direction={"row"} alignItems={"center"} gap={5}>
-        <Text fontFamily={"serif"} >{user}</Text>
+        <Text fontFamily={"'Roboto',sans-serif"} fontWeight="600">{user}</Text>
         <MenuButton as={Button} borderRadius="50%" w="50px" h="50px" p="0px">
           <Image src={logoUser} w="100%"></Image>
         </MenuButton>
