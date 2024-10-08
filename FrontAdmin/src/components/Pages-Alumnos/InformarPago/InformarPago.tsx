@@ -1,6 +1,6 @@
 import React from "react";
 import TablaCuotas from "./TablaPagos";
-import { Flex, Button, Text, Stack, Card, CardBody } from "@chakra-ui/react";
+import { Flex, Button, Text, Stack, Card, CardBody, Box } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
 import {AttachmentIcon} from '@chakra-ui/icons';
@@ -8,7 +8,7 @@ import DrawerInformar from "./DrawerPago";
 import {obtenerFechaDeHoy} from '../../../utils/general';
 
 interface Cuota {
-    id: number;
+    id_cuota: number;
     numero: string;
     monto1erVencimiento: number;
     monto2doVencimiento: number;
@@ -43,25 +43,18 @@ function InformarPago() {
 
 
         <Stack
+            display={["none", "none", "flex", "flex"]}
+            justifyContent="center"
             alignItems="center"
             direction="column"
             w="100%"
             bg="white"
+            mt={12}
         >
-             <Card>
-                    <CardBody bg={'secundaryBg'} mt={2}>
-                        <Flex
-                            alignItems="center"
-                            justifyContent="center"
-                            flexDirection="column"
-                            
-                        >
-                            <Text> Estado de cuenta al:</Text>
-                            <Text fontWeight="bold"> {fechaDeHoy} </Text>
-                        </Flex>
-                    </CardBody>
-                </Card>
+                <Box>
+                <Text textAlign={"left"} mb={2} w={"100%"} color="gray.700">Selecciona las cuotas que deseas informar</Text>
                 <TablaCuotas refresh={refresh} setCuotasSeleccionadas={setCuotasSeleccionadas} cuotasSeleccionadas={cuotasSeleccionadas}/>
+                </Box>
                 <Flex mt={2} w="100%" justifyContent="flex-end">
                 <Button color="white" 
                  rightIcon={<AttachmentIcon/>} 

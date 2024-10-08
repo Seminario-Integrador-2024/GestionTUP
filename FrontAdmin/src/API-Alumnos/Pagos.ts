@@ -29,6 +29,7 @@ export const FetchPostPago = async (
           }
         } catch (error) {
           console.error('Network error:', error);
+          throw error;
         }
 
         
@@ -57,4 +58,29 @@ export const FetchGetCuotas = async () => {
     } catch (error) {
         throw new Error('Network error: ' + error);
     }
+};
+
+
+export const FetchResumenPagos = async () => {
+  try {
+      const token = Cookies.get('tokennn');
+      const dni = Cookies.get('dni');
+      
+      const response = await fetch(`http://localhost:8000/api/pagos/alumno/resumen_pagos/${dni}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+          },
+      });
+      
+      if (response.ok) {
+          const data = await response.json();
+          return data;
+      } else {
+          throw new Error('Error en la respuesta del servidor');
+      }
+  } catch (error) {
+      throw new Error('Network error: ' + error);
+  }
 };

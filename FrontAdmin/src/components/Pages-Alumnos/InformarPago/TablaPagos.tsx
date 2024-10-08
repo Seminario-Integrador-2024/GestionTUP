@@ -5,7 +5,7 @@ import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
 import { motion } from 'framer-motion';
 
 interface Cuota {
-  id: number;
+  id_cuota: number;
   numero: string;
   monto1erVencimiento: number;
   monto2doVencimiento: number;
@@ -49,6 +49,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
           }
       };
       getCuotas();
+      setCuotasSeleccionadas([]);
   }, [refresh]);
    
     const handleCheckboxChange = (cuota: Cuota) => {
@@ -68,9 +69,6 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     const CompararFechas = (fechaVencimiento: string): boolean => {
       const fechaActual = new Date();
       const fechaVenc = new Date(fechaVencimiento);
-      console.log('Comparando fechas');
-      console.log(fechaVenc);
-      console.log(fechaActual);
       return fechaActual > fechaVenc;
     };
 
@@ -88,7 +86,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                 p={3}
             >
             {loading ? (
-                    <Skeleton height="400px" w="750px" />
+                    <Skeleton height="400px" w="900px" />
                 ) : (
              cuotas.length > 0 ? (
                 <Table variant="simple" width="100%">

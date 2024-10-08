@@ -82,12 +82,11 @@ function FichaAlumno() {
   };
 
   useEffect(() => {
-    const fetchDetalleAlumno = async () => {
+    const fetchDetalleAlumno = async (dni: any) => {
       try {
         if (dni) {
-          const dniNumber = parseInt(dni, 10); // Convierte a número
-          const dataDetalle = await FetchDetalleAlumno(dniNumber);
-          const dataMaterias = await FetchMateriasAlumno(dniNumber);
+          const dataDetalle = await FetchDetalleAlumno(dni);
+          const dataMaterias = await FetchMateriasAlumno(dni);
           setAlumno(dataDetalle);
           setMaterias(dataMaterias);
         }
@@ -131,7 +130,7 @@ function FichaAlumno() {
     }
 
     if (dni) {
-      fetchDetalleAlumno();
+      fetchDetalleAlumno(dni);
       fetchEstadoCuentaAlumno();
       fetchCompromiso();
     }
