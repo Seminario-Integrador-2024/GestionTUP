@@ -29,6 +29,7 @@ export const FetchPostPago = async (
           }
         } catch (error) {
           console.error('Network error:', error);
+          throw error;
         }
 
         

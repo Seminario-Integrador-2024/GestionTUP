@@ -74,15 +74,15 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
        try{
             let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.id_cuota);
             numerosCuotas = numerosCuotas.sort((a, b) => a - b); // Ordenar de menor a mayor
-            await FetchPostPago(numerosCuotas, montoAbonado, comentarios);
+            const response = await FetchPostPago(numerosCuotas, montoAbonado, comentarios);
+
+            showToast('Pago informado', 'El pago se ha informado correctamente, continuar en el google forms', 'success');
 
            const dni = Cookies.get('dni');
            const fullName = Cookies.get('full_name');
            const fechaHoy = obtenerFechaForm();
            const googleFormUrl =  `https://docs.google.com/forms/d/e/1FAIpQLSfNe4krjpaC7I_9FA7Do3MAuQr7eC9wF5zVHIgOV2XeqzAAnA/viewform?usp=pp_url&entry.1045781291=${fullName}&entry.839337160=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.1065046570=${dni}&entry.1651003915=${encodeURIComponent(fechaHoy)}&entry.180139663=${obtenerMesesDeCuotas(numerosCuotas)}&entry.463277821=${comentarios}`;
            window.open(googleFormUrl, '_blank');
-
-           showToast('Pago informado', 'El pago se ha informado correctamente, continuar en el google forms', 'success');
            
            //onRefresh();
        } catch (error) {
@@ -112,6 +112,11 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
       setTotal(calculatedTotal);
       setMontoAbonado(calculatedTotal); // Inicializa montoAbonado con el valor de total
   }, [isOpen, cuotasseleccionadas]);
+
+  const handleMontoAbonadoChange = (e: any) => {
+    const value = e.target.value;
+    setMontoAbonado(value === '' ? 0 : parseFloat(value));
+  };
 
   
     // useEffect(() => {
@@ -146,7 +151,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                     <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
                       $
                     </InputLeftElement>
-                    <Input placeholder='' value={montoAbonado} onChange={(e) => setMontoAbonado(parseInt(e.target.value))} />
+                    <Input placeholder='' value={montoAbonado} onChange={handleMontoAbonadoChange} />
                 </InputGroup>
             
             </FormControl>
