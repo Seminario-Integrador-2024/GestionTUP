@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Tab,
-  TabList,
-  TabPanels,
-  Tabs,
-  VStack,
-  List,
-  ListItem,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
   Spinner,
-  useTab,
+  Alert,
+  IconButton,
+  HStack,
 } from '@chakra-ui/react';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'; // Importa los iconos
 import { FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
 
 interface Alumnos {
@@ -18,23 +20,23 @@ interface Alumnos {
   legajo: number;
   dni: number;
   estado_financiero: string;
-  anio_ingreso: number;
 }
 
 const AlumnosConCompromiso: React.FC = () => {
   const [alumnos, setAlumnos] = useState<Alumnos[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [alumnosPerPage] = useState<number>(10);
 
   useEffect(() => {
     const fetchNoFirmantes = async () => {
       try {
-        const response = await FetchNoFirmantes();
-        if (!response.ok) {
-          throw new Error('Error al obtener los alumnos');
-        }
-        const data: Alumnos[] = await response.json();
+        const data: Alumnos[] = await FetchNoFirmantes();
         setAlumnos(data);
       } catch (error) {
+        setError('Error al obtener los alumnos');
         console.error(error);
       } finally {
         setLoading(false);
@@ -42,25 +44,65 @@ const AlumnosConCompromiso: React.FC = () => {
     };
 
     fetchNoFirmantes();
-  }, );
+  }, []);
+
+  if (loading) {
+    return <Spinner size="xl" />;
+  }
+
+  if (error) {
+    return <Alert status="error">{error}</Alert>;
+  }
+
+  // Calcular los índices para la paginación
+  const indexOfLastAlumno = currentPage * alumnosPerPage;
+  const indexOfFirstAlumno = indexOfLastAlumno - alumnosPerPage;
+  const currentAlumnos = alumnos.slice(indexOfFirstAlumno, indexOfLastAlumno);
+  const totalPages = Math.ceil(alumnos.length / alumnosPerPage);
 
   return (
     <Box p={5}>
-      <VStack spacing={4} align="stretch">
-        <Tabs variant="enclosed" isLazy>
-          <TabPanels>
-            <Box>
-              <List spacing={3}>
-                {alumnos.map(alumno => (
-                  <ListItem key={alumno.legajo}>
-                    {alumno.full_name} (Legajo: {alumno.legajo}, DNI: {alumno.dni}, Situacion: {alumno.estado_financiero}, Año Ingreso: {alumno.anio_ingreso})
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          </TabPanels>
-        </Tabs>
-      </VStack>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th fontFamily="Helvetica" fontWeight="900">APELLIDO Y NOMBRE</Th>
+            <Th fontFamily="Helvetica" fontWeight="900">LEGAJO</Th>
+            <Th fontFamily="Helvetica" fontWeight="900">DNI</Th>
+            <Th fontFamily="Helvetica" fontWeight="900">SITUACION FINANCIERA</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {currentAlumnos.map(alumno => (
+            <Tr key={alumno.legajo}>
+              <Td>{alumno.full_name}</Td>
+              <Td>{alumno.legajo}</Td>
+              <Td>{alumno.dni}</Td>
+              <Td>{alumno.estado_financiero}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+
+      <HStack spacing={4} mt={4} justifyContent="flex-end">
+        <IconButton
+          icon={<ArrowBackIcon />}
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          isDisabled={currentPage === 1}
+          bg="transparent"
+          _hover={{ bg: 'gray.200' }} // Fondo al pasar el mouse
+          _active={{ bg: 'gray.300' }} // Fondo al hacer clic
+          aria-label="Página anterior"
+        />
+        <IconButton
+          icon={<ArrowForwardIcon />}
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          isDisabled={currentPage === totalPages}
+          bg="transparent"
+          _hover={{ bg: 'gray.200' }} // Fondo al pasar el mouse
+          _active={{ bg: 'gray.300' }} // Fondo al hacer clic
+          aria-label="Siguiente página"
+        />
+      </HStack>
     </Box>
   );
 };
