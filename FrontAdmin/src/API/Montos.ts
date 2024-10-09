@@ -63,7 +63,7 @@ export const loadPDF = async (id :string,file: File) => {
     const formData = new FormData();
     formData.append('archivo_pdf', file);
 
-    const response = await fetch(`${URL}/compromisos/${id}/`, {
+    const response = await fetch(`http://localhost:8000/api/compromisos/${id}/`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,

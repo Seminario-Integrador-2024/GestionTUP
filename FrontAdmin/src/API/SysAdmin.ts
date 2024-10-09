@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-export const FetchExcel = async (excelFile: File) => {
+export const FetchExcelSysAdmin = async (excelFile: File) => {
   try {
     const token = Cookies.get('access_token');
 
@@ -8,7 +8,7 @@ export const FetchExcel = async (excelFile: File) => {
     formData.append('file', excelFile);
 
     const response = await fetch(
-      `http://localhost:8000/api/excels/sysacad/`,
+      `http://localhost:8000/api/excels/sysadmin/`,
       {
         method: 'POST',
         headers: {
@@ -32,12 +32,12 @@ export const FetchExcel = async (excelFile: File) => {
   }
 };
 
-export const FetchHistorialExcel = async () => {
+export const FetchHistorialExcelSysAdmin = async () => {
   try {
     const token = Cookies.get('tokennn');
 
     const response = await fetch(
-      'http://localhost:8000/api/excels/sysacad/',
+      'http://localhost:8000/api/excels/sysadmin/',
       {
         method: 'GET',
         headers: {
