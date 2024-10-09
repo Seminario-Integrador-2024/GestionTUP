@@ -80,7 +80,7 @@ useEffect(() => {
 
 
 return (
-    <Stack direction="column" align="center">
+    <Stack direction="column" align="center" mt={"20px"}>
         <Stack direction="column" spacing={4} align="center" bg="secundaryBg" padding={5} borderRadius={10} w={550}>
             <Text fontSize="xl">Subir Excel de SysAdmin</Text>
             <ZonaCarga

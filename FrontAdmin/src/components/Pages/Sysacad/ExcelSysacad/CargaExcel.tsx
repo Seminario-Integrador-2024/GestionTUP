@@ -15,6 +15,7 @@ function CargaExcel() {
     const [data, setData] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [excels, setExcels] = useState<any[]>([]);
+    const [bandera, setBandera] = useState(false);
 
     const handleFileUpload = (fileName: string) => {
         setFileUploaded(true);
@@ -49,6 +50,7 @@ function CargaExcel() {
         } catch (error: any) {
             console.error('Error al subir el archivo:', error);
         } finally {
+            setBandera(!bandera);
             setIsLoading(false);
         }
     };
@@ -70,13 +72,14 @@ function CargaExcel() {
         const getHistorial = async () => {
             try {
                 const historial = await FetchHistorialExcel();
+                historial.sort((a: any, b: any) => b.id - a.id); // Ordenar en forma descendente por id
                 setExcels(historial);
             } catch (error) {
                 console.error('Error:', error);
             }
         };
         getHistorial();
-    }, []);
+    }, [bandera]);
 
     const extractDateFromUrl = (url: string) => {
         const regex = /(\d{4}_\d{2}_\d{2}_\d{2})/;
