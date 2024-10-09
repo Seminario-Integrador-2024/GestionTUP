@@ -29,6 +29,7 @@ import Select from './components/Pages/Estadisticas/SubPages/Cuotas/Select';
 import Listado from './components/Pages/Estadisticas/SubPages/Cuotas/Listado';
 import path from 'path';
 import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
+import Sysadmin from './components/Pages/SysAdmin/SysAdmin';
 
 const routes = [
   {
@@ -81,7 +82,7 @@ const routes = [
   {
     path: 'sysadmin',
     title: 'SysAdmin',
-    element: <ErrorPage />,
+    element: <Sysadmin/>,
     icon: iconSysAdmin,
     rol: 'admin',
   },

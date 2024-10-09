@@ -13,7 +13,10 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [rolUser, setRolUser] = useState<String[]>(JSON.parse(localStorage.getItem('userRol') || '[]'));
+  const [rolUser, setRolUser] = useState<String[]>(() => {
+    const storedUserRol = localStorage.getItem('userRol');
+    return storedUserRol ? JSON.parse(storedUserRol) : [];
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(
     (!Cookies.get('tokennn') ) ? false : true
   );

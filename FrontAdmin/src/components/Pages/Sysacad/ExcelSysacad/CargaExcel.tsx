@@ -28,7 +28,7 @@ function CargaExcel() {
             setIsLoading(true);
             const token = Cookies.get('tokennn');
             const response = await fetch(
-                `http://localhost:8000/api/excels/`,  
+                `http://localhost:8000/api/excels/sysacad/`,  
                 {
                     method: 'POST',
                     headers: {

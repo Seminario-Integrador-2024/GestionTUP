@@ -8,7 +8,7 @@ export const FetchExcel = async (excelFile: File) => {
     formData.append('file', excelFile);
 
     const response = await fetch(
-      `http://localhost:8000/api/excels/`,
+      `http://localhost:8000/api/excels/sysacad/`,
       {
         method: 'POST',
         headers: {
@@ -37,7 +37,7 @@ export const FetchHistorialExcel = async () => {
     const token = Cookies.get('tokennn');
 
     const response = await fetch(
-      'http://localhost:8000/api/excels/',
+      'http://localhost:8000/api/excels/sysacad/',
       {
         method: 'GET',
         headers: {
