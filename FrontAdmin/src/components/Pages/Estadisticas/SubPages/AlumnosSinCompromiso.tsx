@@ -20,7 +20,6 @@ interface Alumnos {
   legajo: number;
   dni: number;
   estado_financiero: string;
-  anio_ingreso: number;
 }
 
 const AlumnosConCompromiso: React.FC = () => {
@@ -70,7 +69,6 @@ const AlumnosConCompromiso: React.FC = () => {
             <Th fontFamily="Helvetica" fontWeight="900">LEGAJO</Th>
             <Th fontFamily="Helvetica" fontWeight="900">DNI</Th>
             <Th fontFamily="Helvetica" fontWeight="900">SITUACION FINANCIERA</Th>
-            <Th fontFamily="Helvetica" fontWeight="900">AÑO INGRESO</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -80,7 +78,6 @@ const AlumnosConCompromiso: React.FC = () => {
               <Td>{alumno.legajo}</Td>
               <Td>{alumno.dni}</Td>
               <Td>{alumno.estado_financiero}</Td>
-              <Td>{alumno.anio_ingreso}</Td>
             </Tr>
           ))}
         </Tbody>
