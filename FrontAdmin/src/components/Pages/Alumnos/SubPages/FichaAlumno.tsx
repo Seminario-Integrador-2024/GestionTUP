@@ -18,17 +18,25 @@ import {
   Checkbox,
   Input,
   Tag,
+  Tabs, 
+  TabList, 
+  Tab,
+  TabPanels,
+  TabPanel,
 } from '@chakra-ui/react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import logoUser from '../../../icons/logo-user.png';
 import { useNavigate } from 'react-router-dom';
+import { FetchEstadoCuenta } from '../../../../API/EstadoCuentaAlumno.ts';
 import {
   FetchDetalleAlumno,
   FetchMateriasAlumno,
 } from '../../../../API/DetalleAlumno.ts';
+import { FetchCompromisosAlumno } from '../../../../API-Alumnos/Compromiso.ts';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
+import {formatoFechaISOaDDMMAAAA} from '../../../../utils/general';
 
 interface Alumno {
   full_name: string;
@@ -36,9 +44,21 @@ interface Alumno {
   legajo: number;
   email: string;
   telefono: number;
-  estado: string;
+  estado_academico: string;
+  estado_financiero: string;
 }
 
+
+interface Cuota {
+  numero: number;
+  montoActual: number;
+  fechaVencimiento: string;
+  valorpagado: number;
+  estado: number;
+  tipocuota: string;
+  valorinformado: number;
+}
+  
 interface Materia {
   codigo_materia: number;
   anio_cursada: number;
@@ -50,9 +70,11 @@ interface Materia {
 function FichaAlumno() {
   const { dni } = useParams();
   const [alumno, setAlumno] = useState<Alumno | null>(null); // Define el estado con un valor inicial de null
+  const [cuotas, setCuotas] = useState<Cuota[]>([]); //arranca vacio
   const [materias, setMaterias] = useState<Materia[]>([]); // Define el estado con un valor inicial de null
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
+  const [firmoCompromiso, setFirmoCompromiso] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -60,12 +82,11 @@ function FichaAlumno() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDetalleAlumno = async (dni: any) => {
       try {
         if (dni) {
-          const dniNumber = parseInt(dni, 10); // Convierte a número
-          const dataDetalle = await FetchDetalleAlumno(dniNumber);
-          const dataMaterias = await FetchMateriasAlumno(dniNumber);
+          const dataDetalle = await FetchDetalleAlumno(dni);
+          const dataMaterias = await FetchMateriasAlumno(dni);
           setAlumno(dataDetalle);
           setMaterias(dataMaterias);
         }
@@ -77,9 +98,44 @@ function FichaAlumno() {
       }
     };
 
-    if (dni) {
-      fetchData();
+    const fetchEstadoCuentaAlumno = async () => {
+      try {
+        if (dni) {
+          const dniNumber = parseInt(dni, 10); // Convierte a número
+          const data = await FetchEstadoCuenta(dniNumber);
+          const sortedCuotas = data.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
+          setCuotas(sortedCuotas);
+        }
+      } catch (error) {
+        setError(error);
+        console.error('Error al obtener los datos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchCompromiso = async () => {
+    try {
+      if (!dni) return
+      const dniNumber = parseInt(dni, 10); // Convierte a número
+      const firmas = await FetchCompromisosAlumno(dniNumber);
+      if (firmas.results.length > 0) {
+        if (firmas.results[0].firmo_ultimo_compromiso === true) {
+          setFirmoCompromiso(true);
+        }
+      }
+    } catch (error) { 
+      console.error('Error al obtener los datos', error);
     }
+    }
+
+    if (dni) {
+      fetchDetalleAlumno(dni);
+      fetchEstadoCuentaAlumno();
+      fetchCompromiso();
+    }
+    
+
   }, [dni]); // Incluye `dni` como dependencia
 
   if (loading) {
@@ -93,80 +149,9 @@ function FichaAlumno() {
   if (!alumno) {
     return <Text>No se encontraron datos.</Text>;
   }
-  const cuotas = [
-    {
-      numero: 0,
-      montoActual: 0,
-      fechaVencimiento: '2024-03-10',
-      valorpagado: 10000,
-      valoradeudado: 0,
-      estado: 'PAGADO',
-    },
-    {
-      numero: 1,
-      montoActual: 10000,
-      fechaVencimiento: '2024-03-10',
-      valorpagado: 5000,
-      valoradeudado: 5000,
-      estado: 'INFORMADO',
-    },
-    {
-      numero: 2,
-      montoActual: 10000,
-      fechaVencimiento: '2024-04-10',
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-    {
-      numero: 3,
-      montoActual: 10000,
-      fechaVencimiento: '2024-05-10',
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-    {
-      numero: 4,
-      montoActual: 10000,
-      fechaVencimiento: '2024-06-10',
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-    {
-      numero: 5,
-      montoActual: 10000,
-      fechaVencimiento: '2024-07-10',
-      valorpagado: 0,
-      valoradeudado: 10000,
-      estado: 'ADEUDADO',
-    },
-  ];
-  /*
-  const [cuotas, setCuotas] = useState<any[]>([]); 
-    const [cuotasSeleccionadas, setCuotasSeleccionadas] = useState<any[]>([]);
-
-    useEffect(() => {
-        setCuotas(cuotas)   
-    }, [])
-
-    useEffect(() => {
-        console.log(cuotasSeleccionadas)  
-    }, [cuotasSeleccionadas])
-   
-    // Funcion para manejar el cambio de estado de los checkbox, si el esatdo anterior es true, lo elimina del array, si es false lo agrega
-    const handleCheckboxChange = (cuota:any) => {
-        setCuotasSeleccionadas((prevSeleccionadas) => {
-          if (prevSeleccionadas.includes(cuota)) {
-            return prevSeleccionadas.filter((item) => item !== cuota);
-          } else {
-            return [...prevSeleccionadas, cuota];
-          }
-        });
-      };
-  */
+  
   return (
+    
     <Flex mt="20px">
       <Button
         position="absolute"
@@ -217,20 +202,21 @@ function FichaAlumno() {
           Compromiso de Pago:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          Firmado
+          {firmoCompromiso ? 'Firmado' : 'No firmado'}
         </Text>
         <Text color="gray" mt="10px">
           Estado:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {alumno.estado}
+          {alumno.estado_financiero}
         </Text>
-        <Text color="gray" mt="10px">
-          Deuda:
+        <Text color="gray" mt="20px">
+          Ultimo Periodo Cursado
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          -
+        {`${materias[0].anio_cursada} / ${materias[0].cuatrimestre}C`}
         </Text>
+        
       </Box>
 
       <Box>
@@ -249,104 +235,92 @@ function FichaAlumno() {
             ml="30px"
             w="100%"
           >
-            <Tag m="20px" p="10px">
-              Estado de cuenta al 18/09/2024{' '}
-            </Tag>
-            {cuotas.length > 0 ? (
-              <Table variant="simple" width="100%">
-                <Thead>
-                  <Tr mt={6}>
-                    <Th textAlign="center" p={1}>
-                      Numero
-                    </Th>
-                    <Th textAlign="center">Fecha Primer Vto.</Th>
-                    <Th textAlign="center">Valor Actual</Th>
-                    <Th textAlign="center">Valor Pagado</Th>
-                    <Th textAlign="center">Valor Adeudado</Th>
-                    <Th textAlign="center">Estado</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {cuotas.map((cuota, index) => (
-                    <Tr key={index}>
-                      <Td textAlign="center" p={1}>
-                        {cuota.numero}
-                      </Td>
-                      <Td textAlign="center">{cuota.fechaVencimiento}</Td>
-                      <Td textAlign="center">{'$ ' + cuota.montoActual}</Td>
-                      <Td textAlign="center">{'$ ' + cuota.valorpagado}</Td>
-                      <Td textAlign="center">{'$ ' + cuota.valoradeudado}</Td>
-                      {cuota.estado === 'ADEUDADO' ? (
-                        <Td textAlign="center">
-                          {' '}
-                          <Badge colorScheme="red" minW="85px">
-                            {cuota.estado}
-                          </Badge>
-                        </Td>
-                      ) : cuota.estado === 'INFORMADO' ? (
-                        <Td textAlign="center">
-                          {' '}
-                          <Badge colorScheme="yellow" minW="85px">
-                            {cuota.estado}
-                          </Badge>
-                        </Td>
+            <Tabs>
+              <TabList>
+                <Tab>Estado de cuenta</Tab>
+                <Tab>Materias que cursa</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel minW="50vw">
+                      <Tag m="20px" p="10px">
+                    Estado de cuenta al {(new Date().toLocaleDateString())}
+                  </Tag>
+                  {cuotas.length > 1 ? (
+                    <Table variant="simple" width="100%">
+                      <Thead>
+                        <Tr mt={6}>
+                          <Th textAlign="center" p={1}>
+                            Numero
+                          </Th>
+                          <Th textAlign="center">Fecha Primer Vto.</Th>
+                          <Th textAlign="center">Valor Actual</Th>
+                          <Th textAlign="center">Valor Pagado</Th>
+                          <Th textAlign="center">Valor Informado</Th>
+                          <Th textAlign="center">Valor Adeudado</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {cuotas && cuotas.map((cuota, index) => (
+                          <Tr key={index}>
+                            <Td textAlign="center" p={1}>
+                              {cuota.numero}
+                            </Td>
+                            <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  ) : (
+                    <Text  textAlign="center" padding="20px">No existen cuotas. El alumno no firmo el compromiso de pago del periodo actual.</Text>
+                  )}
+                </TabPanel>
+                
+                <TabPanel minW="50vw">
+                      {materias.length > 0 ? (
+                        <Table variant="simple" width="100%">
+                          <Thead>
+                            <Tr mt={6}>
+                              <Th textAlign="center">Codigo de materia</Th>
+                              <Th textAlign="center">Nombre</Th>
+                              <Th textAlign="center">Año de cursada</Th>
+                              <Th textAlign="center">Plan</Th>
+                              <Th textAlign="center">Cuatrimestre</Th>
+                            </Tr>
+                          </Thead>
+                          <Tbody>
+                            {materias?.map((materia, index) => (
+                                <Tr
+                                  key={index}
+                                  onClick={() =>
+                                    navigate(`#`) //Aca tendriamos que ver a donde se lo redirige
+                                  }
+                                  cursor="pointer"
+                                  _hover={{ bg: "gray.50" }}
+                                >
+                                    <Td textAlign="center">{materia.codigo_materia}</Td>
+                                    <Td textAlign="center">{materia.nombre}</Td>
+                                    <Td textAlign="center">{materia.anio_cursada}</Td>
+                                    <Td textAlign="center">{materia.anio_plan}</Td>
+                                    <Td textAlign="center">{materia.cuatrimestre}</Td>
+                                </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
                       ) : (
-                        <Td textAlign="center">
-                          {' '}
-                          <Badge colorScheme="green" minW="85px">
-                            {cuota.estado}
-                          </Badge>
-                        </Td>
+                        <Text>El alumno no se encuentra cursando materias en el cuatrimestre en curso.</Text>
                       )}
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            ) : (
-              <Text>No hay datos disponibles</Text>
-            )}
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+
           </Box>
 
-          <Box
-            borderRadius={8}
-            borderColor={'gray.200'}
-            borderStyle={'solid'}
-            borderWidth={1}
-            p={3}
-            ml="30px"
-            mt="30px"
-            w="100%"
-          >
-            {materias.length > 0 ? (
-              <Table variant="simple" width="100%">
-                <Thead>
-                  <Tr mt={6}>
-                    <Th textAlign="center">Materia</Th>
-                    <Th textAlign="center">Año de cursada</Th>
-                    <Th textAlign="center">Cuatrimestre</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {materias?.map((materia, index) => (
-                      <Tr
-                        key={index}
-                        onClick={() =>
-                          navigate(`/admin/sysacad/`) //Aca tendriamos que ver a donde se lo redirige
-                        }
-                        cursor="pointer"
-                        _hover={{ bg: "gray.50" }}
-                      >
-                        <Td textAlign="center">{materia.nombre}</Td>
-                        <Td textAlign="center">{materia.anio_cursada}</Td>
-                        <Td textAlign="center">{materia.cuatrimestre}</Td>
-                      </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            ) : (
-              <Text>No hay datos de materias disponibles</Text>
-            )}
-          </Box>
+         
         </Flex>
       </Box>
     </Flex>

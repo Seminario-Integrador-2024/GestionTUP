@@ -12,14 +12,14 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
+  ModalFooter,
   Select,
+  Grid,
+  useToast,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon } from '@chakra-ui/icons';
 import { createCompromiso } from '../../../../API/Montos';
 import ModalCargarDocumento from '../ModalCargarDocumento';
-import { CheckIcon } from '@chakra-ui/icons';
-import { useToast } from '@chakra-ui/react';
-
 
 interface Compromiso {
   anio: string | number | Date;
@@ -34,6 +34,9 @@ interface Compromiso {
   cuota_reducida: number;
   cuota_reducida_2venc: number;
   cuota_reducida_3venc: number;
+  fecha_vencimiento_1: number;
+  fecha_vencimiento_2: number;
+  fecha_vencimiento_3: number;
 }
 
 interface CardCargaProps {
@@ -52,8 +55,8 @@ const MontoInput = ({
   value: number;
   onChange: (e: { target: { name: string; value: string } }) => void;
 }) => (
-  <Flex align="center">
-    <Text w="60%">{label}</Text>
+  <Flex direction="column">
+    <Text mb={1}>{label}</Text>
     <Input
       type="text"
       name={name}
@@ -65,13 +68,38 @@ const MontoInput = ({
   </Flex>
 );
 
+const DateSelect = ({
+  label,
+  name,
+  value,
+  onChange,
+}: {
+  label: string;
+  name: string;
+  value: number;
+  onChange: (e: { target: { name: string; value: string } }) => void;
+}) => (
+  <Flex align="center" mb={4}>
+    <Text  mb={1}>{label}</Text>
+    <Select
+      name={name}
+      value={value}
+      onChange={onChange}
+      size="sm"
+      bg="white"
+    >
+      {Array.from({ length: 29 }, (_, i) => i + 1).map((day) => (
+        <option key={day} value={day}>
+          {day}
+        </option>
+      ))}
+    </Select>
+  </Flex>
+);
+
 const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isModalCargarOpen,
-    onOpen: onModalCargarOpen,
-    onClose: onModalCargarClose,
-  } = useDisclosure();
+  const { isOpen: isModalCargarOpen, onOpen: onModalCargarOpen, onClose: onModalCargarClose } = useDisclosure();
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -86,9 +114,8 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
 
   const getCurrentDateTime = () => {
     const now = new Date();
-    return now.toISOString(); 
+    return now.toISOString();
   };
-  
 
   const [tempMonto, setTempMonto] = useState<Compromiso>({
     anio: getCurrentDateTime(),
@@ -103,18 +130,30 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
     cuota_reducida: 0,
     cuota_reducida_2venc: 0,
     cuota_reducida_3venc: 0,
+    fecha_vencimiento_1: 10,
+    fecha_vencimiento_2: 15,
+    fecha_vencimiento_3: 20,
   });
 
   const toast = useToast();
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
-    setTempMonto({
-      ...tempMonto,
-      [name]: parseInt(value.replace(/\D/g, ''), 10) || 0,
-    });
-  };
+    console.log(name, value);
 
+    if (name.includes('monto') || name === 'matricula' || name.includes('cuota')) {
+      setTempMonto({
+        ...tempMonto,
+        [name]: parseInt(value.replace(/\D/g, ''), 10) || 0,
+      });
+    } else if (name.includes('fecha_vencimiento')) {
+      setTempMonto({
+        ...tempMonto,
+        [name]: parseInt(value, 10) || 0,
+      });
+    } 
+  };
+  
   const handleSave = async () => {
     if (!selectedFile) {
       toast({
@@ -126,7 +165,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       });
       return;
     }
-    
+
     if (tempMonto.cuatrimestre === '') {
       toast({
         title: 'Error',
@@ -137,9 +176,9 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       });
       return;
     }
+
     try {
       await createCompromiso(tempMonto, selectedFile);
-     
       onClose();
       toast({
         title: 'Éxito',
@@ -161,132 +200,116 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
     }
   };
 
-
   return (
     <>
       <Button colorScheme="blue" onClick={onOpen} leftIcon={<AddIcon />}>
         Nuevo Cuatrimestre
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} >
         <ModalOverlay />
-        <ModalContent maxW="80%">
+        <ModalContent maxW="80%" mt="10px" >
           <ModalCloseButton />
           <ModalBody mt={5} mb="10px">
-            <Box
-              borderWidth="1px"
-              borderRadius="lg"
-              bg="secundaryBg"
-              p={6}
-              boxShadow="md"
-              maxW="100%"
-              mt={4}
-              position="relative"
-            >
-            <Flex justify="space-between" gap="4" pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px', }}>
-              <Text mb="20px" fontSize="2xl" fontWeight="bold">
-                Cuatrimestre
-              </Text>
+            <Flex justify="space-between" mb={6}>
+              <Text fontSize="2xl" fontWeight="bold">Cuatrimestre</Text>
               <Button
-                  bgColor={filePreview ? "green" : undefined}
-                  color="white"
-                  size="sm"
-                  onClick={onModalCargarOpen}
-                  leftIcon={filePreview ? <CheckIcon /> : undefined}
-                >
-                  Cargar Documento
-                </Button>
-              </Flex>
-              <Select
-                placeholder= 'Selecciona un cuatrimestre'
-                name="cuatrimestre"
-                mb="20px"
-                bg="white"
-                onChange={(e) =>
-                  setTempMonto({
-                    ...tempMonto,
-                    cuatrimestre: e.target.value,
-                  })
-                }
+                bgColor={filePreview ? 'green' : undefined}
+                color="white"
+                size="sm"
+                onClick={onModalCargarOpen}
+                leftIcon={filePreview ? <CheckIcon /> : undefined}
+                mr={9}
               >
-                <option value="1C">1er Cuatrimestre</option>
-                <option value="2C">2do Cuatrimestre</option>
-              </Select>
-              <SimpleGrid columns={8} spacing={0}>
-                <Text fontSize="2xl" fontWeight="bold" mb={4}>
-                  Montos
-                </Text>
-              </SimpleGrid>
-              <SimpleGrid columns={2} spacing={2}>
-                <MontoInput
-                  label="Cuota Completa"
-                  name="monto_completo"
-                  value={tempMonto.monto_completo}
-                  onChange={handleChange}
-                />
-                <MontoInput
-                  label="Cuota Reducida"
-                  name="cuota_reducida"
-                  value={tempMonto.cuota_reducida}
-                  onChange={handleChange}
-                />
-                <MontoInput
-                  label="Cuota Completa 2do Vencimiento"
-                  name="monto_completo_2venc"
-                  value={tempMonto.monto_completo_2venc}
-                  onChange={handleChange}
-                />
-                <MontoInput
-                  label="Cuota Reducida 2do Vencimiento"
-                  name="cuota_reducida_2venc"
-                  value={tempMonto.cuota_reducida_2venc}
-                  onChange={handleChange}
-                />
-                <MontoInput
-                  label="Cuota Completa 3er Vencimiento"
-                  name="monto_completo_3venc"
-                  value={tempMonto.monto_completo_3venc}
-                  onChange={handleChange}
-                />
-                <MontoInput
-                  label="Cuota Reducida 3er Vencimiento"
-                  name="cuota_reducida_3venc"
-                  value={tempMonto.cuota_reducida_3venc}
-                  onChange={handleChange}
-                />
-                <MontoInput
-                  label="Matrícula"
-                  name="matricula"
-                  value={tempMonto.matricula}
-                  onChange={handleChange}
-                />
-              </SimpleGrid>
+                Cargar Documento
+              </Button>
+            </Flex>
+            <Select
+              placeholder="Selecciona un cuatrimestre"
+              name="cuatrimestre"
+              mb={4}
+              bg="white"
+              onChange={(e) => setTempMonto({ ...tempMonto, cuatrimestre: e.target.value })}
+            >
+              <option value="1C">1er Cuatrimestre</option>
+              <option value="2C">2do Cuatrimestre</option>
+            </Select>
+            
+            <Text fontWeight="bold" mb={4}>Montos</Text>
+            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+              <MontoInput
+                label="Cuota Completa"
+                name="monto_completo"
+                value={tempMonto.monto_completo}
+                onChange={handleChange}
+              />
+              <MontoInput
+                label="Cuota Reducida"
+                name="cuota_reducida"
+                value={tempMonto.cuota_reducida}
+                onChange={handleChange}
+              />
+              <MontoInput
+                label="Cuota Completa 2do Vencimiento"
+                name="monto_completo_2venc"
+                value={tempMonto.monto_completo_2venc}
+                onChange={handleChange}
+              />
+              <MontoInput
+                label="Cuota Reducida 2do Vencimiento"
+                name="cuota_reducida_2venc"
+                value={tempMonto.cuota_reducida_2venc}
+                onChange={handleChange}
+              />
+              <MontoInput
+                label="Cuota Completa 3er Vencimiento"
+                name="monto_completo_3venc"
+                value={tempMonto.monto_completo_3venc}
+                onChange={handleChange}
+              />
+              <MontoInput
+                label="Cuota Reducida 3er Vencimiento"
+                name="cuota_reducida_3venc"
+                value={tempMonto.cuota_reducida_3venc}
+                onChange={handleChange}
+              />
+              <MontoInput
+                label="Matrícula"
+                name="matricula"
+                value={tempMonto.matricula}
+                onChange={handleChange}
+              />
+             <DateSelect
+                label="Fecha 1er Vencimiento"
+                name="fecha_vencimiento_1"
+                value={tempMonto.fecha_vencimiento_1}
+                onChange={handleChange}
+              />
+              <DateSelect
+                label="Fecha 2do Vencimiento"
+                name="fecha_vencimiento_2"
+                value={tempMonto.fecha_vencimiento_2}
+                onChange={handleChange}
+              />
+              <DateSelect
+                label="Fecha 3er Vencimiento"
+                name="fecha_vencimiento_3"
+                value={tempMonto.fecha_vencimiento_3}
+                onChange={handleChange}
+              />
 
-              <Flex justify="flex-end" gap="4" pt={{ base: '30px', sm: '20px', md: '10px', lg: '5px', }}>
-                <Button color="white" size="sm" onClick={()=>{handleSave()}}>
-                  Guardar Cambios
-                </Button>
-                <Button
-                  bgColor={filePreview ? 'green' : undefined}
-                  color="white"
-                  size="sm"
-                  onClick={onModalCargarOpen}
-                  leftIcon={filePreview ? <CheckIcon /> : undefined}
-                >
-                  Cargar Documento
-                </Button>
-                <Button
-                  colorScheme="blue"
-                  color="white"
-                  size="sm"
-                  onClick={onClose}
-                >
-                  Cancelar
-                </Button>
-              </Flex>
-            </Box>
+            </Grid>
           </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleSave}>
+              Guardar
+            </Button>
+            <Button variant="blue" onClick={onClose}>
+              Cancelar
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
+      
       <ModalCargarDocumento
         isOpen={isModalCargarOpen}
         onClose={onModalCargarClose}
@@ -300,3 +323,4 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
 };
 
 export default Montos;
+

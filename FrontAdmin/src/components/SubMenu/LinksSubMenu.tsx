@@ -1,10 +1,9 @@
 export const ITEMS_SUBMENU = [
-  { url: '#', title: 'Alumnos inhabilitados' },
-  { url: '#', title: 'Alumnos con baja provisoria' },
-  { url: '#', title: 'Alumnos activos' },
-  { url: '#', title: 'Alumnos que abonaron cuota' },
-  { url: '#', title: 'Alumnos que no abonaron cuota' },
-  { url: '#', title: 'Alumnos que no abonaron matricula' },
+  { url: '#', title: 'Inhabilitaciones' },
+  { url: '#', title: 'Baja Provisoria' },
+  { url: 'cuotas', title: 'Cuotas' , tooltip: 'Alumnos que abonaron/no abonaron una respectiva cuota' },
+  { url: '#', title: 'Matricula' },
+  { url: 'alumnos-que-firmaron-compromiso-de-pago', title: 'Compromiso de Pago'},
   { url: '#', title: 'Pagos' },
   {
     url: 'alumnos-que-cursan-materia',

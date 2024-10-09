@@ -23,6 +23,13 @@ import { CiSaveDown1 } from 'react-icons/ci';
 import Alumnos from './components/Pages/Alumnos/Alumnos';
 import { PiStudentLight } from 'react-icons/pi';
 import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno'; import CompromisoDePago from './components/Pages-Alumnos/CompromisoDePago';
+import ListadoAlumnosQueCursanMateria from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ListadoAlumnosQueCursanMateria';
+import AlumnosCompromisoPago from './components/Pages/Estadisticas/SubPages/Alumnos-que-fimaron-compromiso-de-pago';
+import Select from './components/Pages/Estadisticas/SubPages/Cuotas/Select';
+import Listado from './components/Pages/Estadisticas/SubPages/Cuotas/Listado';
+import path from 'path';
+import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
+import Sysadmin from './components/Pages/SysAdmin/SysAdmin';
 
 const routes = [
   {
@@ -37,7 +44,7 @@ const routes = [
     element: <FichaAlumno />,
   },
   {
-    path: 'estadisticas',
+    path: 'estadisticas/*',
     title: 'Estadísticas' /* para el tooltip*/,
     element: <Estadisticas />,
     rol: 'admin' /* para la activación de rutas segun el rol */,
@@ -47,18 +54,35 @@ const routes = [
         path: 'alumnos-que-cursan-materia',
         element: <ListadoMaterias />,
         rol: 'admin',
+
       },
       {
-        path: 'estadisticas/alumnos-que-cursan-materia/:url',
-        element: <ListadoAlumnos />,
+        path: 'alumnos-que-firmaron-compromiso-de-pago',
+        element: <AlumnosCompromisoPago />,
         rol: 'admin',
       },
+      {
+        path: 'alumnos-que-cursan-materia/:codigo_materia',
+        element: <ListadoAlumnosQueCursanMateria />,
+        rol: 'admin',
+      },
+      {
+        path: 'cuotas',
+        element: <Select />,
+        rol: 'admin',
+      },
+      {
+        path  : 'cuotas/:fecha',
+        element: <Listado />,
+        rol: 'admin',
+      },
+
     ],
   },
   {
     path: 'sysadmin',
     title: 'SysAdmin',
-    element: <ErrorPage />,
+    element: <Sysadmin/>,
     icon: iconSysAdmin,
     rol: 'admin',
   },
@@ -79,7 +103,7 @@ const routes = [
   {
     path: 'cuenta',
     title: 'Cuenta',
-    element: <ErrorPage />,
+    element: <EstadoCuenta />,
     rol: 'alumnos',
     icon: iconAlumno,
   },

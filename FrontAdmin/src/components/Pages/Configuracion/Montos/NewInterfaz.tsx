@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Text,
-  Input,
   Button,
   SimpleGrid,
   Table,
@@ -21,7 +20,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-
 import { useEffect, useState } from 'react';
 
 interface Compromiso {
@@ -37,6 +35,10 @@ interface Compromiso {
   cuota_reducida: number;
   cuota_reducida_2venc: number;
   cuota_reducida_3venc: number;
+  fecha_vencimiento_1: number;
+  fecha_vencimiento_2: number;
+  fecha_vencimiento_3: number;
+
 }
 
 interface CardCargaProps {
@@ -59,7 +61,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
 
   const handleViewPdf = async (url: string) => {
     try {
-      const token = Cookies.get('access_token');
+      const token = Cookies.get('tokennn');
       const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -99,12 +101,8 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
               <Tr>
                 <Th p={1}>Año/ Cuatrimestre</Th>
                 <Th p={2}>Matrícula</Th>
-                <Th p={1}>Monto Completo</Th>
-                <Th p={1}>Monto Completo 2 Venc</Th>
-                <Th p={1}>Monto Completo 3 Venc</Th>
-                <Th p={1}>Cuota Reducida</Th>
-                <Th p={1}>Cuota Reducida 2 Venc</Th>
-                <Th p={1}>Cuota Reducida 3 Venc</Th>
+                <Th p={2}>Montos</Th> 
+                <Th p={1}>Dia de vencimiento</Th>
                 <Th p={1}>Fecha Ult Modif.</Th>
                 <Th p={1}>Acciones</Th>
               </Tr>
@@ -118,18 +116,37 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
                       monto.cuatrimestre}
                   </Td>
                   <Td p={2}>{' $ ' + monto.matricula}</Td>
-                  <Td p={1}>{' $ ' + monto.monto_completo}</Td>
-                  <Td p={1}>{' $ ' + monto.monto_completo_2venc}</Td>
-                  <Td p={1}>{' $ ' + monto.monto_completo_3venc}</Td>
-                  <Td p={1}>{' $ ' + monto.cuota_reducida}</Td>
-                  <Td p={1}>{' $ ' + monto.cuota_reducida_2venc}</Td>
-                  <Td p={1}>{' $ ' + monto.cuota_reducida_3venc}</Td>
+                  
+               
+                  <Td p={2}>
+                    <Box>
+                      <Text fontWeight="bold">Monto Completo: {' $ ' + monto.monto_completo}</Text>
+                      <Text fontSize="sm">2do Vencimiento: {' $ ' + monto.monto_completo_2venc}</Text>
+                      <Text fontSize="sm">3er Vencimiento: {' $ ' + monto.monto_completo_3venc}</Text>
+                      <Text fontWeight="bold" mt={2}>Cuota Reducida: {' $ ' + monto.cuota_reducida}</Text>
+                      <Text fontSize="sm">2do Vencimiento: {' $ ' + monto.cuota_reducida_2venc}</Text>
+                      <Text fontSize="sm">3er Vencimiento: {' $ ' + monto.cuota_reducida_3venc}</Text>
+                    </Box>
+                  </Td>
+                  <Td p={1}>
+                  <Text >
+                      1er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_1}</Box>
+                    </Text>
+                    <Text >
+                      2do Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_2}</Box>
+                    </Text>
+                    <Text >
+                      3er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_3}</Box>
+                    </Text>
+                  </Td>
+                  
                   <Td p={1}>
                     {new Date(monto.fecha_carga_comp_pdf).toLocaleString(
                       'es-ES',
                       { dateStyle: 'short', timeStyle: 'short' }
                     )}
                   </Td>
+
                   <Td p={1}>
                     <Button
                       colorScheme="blue"
@@ -166,3 +183,4 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
 };
 
 export default NewInterfaz;
+

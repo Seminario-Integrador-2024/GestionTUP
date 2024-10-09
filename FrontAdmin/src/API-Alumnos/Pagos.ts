@@ -1,67 +1,86 @@
+import Cookies from 'js-cookie';
+
+export const FetchPostPago = async (
+    cuotas: any,
+    montoInformado: number,
+    comentario: string,
+) => {
+    try {
+        const token = Cookies.get('tokennn');
+        const dni = Cookies.get('dni');
+
+        const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({alumno:dni, cuotas , monto_informado:montoInformado, comentario}),
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            return data; //nose si lo dejo o que hago
+          } else {
+            const errorData = await response.json();
+            throw new Error(
+              `Error en la respuesta del servidor: ${errorData.message}`
+            );
+          }
+        } catch (error) {
+          console.error('Network error:', error);
+          throw error;
+        }
+
+        
+};
 
 
-const cuotas = [
-    {
-        numero: 0,
-        monto1erVencimiento: 10000,
-        monto2doVencimiento: 0,
-        monto3erVencimiento: 0,
-        valortotal: 10000,
-        valorpagado: 10000,
-        valoradeudado: 0,
-        estado: "PAGADO",
-    },
-    {
-        numero: 1,
-        monto1erVencimiento: 10000,
-        monto2doVencimiento: 15000,
-        monto3erVencimiento: 20000,
-        valortotal: 10000,
-        valorpagado: 0,
-        valoradeudado: 10000,
-        estado: "INFORMADO",
-    },
-    {
-        numero: 2,
-        monto1erVencimiento: 10000,
-        monto2doVencimiento: 15000,
-        monto3erVencimiento: 20000,
-        valortotal: 10000,
-        valorpagado: 0,
-        valoradeudado: 10000,
-        estado: "ADEUDADO",
-    },
-    {
-        numero: 3,
-        monto1erVencimiento: 10000,
-        monto2doVencimiento: 15000,
-        monto3erVencimiento: 20000,
-        valortotal: 10000,
-        valorpagado: 0,
-        valoradeudado: 10000,
-        estado: "ADEUDADO",
-    },
-    {
-        numero: 4,
-        monto1erVencimiento: 10000,
-        monto2doVencimiento: 15000,
-        monto3erVencimiento: 20000,
-        valortotal: 10000,
-        valorpagado: 0,
-        valoradeudado: 10000,
-        estado: "ADEUDADO",
-    },
-    {
-        numero: 5,
-        monto1erVencimiento: 10000,
-        monto2doVencimiento: 15000,
-        monto3erVencimiento: 20000,
-        valortotal: 10000,
-        valorpagado: 0,
-        valoradeudado: 10000,
-        estado: "ADEUDADO",
+export const FetchGetCuotas = async () => {
+    try {
+        const token = Cookies.get('tokennn');
+        const dni = Cookies.get('dni');
+        
+        const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/impagas/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            throw new Error('Error en la respuesta del servidor');
+        }
+    } catch (error) {
+        throw new Error('Network error: ' + error);
     }
-];
+};
 
-export default cuotas;
-    
+
+export const FetchResumenPagos = async () => {
+  try {
+      const token = Cookies.get('tokennn');
+      const dni = Cookies.get('dni');
+      
+      const response = await fetch(`http://localhost:8000/api/pagos/alumno/resumen_pagos/${dni}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+          },
+      });
+      
+      if (response.ok) {
+          const data = await response.json();
+          return data;
+      } else {
+          throw new Error('Error en la respuesta del servidor');
+      }
+  } catch (error) {
+      throw new Error('Network error: ' + error);
+  }
+};

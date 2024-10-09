@@ -1,14 +1,7 @@
-import { useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from 'react';
-import { Stack, Flex, Text, Link } from '@chakra-ui/react';
-import {
-  Tag,
-  TagLabel,
-  TagLeftIcon,
-  TagRightIcon,
-  TagCloseButton,
-} from '@chakra-ui/react'
+import { Stack, Text, Tag } from '@chakra-ui/react';
 
 function Resultado({ data }: { data: any }) {
+  console.log(data);
 
   if (!data || Object.keys(data).length === 0) {
     return null;
@@ -16,17 +9,14 @@ function Resultado({ data }: { data: any }) {
 
   let excel, duplicates, message, total;
 
-  if ('excel' in data && 'duplicates' in data && 'message' in data && 'total' in data) {
-    ({ excel, duplicates, message, total } = data);
+  if ('excel' in data && 'message' in data && 'total' in data) {
+    ({ excel, message, total, duplicates } = data);
   } else {
-   
     return (
       <Stack mt={3}>
         <Text fontSize="xl" fontWeight="bold">Se encontraron errores en:</Text>
         {Object.keys(data).map((key) => (
-          
-            <Tag colorScheme='red' fontSize="md" fontWeight="bold">Línea:  {parseInt(key, 10)}</Tag>
-         
+          <Tag colorScheme='red' fontSize="md" fontWeight="bold">Línea: {parseInt(key, 10)}</Tag>
         ))}
       </Stack>
     );
@@ -35,8 +25,8 @@ function Resultado({ data }: { data: any }) {
   return (
     <Stack mt={3}>
       <Text fontSize="xl" fontWeight="bold">Datos cargados</Text>
-      <Tag colorScheme='green' fontSize="md" fontWeight="bold">Duplicados: {duplicates}</Tag>
-      
+      {message && <Tag colorScheme='blue' fontSize="md" fontWeight="bold">{message}</Tag>}
+      {duplicates !== undefined && <Tag colorScheme='green' fontSize="md" fontWeight="bold">Duplicados: {duplicates}</Tag>}
       <Tag colorScheme='green' fontSize="md" fontWeight="bold">Total: {total}</Tag>
     </Stack>
   );

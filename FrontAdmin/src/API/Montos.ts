@@ -3,10 +3,10 @@ const URL = import.meta.env.VITE_URL_DEV;
 
 export const FetchMontos = async (offset: number, limit: number) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
     const response = await fetch(
-      `${URL}/pagos/compromisos/?offset=${offset}&limit=${limit}`,
+      `http://localhost:8000/api/compromisos/`,
       {
         method: 'GET',
         headers: {
@@ -30,9 +30,9 @@ export const FetchMontos = async (offset: number, limit: number) => {
 
 export const createCompromiso = async (compromisoData: any, selectFile: any) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
-    const response = await fetch(`${URL}/pagos/compromisos/`, {
+    const response = await fetch(`http://localhost:8000/api/compromisos/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,12 +58,12 @@ export const createCompromiso = async (compromisoData: any, selectFile: any) => 
 
 export const loadPDF = async (id :string,file: File) => {
   try {
-    const token = Cookies.get('access_token');
+    const token = Cookies.get('tokennn');
 
     const formData = new FormData();
     formData.append('archivo_pdf', file);
 
-    const response = await fetch(`${URL}/pagos/compromisos/${id}/`, {
+    const response = await fetch(`http://localhost:8000/api/compromisos/${id}/`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -75,9 +75,12 @@ export const loadPDF = async (id :string,file: File) => {
       const data = await response.json();
       return data;
     } else {
-      throw new Error('Error en la respuesta del servidor');
+      const errorResponse = await response.json();
+      throw new Error(
+        'Error en la respuesta del servidor: ' + JSON.stringify(errorResponse)
+      );
     }
   } catch (error) {
-    throw new Error('Network error: ' + error);
+    throw new Error('Network error: ' +  JSON.stringify(error));
   }
-}
+};
