@@ -5,7 +5,7 @@ export const FetchCuotas = async (limit: number, offset:number) => {
         const token = Cookies.get('tokennn');
         const dni = Cookies.get('dni');
         
-        const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=${limit}&offset=${offset}`, {
+        const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/?limit=${limit}&offset=${offset}&ordering=id_cuota`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
