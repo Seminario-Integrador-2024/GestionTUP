@@ -91,6 +91,8 @@ function InformarPago() {
   const [limit] = useState(5);
   const [offset, setOffset1] = useState(0);
 
+  const [cuotaCompleta, setCuotaCompleta] = useState()
+
   const handleNextPage = () => {
     if (offset + limit < totalCuotas) {
       setOffset1(offset + limit);
@@ -191,9 +193,10 @@ function InformarPago() {
       }
     }, [idCuotaSeleccionada, compromisoFirmado]);
  
-    const handleDetailPay = (idCuota: number) => {
-      showDetail(idCuota)
-      setIdCuotaSeleccionada(idCuota);
+    const handleDetailPay = (cuota: any) => {
+      showDetail(cuota.id_cuota)
+      setIdCuotaSeleccionada(cuota.id_cuota);
+      setCuotaCompleta(cuota.cuota_completa)
     };
 
     
@@ -312,7 +315,7 @@ function InformarPago() {
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
                             <Td textAlign="center" p="8px">{
                               cuota.valorinformado > 0 || cuota.valorpagado > 0  ? 
-                                <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota.id_cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
+                                <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
                               : 
                               <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
                               }
@@ -367,7 +370,7 @@ function InformarPago() {
                               cuota.id_cuota === detail ? ( // Verifica cada cuota para mostrar solo las que coinciden
                                 <>
                                   <Td textAlign="center">{cuota.nro_cuota}</Td>
-                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) )}</Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuotaCompleta ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) )}</Td>
                                   <Td textAlign="center">
                                   {'$ ' + new Intl.NumberFormat('es-ES').format((mostrarMontoConMora(pago.fecha, cuota.cuota_completa) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) }
                                     </Td>
