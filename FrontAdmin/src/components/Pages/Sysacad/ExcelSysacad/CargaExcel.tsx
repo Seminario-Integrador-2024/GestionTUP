@@ -111,7 +111,7 @@ function CargaExcel() {
                 <Box flex={1} w={"100%"}>
                     <TableContainer
                         border="2px"
-                        borderColor="#BABABA" // Borde gris claro para la tabla
+                        borderColor="#BABABA" 
                         borderRadius="md"
                         width="100%"
                         height="100%"
