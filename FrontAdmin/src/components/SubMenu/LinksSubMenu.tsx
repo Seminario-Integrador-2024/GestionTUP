@@ -2,7 +2,7 @@ export const ITEMS_SUBMENU = [
   { url: '#', title: 'Inhabilitaciones' },
   { url: '#', title: 'Baja Provisoria' },
   { url: 'cuotas', title: 'Cuotas' , tooltip: 'Alumnos que abonaron/no abonaron una respectiva cuota' },
-  { url: '#', title: 'Matricula' },
+  { url: 'matricula', title: 'Matricula' },
   { url: 'alumnos-que-firmaron-compromiso-de-pago', title: 'Compromiso de Pago'},
   { url: '#', title: 'Pagos' },
   {
