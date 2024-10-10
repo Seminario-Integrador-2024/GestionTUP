@@ -24,7 +24,7 @@ interface Alumnos {
   anio_ingreso: number;
 }
 
-const AlumnosConCompromiso: React.FC = () => {
+const Matricula: React.FC = () => {
   const [alumnos, setAlumnos] = useState<Alumnos[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -216,4 +216,4 @@ const AlumnosConCompromiso: React.FC = () => {
   );
 };
 
-export default AlumnosConCompromiso;
+export default Matricula;
