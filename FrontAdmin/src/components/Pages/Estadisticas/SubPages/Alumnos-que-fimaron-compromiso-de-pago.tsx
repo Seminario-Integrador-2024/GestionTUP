@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
-import AlumnosConCompromiso from './AlumnosConCompromiso';
+import TablaAlumnos from './TablaAlumnos';
 import AlumnosSinCompromiso from './AlumnosSinCompromiso';
+import { FetchFirmantes } from '../../../../API/AlumnosCompromisoPago';
+import { FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
 
 const AlumnosCompromisoPago: React.FC = () => {
   const [index, setIndex] = useState(0); // Estado para manejar la pestaña seleccionada
@@ -40,10 +42,10 @@ const AlumnosCompromisoPago: React.FC = () => {
 
         <TabPanels>
           <TabPanel>
-            <AlumnosConCompromiso />
+            <TablaAlumnos fetchFunction={FetchFirmantes} title="Alumnos con compromiso"/>
           </TabPanel>
           <TabPanel>
-            <AlumnosSinCompromiso />
+            <TablaAlumnos fetchFunction={FetchNoFirmantes} title="Alumnos sin compromiso"/>
           </TabPanel>
         </TabPanels>
       </Tabs>

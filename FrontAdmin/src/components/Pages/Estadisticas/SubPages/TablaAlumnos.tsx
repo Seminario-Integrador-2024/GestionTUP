@@ -14,7 +14,6 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon, ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { FetchFirmantes } from '../../../../API/AlumnosCompromisoPago';
 
 interface Alumnos {
   full_name: string;
@@ -24,23 +23,28 @@ interface Alumnos {
   anio_ingreso: number;
 }
 
-const AlumnosConCompromiso: React.FC = () => {
+interface TablaAlumnosProps {
+  fetchFunction: () => Promise<Alumnos[]>;
+  title: string;
+}
+
+const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => {
   const [alumnos, setAlumnos] = useState<Alumnos[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [alumnosPerPage] = useState<number>(10);
-  
+
   const [sortField, setSortField] = useState<keyof Alumnos>('full_name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
-    const fetchFirmantes = async () => {
+    const fetchData = async () => {
       try {
-        const data: Alumnos[] = await FetchFirmantes();
+        const data: Alumnos[] = await fetchFunction();
         setAlumnos(data);
       } catch (error) {
         setError('Error al obtener los alumnos');
@@ -50,8 +54,8 @@ const AlumnosConCompromiso: React.FC = () => {
       }
     };
 
-    fetchFirmantes();
-  }, []);
+    fetchData();
+  }, [fetchFunction]);
 
   if (loading) {
     return <Spinner size="xl" />;
@@ -61,7 +65,7 @@ const AlumnosConCompromiso: React.FC = () => {
     return <Alert status="error">{error}</Alert>;
   }
 
-  // Función para ordenar los alumnos
+  // Ordenar alumnos
   const sortedAlumnos = [...alumnos].sort((a, b) => {
     const aValue = a[sortField];
     const bValue = b[sortField];
@@ -71,7 +75,7 @@ const AlumnosConCompromiso: React.FC = () => {
     return 0;
   });
 
-  // Filtrar los alumnos según el término de búsqueda
+  // Filtrar alumnos
   const filteredAlumnos = sortedAlumnos.filter(alumno =>
     alumno.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     alumno.legajo.toString().includes(searchTerm) ||
@@ -80,7 +84,7 @@ const AlumnosConCompromiso: React.FC = () => {
     alumno.anio_ingreso.toString().includes(searchTerm)
   );
 
-  // Calcular los índices para la paginación
+  // Paginación
   const indexOfLastAlumno = currentPage * alumnosPerPage;
   const indexOfFirstAlumno = indexOfLastAlumno - alumnosPerPage;
   const currentAlumnos = filteredAlumnos.slice(indexOfFirstAlumno, indexOfLastAlumno);
@@ -97,86 +101,24 @@ const AlumnosConCompromiso: React.FC = () => {
       <Table>
         <Thead>
           <Tr>
-            <Th fontFamily="Helvetica" fontWeight="900">
-              APELLIDO Y NOMBRE
-              <IconButton
-                icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                size="xs"
-                onClick={() => {
-                  setSortField('full_name');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                }}
-                aria-label="Ordenar por nombre"
-                variant="link"
-                bg="transparent"
-                _hover={{ bg: 'gray.200' }}
-                _active={{ bg: 'gray.300' }}
-              />
-            </Th>
-            <Th fontFamily="Helvetica" fontWeight="900">
-              LEGAJO
-              <IconButton
-                icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                size="xs"
-                onClick={() => {
-                  setSortField('legajo');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                }}
-                aria-label="Ordenar por legajo"
-                variant="link"
-                bg="transparent"
-                _hover={{ bg: 'gray.200' }}
-                _active={{ bg: 'gray.300' }}
-              />
-            </Th>
-            <Th fontFamily="Helvetica" fontWeight="900">
-              DNI
-              <IconButton
-                icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                size="xs"
-                onClick={() => {
-                  setSortField('dni');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                }}
-                aria-label="Ordenar por DNI"
-                variant="link"
-                bg="transparent"
-                _hover={{ bg: 'gray.200' }}
-                _active={{ bg: 'gray.300' }}
-              />
-            </Th>
-            <Th fontFamily="Helvetica" fontWeight="900">
-              SITUACION
-              <IconButton
-                icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                size="xs"
-                onClick={() => {
-                  setSortField('estado_financiero');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                }}
-                aria-label="Ordenar por situación"
-                variant="link"
-                bg="transparent"
-                _hover={{ bg: 'gray.200' }}
-                _active={{ bg: 'gray.300' }}
-              />
-            </Th>
-            <Th fontFamily="Helvetica" fontWeight="900">
-              AÑO DE INGRESO
-              <IconButton
-                icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                size="xs"
-                onClick={() => {
-                  setSortField('anio_ingreso');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                }}
-                aria-label="Ordenar por año de ingreso"
-                variant="link"
-                bg="transparent"
-                _hover={{ bg: 'gray.200' }}
-                _active={{ bg: 'gray.300' }}
-              />
-            </Th>
+            {['full_name', 'legajo', 'dni', 'estado_financiero', 'anio_ingreso'].map((field) => (
+              <Th key={field} fontFamily="Helvetica" fontWeight="900">
+                {field.toUpperCase()}
+                <IconButton
+                  icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                  size="xs"
+                  onClick={() => {
+                    setSortField(field as keyof Alumnos);
+                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                  }}
+                  aria-label={`Ordenar por ${field}`}
+                  variant="link"
+                  bg="transparent"
+                  _hover={{ bg: 'gray.200' }}
+                  _active={{ bg: 'gray.300' }}
+                />
+              </Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody>
@@ -216,4 +158,4 @@ const AlumnosConCompromiso: React.FC = () => {
   );
 };
 
-export default AlumnosConCompromiso;
+export default TablaAlumnos;
