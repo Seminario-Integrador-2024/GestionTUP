@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AbonaronCuota, NoAbonaronCuota } from "../../../../../API/AbonaronCuota";
-import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag } from "@chakra-ui/react";
+import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag, Spinner } from "@chakra-ui/react";
 import Tabla from "./Tabla";
 import {ArrowRightIcon, ArrowLeftIcon} from '@chakra-ui/icons';
+import { isLastDayOfMonth } from "date-fns";
 
 export default function Listado() {
     type Alumno = {
@@ -15,8 +16,10 @@ export default function Listado() {
     const [abonaron, setAbonaron] = useState<Alumno[]>([]);
     const [totalabonaron, setTotalAbonaron] = useState<number>(0);
     const [noAbonaron, setNoAbonaron] = useState<Alumno[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [loading2, setLoading2] = useState<boolean>(true);
     const [totalNoAbonaron, setTotalNoAbonaron] = useState<number>(0);
-    const headers = ['Nombre',  'DNI', 'Estado financiero'];
+    const headers = ['Nombre', 'Legajo' , 'DNI', 'Estado financiero'];
     const [limit1] = useState(10);
     const [offset1, setOffset1] = useState(0);
     const [limit2] = useState(10);
@@ -54,6 +57,7 @@ export default function Listado() {
             setNoAbonaron(data.results);
             setTotalNoAbonaron(data.count);
             }
+            setLoading(false);
         }
         if (fecha === undefined) {
             return;
@@ -69,13 +73,14 @@ export default function Listado() {
             setAbonaron(data.results);
             setTotalAbonaron(data.count);
             }
-
+            setLoading2(false);
         }
         if (fecha === undefined) {
             return;
         }
         fetchAbonaron(fecha);
     }, [limit2, offset2]);
+
 
 
     return (
@@ -116,10 +121,11 @@ export default function Listado() {
                     <TabPanels>
                         <TabPanel>
                         <Flex>
-                            {abonaron.length > 0 ? <Flex direction={"column"} w={"100%"}>
-                                <Flex direction={"row"} w={"100%"} alignItems={"center"} justifyContent={"center"}  gap={4} mb={4}>
-                                    <Box w={"100%"} p="10px"> Total: {totalabonaron}</Box>
-                                    <Box w={"100%"} p="10px"> Periodo: {fecha} </Box>
+                            {loading2 ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex>:
+                            abonaron.length > 0 ? <Flex direction={"column"} w={"100%"}>
+                                 <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
                                 </Flex>
                                     <Tabla headers={headers} data={abonaron} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={4} boxShadow="md" >
@@ -139,10 +145,11 @@ export default function Listado() {
                         </TabPanel>
                         <TabPanel>
                         <Flex>
-                            {noAbonaron.length > 0 ? <Flex direction={"column"} w={"100%"} alignItems={"center"}>
-                                <Flex direction={"row"} w={"100%"} flex={1} textAlign={"center"}  gap={4} mb={3} ml={'65%'}>
-                                    <Tag bg="secundaryBg" size="lg" fontSize={18} fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
-                                    <Tag bg="secundaryBg" size="lg" fontSize={18} fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
+                            {loading ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex>:
+                            noAbonaron.length > 0 ? <Flex direction={"column"} w={"100%"} alignItems={"center"}>
+                                <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
                                 </Flex>
                                     <Tabla headers={headers} data={noAbonaron} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >

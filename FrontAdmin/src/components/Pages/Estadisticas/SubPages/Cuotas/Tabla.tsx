@@ -10,6 +10,7 @@ import {
   Td,
   Link,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 interface TablaProps {
   headers: string[];
@@ -22,6 +23,12 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
     'Nombre': 'full_name',
     'DNI': 'user',
     'Estado financiero': 'estado_financiero',
+    'Legajo': 'legajo',
+  };
+  const navigate = useNavigate();
+
+  const handleRowClick = (dni: any) => {
+    navigate(`/admin/alumnos/${dni}`);
   };
 
   return (
@@ -37,15 +44,15 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
           </Thead>
           <Tbody>
           {data.map((row, rowIndex) => (
-            <Tr key={rowIndex}>
+            <Tr key={rowIndex} onClick={() => handleRowClick(row[keyMap['DNI']])} cursor="pointer">
                 {headers.map((header) => (
                 <Td key={header} textAlign={header === 'Nombre' ? "left" : "center"}>
-                    {/* Usamos keyMap para obtener la propiedad correcta */}
-                    {typeof row[keyMap[header]] === 'string' ? (
-                    row[keyMap[header]]
-                    ) : typeof row[keyMap[header]] === 'number' ? (
-                    new Intl.NumberFormat('es-ES').format(row[keyMap[header]])
-                    ) : 'N/A'}
+                  {/* Usamos keyMap para obtener la propiedad correcta */}
+                  {typeof row[keyMap[header]] === 'string' ? (
+                  row[keyMap[header]]
+                  ) : typeof row[keyMap[header]] === 'number' ? (
+                  new Intl.NumberFormat('es-ES').format(row[keyMap[header]])
+                  ) : 'N/A'}
                 </Td>
                 ))}
             </Tr>

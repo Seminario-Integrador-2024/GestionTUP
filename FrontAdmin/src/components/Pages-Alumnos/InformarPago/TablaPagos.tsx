@@ -39,7 +39,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
       const getCuotas = async () => {
           setLoading(true);
           try {
-              const cuotas = await FetchGetCuotas();
+              const cuotas = await FetchGetCuotas(undefined);
               const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => parseInt(a.numero) - parseInt(b.numero));      // Si cambia el numero de cuota no olvidar cambiar aca
               setCuotas(sortedCuotas);
           } catch (error) {
