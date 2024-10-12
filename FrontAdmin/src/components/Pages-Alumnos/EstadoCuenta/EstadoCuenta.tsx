@@ -296,7 +296,7 @@ function InformarPago() {
                           <Th textAlign="center" >
                             Numero
                           </Th>
-                          <Th textAlign="center">Fecha Primer Vto.</Th>
+                          <Th textAlign="center">Fecha Proximo Vto.</Th>
                           <Th textAlign="center">Valor Actual</Th>
                           <Th textAlign="center">Valor Pagado</Th>
                           <Th textAlign="center">Valor Informado</Th>

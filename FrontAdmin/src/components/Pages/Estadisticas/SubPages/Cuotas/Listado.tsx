@@ -16,7 +16,7 @@ export default function Listado() {
     const [totalabonaron, setTotalAbonaron] = useState<number>(0);
     const [noAbonaron, setNoAbonaron] = useState<Alumno[]>([]);
     const [totalNoAbonaron, setTotalNoAbonaron] = useState<number>(0);
-    const headers = ['Nombre',  'DNI', 'Situación'];
+    const headers = ['Nombre',  'DNI', 'Estado financiero'];
     const [limit1] = useState(10);
     const [offset1, setOffset1] = useState(0);
     const [limit2] = useState(10);
@@ -48,7 +48,6 @@ export default function Listado() {
     
 
     useEffect(() => {
-
         const fetchNoAbonaron = async (fecha: string) => {
             const data = await NoAbonaronCuota(fecha, limit1, offset1);
             if (data.results.length > 0) {
@@ -56,7 +55,6 @@ export default function Listado() {
             setTotalNoAbonaron(data.count);
             }
         }
-
         if (fecha === undefined) {
             return;
         }
@@ -65,7 +63,6 @@ export default function Listado() {
     }, [limit1, offset1]);
 
     useEffect(() => {
-
         const fetchAbonaron = async (fecha: string) => {
             const data = await AbonaronCuota(fecha);
             if (data.results.length > 0) {
@@ -74,12 +71,10 @@ export default function Listado() {
             }
 
         }
-
         if (fecha === undefined) {
             return;
         }
         fetchAbonaron(fecha);
-
     }, [limit2, offset2]);
 
 
@@ -89,21 +84,45 @@ export default function Listado() {
         alignItems={"center"}
         flex={1}>
                 <Tabs w={"100%"}>
-                    <TabList>
-                        <Tab>Abonaron</Tab>
-                        <Tab>No abonaron</Tab>
+                <TabList display="flex" justifyContent="center" alignItems="center" borderBottom="2px solid" borderColor="gray.200">
+                    <Tab
+                        _selected={{
+                        borderBottom: "2px solid",
+                        borderColor: "blue.500",
+                        color: "blue.500",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none"
+                        }}
+                        _focus={{ boxShadow: "none" }}
+                    >
+                        Abonaron
+                    </Tab>
+                    <Tab
+                        _selected={{
+                        borderBottom: "2px solid",
+                        borderColor: "blue.500",
+                        color: "blue.500",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none"
+                        }}
+                        _focus={{ boxShadow: "none" }}
+                    >
+                        No abonaron
+                    </Tab>
                     </TabList>
 
                     <TabPanels>
                         <TabPanel>
                         <Flex>
                             {abonaron.length > 0 ? <Flex direction={"column"} w={"100%"}>
-                                <Flex direction={"row"} w={"100%"} flex={1} textAlign={"center"} ml={"33%"} gap={4} mb={4}>
-                                    <Tag colorScheme="secundaryBg" size="lg"> Total: {totalabonaron}</Tag>
-                                    <Tag colorScheme="secundaryBg" size="lg"> Periodo: {fecha} </Tag>
+                                <Flex direction={"row"} w={"100%"} alignItems={"center"} justifyContent={"center"}  gap={4} mb={4}>
+                                    <Box w={"100%"} p="10px"> Total: {totalabonaron}</Box>
+                                    <Box w={"100%"} p="10px"> Periodo: {fecha} </Box>
                                 </Flex>
                                     <Tabla headers={headers} data={abonaron} /> 
-                                    <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >
+                                    <Box bottom="0" width="100%" bg="white" p="10px" mt={4} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
                                             <Button onClick={handlePreviousPage2} isDisabled={offset2 === 0} color="white" leftIcon={<ArrowLeftIcon/>}>
                                                 Anterior

@@ -94,7 +94,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                     <Tr mt={6}>
                       <Th></Th>
                       <Th textAlign="center" p={1}>Cuota</Th>
-                      <Th textAlign="center">Fecha Primer VTO.</Th>
+                      <Th textAlign="center">Fecha Proximo VTO.</Th>
                       <Th textAlign="center">Valor Actual</Th>
                       <Th textAlign="center">Valor Pagado</Th>
                       <Th textAlign="center">Valor Informado</Th>

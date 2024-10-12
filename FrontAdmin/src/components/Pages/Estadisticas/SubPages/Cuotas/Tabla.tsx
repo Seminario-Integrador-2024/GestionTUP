@@ -21,17 +21,17 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
   const keyMap: { [key: string]: string } = {
     'Nombre': 'full_name',
     'DNI': 'user',
-    'Situación': 'estado_financiero',
+    'Estado financiero': 'estado_financiero',
   };
 
   return (
     <Box w={"100%"}>
       <TableContainer borderWidth={1} borderColor={'grey.700'}>
-        <Table variant="simple">
-          <Thead>
-            <Tr bg="secundary">
+        <Table>
+          <Thead >
+            <Tr >
               {headers.map((header) => (
-                <Th key={header} textAlign="center">{header}</Th>
+                <Th key={header} textAlign="center" fontFamily="Helvetica" fontWeight="900">{header}</Th>
               ))}
             </Tr>
           </Thead>
