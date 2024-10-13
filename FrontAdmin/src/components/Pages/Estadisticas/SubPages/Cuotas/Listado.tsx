@@ -24,6 +24,7 @@ export default function Listado() {
     const [offset1, setOffset1] = useState(0);
     const [limit2] = useState(10);
     const [offset2, setOffset2] = useState(0);
+    const [filter, setFilter] = useState<string>('');
 
     const handleNextPage = () => {
         if (offset1 + limit1 < totalNoAbonaron) {
@@ -52,7 +53,7 @@ export default function Listado() {
 
     useEffect(() => {
         const fetchNoAbonaron = async (fecha: string) => {
-            const data = await NoAbonaronCuota(fecha, limit1, offset1);
+            const data = await NoAbonaronCuota(fecha, limit1, offset1, filter);
             if (data.results.length > 0) {
             setNoAbonaron(data.results);
             setTotalNoAbonaron(data.count);
@@ -64,11 +65,11 @@ export default function Listado() {
         }
         fetchNoAbonaron(fecha);
 
-    }, [limit1, offset1]);
+    }, [limit1, offset1, fecha, filter]);
 
     useEffect(() => {
         const fetchAbonaron = async (fecha: string) => {
-            const data = await AbonaronCuota(fecha);
+            const data = await AbonaronCuota(fecha, limit2, offset2, filter);
             if (data.results.length > 0) {
             setAbonaron(data.results);
             setTotalAbonaron(data.count);
@@ -79,9 +80,14 @@ export default function Listado() {
             return;
         }
         fetchAbonaron(fecha);
-    }, [limit2, offset2]);
+    }, [limit2, offset2, fecha, filter]);
 
+    const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFilter(event.target.value);
+    };
 
+    console.log(abonaron);
+    console.log(noAbonaron);
 
     return (
         <Flex w={"100%"}
@@ -152,7 +158,7 @@ export default function Listado() {
                                     <Tag bg="secundaryBg" w={"100%"} p={"10px"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
                                     <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
                                 </Flex>
-                                <Input type="text" placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
+                                <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
                                     <Tabla headers={headers} data={noAbonaron} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
