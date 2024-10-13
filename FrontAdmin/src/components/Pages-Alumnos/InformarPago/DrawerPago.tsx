@@ -143,9 +143,9 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                 ))}
             </Stack>
             <Text mt={4}>Total a abonar:</Text>
-            <Text mb={4} mt={4} fontWeight={600} textAlign={"center"} fontSize={22}>{"$" + new Intl.NumberFormat('es-ES').format(total)}</Text>
+            <Text mb={1} mt={4} fontWeight={600} textAlign={"center"} fontSize={22}>{"$" + new Intl.NumberFormat('es-ES').format(total)}</Text>
           
-            <FormControl isRequired={true}>
+            {/* <FormControl isRequired={true}>
                 <FormLabel mb={0}>Monto Abonado</FormLabel>
                 <InputGroup>
                     <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
@@ -154,14 +154,14 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                     <Input placeholder='' value={montoAbonado} onChange={handleMontoAbonadoChange} />
                 </InputGroup>
             
-            </FormControl>
+            </FormControl> */}
             <Stack gap={0}>
-              <FormLabel mt={4} mb={0}>Comentarios</FormLabel>
+              <FormLabel mt={2} mb={0}>Comentarios</FormLabel>
               <Input placeholder='' mt={0}  onChange={(e) => setComentarios(e.target.value)} />
             </Stack>
             <Stack bg={'secundaryBg'} direction={'row'} alignItems={'center'} borderRadius={5} mt={4} mb={4} p={4} gap={4}>
                 <Icon as={InfoOutlineIcon} w={7} h={7} />
-                <Text as={'i'}>Al seleccionar Guardar se lo redirigira al google forms para que pueda continuar con el informe del pago</Text>
+                <Text as={'i'}>Al seleccionar Guardar se lo redirigira al google forms para que pueda continuar con el informe del pago. Revisar tener desactivado el bloqueo de ventanas emergentes</Text>
             </Stack>
             </DrawerBody>
             <DrawerFooter>

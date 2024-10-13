@@ -10,6 +10,7 @@ import {
   Box,
   Text,
   useDisclosure,
+  Avatar,
 } from '@chakra-ui/react';
 import imgLogo from '../icons/Logos TUP_Mesa de trabajo 1.png';
 import logoUser from '../icons/logo-user.png';
@@ -70,10 +71,13 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
           display={{ base: 'flex', md: 'none' }}
           color="white"
         />
-        <Flex direction={"row"} alignItems={"center"} gap={5}>
+        <Flex direction={"row"} alignItems={"center"} gap={3}>
         <Text fontFamily={"'Roboto',sans-serif"} fontWeight="600">{user}</Text>
-        <MenuButton as={Button} borderRadius="50%" w="50px" h="50px" p="0px">
-          <Image src={logoUser} w="100%"></Image>
+        <MenuButton borderRadius={'full'}>
+          <Avatar
+            name={Cookies.get("full_name")}
+            borderRadius="full"
+          />
         </MenuButton>
         <MenuList>
           <MenuItem 

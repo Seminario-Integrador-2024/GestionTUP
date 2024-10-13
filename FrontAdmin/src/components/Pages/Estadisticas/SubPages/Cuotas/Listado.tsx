@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AbonaronCuota, NoAbonaronCuota } from "../../../../../API/AbonaronCuota";
-import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag } from "@chakra-ui/react";
+import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag, Spinner, Input } from "@chakra-ui/react";
 import Tabla from "./Tabla";
 import {ArrowRightIcon, ArrowLeftIcon} from '@chakra-ui/icons';
+import { isLastDayOfMonth } from "date-fns";
 
 export default function Listado() {
     type Alumno = {
@@ -15,12 +16,15 @@ export default function Listado() {
     const [abonaron, setAbonaron] = useState<Alumno[]>([]);
     const [totalabonaron, setTotalAbonaron] = useState<number>(0);
     const [noAbonaron, setNoAbonaron] = useState<Alumno[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [loading2, setLoading2] = useState<boolean>(true);
     const [totalNoAbonaron, setTotalNoAbonaron] = useState<number>(0);
-    const headers = ['Nombre',  'DNI', 'Situación'];
+    const headers = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Estado financiero'];
     const [limit1] = useState(10);
     const [offset1, setOffset1] = useState(0);
     const [limit2] = useState(10);
     const [offset2, setOffset2] = useState(0);
+    const [filter, setFilter] = useState<string>('');
 
     const handleNextPage = () => {
         if (offset1 + limit1 < totalNoAbonaron) {
@@ -48,40 +52,42 @@ export default function Listado() {
     
 
     useEffect(() => {
-
         const fetchNoAbonaron = async (fecha: string) => {
-            const data = await NoAbonaronCuota(fecha, limit1, offset1);
+            const data = await NoAbonaronCuota(fecha, limit1, offset1, filter);
             if (data.results.length > 0) {
             setNoAbonaron(data.results);
             setTotalNoAbonaron(data.count);
             }
+            setLoading(false);
         }
-
         if (fecha === undefined) {
             return;
         }
         fetchNoAbonaron(fecha);
 
-    }, [limit1, offset1]);
+    }, [limit1, offset1, fecha, filter]);
 
     useEffect(() => {
-
         const fetchAbonaron = async (fecha: string) => {
-            const data = await AbonaronCuota(fecha);
+            const data = await AbonaronCuota(fecha, limit2, offset2, filter);
             if (data.results.length > 0) {
             setAbonaron(data.results);
             setTotalAbonaron(data.count);
             }
-
+            setLoading2(false);
         }
-
         if (fecha === undefined) {
             return;
         }
         fetchAbonaron(fecha);
+    }, [limit2, offset2, fecha, filter]);
 
-    }, [limit2, offset2]);
+    const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFilter(event.target.value);
+    };
 
+    console.log(abonaron);
+    console.log(noAbonaron);
 
     return (
         <Flex w={"100%"}
@@ -89,21 +95,47 @@ export default function Listado() {
         alignItems={"center"}
         flex={1}>
                 <Tabs w={"100%"}>
-                    <TabList>
-                        <Tab>Abonaron</Tab>
-                        <Tab>No abonaron</Tab>
+                <TabList display="flex" justifyContent="center" alignItems="center" borderBottom="2px solid" borderColor="gray.200">
+                    <Tab
+                        _selected={{
+                        borderBottom: "2px solid",
+                        borderColor: "blue.500",
+                        color: "blue.500",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none"
+                        }}
+                        _focus={{ boxShadow: "none" }}
+                    >
+                        Abonaron
+                    </Tab>
+                    <Tab
+                        _selected={{
+                        borderBottom: "2px solid",
+                        borderColor: "blue.500",
+                        color: "blue.500",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none"
+                        }}
+                        _focus={{ boxShadow: "none" }}
+                    >
+                        No abonaron
+                    </Tab>
                     </TabList>
 
                     <TabPanels>
                         <TabPanel>
                         <Flex>
-                            {abonaron.length > 0 ? <Flex direction={"column"} w={"100%"}>
-                                <Flex direction={"row"} w={"100%"} flex={1} textAlign={"center"} ml={"33%"} gap={4} mb={4}>
-                                    <Tag colorScheme="secundaryBg" size="lg"> Total: {totalabonaron}</Tag>
-                                    <Tag colorScheme="secundaryBg" size="lg"> Periodo: {fecha} </Tag>
-                                </Flex>
+                            {loading2 ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex>:
+                            abonaron.length > 0 ? <Flex direction={"column"} w={"100%"}>
+                                 <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
+                                 </Flex>
+                                 <Input type="text" placeholder="Buscar..." w={"50%"} mb={4} />
                                     <Tabla headers={headers} data={abonaron} /> 
-                                    <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >
+                                    <Box bottom="0" width="100%" bg="white" p="10px" mt={4} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
                                             <Button onClick={handlePreviousPage2} isDisabled={offset2 === 0} color="white" leftIcon={<ArrowLeftIcon/>}>
                                                 Anterior
@@ -120,11 +152,13 @@ export default function Listado() {
                         </TabPanel>
                         <TabPanel>
                         <Flex>
-                            {noAbonaron.length > 0 ? <Flex direction={"column"} w={"100%"} alignItems={"center"}>
-                                <Flex direction={"row"} w={"100%"} flex={1} textAlign={"center"}  gap={4} mb={3} ml={'65%'}>
-                                    <Tag bg="secundaryBg" size="lg" fontSize={18} fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
-                                    <Tag bg="secundaryBg" size="lg" fontSize={18} fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
+                            {loading ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex>:
+                            noAbonaron.length > 0 ? <Flex direction={"column"} w={"100%"} alignItems={"center"}>
+                                <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
+                                    <Tag bg="secundaryBg" w={"100%"} p={"10px"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
                                 </Flex>
+                                <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
                                     <Tabla headers={headers} data={noAbonaron} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>

@@ -32,6 +32,7 @@ import {
   FetchDetalleAlumno,
   FetchMateriasAlumno,
 } from '../../../../API/DetalleAlumno.ts';
+import { FetchGetCuotas } from '../../../../API-Alumnos/Pagos.ts';
 import { FetchCompromisosAlumno } from '../../../../API-Alumnos/Compromiso.ts';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
@@ -75,6 +76,7 @@ function FichaAlumno() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
   const [firmoCompromiso, setFirmoCompromiso] = useState<boolean>(false);
+  const [deuda, setDeuda] = useState<number>(0);
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -93,8 +95,6 @@ function FichaAlumno() {
       } catch (error) {
         setError(error);
         console.error('Error al obtener los datos', error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -129,10 +129,36 @@ function FichaAlumno() {
     }
     }
 
+    const fetchImpagas = async () => {
+      try {
+        if (dni) {
+          const dniNumber = parseInt(dni, 10); 
+          const data = await FetchGetCuotas(dniNumber);
+            if (data.length > 0) {
+            const today = new Date();
+            const totalDeuda = data.reduce((acc: number, cuota: Cuota) => {
+              const fechaVencimiento = new Date(cuota.fechaVencimiento);
+              if (fechaVencimiento < today) {
+              return acc + cuota.montoActual;
+              }
+              return acc;
+            }, 0);
+            setDeuda(totalDeuda);
+            }
+        }
+      } catch (error) {
+        setError(error);
+        console.error('Error al obtener los datos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (dni) {
       fetchDetalleAlumno(dni);
       fetchEstadoCuentaAlumno();
       fetchCompromiso();
+      fetchImpagas();
     }
     
 
@@ -152,7 +178,7 @@ function FichaAlumno() {
   
   return (
     
-    <Flex mt="20px">
+    <Flex mt="20px" width={"100%"} >
       <Button
         position="absolute"
         left="120"
@@ -162,7 +188,7 @@ function FichaAlumno() {
       >
         <ArrowLeftIcon mr="10px" /> Volver{' '}
       </Button>
-      <Box borderRight="1px solid #cbd5e0" w="20%" minH="80vh" p="20px">
+      <Box borderRight="1px solid #cbd5e0" w="25%" minH="80vh" p="20px">
         <Text color="gray" mt="30px">
           Apellido y nombre
         </Text>
@@ -219,33 +245,76 @@ function FichaAlumno() {
         
       </Box>
 
-      <Box>
+      <Box w={"100%"}>
         <Flex
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
+          width="100%"
           ml={5}
         >
           <Box
-            borderRadius={8}
+            borderRadius={3}
             borderColor={'gray.200'}
             borderStyle={'solid'}
             borderWidth={1}
             p={3}
-            ml="30px"
+            //ml="30px"
             w="100%"
           >
-            <Tabs>
-              <TabList>
-                <Tab>Estado de cuenta</Tab>
-                <Tab>Materias que cursa</Tab>
-              </TabList>
+            <Tabs w={"100%"}>
+                <TabList display="flex" justifyContent="center" alignItems="center" borderBottom="2px solid" borderColor="gray.200">
+                    <Tab
+                        _selected={{
+                        borderBottom: "2px solid",
+                        borderColor: "blue.500",
+                        color: "blue.500",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none"
+                        }}
+                        _focus={{ boxShadow: "none" }}
+                    >
+                        Estado de Cuenta
+                    </Tab>
+                    <Tab
+                        _selected={{
+                        borderBottom: "2px solid",
+                        borderColor: "blue.500",
+                        color: "blue.500",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none"
+                        }}
+                        _focus={{ boxShadow: "none" }}
+                    >
+                        Materias que cursa
+                    </Tab>
+                    <Tab
+                        _selected={{
+                        borderBottom: "2px solid",
+                        borderColor: "blue.500",
+                        color: "blue.500",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        borderRight: "none"
+                        }}
+                        _focus={{ boxShadow: "none" }}
+                    >
+                        Inhabilitaciones
+                    </Tab>
+                    </TabList>
 
               <TabPanels>
-                <TabPanel minW="50vw">
-                      <Tag m="20px" p="10px">
-                    Estado de cuenta al {(new Date().toLocaleDateString())}
-                  </Tag>
+                <TabPanel w={"100%"}>
+                      <Flex justifyContent="center" w={"100%"} mt={1} gap={2} mb={2}>
+                      <Tag m="1px" p="10px" w={"100%"} fontWeight={"bold"} fontSize={16}>
+                          Estado de cuenta al {(new Date().toLocaleDateString())}
+                      </Tag>
+                      <Tag m="1px" p="10px" w="100%" fontWeight={"bold"} fontSize={16}>
+                          Deuda total: {'$ ' + new Intl.NumberFormat('es-ES').format(deuda)}
+                      </Tag>
+                      </Flex>
                   {cuotas.length > 1 ? (
                     <Table variant="simple" width="100%">
                       <Thead>

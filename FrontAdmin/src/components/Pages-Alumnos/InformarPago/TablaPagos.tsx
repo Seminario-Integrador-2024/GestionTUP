@@ -39,7 +39,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
       const getCuotas = async () => {
           setLoading(true);
           try {
-              const cuotas = await FetchGetCuotas();
+              const cuotas = await FetchGetCuotas(undefined);
               const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => parseInt(a.numero) - parseInt(b.numero));      // Si cambia el numero de cuota no olvidar cambiar aca
               setCuotas(sortedCuotas);
           } catch (error) {
@@ -94,7 +94,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                     <Tr mt={6}>
                       <Th></Th>
                       <Th textAlign="center" p={1}>Cuota</Th>
-                      <Th textAlign="center">Fecha Primer VTO.</Th>
+                      <Th textAlign="center">Fecha Proximo VTO.</Th>
                       <Th textAlign="center">Valor Actual</Th>
                       <Th textAlign="center">Valor Pagado</Th>
                       <Th textAlign="center">Valor Informado</Th>
