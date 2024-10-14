@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
 
-export const getInhabilitaciones = async () => {
+export const getInhabilitaciones = async (limit: number, offset: number) => {
     try {
         const token = Cookies.get('tokennn');
-        const response = await fetch('http://localhost:8000/api/alumnos/inhabilitados', {
+        const response = await fetch(`http://localhost:8000/api/alumnos/inhabilitados?limit=${limit}&offset=${offset}` , {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
