@@ -3,15 +3,25 @@ import { Heading, Input, Flex, Button } from '@chakra-ui/react';
 import {formatoFechaAAAAMMaMMAAAA} from '../../../../../utils/general';
 import { useNavigate } from 'react-router-dom';
 
-export default function Select() {
+type SelectProps = {
+    page: string;
+}
+
+const Select: React.FC<SelectProps> = ({ page }) => {
     const [selectedMonth, setSelectedMonth] = useState('');
-    const [fecha, setFecha] = useState('');
     const navigate = useNavigate();
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMonth(event.target.value);
-        setFecha(formatoFechaAAAAMMaMMAAAA(event.target.value));
+    };
 
+    const handleButtonClick = () => {
+        const [year, month] = selectedMonth.split('-');
+        if (page === 'cuotas') {
+        navigate(`/admin/estadisticas/cuotas/${month}-${year}`);
+        } else if (page === 'pagos') {
+        navigate(`/admin/estadisticas/pagos/${year}-${month}`);
+        }
     };
 
     return (
@@ -26,9 +36,11 @@ export default function Select() {
             />
             <Flex  justifyContent={"flex-end"} mt={1}>
                 <Button colorScheme='blue' variant={"solid"}
-                 onClick={() => navigate(`/admin/estadisticas/cuotas/${fecha}`)}
+                 onClick={handleButtonClick}
                 >Solicitar</Button>
             </Flex>
         </Flex>
     );
 };
+
+export default Select;

@@ -12,7 +12,7 @@ export default function Listado() {
         full_name: string;
         estado_financiero: string;
       };
-    const { fecha } = useParams<{ fecha: string }>();
+    const {fecha} = useParams<{ fecha: string }>();
     const [abonaron, setAbonaron] = useState<Alumno[]>([]);
     const [totalabonaron, setTotalAbonaron] = useState<number>(0);
     const [noAbonaron, setNoAbonaron] = useState<Alumno[]>([]);
@@ -81,6 +81,7 @@ export default function Listado() {
         }
         fetchAbonaron(fecha);
     }, [limit2, offset2, fecha, filter]);
+
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFilter(event.target.value);
