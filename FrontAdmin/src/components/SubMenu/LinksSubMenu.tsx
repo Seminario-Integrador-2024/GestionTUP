@@ -1,5 +1,5 @@
 export const ITEMS_SUBMENU = [
-  { url: '#', title: 'Inhabilitaciones' },
+  { url: 'inhabilitaciones', title: 'Inhabilitaciones' },
   { url: '#', title: 'Baja Provisoria' },
   { url: 'cuotas', title: 'Cuotas' , tooltip: 'Alumnos que abonaron/no abonaron una respectiva cuota' },
   { url: 'matricula', title: 'Matricula' },
