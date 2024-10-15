@@ -72,7 +72,7 @@ export default function Pagos() {
     return (
         <Flex w={"100%"} justifyContent={"center"} alignItems={"center"} flex={1}>
         <Box w={"100%"} p={4}>
-        {loading === true ? <Spinner /> :
+        {loading === true ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex> :
             data && (
             <>
             <Box flexDirection={"row"} display={"flex"} justifyContent={"space-around"} w={"100%"} >

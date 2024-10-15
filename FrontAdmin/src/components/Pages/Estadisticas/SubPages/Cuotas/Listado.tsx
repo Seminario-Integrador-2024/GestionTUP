@@ -87,9 +87,6 @@ export default function Listado() {
         setFilter(event.target.value);
     };
 
-    console.log(abonaron);
-    console.log(noAbonaron);
-
     return (
         <Flex w={"100%"}
         justifyContent={"center"}
