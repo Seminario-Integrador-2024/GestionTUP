@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Heading, Input, Flex, Button } from '@chakra-ui/react';
 import {formatoFechaAAAAMMaMMAAAA} from '../../../../../utils/general';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 type SelectProps = {
     page: string;
@@ -10,6 +11,13 @@ type SelectProps = {
 const Select: React.FC<SelectProps> = ({ page }) => {
     const [selectedMonth, setSelectedMonth] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); 
+        setSelectedMonth(`${year}-${month}`);
+    }, []);
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedMonth(event.target.value);

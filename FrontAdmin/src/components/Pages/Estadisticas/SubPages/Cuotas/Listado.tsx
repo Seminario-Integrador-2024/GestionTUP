@@ -131,10 +131,10 @@ export default function Listado() {
                             {loading2 ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex>:
                             abonaron.length > 0 ? <Flex direction={"column"} w={"100%"}>
                                  <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
-                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
-                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" p={"10px"} fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalabonaron}</Tag>
                                  </Flex>
-                                 <Input type="text" placeholder="Buscar..." w={"50%"} mb={4} />
+                                 <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
                                     <Tabla headers={headers} data={abonaron} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={4} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
