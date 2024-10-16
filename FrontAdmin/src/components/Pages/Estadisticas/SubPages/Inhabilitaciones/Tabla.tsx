@@ -9,9 +9,10 @@ interface TablaProps {
   data: Array<Record<string, any>>;
   request: boolean;
   onInhabilitar: () => void;
+  setRequest: (value: boolean) => void;
 }
 
-const Tabla: React.FC<TablaProps> = ({ headers, data, request, onInhabilitar }) => {
+const Tabla: React.FC<TablaProps> = ({ headers, data, request, onInhabilitar, setRequest }) => {
   const [selectedRows, setSelectedRows] = useState<{ [key: string]: boolean }>({});
   const [renderKey, setRenderKey] = useState(0);
 
@@ -46,6 +47,7 @@ const Tabla: React.FC<TablaProps> = ({ headers, data, request, onInhabilitar }) 
         setSelectedRows({});
         setRenderKey((prevKey) => prevKey + 1); 
         onInhabilitar();
+        setRequest(false);
     };
     if (request) {
         handleInhabilitar();

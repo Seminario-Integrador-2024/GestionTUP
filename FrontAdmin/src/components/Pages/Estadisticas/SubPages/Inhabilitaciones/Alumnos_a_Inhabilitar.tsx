@@ -30,7 +30,7 @@ export default function AInhabilitar() {
             <Box w={"100%"}>
                 <Flex justifyContent={"center"} w={"100%"}>
                     {alumnosAInhabilitar.length > 0 ? ( <Flex direction={"column"} w={"100%"}>
-                    <Tabla headers={headers} data={alumnosAInhabilitar} request={request} onInhabilitar={fetchData} /> 
+                    <Tabla headers={headers} data={alumnosAInhabilitar} request={request} onInhabilitar={fetchData} setRequest={setRequest} /> 
                     <Flex justifyContent={"flex-end"}>
                      <Button
                         onClick={() => setRequest(true)}
