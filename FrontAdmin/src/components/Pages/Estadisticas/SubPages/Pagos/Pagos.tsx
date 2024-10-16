@@ -26,6 +26,7 @@ type Pago = {
   };
   
   type Alumno = {
+    nombre: string;
     total: number;
     pagos: Pago[];
   };
@@ -97,7 +98,7 @@ export default function Pagos() {
                 <Tbody>
                 {Object.keys(data.alumnos).map((dni) => (
                     <Tr key={dni}>
-                    <Td textAlign="center" ></Td>
+                    <Td textAlign="center" > {data.alumnos[dni].nombre}</Td>
                     <Td textAlign="center" >{new Intl.NumberFormat('es-ES').format(parseInt(dni))}</Td>
                     <Td textAlign="center" >{ "$ " + new Intl.NumberFormat('es-ES').format(data.alumnos[dni].total)}</Td>
                     <Td textAlign="center" >
