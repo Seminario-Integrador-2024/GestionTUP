@@ -57,8 +57,13 @@ export const inhabilitarAlumno = async (legajo: number) => {
         },
         });
         if (response.ok) {
-        const data = await response.json();
-        return data;
+            if (response.status === 204) {
+                // No hay contenido en la respuesta
+                return {};
+            } else {
+                const data = await response.json();
+                return data;
+            }
         } else {
         throw new Error('Error en la respuesta del servidor');
         }

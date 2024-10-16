@@ -11,12 +11,13 @@ export default function AInhabilitar() {
     const headers = ['Apellido y Nombre', 'Legajo' , 'DNI'];
     const [request, setRequest] = useState<boolean>(false);
 
-    useEffect (() => {
-        const fetchData = async () => {
-            const response2 = await getAlumnosaInhabilitar();
-            setAlumnosAInhabilitar(response2.results);
-            setLoading(false);
-        };
+    const fetchData = async () => {
+        setLoading(true);
+        const response2 = await getAlumnosaInhabilitar();
+        setAlumnosAInhabilitar(response2.results);
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -25,20 +26,17 @@ export default function AInhabilitar() {
         borderRadius={8}
         w={"100%"}
         >
-        {loading ? (
-                <Spinner />
-            ) : (
+        
             <Box w={"100%"}>
                 <Flex justifyContent={"center"} w={"100%"}>
                     {alumnosAInhabilitar.length > 0 ? ( <Flex direction={"column"} w={"100%"}>
-                    <Tabla headers={headers} data={alumnosAInhabilitar} request={request} /> 
+                    <Tabla headers={headers} data={alumnosAInhabilitar} request={request} onInhabilitar={fetchData} /> 
                     <Flex justifyContent={"flex-end"}>
                      <Button
                         onClick={() => setRequest(true)}
                         color={"white"}
                         size={"md"}
                         m={2}
-                        
                     >
                         Inhabilitar
                     </Button>
@@ -47,7 +45,7 @@ export default function AInhabilitar() {
                     ) : <p>No hay datos para mostrar</p>}
                 </Flex>
             </Box>
-        )}
+        
         </Box>
 
     );

@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Tr, Th,Thead, Tbody, Td, Checkbox } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { inhabilitarAlumno } from '../../../../../API/Inhabilitaciones';
+import { set } from 'date-fns';
 
 interface TablaProps {
   headers: string[];
   data: Array<Record<string, any>>;
   request: boolean;
+  onInhabilitar: () => void;
 }
 
-const Tabla: React.FC<TablaProps> = ({ headers, data, request }) => {
+const Tabla: React.FC<TablaProps> = ({ headers, data, request, onInhabilitar }) => {
   const [selectedRows, setSelectedRows] = useState<{ [key: string]: boolean }>({});
-  const navigate = useNavigate();
+  const [renderKey, setRenderKey] = useState(0);
 
   const keyMap: { [key: string]: string } = {
     'Apellido y Nombre': 'full_name',
@@ -34,10 +37,25 @@ const Tabla: React.FC<TablaProps> = ({ headers, data, request }) => {
     setSelectedRows(newSelectedRows);
   };
 
+  useEffect(() => {
+  const handleInhabilitar = async () => {
+    const alumnosInhabilitar = data.filter((row) => selectedRows[row.user]);
+    for (const alumno of alumnosInhabilitar) {
+      await inhabilitarAlumno(alumno.legajo);
+    }
+        setSelectedRows({});
+        setRenderKey((prevKey) => prevKey + 1); 
+        onInhabilitar();
+    };
+    if (request) {
+        handleInhabilitar();
+    }
+    }, [request]);
+
   const allRowsSelected = data.length > 0 && Object.keys(selectedRows).length === data.length && Object.values(selectedRows).every(Boolean);
 
   return (
-    <Table variant="simple">
+    <Table key={renderKey} variant="simple">
       <Thead>
         <Tr>
           <Th>
