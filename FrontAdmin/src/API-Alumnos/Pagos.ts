@@ -9,7 +9,7 @@ export const FetchPostPago = async (
         const token = Cookies.get('tokennn');
         const dni = Cookies.get('dni');
 
-        const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}`, {
+        const response = await fetch(`http://localhost:8000/api/pagos/alumno/${dni}/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

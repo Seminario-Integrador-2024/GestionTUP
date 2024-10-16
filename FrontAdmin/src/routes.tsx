@@ -31,9 +31,9 @@ import path from 'path';
 import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
 import Sysadmin from './components/Pages/SysAdmin/SysAdmin';
 import Matricula from './components/Pages/Estadisticas/SubPages/Matricula';
+import Pagos from './components/Pages/Estadisticas/SubPages/Pagos/Pagos';
 import Inhabilitados from './components/Pages/Estadisticas/SubPages/Inhabilitaciones/Inhabilitaciones';
 import AlumnosBaja from './components/Pages/Estadisticas/AlumnosBaja';
-
 
 const routes = [
   {
@@ -82,12 +82,22 @@ const routes = [
       },
       {
         path: 'cuotas',
-        element: <Select />,
+        element: <Select page={'cuotas'} />,
         rol: 'admin',
       },
       {
         path  : 'cuotas/:fecha',
         element: <Listado />,
+        rol: 'admin',
+      },
+      {
+        path: 'pagos',
+        element: <Select page={'pagos'} />,
+        rol: 'admin',
+      },
+      {
+        path: 'pagos/:fecha',
+        element: <Pagos />,
         rol: 'admin',
       },
       {
