@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {getInhabilitaciones} from '../../../../../API/Inhabilitaciones';
 import Tabla from '../Cuotas/Tabla';
+import AInhabilitar from './Alumnos_a_Inhabilitar';
 import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag, Spinner, Input } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 
 function Inhabilitados() {
   const [inhabilitados, setInhabilitados] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const headers = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Estado financiero'];
+  const headers = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Desde'];
   const [limit1] = useState(10);
   const [offset1, setOffset1] = useState(0);
   const [totalInhabilitados, setTotalInhabilitados] = useState<number>(0);
@@ -15,8 +16,8 @@ function Inhabilitados() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await getInhabilitaciones(limit1, offset1);
-      setInhabilitados(response);
-      setTotalInhabilitados(response.length);
+      setInhabilitados(response.results);
+      setTotalInhabilitados(response.count);
       setLoading(false);
     };
 
@@ -109,23 +110,7 @@ function Inhabilitados() {
                     </TabPanel>
                     <TabPanel>
                     <Flex>
-                        <Box
-                            borderRadius={8}
-                            borderColor={"gray.200"}
-                            borderStyle={"solid"}
-                            borderWidth={1}
-                            p={3}
-                        >
-                        {loading ? (
-                                <Spinner />
-                            ) : (
-                            <Box>
-                                <Flex>
-                                    <Text fontSize="xl" fontWeight="bold">Inhabilitar</Text>
-                                </Flex>
-                            </Box>
-                        )}
-                        </Box>
+                        <AInhabilitar />
                     </Flex>
                     </TabPanel>
                     <TabPanel>
