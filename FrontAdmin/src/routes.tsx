@@ -31,7 +31,9 @@ import path from 'path';
 import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
 import Sysadmin from './components/Pages/SysAdmin/SysAdmin';
 import Matricula from './components/Pages/Estadisticas/SubPages/Matricula';
+import Inhabilitados from './components/Pages/Estadisticas/SubPages/Inhabilitaciones/Inhabilitaciones';
 import AlumnosBaja from './components/Pages/Estadisticas/AlumnosBaja';
+
 
 const routes = [
   {
@@ -86,6 +88,11 @@ const routes = [
       {
         path  : 'cuotas/:fecha',
         element: <Listado />,
+        rol: 'admin',
+      },
+      {
+        path: 'inhabilitaciones',
+        element: <Inhabilitados />,
         rol: 'admin',
       },
 

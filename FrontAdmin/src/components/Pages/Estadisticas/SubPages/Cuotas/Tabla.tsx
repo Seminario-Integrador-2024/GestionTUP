@@ -24,6 +24,7 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
     'DNI': 'user',
     'Estado financiero': 'estado_financiero',
     'Legajo': 'legajo',
+    'Desde': 'fecha_inhabilitacion'
   };
   const navigate = useNavigate();
 

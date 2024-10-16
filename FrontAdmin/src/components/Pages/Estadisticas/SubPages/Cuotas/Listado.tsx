@@ -40,13 +40,13 @@ export default function Listado() {
 
     const handleNextPage2 = () => {
         if (offset2 + limit2 < totalabonaron) {
-          setOffset1(offset2 + limit2);
+          setOffset2(offset2 + limit2);
         }
       };
     
       const handlePreviousPage2 = () => {
         if (offset2 > 0) {
-          setOffset1(offset2 - limit2);
+          setOffset2(offset2 - limit2);
         }
     };
     
@@ -85,9 +85,6 @@ export default function Listado() {
     const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFilter(event.target.value);
     };
-
-    console.log(abonaron);
-    console.log(noAbonaron);
 
     return (
         <Flex w={"100%"}
