@@ -101,7 +101,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
       <Table>
         <Thead>
           <Tr>
-            {['full_name', 'legajo', 'dni', 'estado_financiero', 'anio_ingreso'].map((field) => (
+            {['APELLIDO Y NOMBRE', 'LEGAJO', 'DNI', 'ESTADO FINANCIERO', 'AÑO INGRESO'].map((field) => (
               <Th key={field} fontFamily="Helvetica" fontWeight="900">
                 {field.toUpperCase()}
                 <IconButton
