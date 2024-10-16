@@ -31,6 +31,7 @@ import path from 'path';
 import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
 import Sysadmin from './components/Pages/SysAdmin/SysAdmin';
 import Matricula from './components/Pages/Estadisticas/SubPages/Matricula';
+import AlumnosBaja from './components/Pages/Estadisticas/AlumnosBaja';
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
         element: <ListadoMaterias />,
         rol: 'admin',
 
+      },
+      {
+        path: 'baja-provisoria',
+        element: <AlumnosBaja />,
+        rol: 'admin',
       },
       {
         path: 'alumnos-que-firmaron-compromiso-de-pago',
