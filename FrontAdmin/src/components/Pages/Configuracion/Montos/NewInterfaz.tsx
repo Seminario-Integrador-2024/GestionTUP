@@ -18,10 +18,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Spinner,
 } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
-
+import { deleteCompromiso } from '../../../../API/Montos';
+import ModalComponent from '../../../Modal/ModalConfirmarCambios'; 
 interface Compromiso {
   anio: string | number | Date;
   fecha_carga_comp_pdf: string;
@@ -38,17 +40,19 @@ interface Compromiso {
   fecha_vencimiento_1: number;
   fecha_vencimiento_2: number;
   fecha_vencimiento_3: number;
-
 }
 
 interface CardCargaProps {
   compromisos: Compromiso[];
+  fetchMontos: () => void;
 }
 
-const NewInterfaz = ({ compromisos }: CardCargaProps) => {
+const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
   const [montos, setMontos] = useState<Compromiso[]>([]);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isConfirmOpen, onOpen: onConfirmOpen, onClose: onConfirmClose } = useDisclosure(); // Estado para el modal de confirmación
+  const [isDeleting, setIsDeleting] = useState(false); // Estado de carga para la eliminación
 
   useEffect(() => {
     const sortedMontos = [...compromisos].sort((a, b) => {
@@ -56,6 +60,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
       const dateB = new Date(b.fecha_carga_comp_pdf);
       return dateB.getTime() - dateA.getTime();
     });
+    console.log('Montos ordenados:', sortedMontos);
     setMontos(sortedMontos);
   }, [compromisos]);
 
@@ -82,6 +87,24 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
     onClose();
   };
 
+  const handleDeleteLastCompromiso = async () => {
+    if (montos.length === 0) return;
+
+    const lastCompromiso = montos[0];
+    try {
+      setIsDeleting(true);
+      await deleteCompromiso(lastCompromiso.id_comp_pago);
+    fetchMontos();
+      onConfirmClose(); 
+    } catch (error) {
+      console.error('Error al eliminar el compromiso:', error);
+    } finally {
+      fetchMontos();
+      onConfirmClose();
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <Box
       borderWidth="1px"
@@ -101,7 +124,7 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
               <Tr>
                 <Th p={1}>Año/ Cuatrimestre</Th>
                 <Th p={2}>Matrícula</Th>
-                <Th p={2}>Montos</Th> 
+                <Th p={2}>Montos</Th>
                 <Th p={1}>Dia de vencimiento</Th>
                 <Th p={1}>Fecha Ult Modif.</Th>
                 <Th p={1}>Acciones</Th>
@@ -116,8 +139,6 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
                       monto.cuatrimestre}
                   </Td>
                   <Td p={2}>{' $ ' + monto.matricula}</Td>
-                  
-               
                   <Td p={2}>
                     <Box>
                       <Text fontWeight="bold">Monto Completo: {' $ ' + monto.monto_completo}</Text>
@@ -129,31 +150,36 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
                     </Box>
                   </Td>
                   <Td p={1}>
-                  <Text >
+                    <Text>
                       1er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_1}</Box>
                     </Text>
-                    <Text >
+                    <Text>
                       2do Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_2}</Box>
                     </Text>
-                    <Text >
+                    <Text>
                       3er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_3}</Box>
                     </Text>
                   </Td>
-                  
                   <Td p={1}>
                     {new Date(monto.fecha_carga_comp_pdf).toLocaleString(
                       'es-ES',
                       { dateStyle: 'short', timeStyle: 'short' }
                     )}
                   </Td>
-
                   <Td p={1}>
-                    <Button
-                      colorScheme="blue"
-                      onClick={() => handleViewPdf(monto.archivo_pdf_url)}
-                    >
-                      Ver pdf
-                    </Button>
+                    <Flex direction="column" gap={2}>
+                      <Button
+                        colorScheme="blue"
+                        onClick={() => handleViewPdf(monto.archivo_pdf_url)}
+                      >
+                        Ver pdf
+                      </Button>
+                      {index === 0 && (
+                        <Button colorScheme="red" onClick={onConfirmOpen} isLoading={isDeleting}>
+                          Eliminar
+                        </Button>
+                      )}
+                    </Flex>
                   </Td>
                 </Tr>
               ))}
@@ -178,9 +204,14 @@ const NewInterfaz = ({ compromisos }: CardCargaProps) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <ModalComponent
+        isOpen={isConfirmOpen}
+        onClose={onConfirmClose}
+        texto="¿Está seguro de que desea eliminar el último compromiso cargado?"
+        confirmar={handleDeleteLastCompromiso}
+      />
     </Box>
   );
 };
 
 export default NewInterfaz;
-
