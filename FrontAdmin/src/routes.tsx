@@ -34,6 +34,7 @@ import Matricula from './components/Pages/Estadisticas/SubPages/Matricula';
 import Pagos from './components/Pages/Estadisticas/SubPages/Pagos/Pagos';
 import Inhabilitados from './components/Pages/Estadisticas/SubPages/Inhabilitaciones/Inhabilitaciones';
 import AlumnosBaja from './components/Pages/Estadisticas/AlumnosBaja';
+import DarseBaja from './components/Pages-Alumnos/DarseBaja/DarseBaja';
 
 const routes = [
   {
@@ -153,7 +154,7 @@ const routes = [
   {
     path: 'baja',
     title: 'Darse de Baja',
-    element: <ErrorPage />,
+    element: <DarseBaja/>,
     rol: 'alumnos',
     icon: <CiSaveDown1 size="30px" />,
   },
