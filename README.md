@@ -8,8 +8,6 @@
 
 [![Django](https://img.shields.io/badge/Django-5.1-green.svg)](https://www.djangoproject.com/) [![Python](https://img.shields.io/badge/Python-3.10.14-blue.svg)](https://www.python.org/) [![React](https://img.shields.io/badge/React-17.0.2-blue.svg)](https://reactjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-4.3.5-blue.svg)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-2.4.4-blue.svg)](https://vitejs.dev/) [![Docker](https://img.shields.io/badge/Docker-20.10.7-blue.svg)](https://www.docker.com/) [![Docker Compose](https://img.shields.io/badge/Docker_Compose-1.29.2-blue.svg)](https://docs.docker.com/compose/) [![ESLint](https://img.shields.io/badge/ESLint-7.32.0-blue.svg)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-2.4.1-orange.svg)](https://prettier.io/) [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Run-lightblue.svg)](https://cloud.google.com/run)
 
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run)
-
 ## Table of Contents
 
 - [About the project](#about-the-project)
@@ -171,7 +169,7 @@ Steps to set up the backend environment:
 5. Now you can install the project dependencies using pip:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements/local.txt
    ```
 
 6.
