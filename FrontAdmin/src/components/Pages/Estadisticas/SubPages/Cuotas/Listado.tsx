@@ -54,7 +54,7 @@ export default function Listado() {
     useEffect(() => {
         const fetchNoAbonaron = async (fecha: string) => {
             const data = await NoAbonaronCuota(fecha, limit1, offset1, filter);
-            if (data.results.length > 0) {
+            if (data.results?.length > 0) {
             setNoAbonaron(data.results);
             setTotalNoAbonaron(data.count);
             }
@@ -70,7 +70,7 @@ export default function Listado() {
     useEffect(() => {
         const fetchAbonaron = async (fecha: string) => {
             const data = await AbonaronCuota(fecha, limit2, offset2, filter);
-            console.log(data);
+         
             if (data.results?.length > 0) {
             
             setAbonaron(data.results);

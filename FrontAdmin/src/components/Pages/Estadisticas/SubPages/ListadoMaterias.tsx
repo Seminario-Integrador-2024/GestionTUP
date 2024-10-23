@@ -39,7 +39,7 @@ const ListadoMaterias: React.FC = () => {
   };
 
   // Filtra las materias según el cuatrimestre seleccionado
-  const filteredSubjects = materias.filter((materia: Materia) => {
+  const filteredSubjects = Array.isArray(materias) ? materias.filter((materia: Materia) => {
     if (cuatrimestre === 'primer-cuatrimestre') {
       return materia.cuatrimestre === 1;
     }
@@ -47,8 +47,8 @@ const ListadoMaterias: React.FC = () => {
       return materia.cuatrimestre === 2;
     }
     return false; // Si no hay cuatrimestre seleccionado
-  });
-
+  }) : [];
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
