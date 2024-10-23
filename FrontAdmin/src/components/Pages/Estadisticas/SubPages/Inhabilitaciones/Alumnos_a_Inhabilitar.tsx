@@ -32,14 +32,14 @@ export default function AInhabilitar() {
                     {alumnosAInhabilitar.length > 0 ? ( <Flex direction={"column"} w={"100%"}>
                     <Tabla headers={headers} data={alumnosAInhabilitar} request={request} onInhabilitar={fetchData} setRequest={setRequest} /> 
                     <Flex justifyContent={"flex-end"}>
-                     <Button
+                     {/* <Button
                         onClick={() => setRequest(true)}
                         color={"white"}
                         size={"md"}
                         m={2}
                     >
-                        Inhabilitar
-                    </Button>
+                        Inhabilitar */}
+                    {/* </Button> */}
                     </Flex>
                     </Flex>
                     ) : <p>No hay datos para mostrar</p>}

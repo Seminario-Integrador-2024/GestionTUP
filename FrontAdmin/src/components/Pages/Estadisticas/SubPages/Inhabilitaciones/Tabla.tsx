@@ -60,28 +60,28 @@ const Tabla: React.FC<TablaProps> = ({ headers, data, request, onInhabilitar, se
     <Table key={renderKey} variant="simple">
       <Thead>
         <Tr>
-          <Th>
-          <Checkbox
+          
+          {/* <Checkbox
               isChecked={allRowsSelected}
               onChange={handleHeaderCheckboxChange}
               borderColor={'black'}
-            />
-          </Th>
+            /> */}
+          
           {headers.map((header) => (
-            <Th key={header}>{header}</Th>
+            <Th fontFamily="Helvetica" fontWeight="900" key={header}>{header}</Th>
           ))}
         </Tr>
       </Thead>
       <Tbody>
         {data.map((row) => (
           <Tr key={row.user}>
-            <Td>
+            {/* <Td>
               <Checkbox
                 borderColor={'black'}
                 isChecked={!!selectedRows[row.user]}
                 onChange={() => handleCheckboxChange(row.user)}
               />
-            </Td>
+            </Td> */}
             {headers.map((header) => (
               <Td key={header}>{row[keyMap[header]]}</Td>
             ))}
