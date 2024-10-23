@@ -34,6 +34,7 @@ import {
 } from '../../../../API/DetalleAlumno.ts';
 import { FetchGetCuotas } from '../../../../API-Alumnos/Pagos.ts';
 import { FetchCompromisosAlumno } from '../../../../API-Alumnos/Compromiso.ts';
+import { inhabilitacionesA } from '../../../../API-Alumnos/InhabilitacionesAlumno.ts';
 import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
@@ -77,11 +78,35 @@ function FichaAlumno() {
   const [error, setError] = useState<unknown>(null);
   const [firmoCompromiso, setFirmoCompromiso] = useState<boolean>(false);
   const [deuda, setDeuda] = useState<number>(0);
+  interface Inhabilitacion {
+    fecha_desde: string;
+    fecha_hasta: string;
+    descripcion: string;
+  }
+  
+  const [inhabilitaciones, setInhabilitaciones] = useState<Inhabilitacion[]>([]);
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate(-1); // Retrocede en el historial de navegación
+    navigate(-1); 
   };
+
+  useEffect(() => {
+
+    const fetchInhabilitaciones = async () => {
+      try {
+        const dniNumber = parseInt(dni!, 10); 
+        console.log(dniNumber);
+        const response = await inhabilitacionesA(dniNumber);
+        setInhabilitaciones(response.results);
+      } catch (error) {
+        console.error('Error al obtener las inhabilitaciones:', error);
+      }
+    };
+
+    if (dni !== undefined) fetchInhabilitaciones();
+  }, [dni]);
+
 
   useEffect(() => {
     const fetchDetalleAlumno = async (dni: any) => {
@@ -384,6 +409,31 @@ function FichaAlumno() {
                         <Text>El alumno no se encuentra cursando materias en el cuatrimestre en curso.</Text>
                       )}
                 </TabPanel>
+
+                <TabPanel minW="50vw">
+          {inhabilitaciones.length > 0 ? (
+            <Table variant="simple" width="100%">
+              <Thead>
+                <Tr mt={6}>
+                  <Th textAlign="center">Fecha Desde</Th>
+                  <Th textAlign="center">Fecha Hasta</Th>
+                  <Th textAlign="center">Descripción</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {inhabilitaciones.map((inhabilitacion, index) => (
+                  <Tr key={index}>
+                    <Td textAlign="center">{new Date(inhabilitacion.fecha_desde).toLocaleDateString()}</Td>
+                    <Td textAlign="center">{new Date(inhabilitacion.fecha_hasta).toLocaleDateString()}</Td>
+                    <Td textAlign="center">{inhabilitacion.descripcion}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          ) : (
+            <Text>El alumno no tiene inhabilitaciones registradas.</Text>
+          )}
+        </TabPanel>
               </TabPanels>
             </Tabs>
 
