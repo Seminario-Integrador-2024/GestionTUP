@@ -35,6 +35,7 @@ import Pagos from './components/Pages/Estadisticas/SubPages/Pagos/Pagos';
 import Inhabilitados from './components/Pages/Estadisticas/SubPages/Inhabilitaciones/Inhabilitaciones';
 import AlumnosBaja from './components/Pages/Estadisticas/AlumnosBaja';
 import DarseBaja from './components/Pages-Alumnos/DarseBaja/DarseBaja';
+import Deuda from './components/Pages/Estadisticas/SubPages/Pagos/Deuda';
 
 const routes = [
   {
@@ -99,6 +100,11 @@ const routes = [
       {
         path: 'pagos/:fecha',
         element: <Pagos />,
+        rol: 'admin',
+      },
+      {
+        path: 'deudas',
+        element: <Deuda />,
         rol: 'admin',
       },
       {

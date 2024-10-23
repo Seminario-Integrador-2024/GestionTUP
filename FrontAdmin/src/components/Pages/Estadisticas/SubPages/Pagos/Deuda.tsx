@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom"
-import {GetPagos} from "../../../../../API/Pagos";
+import {GetDeuda} from "../../../../../API/Pagos";
 import { useState } from "react";
+import {formatoFechaISOaDDMMAAAA} from "../../../../../utils/general";
 import {
     Button,
     IconButton,
@@ -21,14 +22,14 @@ import { ViewIcon } from '@chakra-ui/icons'
 import { IoEyeOutline } from "react-icons/io5";
 
 type Pago = {
-    fecha: string;
+    fecha_vencimiento: string;
     monto: number;
   };
   
   type Alumno = {
     nombre: string;
     total: number;
-    pagos: Pago[];
+    cuotas: Pago[];
   };
   
   type Data = {
@@ -38,9 +39,9 @@ type Pago = {
     };
   };
 
-export default function Pagos() {
+function Deuda()  {
 
-    const { fecha } = useParams<{ fecha: string }>();
+
     const [data, setData] = useState<Data | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedDni, setSelectedDni] = useState<string | null>(null);
@@ -54,22 +55,17 @@ export default function Pagos() {
     };
 
     useEffect (() => {
-    const [year, month] = fecha ? fecha.split('-') : [undefined, undefined];
-    const fetchPagos = async () => {
+    const fetchDeuda = async () => {
         try {
-            console.log('Buscando pagos de: ', year, month);
-            const datos = await GetPagos(year, month);
-            setData(datos);
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        } finally {
+            const data = await GetDeuda();
+            setData(data);
             setLoading(false);
+        } catch (error) {
+            console.error('Error al buscar deuda: ', error);
         }
     };
-    fetchPagos();
-    }, [fecha]);
-
+    fetchDeuda();
+    }, []);
     return (
         <Flex w={"100%"} justifyContent={"center"} alignItems={"center"} flex={1}>
         <Box w={"100%"} p={4}>
@@ -77,12 +73,8 @@ export default function Pagos() {
             data && (
             <>
             <Box flexDirection={"row"} display={"flex"} justifyContent={"space-around"} w={"100%"} >
-                <Tag bg="secundaryBg" flexDirection={"column"} w={"40%"} p={2} fontWeight="bold"  fontFamily={"serif"} > 
-                    <Text fontSize={18}>Periodo:</Text>
-                    <Text fontSize={30}>{fecha}</Text>
-                </Tag>
-                <Tag bg="secundaryBg" flexDirection={"column"} w={"40%"} p={2} fontWeight="bold" fontFamily={"serif"} > 
-                    <Text fontSize={18}>Total Recaudado:</Text>
+                <Tag bg="secundaryBg" flexDirection={"column"} w={"60%"} p={2} fontWeight="bold" fontFamily={"serif"} > 
+                    <Text fontSize={18}>Total Adeudado:</Text>
                     <Text fontSize={30}>{ "$ " + new Intl.NumberFormat('es-ES', { notation: "compact", compactDisplay: "short" }).format(data.total_mes)}</Text>
                 </Tag>
             </Box>
@@ -113,14 +105,14 @@ export default function Pagos() {
                         <Table variant="simple" borderWidth={0.5} borderColor={'grey.700'}>
                         <Thead>
                             <Tr>
-                            <Th textAlign="center">Fecha Pago</Th>
-                            <Th textAlign="center">Monto Confirmado</Th>
+                            <Th textAlign="center">Fecha Vencimiento</Th>
+                            <Th textAlign="center">Monto Adeudado</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {data.alumnos[selectedDni].pagos.map((pago, index) => (
+                            {data.alumnos[selectedDni].cuotas.map((pago, index) => (
                             <Tr key={index}>
-                                <Td textAlign="center">{pago.fecha}</Td>
+                                <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha_vencimiento)}</Td>
                                 <Td textAlign="center">{ "$ " + new Intl.NumberFormat('es-ES').format(pago.monto)}</Td>
                             </Tr>
                             ))}
@@ -135,3 +127,5 @@ export default function Pagos() {
         );
 
 }
+
+export default Deuda
