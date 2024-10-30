@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import TablaAlumnos from './TablaAlumnos';
-import { FetchFirmantes } from '../../../../API/AlumnosCompromisoPago';
+import { FetchAbonaronMatricula } from '../../../../API/AlumnosAbonaronMatricula';
 import { FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
 import Pestaña from './Pestaña';
 
@@ -18,7 +18,7 @@ const Matricula: React.FC = () => {
 
         <TabPanels>
           <TabPanel>
-            <TablaAlumnos fetchFunction={FetchFirmantes} title="Alumnos que abonaron matrícula"/>
+            <TablaAlumnos fetchFunction={FetchAbonaronMatricula} title="Alumnos que abonaron matrícula"/>
           </TabPanel>
           <TabPanel>
             <TablaAlumnos fetchFunction={FetchNoFirmantes} title="Alumnos que no abonaron matrícula"/>
