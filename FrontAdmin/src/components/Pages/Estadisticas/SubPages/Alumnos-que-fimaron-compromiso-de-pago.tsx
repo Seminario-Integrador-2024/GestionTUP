@@ -10,21 +10,7 @@ const AlumnosCompromisoPago: React.FC = () => {
 
   return (
     <div>
-      <Tabs variant="enclosed" index={index} onChange={setIndex} isLazy>
-        <TabList display="flex" justifyContent="center" alignItems="center" borderBottom="2px solid" borderColor="gray.200">
-          <Pestaña title="Firmaron" />
-          <Pestaña title="No Firmaron" />
-        </TabList>
-
-        <TabPanels>
-          <TabPanel>
-            <TablaAlumnos fetchFunction={FetchFirmantes} title="Alumnos con compromiso"/>
-          </TabPanel>
-          <TabPanel>
-            <TablaAlumnos fetchFunction={FetchNoFirmantes} title="Alumnos sin compromiso"/>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <TablaAlumnos fetchFunction={FetchFirmantes} title="Alumnos con compromiso"/>
     </div>
   );
 };
