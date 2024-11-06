@@ -38,7 +38,7 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
   } = useDisclosure();
 
   const handleConfirmar = () => {
-    console.log('confirmar');
+
     // TODO: Implementar la lógica de confirmar
   }
 
