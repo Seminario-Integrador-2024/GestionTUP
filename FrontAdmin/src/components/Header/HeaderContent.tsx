@@ -23,7 +23,7 @@ import Contraseña from '../Modal/Contraseña';
 export function HeaderContent({ onOpen }: { onOpen: any }) {
   const { onLogout } = useAuth();
   const user = Cookies.get('full_name');
-  // Perfil
+  // Perfil  
   const {
     isOpen: isOpen1,
     onOpen: onOpen1,
