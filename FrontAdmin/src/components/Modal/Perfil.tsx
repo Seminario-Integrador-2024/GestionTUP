@@ -1,6 +1,6 @@
-import {Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, Text, ModalFooter, ModalHeader, ModalOverlay, Input, FormControl, FormLabel, IconButton} from '@chakra-ui/react';
+import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, Text, ModalFooter, ModalHeader, ModalOverlay, Input, FormControl, FormLabel, IconButton } from '@chakra-ui/react';
 import { HiOutlineUserCircle } from "react-icons/hi";
-import {EditIcon} from '@chakra-ui/icons';
+import { EditIcon } from '@chakra-ui/icons';
 import { FetchDetalleAlumno } from '../../API/DetalleAlumno';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
@@ -13,7 +13,8 @@ interface ModalComponentProps {
 
 export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentProps) {
 
-    const handleconfirmar = () => {
+    const handleconfirmar = async () => {
+        await actualizarDatos();
         confirmar();
         onClose();
     };
@@ -24,13 +25,13 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [isTelefonoEditable, setIsTelefonoEditable] = useState(false);
 
-    useEffect (() => {
+    useEffect(() => {
         const fetchDetalleAlumno = async () => {
             try {
                 const dni = Cookies.get('dni');
                 const data = await FetchDetalleAlumno(parseInt(dni!));
                 setData(data);
-                setEmail(data.email);  
+                setEmail(data.email);
                 setTelefono(data.telefono);
             } catch (error) {
                 console.log(error);
@@ -39,7 +40,7 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
         fetchDetalleAlumno();
         setIsEmailEditable(false);
         setIsTelefonoEditable(false);
-        
+
     }, [isOpen]);
 
     const handleEmailChange = (e: any) => {
@@ -48,7 +49,31 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
 
     const handleTelefonoChange = (e: any) => {
         setTelefono(e.target.value);
-    }
+    };
+
+    const actualizarDatos = async () => {
+        try {
+            const dni = Cookies.get('dni');
+            const token = Cookies.get('tokennn');
+            const response = await fetch(`http://localhost:8000/api/alumnos/${dni}/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    
+                    telefono: telefono
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al actualizar los datos');
+            }
+        } catch (error) {
+            console.error('Error al actualizar los datos:', error);
+        }
+    };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -58,74 +83,74 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
                 <ModalCloseButton />
                 <ModalBody>
                     <Flex justifyContent={"center"} alignItems={"center"} direction={"column"}>
-                    <Flex direction={"row"} alignItems={"center"}>
-                        < HiOutlineUserCircle size={120} />
-                        <Flex direction={"column"} ml={5} textAlign={"left"}>
-                            <Text fontWeight={"bold"} fontSize={20}>{ (data.full_name)}</Text>
-                            <Text fontSize={18}>{ new Intl.NumberFormat('es-Es').format(data.dni)}</Text>
-                            <Text fontSize={18}>{data.legajo}</Text>
+                        <Flex direction={"row"} alignItems={"center"}>
+                            <HiOutlineUserCircle size={120} />
+                            <Flex direction={"column"} ml={5} textAlign={"left"}>
+                                <Text fontWeight={"bold"} fontSize={20}>{data.full_name}</Text>
+                                <Text fontSize={18}>{new Intl.NumberFormat('es-Es').format(data.dni)}</Text>
+                                <Text fontSize={18}>{data.legajo}</Text>
+                            </Flex>
                         </Flex>
-                    </Flex>
-                    <Flex direction={"column"} mt={5} flex={1} w={"100%"}>
-                        <FormControl>
-                            <Flex direction={"column"}>
-                                <FormLabel mb={0}>Email:</FormLabel>
-                                <Flex>
-                                    <Input
-                                        value={email}
-                                        placeholder=''
-                                        onChange={handleEmailChange}
-                                        isReadOnly={!isEmailEditable}
-                                        color={isEmailEditable ?  'black' : 'gray.500'}
-                                    />
-                                    <IconButton 
+                        <Flex direction={"column"} mt={5} flex={1} w={"100%"}>
+                            <FormControl>
+                                <Flex direction={"column"}>
+                                    <FormLabel mb={0}>Email:</FormLabel>
+                                    <Flex>
+                                        <Input
+                                            value={email}
+                                            placeholder=''
+                                            onChange={handleEmailChange}
+                                            isReadOnly={!isEmailEditable}
+                                            color={isEmailEditable ? 'black' : 'gray.500'}
+                                        />
+                                        <IconButton
                                             icon={<EditIcon />}
                                             variant={'light'}
                                             borderRadius={3}
-                                            color={isEmailEditable ?  'gray.500' : 'black'}
+                                            color={isEmailEditable ? 'gray.500' : 'black'}
                                             ml={1} onClick={() => setIsEmailEditable(!isEmailEditable)} aria-label={''}>
-                                    </IconButton>
+                                        </IconButton>
+                                    </Flex>
                                 </Flex>
-                            </Flex>
-                            <Flex direction={"column"} mt={3}>
-                            <FormLabel mb={0}>Telefono:</FormLabel>
-                                <Flex>
-                                <Input
-                                        value={telefono}
-                                        placeholder=''
-                                        onChange={handleTelefonoChange}
-                                        isReadOnly={!isTelefonoEditable}
-                                        color={isTelefonoEditable ?  'black' : 'gray.500'}
-                                    />
-                                    <IconButton 
+                                <Flex direction={"column"} mt={3}>
+                                    <FormLabel mb={0}>Telefono:</FormLabel>
+                                    <Flex>
+                                        <Input
+                                            value={telefono}
+                                            placeholder=''
+                                            onChange={handleTelefonoChange}
+                                            isReadOnly={!isTelefonoEditable}
+                                            color={isTelefonoEditable ? 'black' : 'gray.500'}
+                                        />
+                                        <IconButton
                                             icon={<EditIcon />}
                                             variant={'light'}
                                             borderRadius={3}
-                                            color={isTelefonoEditable ?  'gray.500' : 'black'}
+                                            color={isTelefonoEditable ? 'gray.500' : 'black'}
                                             ml={1} onClick={() => setIsTelefonoEditable(!isTelefonoEditable)} aria-label={''}>
-                                    </IconButton>
+                                        </IconButton>
+                                    </Flex>
                                 </Flex>
-                            </Flex>
-                        </FormControl>
-                    </Flex>
+                            </FormControl>
+                        </Flex>
                     </Flex>
                 </ModalBody>
                 <ModalFooter justifyContent={"flex-end"}>
                     <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={handleconfirmar}
-                    size="sm"
+                        colorScheme="blue"
+                        mr={3}
+                        onClick={handleconfirmar}
+                        size="sm"
                     >
-                    Aceptar
+                        Aceptar
                     </Button>
                     <Button
-                    colorScheme="blue"
-                    onClick={onClose}
-                    variant="light"
-                    size="sm"
+                        colorScheme="blue"
+                        onClick={onClose}
+                        variant="light"
+                        size="sm"
                     >
-                    Cancelar
+                        Cancelar
                     </Button>
                 </ModalFooter>
             </ModalContent>
