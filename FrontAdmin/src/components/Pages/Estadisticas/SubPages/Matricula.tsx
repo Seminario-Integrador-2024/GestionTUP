@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
+import { Tabs, TabList, TabPanels, TabPanel } from '@chakra-ui/react';
 import TablaAlumnos from './TablaAlumnos';
 import { FetchAbonaronMatricula } from '../../../../API/AlumnosAbonaronMatricula';
-import { FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
+import { FetchNoAbonaronMatricula } from '../../../../API/AlumnosAbonaronMatricula';
 import Pestaña from './Pestaña';
 
 const Matricula: React.FC = () => {
@@ -21,7 +21,7 @@ const Matricula: React.FC = () => {
             <TablaAlumnos fetchFunction={FetchAbonaronMatricula} title="Alumnos que abonaron matrícula"/>
           </TabPanel>
           <TabPanel>
-            <TablaAlumnos fetchFunction={FetchNoFirmantes} title="Alumnos que no abonaron matrícula"/>
+            <TablaAlumnos fetchFunction={FetchNoAbonaronMatricula} title="Alumnos que no abonaron matrícula"/>
           </TabPanel>
         </TabPanels>
       </Tabs>
