@@ -24,11 +24,11 @@ const fetchAlumnosAbonaronMatricula = async (url: string): Promise<any> => {
 };
 
 export const FetchAbonaronMatricula = async (): Promise<any> => {
-  const url = 'http://localhost:8000/api/pagos/matricula/alumnos/';
+  const url = 'http://localhost:8000/api/alumnos/pagaron-matricula';
   return fetchAlumnosAbonaronMatricula(url);
 };
 
 export const FetchNoAbonaronMatricula = async (): Promise<any> => {
-  const url = 'http://localhost:8000/api/firmantes/alumnos-no-firmaron-ultimo-compromiso/';
+  const url = 'http://localhost:8000/api/alumnos/no-pagaron-matricula';
   return fetchAlumnosAbonaronMatricula(url);
 };
