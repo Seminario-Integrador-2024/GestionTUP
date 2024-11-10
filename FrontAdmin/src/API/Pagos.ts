@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
 
-export const GetPagos = async (year?: string, month?: string) => {
+export const GetPagos = async (inicio?: string, fin?: string) => {
 
     const token = Cookies.get('tokennn');
-    const url = `http://localhost:8000/api/estadisticas/pagos_mes/${year}/${month}/`;
+    const url = `http://localhost:8000/api/estadisticas/pagos_mes?end_date=${fin}&start_date=${inicio}`;
 
     const response = await fetch(url, {
         method: 'GET',

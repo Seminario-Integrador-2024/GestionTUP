@@ -40,7 +40,7 @@ type Pago = {
 
 export default function Pagos() {
 
-    const { fecha } = useParams<{ fecha: string }>();
+    const { fecha_inicio, fecha_fin } = useParams<{ fecha_inicio: string, fecha_fin: string }>();
     const [data, setData] = useState<Data | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedDni, setSelectedDni] = useState<string | null>(null);
@@ -54,11 +54,9 @@ export default function Pagos() {
     };
 
     useEffect (() => {
-    const [year, month] = fecha ? fecha.split('-') : [undefined, undefined];
     const fetchPagos = async () => {
         try {
-            console.log('Buscando pagos de: ', year, month);
-            const datos = await GetPagos(year, month);
+            const datos = await GetPagos(fecha_inicio, fecha_fin);
             setData(datos);
             console.log(data);
         } catch (error) {
@@ -68,7 +66,7 @@ export default function Pagos() {
         }
     };
     fetchPagos();
-    }, [fecha]);
+    }, [fecha_inicio, fecha_fin]);
 
     return (
         <Flex w={"100%"} justifyContent={"center"} alignItems={"center"} flex={1}>
@@ -79,7 +77,7 @@ export default function Pagos() {
             <Box flexDirection={"row"} display={"flex"} justifyContent={"space-around"} w={"100%"} >
                 <Tag bg="secundaryBg" flexDirection={"column"} w={"40%"} p={2} fontWeight="bold"  fontFamily={"serif"} > 
                     <Text fontSize={18}>Periodo:</Text>
-                    <Text fontSize={30}>{fecha}</Text>
+                    <Text fontSize={30}>{`${fecha_inicio} / ${fecha_fin}`}</Text>
                 </Tag>
                 <Tag bg="secundaryBg" flexDirection={"column"} w={"40%"} p={2} fontWeight="bold" fontFamily={"serif"} > 
                     <Text fontSize={18}>Total Recaudado:</Text>

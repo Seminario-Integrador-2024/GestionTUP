@@ -70,7 +70,7 @@ function Deuda()  {
         <Flex w={"100%"} justifyContent={"center"} alignItems={"center"} flex={1}>
         <Box w={"100%"} p={4}>
         {loading === true ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex> :
-            data && (
+            data && Object.keys(data.alumnos).length > 0 ? (
             <>
             <Box flexDirection={"row"} display={"flex"} justifyContent={"space-around"} w={"100%"} >
                 <Tag bg="secundaryBg" flexDirection={"column"} w={"60%"} p={2} fontWeight="bold" fontFamily={"serif"} > 
@@ -121,7 +121,12 @@ function Deuda()  {
                     </Box>
                     )}
                 </>
-                )}
+                ): null}
+                {data && Object.keys(data.alumnos).length === 0 ? (
+                    <Flex justifyContent={"center"} w={"100%"} mt={6}>
+                    <Text fontSize={24}>No hay deudas</Text>
+                    </Flex>
+                ) : null}
             </Box>
             </Flex>
         );
