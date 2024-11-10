@@ -26,6 +26,7 @@ import FichaAlumno from './components/Pages/Alumnos/SubPages/FichaAlumno'; impor
 import ListadoAlumnosQueCursanMateria from './components/Pages/Estadisticas/SubPages/PaginasMaterias/ListadoAlumnosQueCursanMateria';
 import AlumnosCompromisoPago from './components/Pages/Estadisticas/SubPages/Alumnos-que-fimaron-compromiso-de-pago';
 import Select from './components/Pages/Estadisticas/SubPages/Cuotas/Select';
+import SelectPagos from './components/Pages/Estadisticas/SubPages/Pagos/Select';
 import Listado from './components/Pages/Estadisticas/SubPages/Cuotas/Listado';
 import path from 'path';
 import EstadoCuenta from './components/Pages-Alumnos/EstadoCuenta/EstadoCuenta';
@@ -94,11 +95,11 @@ const routes = [
       },
       {
         path: 'pagos',
-        element: <Select page={'pagos'} />,
+        element: <SelectPagos />,
         rol: 'admin',
       },
       {
-        path: 'pagos/:fecha',
+        path: 'pagos/:fecha_inicio/:fecha_fin',
         element: <Pagos />,
         rol: 'admin',
       },
