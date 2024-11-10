@@ -72,8 +72,8 @@ function SelectPagos () {
 
     return (
         <Flex gap={2} direction={"column"}>
-            <Heading fontSize={22} mt={6}>Seleccione un Periodo</Heading>
-            <Flex direction={'row'} w={'100%'} gap={4} mt={4}>
+            <Heading fontSize={22} mt={6}>Seleccione un periodo</Heading>
+            <Flex direction={'row'} w={'100%'} gap={4} mt={2}>
                 <Button w={'100%'} variant={'light'}
                 onClick={handleMesActual}>
                     Mes Actual
