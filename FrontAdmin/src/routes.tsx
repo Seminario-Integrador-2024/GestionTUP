@@ -51,7 +51,7 @@ const routes = [
     element: <FichaAlumno />,
   },
   {
-    path: 'estadisticas/*',
+    path: 'estadisticas/',
     title: 'Estadísticas' /* para el tooltip*/,
     element: <Estadisticas />,
     rol: 'admin' /* para la activación de rutas segun el rol */,
