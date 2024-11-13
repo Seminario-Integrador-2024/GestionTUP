@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, Tag, Text, Button, Alert, AlertIcon } from '@chakra-ui/react';
+import { Flex, Box, Tag, Text, Button, Alert, AlertIcon, useDisclosure } from '@chakra-ui/react';
 import { FetchCompromisos } from '../../../API-Alumnos/Compromiso';
-import {FetchDetalleAlumno} from '../../../API/DetalleAlumno'
+import { FetchDetalleAlumno } from '../../../API/DetalleAlumno';
 import Cookies from 'js-cookie';
+import ModalConfirmar from './ModalConfir';
+import { solicitarBajaAlumno } from '../../../API-Alumnos/DarseBaja'; 
 
 interface Alumno {
   full_name: string;
@@ -39,9 +41,10 @@ const DarseBaja = () => {
   });
   const [alumno, setAlumno] = useState<Alumno | null>(null);
   const [compromisoFirmado, setCompromiso] = useState<CompromisoResponse | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDarseBaja = () => {
-    console.log("Solicitud de baja enviada");
+    onOpen();
   };
 
   const fetchCompromiso = async () => {
@@ -57,9 +60,19 @@ const DarseBaja = () => {
   const fetchDetalleAlumno = async (dni: any) => {
     try {
       const data = await FetchDetalleAlumno(dni);
+      console.log('alumno:', data);
       setAlumno(data);
     } catch (error) {
       console.error('Error al obtener los datos del alumno', error);
+    }
+  };
+
+  const handleConfirmarBaja = async (motivo: string) => {
+    if (alumno?.dni) {
+      const success = await solicitarBajaAlumno(alumno.dni, motivo);
+      if (success) {
+        setAlumno((prev) => prev ? { ...prev, estado_academico: 'Dado de Baja' } : null);
+      }
     }
   };
 
@@ -70,9 +83,9 @@ const DarseBaja = () => {
   }, []);
 
   return (
-    <Flex mt="20px" flexDirection={"column"} justifyContent={"center"}>
+    <Flex mt="20px" flexDirection={"column"} justifyContent={"center"} gap={5}>
       
-      {(compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso) &&
+      {(compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso && alumno?.estado_academico !== 'Dado de Baja') &&
       <Alert status='warning'>
       <AlertIcon />
       Si se da de baja, aún deberá abonar la cuota del mes en curso.
@@ -86,13 +99,19 @@ const DarseBaja = () => {
 
 
 
-      <Box w={"100%"} mb={3} mt={3}>
+      {alumno?.estado_academico !== 'Dado de Baja' && <Box w={"100%"} >
         <Tag p="10px" w={"100%"} fontSize={18} fontWeight={"semibold"} textAlign={"center"} justifyContent={"center"}>
           Solicitud de Baja al {fechaDeHoy}
         </Tag>
-      </Box>
+      </Box>}
 
-      <Box w="100%" mb={7} display={"flex"} gap={2} flexDirection={"row"} alignItems={"center"} justifyContent={"center"}>
+      {alumno?.estado_academico === 'Dado de Baja' && <Box w={"100%"} >
+        <Tag p="10px" w={"100%"} fontSize={18} fontWeight={"semibold"} textAlign={"center"} justifyContent={"center"}>
+          Baja solicitada el {fechaDeHoy}
+        </Tag>
+      </Box>}
+
+      <Box w="100%" mb={7} display={"flex"} gap={4} flexDirection={"row"} alignItems={"center"} justifyContent={"center"}>
         <Tag w={"100%"} p="10px" fontSize={16}>
           <Text color="gray">
             Estado Actual:
@@ -115,10 +134,11 @@ const DarseBaja = () => {
         <Button
           colorScheme="red"
           onClick={handleDarseBaja}
-          isDisabled={!compromisoFirmado || !compromisoFirmado.results[0]?.firmo_ultimo_compromiso}
+          isDisabled={!compromisoFirmado || !compromisoFirmado.results[0]?.firmo_ultimo_compromiso || alumno?.estado_academico === 'Dado de Baja'}
         >
           Solicitar Baja
         </Button>
+        <ModalConfirmar isOpen={isOpen} onClose={onClose} texto="¿Está seguro que desea darse de baja?" confirmar={handleConfirmarBaja} />
       </Box>
     </Flex>
   );
