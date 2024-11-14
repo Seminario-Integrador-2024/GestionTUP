@@ -122,15 +122,21 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
           </Tr>
         </Thead>
         <Tbody>
-          {currentAlumnos.map(alumno => (
-            <Tr key={alumno.legajo}>
-              <Td>{alumno.full_name}</Td>
-              <Td>{alumno.legajo}</Td>
-              <Td>{alumno.dni}</Td>
-              <Td>{alumno.estado_financiero}</Td>
-              <Td>{alumno.anio_ingreso}</Td>
-            </Tr>
-          ))}
+          {currentAlumnos.length === 0 ? (
+             <Tr>
+             <Td colSpan={5} textAlign="center">No se encontraron alumnos</Td>
+           </Tr>
+          ) : (
+            currentAlumnos.map(alumno => (
+              <Tr key={alumno.legajo}>
+                <Td>{alumno.full_name}</Td>
+                <Td>{alumno.legajo}</Td>
+                <Td>{alumno.dni}</Td>
+                <Td>{alumno.estado_financiero}</Td>
+                <Td>{alumno.anio_ingreso}</Td>
+              </Tr>
+            ))
+          ) } 
         </Tbody>
       </Table>
 
