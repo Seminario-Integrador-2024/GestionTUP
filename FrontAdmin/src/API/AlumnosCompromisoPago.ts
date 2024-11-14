@@ -14,7 +14,6 @@ const fetchAlumnosCompromiso = async (url: string): Promise<any> => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data)
       return data;
     } else {
       throw new Error('Error en la respuesta del servidor');
