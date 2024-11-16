@@ -23,12 +23,11 @@ const fetchAlumnosAbonaronMatricula = async (url: string): Promise<any> => {
   }
 };
 
-export const FetchAbonaronMatricula = async (): Promise<any> => {
-  const url = 'http://localhost:8000/api/alumnos/pagaron-matricula';
+export const FetchAbonaronMatricula = async (cuatrimestre: string, anio: number): Promise<any> => {
+  const url = `http://localhost:8000/api/alumnos/pagaron-matricula/${cuatrimestre}/${anio}`;
   return fetchAlumnosAbonaronMatricula(url);
 };
-
-export const FetchNoAbonaronMatricula = async (): Promise<any> => {
-  const url = 'http://localhost:8000/api/alumnos/no-pagaron-matricula';
+export const FetchNoAbonaronMatricula = async (cuatrimestre: string, anio: number): Promise<any> => {
+  const url = `http://localhost:8000/api/alumnos/no-pagaron-matricula/${cuatrimestre}/${anio}`;
   return fetchAlumnosAbonaronMatricula(url);
 };
