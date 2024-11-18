@@ -37,6 +37,7 @@ import Inhabilitados from './components/Pages/Estadisticas/SubPages/Inhabilitaci
 import AlumnosBaja from './components/Pages/Estadisticas/AlumnosBaja';
 import DarseBaja from './components/Pages-Alumnos/DarseBaja/DarseBaja';
 import Deuda from './components/Pages/Estadisticas/SubPages/Pagos/Deuda';
+import PendientesFirma from './components/Pages/Estadisticas/SubPages/PendientesFirma';
 
 const routes = [
   {
@@ -113,7 +114,12 @@ const routes = [
         element: <Inhabilitados />,
         rol: 'admin',
       },
+      {
+        path: 'pendientes-firma-compromiso',
+        element: <PendientesFirma />,
+        rol: 'admin',
 
+      },
     ],
   },
   {
