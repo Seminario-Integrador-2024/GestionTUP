@@ -145,7 +145,7 @@ function InformarPago() {
     
     const fetchCompromiso  = async () => {
       try {
-        const data = await FetchCompromisos();
+        const data = await FetchCompromisos(undefined);
         setCompromiso(data)
       } catch (error) {
         setError(error);
@@ -157,7 +157,7 @@ function InformarPago() {
 
     const fetchPagos = async () => {
       try {
-        const data = await FetchResumenPagos();
+        const data = await FetchResumenPagos(undefined);
         setPagos(data);
       } catch (error) {
         setError(error);
@@ -173,11 +173,6 @@ function InformarPago() {
     fetchDetalleAlumno(dni);
     fetchCompromiso();
     fetchPagos();
-    
-   
-
- 
-   
   }, []); 
  
     useEffect(() => {
@@ -221,11 +216,7 @@ function InformarPago() {
     ultimo_cursado: '-'
   };
 
-  const verificarMora = (fechaDeInforme: string, cuota_fechaVencimiento: string) => {
-    if (!cuota_fechaVencimiento) {
-      console.error('Fecha de vencimiento inválida:', cuota_fechaVencimiento);
-      return false; // Devuelve un valor predeterminado
-    }
+  const verificarFechaDePago = (fechaDeInforme: string, cuota_fechaVencimiento: string) => {
     const [year, month, day] = fechaDeInforme.split('-');
     let DatefechaDeInforme = new Date(year + '-' + month + '-' + day);
 
@@ -243,20 +234,23 @@ function InformarPago() {
     }
   };
 
-  const mostrarMontoConMora = (
+  const calcularMontoConMora = (
     fechaDeInforme: string,
     cuota_completa: boolean,
     cuota_fechaVencimiento: string
   ) => {
     if (!detalleCompromiso) return 0;
-    const mora = verificarMora(fechaDeInforme, cuota_fechaVencimiento);
+    const mora = verificarFechaDePago(fechaDeInforme, cuota_fechaVencimiento);
     
     switch (mora) {
       case 0:
+        //pagado antes del primer vto
         return cuota_completa ? detalleCompromiso.monto_completo : detalleCompromiso.cuota_reducida;
       case 1:
+        //pagado antes del segundo vto
         return cuota_completa ? detalleCompromiso.monto_completo_2venc : detalleCompromiso.cuota_reducida_2venc;
       case 2:
+        //pagado despues del segundo vto
         return cuota_completa ? detalleCompromiso.monto_completo_3venc : detalleCompromiso.cuota_reducida_3venc;
       default:
         return 0;
@@ -389,7 +383,7 @@ function InformarPago() {
                                   <Td textAlign="center">{cuota.nro_cuota}</Td>
                                   <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuotaCompleta ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) )}</Td>
                                   <Td textAlign="center">
-                                  {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (mostrarMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) }
+                                  {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (calcularMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) }
                                     </Td>
                                   <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                   <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>

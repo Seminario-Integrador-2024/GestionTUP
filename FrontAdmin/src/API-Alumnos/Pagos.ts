@@ -62,11 +62,12 @@ export const FetchGetCuotas = async (dni: number | undefined ) => {
 };
 
 
-export const FetchResumenPagos = async () => {
+export const FetchResumenPagos = async (dni: number | undefined ) => {
   try {
       const token = Cookies.get('tokennn');
-      const dni = Cookies.get('dni');
-      
+      if (!dni) {
+        dni = parseInt(Cookies.get('dni') || '', 10);
+    }
       const response = await fetch(`http://localhost:8000/api/pagos/alumno/resumen_pagos/${dni}`, {
           method: 'GET',
           headers: {
