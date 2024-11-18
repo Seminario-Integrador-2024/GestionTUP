@@ -15,10 +15,13 @@ import {
     Skeleton,
     TableContainer,
     Icon,
-    Button
+    Button,
+    Alert,
+    AlertIcon
 } from '@chakra-ui/react';
 import { DownloadIcon, ViewIcon } from '@chakra-ui/icons';
 import { FetchCompromisos, FetchUltimoCompromiso, FirmarCompromiso } from "../../API-Alumnos/Compromiso";
+import { FetchGetCuotas } from "../../API-Alumnos/Pagos";
 import {useEffect, useState} from 'react';
 import {formatoFechaISOaDDMMAAAA} from "../../utils/general";
 import { useToast } from "../Toast/useToast";
@@ -28,6 +31,7 @@ export default function CompromisoDePago() {
 
 const [compromisos, setCompromisos] = useState([]);
 const [ultimoCompromiso, setUltimoCompromiso] = useState(false);
+const [adeuda, setAdeuda] = useState(false);
 const [ultimo, setUltimo] = useState<any>([]);
 const [refresh, setRefresh] = useState(false);
 const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -53,7 +57,8 @@ const handleViewPdf = async (url: string) => {
 useEffect(() => {
     const fetchCompromisos = async () => {
         try{
-        const data = await FetchCompromisos();
+        const dni = Number(Cookies.get('dni'));
+        const data = await FetchCompromisos(dni);
         setCompromisos(data.results);
         console.log(data);
         } catch (error) {
@@ -71,6 +76,19 @@ useEffect(() => {
         }
     }
     fetchUltimoCompromiso();
+
+    const fetchAdeuda = async () => {
+        try {
+            const dni = Number(Cookies.get('dni'));
+            const data = await FetchGetCuotas(dni);
+            if (data.length > 0) {
+                setAdeuda(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    fetchAdeuda();
 
 }, [refresh]);
 
@@ -107,10 +125,18 @@ const handleFirmar = async () => {
 return (
 
 <Flex justifyContent={"center"} alignItems={"center"} direction={"column"}>
-                {ultimoCompromiso && <Flex justifyContent={"center"} alignItems={"center"} direction={"column"} bg={"#DEF9C4"} p={5} borderRadius={5} mb={4} mt={4}>
-                <Text color="#387F39" fontWeight="bold" fontSize="sm">
-                        El compromiso de pago del periodo actual ya se encuentra firmado ({formatoFechaISOaDDMMAAAA(ultimo.fecha_firmado)}).
-                </Text>
+                {ultimoCompromiso && <Flex  alignItems={"center"} w={'100%'} direction={"column"} mb={4} mt={4}>
+                <Alert status='success'>
+                    <AlertIcon />
+                    El compromiso de pago del periodo actual ya se encuentra firmado ({formatoFechaISOaDDMMAAAA(ultimo.fecha_firmado)}).
+                </Alert>
+                </Flex>
+                }
+                {!ultimoCompromiso && adeuda && <Flex  alignItems={"center"} w={'100%'} direction={"column"} mb={4} mt={4}>
+                <Alert status='error'>
+                    <AlertIcon />
+                    Aun adeuda cuotas. No puede firmar el compromiso de pago.
+                </Alert>
                 </Flex>
                 }
             <Flex direction={"column"}>
@@ -130,7 +156,7 @@ return (
 
             
             <Flex justifyContent={"flex-end"}  mt={4} mb={4} flex={1} width={"100%"}>
-                <Button colorScheme="teal" isDisabled={ultimoCompromiso} onClick={() => handleFirmar()}>Firmar</Button>
+                <Button colorScheme="teal" isDisabled={ultimoCompromiso || adeuda} onClick={() => handleFirmar()}>Firmar</Button>
             </Flex>
             </Flex>
 
