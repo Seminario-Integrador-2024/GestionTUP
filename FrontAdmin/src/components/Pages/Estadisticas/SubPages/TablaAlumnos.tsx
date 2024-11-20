@@ -92,6 +92,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
 
   return (
     <Box p={5}>
+      
       <Input
         placeholder="Buscar por Nombre, Legajo, DNI, Situación o Año de Ingreso"
         value={searchTerm}
