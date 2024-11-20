@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import CustomSelect from './Seleccion';
 import { FetchMaterias } from '../../../../API/Materias';
+import { FetchAlumnosMaterias } from '../../../../API/Materias' // Asumo que tienes esta función en tu API
 
 type Cuatrimestre = 'primer-cuatrimestre' | 'segundo-cuatrimestre';
 
@@ -30,6 +31,7 @@ interface Materia {
 const ListadoMaterias: React.FC = () => {
   const [cuatrimestre, setCuatrimestre] = useState<Cuatrimestre | ''>(''); // Estado para el cuatrimestre
   const [materias, setMaterias] = useState<Materia[]>([]); // Estado para las materias
+  const [alumnos, setAlumnos] = useState([]); // Estado para los alumnos
   const navigate = useNavigate();
 
   // Maneja el cambio de selección del cuatrimestre
@@ -49,6 +51,18 @@ const ListadoMaterias: React.FC = () => {
         return false;
       })
     : [];
+
+  // Maneja el clic sobre una materia para obtener los alumnos
+  const handleMateriaClick = async (codigoMateria: number) => {
+    try {
+      const alumnosData = await FetchAlumnosMaterias(codigoMateria); // Asumiendo que tienes una API para obtener los alumnos
+      setAlumnos(alumnosData); // Guarda los datos de los alumnos
+      navigate(`${codigoMateria}/alumnos`); // Navega a la ruta correspondiente
+    } catch (error) {
+      console.error('Error al obtener los alumnos:', error);
+      setAlumnos([]); // Respaldo a un array vacío en caso de error
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,7 +106,7 @@ const ListadoMaterias: React.FC = () => {
                   p={2}
                   borderRadius="md"
                   _hover={{ bg: 'gray.100', cursor: 'pointer' }}
-                  onClick={() => navigate(`${materia.codigo_materia}`)}
+                  onClick={() => handleMateriaClick(materia.codigo_materia)} // Llama a la función cuando se haga clic
                 >
                   <Text fontSize="md" color="gray.700">
                     {materia.nombre}
