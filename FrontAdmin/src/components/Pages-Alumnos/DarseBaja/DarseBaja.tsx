@@ -4,7 +4,6 @@ import { FetchCompromisos } from '../../../API-Alumnos/Compromiso';
 import { FetchDetalleAlumno } from '../../../API/DetalleAlumno';
 import Cookies from 'js-cookie';
 import ModalConfirmar from './ModalConfir';
-import { solicitarBajaAlumno } from '../../../API-Alumnos/DarseBaja'; 
 
 interface Alumno {
   full_name: string;
@@ -41,6 +40,7 @@ const DarseBaja = () => {
   });
   const [alumno, setAlumno] = useState<Alumno | null>(null);
   const [compromisoFirmado, setCompromiso] = useState<CompromisoResponse | null>(null);
+  const [motivoBaja, setMotivoBaja] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDarseBaja = () => {
@@ -60,8 +60,22 @@ const DarseBaja = () => {
   const fetchDetalleAlumno = async (dni: any) => {
     try {
       const data = await FetchDetalleAlumno(dni);
-      console.log('alumno:', data);
-      setAlumno(data);
+      const bajaInfo = localStorage.getItem('bajaAlumnos');
+      if (bajaInfo) {
+        const parsedBajaInfo = JSON.parse(bajaInfo);
+        const alumnoBaja = parsedBajaInfo.find((baja: any) => baja.dni === parseInt(dni));
+        if (alumnoBaja) {
+          setAlumno({
+            ...data,
+            estado_academico: alumnoBaja.solicitud === 'solicitado' ? 'Baja solicitada' : alumnoBaja.solicitud === 'aceptado' ? 'Baja aceptada' : alumnoBaja.solicitud === 'rechazado' ? 'Baja rechazada' : data.estado_academico,
+          });
+          setMotivoBaja(alumnoBaja.motivo);
+        } else {
+          setAlumno(data);
+        }
+      } else {
+        setAlumno(data);
+      }
     } catch (error) {
       console.error('Error al obtener los datos del alumno', error);
     }
@@ -69,23 +83,49 @@ const DarseBaja = () => {
 
   const handleConfirmarBaja = async (motivo: string) => {
     if (alumno?.dni) {
-      const success = await solicitarBajaAlumno(alumno.dni, motivo);
-      if (success) {
-        setAlumno((prev) => prev ? { ...prev, estado_academico: 'Dado de Baja' } : null);
-      }
+        // Crear un objeto con la información del alumno y el motivo de la baja
+        const bajaInfo = {
+            dni: alumno.dni,
+            nombre: alumno.full_name,
+            motivo: motivo,
+            solicitud: "solicitado",
+        };
+
+        // Obtener el arreglo de solicitudes de baja del local storage
+        const bajaAlumnos = localStorage.getItem('bajaAlumnos');
+        const parsedBajaAlumnos = bajaAlumnos ? JSON.parse(bajaAlumnos) : [];
+
+        // Agregar la nueva solicitud de baja al arreglo
+        parsedBajaAlumnos.push(bajaInfo);
+
+        // Guardar el arreglo actualizado en el local storage
+        localStorage.setItem('bajaAlumnos', JSON.stringify(parsedBajaAlumnos));
+
+        console.log('Información de baja guardada en el local storage:', bajaInfo);
+
+        // Recargar los datos del alumno y los compromisos
+        const dni = Cookies.get('dni');
+        if (dni) {
+          await fetchDetalleAlumno(dni);
+          await fetchCompromiso();
+        }
     }
   };
 
   useEffect(() => {
     const dni = Cookies.get('dni');
-    fetchDetalleAlumno(dni);
-    fetchCompromiso();
+    if (dni) {
+      fetchDetalleAlumno(dni);
+      fetchCompromiso();
+    } else {
+      console.error('DNI no encontrado en las cookies');
+    }
   }, []);
 
   return (
     <Flex mt="20px" flexDirection={"column"} justifyContent={"center"} gap={5}>
       
-      {(compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso && alumno?.estado_academico !== 'Dado de Baja') &&
+      {(compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso && alumno?.estado_academico !== 'Baja solicitada') &&
       <Alert status='warning'>
       <AlertIcon />
       Si se da de baja, aún deberá abonar la cuota del mes en curso.
@@ -97,18 +137,17 @@ const DarseBaja = () => {
           Compromiso de pago no firmado
       </Alert>} 
 
-
-
-      {alumno?.estado_academico !== 'Dado de Baja' && <Box w={"100%"} >
+      {alumno?.estado_academico === 'Activo' && <Box w={"100%"} >
         <Tag p="10px" w={"100%"} fontSize={18} fontWeight={"semibold"} textAlign={"center"} justifyContent={"center"}>
           Solicitud de Baja al {fechaDeHoy}
         </Tag>
       </Box>}
 
-      {alumno?.estado_academico === 'Dado de Baja' && <Box w={"100%"} >
+      {alumno?.estado_academico === 'Baja solicitada' && <Box w={"100%"} >
         <Tag p="10px" w={"100%"} fontSize={18} fontWeight={"semibold"} textAlign={"center"} justifyContent={"center"}>
           Baja solicitada el {fechaDeHoy}
         </Tag>
+        
       </Box>}
 
       <Box w="100%" mb={7} display={"flex"} gap={4} flexDirection={"row"} alignItems={"center"} justifyContent={"center"}>
@@ -129,12 +168,18 @@ const DarseBaja = () => {
           </Text>
         </Tag>
       </Box>
+      {motivoBaja && (
+          <Tag w={"100%"} p="10px" fontSize={16} mt="-25px">
+            <Text  fontWeight={"semibold"}>Motivo de la baja: </Text>
+            <Text  pl="8px">{motivoBaja}</Text>
+          </Tag>
+        )}
 
       <Box w={"100%"} display={"flex"} justifyContent={"center"}>
         <Button
           colorScheme="red"
           onClick={handleDarseBaja}
-          isDisabled={!compromisoFirmado || !compromisoFirmado.results[0]?.firmo_ultimo_compromiso || alumno?.estado_academico === 'Dado de Baja'}
+          isDisabled={!compromisoFirmado || !compromisoFirmado.results[0]?.firmo_ultimo_compromiso || alumno?.estado_academico === 'Baja solicitada' || alumno?.estado_academico === 'Baja aceptada' || alumno?.estado_academico === 'Baja rechazada' || alumno?.estado_academico === 'Inactivo'}
         >
           Solicitar Baja
         </Button>
