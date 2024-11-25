@@ -105,6 +105,8 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
             {['APELLIDO Y NOMBRE', 'LEGAJO', 'DNI', 'ESTADO FINANCIERO', 'AÑO INGRESO'].map((field) => (
               <Th key={field} fontFamily="Helvetica" fontWeight="900">
                 {field.toUpperCase()}
+                {/* 
+                quite xq no andaba
                 <IconButton
                   icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
                   size="xs"
@@ -117,7 +119,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
                   bg="transparent"
                   _hover={{ bg: 'gray.200' }}
                   _active={{ bg: 'gray.300' }}
-                />
+                /> */}
               </Th>
             ))}
           </Tr>
