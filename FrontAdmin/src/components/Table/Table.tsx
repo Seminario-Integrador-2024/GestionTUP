@@ -67,7 +67,7 @@ function Table({ boolEnableRowSelection }: PropsTable) {
       try {
         setLoading(true); // Iniciar carga
         const data = await FetchAlumnos();
-        console.log(data)
+   
         setAlumnos(data.results);
         setLoading(false); // Iniciar carga
       } catch (error) {
