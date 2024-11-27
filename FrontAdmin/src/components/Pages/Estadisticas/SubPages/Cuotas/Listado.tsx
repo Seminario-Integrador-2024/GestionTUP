@@ -4,7 +4,7 @@ import { AbonaronCuota, NoAbonaronCuota } from "../../../../../API/AbonaronCuota
 import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag, Spinner, Input } from "@chakra-ui/react";
 import Tabla from "./Tabla";
 import {ArrowRightIcon, ArrowLeftIcon} from '@chakra-ui/icons';
-import { isLastDayOfMonth } from "date-fns";
+import { isLastDayOfMonth, set } from "date-fns";
 
 export default function Listado() {
     type Alumno = {
@@ -19,12 +19,14 @@ export default function Listado() {
     const [loading, setLoading] = useState<boolean>(true);
     const [loading2, setLoading2] = useState<boolean>(true);
     const [totalNoAbonaron, setTotalNoAbonaron] = useState<number>(0);
-    const headers = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Estado financiero'];
+    const headers = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Estado financiero', 'Monto'];
     const [limit1] = useState(10);
     const [offset1, setOffset1] = useState(0);
     const [limit2] = useState(10);
     const [offset2, setOffset2] = useState(0);
     const [filter, setFilter] = useState<string>('');
+    const [ MtotalNoAbonaron, setMTotalNoAbonaron] = useState<number>(0);
+    const [ MtotalAbonaron, setMTotalAbonaron] = useState<number>(0);
 
     const handleNextPage = () => {
         if (offset1 + limit1 < totalNoAbonaron) {
@@ -56,9 +58,10 @@ export default function Listado() {
         const fetchNoAbonaron = async (fecha: string) => {
             const data = await NoAbonaronCuota(fecha, limit1, offset1, filter);
            
-            if (data.results.results.length > 0) {
+            if (data.results?.results?.length > 0) {
           
             setNoAbonaron(data.results.results);
+            setMTotalNoAbonaron(data.monto_total);
             setTotalNoAbonaron(data.results.count);
            
             }
@@ -75,10 +78,11 @@ export default function Listado() {
         const fetchAbonaron = async (fecha: string) => {
             const data = await AbonaronCuota(fecha, limit2, offset2, filter);
          
-            if (data.results?.length > 0) {
+            if (data.results?.results?.length > 0) {
             
-            setAbonaron(data.results);
-            setTotalAbonaron(data.count);
+            setAbonaron(data.results.results);
+            setMTotalAbonaron(data.monto_total);
+            setTotalAbonaron(data.results.count);
             }
             setLoading2(false);
         }
@@ -136,6 +140,7 @@ export default function Listado() {
                                  <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
                                     <Tag bg="secundaryBg" w={"100%"} size="lg" p={"10px"} fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
                                     <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalabonaron}</Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Monto Total: {MtotalAbonaron}$</Tag>
                                  </Flex>
                                  <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
                                     <Tabla headers={headers} data={abonaron} /> 
@@ -160,7 +165,8 @@ export default function Listado() {
                             noAbonaron.length > 0 ? <Flex direction={"column"} w={"100%"} alignItems={"center"}>
                                 <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
                                     <Tag bg="secundaryBg" w={"100%"} p={"10px"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
-                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalNoAbonaron}</Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total Alumnos: {totalNoAbonaron}</Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Monto Total: {MtotalNoAbonaron}$</Tag>
                                 </Flex>
                                 <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
                                     <Tabla headers={headers} data={noAbonaron} /> 

@@ -24,7 +24,7 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
     'DNI': 'user',
     'Estado financiero': 'estado_financiero',
     'Legajo': 'legajo',
-    'Desde': 'fecha_inhabilitacion'
+    'Monto': 'cuota_monto'
   };
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
                   {typeof row[keyMap[header]] === 'string' ? (
                   row[keyMap[header]]
                   ) : typeof row[keyMap[header]] === 'number' ? (
-                  new Intl.NumberFormat('es-ES').format(row[keyMap[header]])
+                  new Intl.NumberFormat('es-ES').format(row[keyMap[header]]) 
                   ) : 'N/A'}
                 </Td>
                 ))}
