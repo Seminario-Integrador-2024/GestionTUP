@@ -16,33 +16,37 @@ const ListadoAlumnosQueCursanMateria = () => {
     celular: string;
     gender: string;
   };
+
   const headers = ['Nombre', 'Legajo', 'DNI', 'Situación', 'Año Ingreso'];
   const [alumnos, setAlumnos] = useState<Alumno[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<unknown>(null);
+  const [error, setError] = useState<string | null>(null);
   const { codigo_materia } = useParams<{ codigo_materia: string }>();
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
         if (codigo_materia) {
-          const codigo_materiaNumber = parseInt(codigo_materia); // Convierte a número
+          const codigo_materiaNumber = parseInt(codigo_materia);
           const data = await FetchAlumnosMaterias(codigo_materiaNumber);
-          setAlumnos(data);
-          console.log(codigo_materia)
-          console.log(data)
+          setAlumnos(data.results);
         }
-      } catch (error) {
-        setError(error);
-        console.error('Error al obtener los datos', error);
+      } catch (error: any) {
+        setError(error.message || 'Error al obtener los datos');
       } finally {
         setLoading(false);
       }
     };
 
-    if (codigo_materia) {
-      fetchData();
-    }
-  }, [codigo_materia]); // Incluye `dni` como dependencia
+    fetchData();
+  }, [codigo_materia]);
+
+  if (loading) return <p>Cargando datos...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (alumnos.length === 0) return <p>No hay alumnos inscritos en esta materia.</p>;
 
   return <Tabla headers={headers} data={alumnos} />;
 };
