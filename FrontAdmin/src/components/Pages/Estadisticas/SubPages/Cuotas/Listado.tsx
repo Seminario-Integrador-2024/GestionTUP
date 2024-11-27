@@ -52,11 +52,15 @@ export default function Listado() {
     
 
     useEffect(() => {
+    
         const fetchNoAbonaron = async (fecha: string) => {
             const data = await NoAbonaronCuota(fecha, limit1, offset1, filter);
-            if (data.results?.length > 0) {
-            setNoAbonaron(data.results);
-            setTotalNoAbonaron(data.count);
+           
+            if (data.results.results.length > 0) {
+          
+            setNoAbonaron(data.results.results);
+            setTotalNoAbonaron(data.results.count);
+           
             }
             setLoading(false);
         }
