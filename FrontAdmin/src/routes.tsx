@@ -80,7 +80,7 @@ const routes = [
         rol: 'admin,'
       },
       {
-        path: 'alumnos-que-cursan-materia/:codigo_materia',
+        path: 'alumnos-que-cursan-materia/:codigo_materia/alumnos',
         element: <ListadoAlumnosQueCursanMateria />,
         rol: 'admin',
       },
