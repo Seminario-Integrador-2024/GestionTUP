@@ -19,8 +19,8 @@ import { useToast } from '../../Toast/useToast';
 
 
 function LoginPage() {
-  const [account, setUseraccount] = useState('');
-  const [password, setPassword] = useState('');
+  const [legajo, setUserlegajo] = useState('');
+  const [contrasenia, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { onLogin } = useAuth();
@@ -34,7 +34,7 @@ function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await onLogin(password, account); 
+      await onLogin(legajo, contrasenia); 
       showToast('Bienvenido', 'Inicio de sesión exitoso', 'success');
     } catch (error) {
       console.error('Network error', error);
@@ -102,8 +102,8 @@ function LoginPage() {
                     boxShadow: 'none',
                   }}
                   _hover={{ borderColor: '0f183f' }}
-                  value={account}
-                  onChange={(e) => setUseraccount(e.target.value)}
+                  value={legajo}
+                  onChange={(e) => setUserlegajo(e.target.value)}
                 />
                 <Input
                   borderRadius="0"
@@ -125,7 +125,7 @@ function LoginPage() {
                     boxShadow: 'none',
                   }}
                   _hover={{ borderColor: '0f183f' }}
-                  value={password}
+                  value={contrasenia}
                   onChange={(e) => setPassword(e.target.value)}
                 />
 
