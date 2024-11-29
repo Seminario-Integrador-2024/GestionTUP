@@ -1,8 +1,8 @@
 import React from "react";
-import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td } from "@chakra-ui/react";
+import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td, Tooltip } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
-import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon} from '@chakra-ui/icons';
+import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon, QuestionOutlineIcon} from '@chakra-ui/icons';
 import { IoEyeOutline } from "react-icons/io5";
 import {obtenerFechaDeHoy, formatoFechaISOaDDMMAAAA} from '../../../utils/general';
 import {FetchDetalleAlumno} from '../../../API/DetalleAlumno'
@@ -92,7 +92,7 @@ function InformarPago() {
   const [detail, showDetail] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
-  const [limit] = useState(5);
+  const [limit] = useState(6);
   const [offset, setOffset1] = useState(0);
 
   const [cuotaCompleta, setCuotaCompleta] = useState()
@@ -308,9 +308,21 @@ function InformarPago() {
                             Numero
                           </Th>
                           <Th textAlign="center">Fecha Proximo Vto.</Th>
-                          <Th textAlign="center">Valor Actual</Th>
-                          <Th textAlign="center">Valor Pagado</Th>
-                          <Th textAlign="center">Valor Informado</Th>
+                          <Th textAlign="center">  Valor Actual     
+                            <Tooltip ml={'2px'} label="Valor dependiente del vecimiento en que se encuentra" aria-label="A tooltip">
+                              <QuestionOutlineIcon boxSize={4} />
+                            </Tooltip>
+                          </Th>
+                          <Th textAlign="center">Valor Pagado
+                            <Tooltip label="Valor correspondiente a pagos confirmados por tesoreria" aria-label="A tooltip">
+                              <QuestionOutlineIcon boxSize={4} />
+                            </Tooltip>
+                          </Th>
+                          <Th textAlign="center">Valor Informado
+                            <Tooltip label="Valor correspondiente a pagos sin confirmar por tesoreria" aria-label="A tooltip">
+                              <QuestionOutlineIcon boxSize={4} />
+                            </Tooltip>
+                          </Th>
                           <Th textAlign="center">Valor Adeudado</Th>
                           <Th textAlign="center">Detalle</Th>
                         </Tr>
