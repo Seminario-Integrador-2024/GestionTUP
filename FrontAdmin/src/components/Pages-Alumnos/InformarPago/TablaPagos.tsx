@@ -7,13 +7,13 @@ import { motion } from 'framer-motion';
 interface Cuota {
   id_cuota: number;
   numero: string;
-  monto1erVencimiento: number;
-  monto2doVencimiento: number;
-  monto3erVencimiento: number;
-  valortotal: number;
+  montoActual: number;
+  fechaVencimiento: string;
   valorpagado: number;
-  valoradeudado: number;
   estado: string;
+  tipocuota: string;
+  valorinformado: number;
+  cuota_completa: boolean;
 }
 
 interface TablaCuotasProps {

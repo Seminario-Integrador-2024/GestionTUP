@@ -6,8 +6,8 @@ export const ITEMS_SUBMENU = [
   { url: 'cuotas', title: 'Cuotas' , tooltip: 'Alumnos que abonaron/no abonaron una respectiva cuota' },
   { url: 'matricula', title: 'Matricula', tooltip: 'Alumnos que abonaron la matricula' },
   { url: 'alumnos-que-firmaron-compromiso-de-pago', title: 'Compromiso de Pago', tooltip: 'Alumnos que firmaron el compromiso de pago' },
-  { url: 'pagos', title: 'Pagos', tooltip: 'Alumnos que abonaron/no abonaron una respectiva cuota' },
-  { url: 'deudas', title: 'Deudas', tooltipo: 'Alumnos que adeudan una cuota' },
+  { url: 'pagos', title: 'Pagos', tooltip: 'Pagos confirmados en un periodo de tiempo' },
+  { url: 'deudas', title: 'Deudas', tooltip: 'Alumnos que adeudan una o mas cuotas' },
   {url: 'alumnos-que-cursan-materia',title: 'Alumnos que cursan una materia', tooltip: 'Alumnos que cursan una materia'},
   { url: 'pendientes-firma-compromiso', title: 'Alumnos pendiente de firma', tooltip: 'Alumnos que cursan una materia y no firmaron el último compromiso de pago' },
 ];

@@ -160,6 +160,7 @@ return (
             </Flex>
             </Flex>
 
+            {compromisos.length > 0 ? (
             <Flex mb={5} justifyContent={"center"} alignItems={"center"} w={"85%"} direction={"column"}>
                 <Flex justifyContent={"flex-start"} w={"100%"}>
                     <Text fontWeight="bold" fontSize="xl" mb={2}>Historial compromisos de pago Firmados</Text>
@@ -191,6 +192,7 @@ return (
                     </TableContainer>
                 </Box>
             </Flex>
+            ): <></>}
         </Flex>
     );
 }

@@ -128,7 +128,7 @@ export default function Listado() {
                         }}
                         _focus={{ boxShadow: "none" }}
                     >
-                        No abonaron
+                        Adeudan
                     </Tab>
                     </TabList>
 

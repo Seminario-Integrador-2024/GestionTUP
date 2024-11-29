@@ -18,7 +18,6 @@ import { FiMenu } from 'react-icons/fi';
 import { useAuth } from '../../Context';
 import Cookies from 'js-cookie';
 import Perfil from '../Modal/Perfil';
-import Contraseña from '../Modal/Contraseña';
 
 export function HeaderContent({ onOpen }: { onOpen: any }) {
   const { onLogout } = useAuth();
@@ -28,13 +27,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
     isOpen: isOpen1,
     onOpen: onOpen1,
     onClose: onClose1,
-  } = useDisclosure();
-
-  // Contraseña
-  const {
-    isOpen: isOpen2,
-    onOpen: onOpen2,
-    onClose: onClose2,
   } = useDisclosure();
 
   const handleConfirmar = () => {
@@ -84,7 +76,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
             onClick={onOpen1}>
             Ver Perfil
           </MenuItem>
-          <MenuItem onClick={onOpen2}>Cambiar Contraseña</MenuItem>
           <MenuItem onClick={() => onLogout()}>Cerrar sesión</MenuItem>
         </MenuList>
         </Flex>
@@ -93,10 +84,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
       isOpen={isOpen1}
       onClose={onClose1}
       confirmar={handleConfirmar}
-      />
-      <Contraseña
-      isOpen={isOpen2}
-      onClose={onClose2}
       />
     </Flex>
   );
