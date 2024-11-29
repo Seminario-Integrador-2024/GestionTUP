@@ -7,7 +7,7 @@ import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 interface Cuota {
   id_cuota: number;
-  numero: string;
+  numero: number;
   montoActual: number;
   fechaVencimiento: string;
   valorpagado: number;
@@ -41,7 +41,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
           setLoading(true);
           try {
               const cuotas = await FetchGetCuotas(undefined);
-              const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => parseInt(a.numero) - parseInt(b.numero));      // Si cambia el numero de cuota no olvidar cambiar aca
+              const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
               setCuotas(sortedCuotas);
           } catch (error) {
               console.error('Error:', error);
