@@ -21,7 +21,18 @@ import Perfil from '../Modal/Perfil';
 
 export function HeaderContent({ onOpen }: { onOpen: any }) {
   const { onLogout } = useAuth();
-  const user = Cookies.get('full_name');
+  const user = Cookies.get('full_name') || '';
+
+  function formatUserName(fullName: string): string {
+    const parts = fullName.trim().split(',');
+    if (parts.length === 2) {
+      const lastName = parts[0].trim();
+      const firstName = parts[1].trim();
+      return `${firstName}, ${lastName}`;
+    }
+    return fullName.trim();
+  }
+
   // Perfil  
   const {
     isOpen: isOpen1,
@@ -33,7 +44,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
 
     // TODO: Implementar la lógica de confirmar
   }
-
 
   return (
     <Flex
@@ -67,7 +77,7 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
         <Text fontFamily={"'Roboto',sans-serif"} fontWeight="600">{user}</Text>
         <MenuButton borderRadius={'full'}>
           <Avatar
-            name={Cookies.get("full_name")}
+            name={formatUserName(user || '')}
             borderRadius="full"
           />
         </MenuButton>
