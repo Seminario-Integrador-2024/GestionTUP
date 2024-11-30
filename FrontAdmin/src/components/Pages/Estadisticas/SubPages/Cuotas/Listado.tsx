@@ -11,7 +11,13 @@ export default function Listado() {
         user: number;
         full_name: string;
         estado_financiero: string;
+        legajo: number;
+        cuota_monto: number;
+        pago_parcial: boolean;
+        monto_restante: number;
+        monto_pagado: number;
       };
+
     const {fecha} = useParams<{ fecha: string }>();
     const [abonaron, setAbonaron] = useState<Alumno[]>([]);
     const [totalabonaron, setTotalAbonaron] = useState<number>(0);
@@ -19,7 +25,8 @@ export default function Listado() {
     const [loading, setLoading] = useState<boolean>(true);
     const [loading2, setLoading2] = useState<boolean>(true);
     const [totalNoAbonaron, setTotalNoAbonaron] = useState<number>(0);
-    const headers = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Estado financiero', 'Monto'];
+    const headersAdeudan = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Monto Cuota', 'Monto Adeudado'];
+    const headersAbonaron = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Monto Cuota', 'Monto Abonado'];
     const [limit1] = useState(10);
     const [offset1, setOffset1] = useState(0);
     const [limit2] = useState(10);
@@ -61,7 +68,7 @@ export default function Listado() {
             if (data.results?.results?.length > 0) {
           
             setNoAbonaron(data.results.results);
-            setMTotalNoAbonaron(data.monto_total);
+            setMTotalNoAbonaron(data.monto_total_a_cobrar);
             setTotalNoAbonaron(data.results.count);
            
             }
@@ -77,14 +84,16 @@ export default function Listado() {
     useEffect(() => {
         const fetchAbonaron = async (fecha: string) => {
             const data = await AbonaronCuota(fecha, limit2, offset2, filter);
-            console.log(data.alumnos.results)
+            console.log(data)
+
             if (data.alumnos?.results?.length > 0) {
-            
-            setAbonaron(data.alumnos.results);
-            setMTotalAbonaron(data.monto_total);
-            setTotalAbonaron(data.results.count);
+                setAbonaron(data.alumnos.results);
+                console.log(abonaron)
+                setMTotalAbonaron(data.recaudado_por_el_mes);
+                setTotalAbonaron(data.alumnos.count);
+                setLoading2(false);
             }
-            setLoading2(false);
+           
         }
         if (fecha === undefined) {
             return;
@@ -140,10 +149,10 @@ export default function Listado() {
                                  <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
                                     <Tag bg="secundaryBg" w={"100%"} size="lg" p={"10px"} fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
                                     <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalabonaron}</Tag>
-                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Monto Total: {MtotalAbonaron}$</Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Monto Total: { "$ " + new Intl.NumberFormat('es-ES', { notation: "compact", compactDisplay: "short" }).format(MtotalAbonaron)}</Tag>
                                  </Flex>
                                  <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
-                                    <Tabla headers={headers} data={abonaron} /> 
+                                    <Tabla headers={headersAbonaron} data={abonaron} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={4} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
                                             <Button onClick={handlePreviousPage2} isDisabled={offset2 === 0} color="white" leftIcon={<ArrowLeftIcon/>}>
@@ -166,10 +175,10 @@ export default function Listado() {
                                 <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={4} mb={3} >
                                     <Tag bg="secundaryBg" w={"100%"} p={"10px"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
                                     <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total Alumnos: {totalNoAbonaron}</Tag>
-                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Monto Total: {MtotalNoAbonaron}$</Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Monto Total: { "$ " + new Intl.NumberFormat('es-ES', { notation: "compact", compactDisplay: "short" }).format(MtotalNoAbonaron)}</Tag>
                                 </Flex>
                                 <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={4} />
-                                    <Tabla headers={headers} data={noAbonaron} /> 
+                                    <Tabla headers={headersAdeudan} data={noAbonaron} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
                                             <Button onClick={handlePreviousPage} isDisabled={offset1 === 0} color="white" leftIcon={<ArrowLeftIcon/>}>
