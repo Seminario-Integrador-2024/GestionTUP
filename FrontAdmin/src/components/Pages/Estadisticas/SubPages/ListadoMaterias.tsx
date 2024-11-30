@@ -85,8 +85,8 @@ const ListadoMaterias: React.FC = () => {
 
   return (
     <Container maxW="container.md" p={4}>
-      <VStack spacing={6} align="start">
-        <Heading as="h1" size="lg">
+      <VStack spacing={6} align="start" display="flex" flexDirection="column" justifyContent="flex-start" alignItems="center" height="100vh" p={4} py={12}>
+        <Heading as="h1" size="lg" fontSize="3xl" fontWeight="bold" mb={3}>
           Listado de Materias
         </Heading>
         <Box w="full">

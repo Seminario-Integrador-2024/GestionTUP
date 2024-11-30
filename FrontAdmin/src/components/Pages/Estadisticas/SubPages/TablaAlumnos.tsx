@@ -9,11 +9,11 @@ import {
   Td,
   Spinner,
   Alert,
-  IconButton,
+  Button,
   HStack,
   Input,
+  Text,
 } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon, ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 
 interface Alumnos {
   full_name: string;
@@ -84,11 +84,13 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
     alumno.anio_ingreso.toString().includes(searchTerm)
   );
 
+  // Si no hay alumnos, no mostrar paginación
+  const totalPages = filteredAlumnos.length > 0 ? Math.ceil(filteredAlumnos.length / alumnosPerPage) : 0;
+
   // Paginación
   const indexOfLastAlumno = currentPage * alumnosPerPage;
   const indexOfFirstAlumno = indexOfLastAlumno - alumnosPerPage;
   const currentAlumnos = filteredAlumnos.slice(indexOfFirstAlumno, indexOfLastAlumno);
-  const totalPages = Math.ceil(filteredAlumnos.length / alumnosPerPage);
 
   return (
     <Box p={5}>
@@ -105,30 +107,15 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
             {['APELLIDO Y NOMBRE', 'LEGAJO', 'DNI', 'ESTADO FINANCIERO', 'AÑO INGRESO'].map((field) => (
               <Th key={field} fontFamily="Helvetica" fontWeight="900">
                 {field.toUpperCase()}
-                {/* 
-                quite xq no andaba
-                <IconButton
-                  icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                  size="xs"
-                  onClick={() => {
-                    setSortField(field as keyof Alumnos);
-                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                  }}
-                  aria-label={`Ordenar por ${field}`}
-                  variant="link"
-                  bg="transparent"
-                  _hover={{ bg: 'gray.200' }}
-                  _active={{ bg: 'gray.300' }}
-                /> */}
               </Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
           {currentAlumnos.length === 0 ? (
-             <Tr>
-             <Td colSpan={5} textAlign="center">No se encontraron alumnos</Td>
-           </Tr>
+            <Tr>
+              <Td colSpan={5} textAlign="center">No se encontraron alumnos</Td>
+            </Tr>
           ) : (
             currentAlumnos.map(alumno => (
               <Tr key={alumno.legajo}>
@@ -139,30 +126,33 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
                 <Td>{alumno.anio_ingreso}</Td>
               </Tr>
             ))
-          ) } 
+          )}
         </Tbody>
       </Table>
 
-      <HStack spacing={4} mt={4} justifyContent="flex-end">
-        <IconButton
-          icon={<ArrowBackIcon />}
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          isDisabled={currentPage === 1}
-          bg="transparent"
-          _hover={{ bg: 'gray.200' }}
-          _active={{ bg: 'gray.300' }}
-          aria-label="Página anterior"
-        />
-        <IconButton
-          icon={<ArrowForwardIcon />}
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-          isDisabled={currentPage === totalPages}
-          bg="transparent"
-          _hover={{ bg: 'gray.200' }}
-          _active={{ bg: 'gray.300' }}
-          aria-label="Siguiente página"
-        />
-      </HStack>
+      {filteredAlumnos.length > 0 && (
+        <HStack spacing={4} mt={4} justifyContent="space-between">
+          <Button
+            colorScheme="blue"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            isDisabled={currentPage === 1}
+          >
+            {'<<'} Anterior
+          </Button>
+
+          <Text>
+            Página {currentPage} de {totalPages}
+          </Text>
+
+          <Button
+            colorScheme="blue"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            isDisabled={currentPage === totalPages}
+          >
+            Siguiente {'>>'}
+          </Button>
+        </HStack>
+      )}
     </Box>
   );
 };

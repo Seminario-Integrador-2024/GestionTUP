@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FetchAlumnosMaterias } from '../../../../../API/Materias';
 import { Input, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'; // Importamos los íconos
 
 const ListadoAlumnosQueCursanMateria = () => {
   type Alumno = {
@@ -87,7 +86,7 @@ const ListadoAlumnosQueCursanMateria = () => {
   if (filteredAlumnos.length === 0) return <Text>No hay alumnos inscritos en esta materia.</Text>;
 
   // Número total de páginas basado en los resultados filtrados
-  const totalPages = Math.ceil(filteredAlumnos.length / alumnosPerPage);
+  const totalPages = filteredAlumnos.length > 0 ? Math.ceil(filteredAlumnos.length / alumnosPerPage) : 0;
 
   return (
     <Box p={5}>
@@ -122,29 +121,31 @@ const ListadoAlumnosQueCursanMateria = () => {
       </Table>
 
       {/* Paginación */}
-      <Flex justify="flex-end" align="center" gap={4}>
-        <Button 
-          onClick={() => paginate(currentPage - 1)} 
-          isDisabled={currentPage === 1} 
-          bg="transparent"
-          _hover={{ bg: 'gray.200' }}
-          _active={{ bg: 'gray.300' }}
-          aria-label="Anterior"
-        >
-          <ArrowBackIcon />
-        </Button>
+      {totalPages > 0 && (
+        <Flex justify="space-between" align="center" gap={4}>
+          <Button 
+            onClick={() => paginate(currentPage - 1)} 
+            isDisabled={currentPage === 1} 
+            colorScheme="blue"
+            aria-label="Anterior"
+          >
+            {'<<'} Anterior
+          </Button>
 
-        <Button 
-          onClick={() => paginate(currentPage + 1)} 
-          isDisabled={currentPage === totalPages} 
-          bg="transparent"
-          _hover={{ bg: 'gray.200' }}
-          _active={{ bg: 'gray.300' }}
-          aria-label="Siguiente"
-        >
-          <ArrowForwardIcon />
-        </Button>
-      </Flex>
+          <Text>
+            Página {currentPage} de {totalPages}
+          </Text>
+
+          <Button 
+            onClick={() => paginate(currentPage + 1)} 
+            isDisabled={currentPage === totalPages} 
+            colorScheme="blue"
+            aria-label="Siguiente"
+          >
+            Siguiente {'>>'}
+          </Button>
+        </Flex>
+      )}
     </Box>
   );
 };
