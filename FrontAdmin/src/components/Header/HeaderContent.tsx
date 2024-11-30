@@ -30,13 +30,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
     onClose: onClose1,
   } = useDisclosure();
 
-  // Contraseña
-  const {
-    isOpen: isOpen2,
-    onOpen: onOpen2,
-    onClose: onClose2,
-  } = useDisclosure();
-
   const handleConfirmar = () => {
 
     // TODO: Implementar la lógica de confirmar
@@ -84,7 +77,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
             onClick={onOpen1}>
             Ver Perfil
           </MenuItem>
-          <MenuItem onClick={onOpen2}>Cambiar Contraseña</MenuItem>
           <MenuItem onClick={() => onLogout()}>Cerrar sesión</MenuItem>
         </MenuList>
         </Flex>
@@ -93,10 +85,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
       isOpen={isOpen1}
       onClose={onClose1}
       confirmar={handleConfirmar}
-      />
-      <Contraseña
-      isOpen={isOpen2}
-      onClose={onClose2}
       />
     </Flex>
   );
