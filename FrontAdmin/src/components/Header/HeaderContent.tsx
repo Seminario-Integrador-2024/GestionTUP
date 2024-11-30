@@ -18,7 +18,6 @@ import { FiMenu } from 'react-icons/fi';
 import { useAuth } from '../../Context';
 import Cookies from 'js-cookie';
 import Perfil from '../Modal/Perfil';
-import Contraseña from '../Modal/Contraseña';
 
 export function HeaderContent({ onOpen }: { onOpen: any }) {
   const { onLogout } = useAuth();

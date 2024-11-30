@@ -1,4 +1,4 @@
-import { Stack, Text, Button, Flex, Box, TableContainer, Table, Thead, Th, Tbody, Tr, Td, IconButton } from '@chakra-ui/react';
+import { Stack, Text, Button, Flex, Box, TableContainer, Table, Thead, Th, Tbody, Tr, Td, IconButton, Alert, AlertIcon } from '@chakra-ui/react';
 import ZonaCarga from './ZonaCarga';
 import { useState, useEffect } from 'react';
 import Resultado from './Resultado';
@@ -110,7 +110,10 @@ function CargaExcel() {
                     <Button onClick={handleReset} variant="light">Volver a Intentar</Button>
                 </Stack>
             </Stack>
-            {isLoading && <Text>Este proceso puede tardar unos minutos...</Text>}
+            {isLoading && <Alert status='info'>
+                    <AlertIcon />
+                        Este proceso puede tardar unos minutos.
+            </Alert>}
             <Stack>
                 <Resultado data={data} />
             </Stack>

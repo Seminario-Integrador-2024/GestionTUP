@@ -1,19 +1,20 @@
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, Input} from '@chakra-ui/react'; 
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, Tooltip} from '@chakra-ui/react'; 
 import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
 import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
 import { motion } from 'framer-motion';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 interface Cuota {
   id_cuota: number;
-  numero: string;
-  monto1erVencimiento: number;
-  monto2doVencimiento: number;
-  monto3erVencimiento: number;
-  valortotal: number;
+  numero: number;
+  montoActual: number;
+  fechaVencimiento: string;
   valorpagado: number;
-  valoradeudado: number;
   estado: string;
+  tipocuota: string;
+  valorinformado: number;
+  cuota_completa: boolean;
 }
 
 interface TablaCuotasProps {
@@ -40,7 +41,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
           setLoading(true);
           try {
               const cuotas = await FetchGetCuotas(undefined);
-              const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => parseInt(a.numero) - parseInt(b.numero));      // Si cambia el numero de cuota no olvidar cambiar aca
+              const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
               setCuotas(sortedCuotas);
           } catch (error) {
               console.error('Error:', error);
@@ -94,10 +95,22 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                     <Tr mt={6}>
                       <Th></Th>
                       <Th textAlign="center" p={1}>Cuota</Th>
-                      <Th textAlign="center">Fecha Proximo VTO.</Th>
-                      <Th textAlign="center">Valor Actual</Th>
-                      <Th textAlign="center">Valor Pagado</Th>
-                      <Th textAlign="center">Valor Informado</Th>
+                      <Th textAlign="center">  Fecha Proximo VTO.</Th>
+                      <Th textAlign="center">  Valor Actual     
+                          <Tooltip ml={'2px'} label="Valor dependiente del vecimiento en que se encuentra" aria-label="A tooltip">
+                            <QuestionOutlineIcon boxSize={4} />
+                          </Tooltip>
+                      </Th>
+                      <Th textAlign="center">Valor Pagado
+                          <Tooltip label="Valor correspondiente a pagos confirmados por tesoreria" aria-label="A tooltip">
+                            <QuestionOutlineIcon boxSize={4} />
+                          </Tooltip>
+                      </Th>
+                      <Th textAlign="center">Valor Informado
+                          <Tooltip label="Valor correspondiente a pagos sin confirmar por tesoreria" aria-label="A tooltip">
+                            <QuestionOutlineIcon boxSize={4} />
+                          </Tooltip>
+                      </Th>
                       <Th textAlign="center">Valor Adeudado</Th>
                     
                     </Tr>

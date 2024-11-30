@@ -103,13 +103,7 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
                                             isReadOnly={!isEmailEditable}
                                             color={isEmailEditable ? 'black' : 'gray.500'}
                                         />
-                                        <IconButton
-                                            icon={<EditIcon />}
-                                            variant={'light'}
-                                            borderRadius={3}
-                                            color={isEmailEditable ? 'gray.500' : 'black'}
-                                            ml={1} onClick={() => setIsEmailEditable(!isEmailEditable)} aria-label={''}>
-                                        </IconButton>
+                                        
                                     </Flex>
                                 </Flex>
                                 <Flex direction={"column"} mt={3}>
@@ -122,13 +116,7 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
                                             isReadOnly={!isTelefonoEditable}
                                             color={isTelefonoEditable ? 'black' : 'gray.500'}
                                         />
-                                        <IconButton
-                                            icon={<EditIcon />}
-                                            variant={'light'}
-                                            borderRadius={3}
-                                            color={isTelefonoEditable ? 'gray.500' : 'black'}
-                                            ml={1} onClick={() => setIsTelefonoEditable(!isTelefonoEditable)} aria-label={''}>
-                                        </IconButton>
+                                       
                                     </Flex>
                                 </Flex>
                             </FormControl>

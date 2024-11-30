@@ -10,12 +10,16 @@ import {
   Link,
   Image,
   Spinner,
+  Tooltip,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
 
 import { useAuth } from '../../../Context';
 import fondoLogin from '../../icons/utn-portada-transformed.jpeg';
 import imgLogin from '../../icons/Logos TUP_Mesa de trabajo 1.png';
 import { useToast } from '../../Toast/useToast';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 
 function LoginPage() {
@@ -83,28 +87,35 @@ function LoginPage() {
                 Iniciar sesión
               </Heading>
               <FormControl>
-                <Input
-                  borderRadius="none"
-                  borderTop="none"
-                  borderLeft="none"
-                  borderRight="none"
-                  borderColor="gray"
-                  mb="24px"
-                  fontSize="md"
-                  type="name"
-                  placeholder="Usuario"
-                  _placeholder={{ color: '#3f3f3f' }}
-                  color={textColor}
-                  size="lg"
-                  pl="4px"
-                  _focus={{
-                    borderColor: '#003063',
-                    boxShadow: 'none',
-                  }}
-                  _hover={{ borderColor: '0f183f' }}
-                  value={legajo}
-                  onChange={(e) => setUserlegajo(e.target.value)}
-                />
+                <InputGroup>
+                      <Input
+                        borderRadius="none"
+                        borderTop="none"
+                        borderLeft="none"
+                        borderRight="none"
+                        borderColor="gray"
+                        mb="24px"
+                        fontSize="md"
+                        type="name"
+                        placeholder="Usuario"
+                        _placeholder={{ color: '#3f3f3f' }}
+                        color={textColor}
+                        size="lg"
+                        pl="4px"
+                        _focus={{
+                          borderColor: '#003063',
+                          boxShadow: 'none',
+                        }}
+                        _hover={{ borderColor: '0f183f' }}
+                        value={legajo}
+                        onChange={(e) => setUserlegajo(e.target.value)}
+                      />
+                      <InputRightElement>
+                        <Tooltip label="Ingrese sus credenciales de Sysacad" aria-label="A tooltip">
+                          <QuestionOutlineIcon boxSize={5} />
+                        </Tooltip>
+                      </InputRightElement>
+                </InputGroup>
                 <Input
                   borderRadius="0"
                   borderTop="none"
@@ -143,16 +154,6 @@ function LoginPage() {
                 >
                   {isLoading ? <Spinner size="sm" /> : 'Acceder'}
                 </Button>
-                <Flex alignItems="center" justifyContent="center">
-                  <Link
-                    color={textColor}
-                    href="#"
-                    fontSize="15px"
-                    _hover={{ border: 'none' }}
-                  >
-                    Olvide mi contraseña
-                  </Link>
-                </Flex>
               </FormControl>
             </Flex>
           </form>
