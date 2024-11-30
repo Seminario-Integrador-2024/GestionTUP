@@ -27,18 +27,6 @@ const Matricula: React.FC = () => {
           </Text>
 
           <Select
-            placeholder="Seleccione un cuatrimestre"
-            value={cuatrimestre}
-            onChange={(e) => setCuatrimestre(e.target.value)}
-            mb={4}
-            width="100%" 
-            maxWidth="400px" 
-          >
-            <option value="1C">Primer Cuatrimestre</option>
-            <option value="2C">Segundo Cuatrimestre</option>
-          </Select>
-
-          <Select
             placeholder="Seleccione un año"
             value={anio}
             onChange={(e) => setAnio(e.target.value)}
@@ -48,6 +36,18 @@ const Matricula: React.FC = () => {
           >
             <option value="2023">2023</option>
             <option value="2024">2024</option>
+          </Select>
+
+          <Select
+            placeholder="Seleccione un cuatrimestre"
+            value={cuatrimestre}
+            onChange={(e) => setCuatrimestre(e.target.value)}
+            mb={4}
+            width="100%" 
+            maxWidth="400px" 
+          >
+            <option value="1C">Primer Cuatrimestre</option>
+            <option value="2C">Segundo Cuatrimestre</option>
           </Select>
 
           <Button
