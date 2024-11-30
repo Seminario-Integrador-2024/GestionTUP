@@ -278,12 +278,12 @@ function InformarPago() {
             {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
           </Text>
         </Tag>
-        <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_financiero === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
+        <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
           <Text color="gray">
             Estado:
           </Text>
           <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno?.estado_financiero}
+          {alumno?.estado_academico}
           </Text>
         </Tag>
         <Tag w={"100%"} p="10px" fontSize={16}>
