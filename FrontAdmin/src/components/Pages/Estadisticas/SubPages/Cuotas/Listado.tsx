@@ -77,10 +77,10 @@ export default function Listado() {
     useEffect(() => {
         const fetchAbonaron = async (fecha: string) => {
             const data = await AbonaronCuota(fecha, limit2, offset2, filter);
-         
-            if (data.results?.results?.length > 0) {
+            console.log(data.alumnos.results)
+            if (data.alumnos?.results?.length > 0) {
             
-            setAbonaron(data.results.results);
+            setAbonaron(data.alumnos.results);
             setMTotalAbonaron(data.monto_total);
             setTotalAbonaron(data.results.count);
             }
