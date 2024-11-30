@@ -91,9 +91,8 @@ export default function Listado() {
                 console.log(abonaron)
                 setMTotalAbonaron(data.recaudado_por_el_mes);
                 setTotalAbonaron(data.alumnos.count);
-                setLoading2(false);
             }
-           
+            setLoading2(false);
         }
         if (fecha === undefined) {
             return;

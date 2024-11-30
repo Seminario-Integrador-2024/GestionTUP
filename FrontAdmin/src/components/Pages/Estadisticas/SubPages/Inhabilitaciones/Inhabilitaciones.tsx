@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {getInhabilitaciones} from '../../../../../API/Inhabilitaciones';
-import Tabla from '../Cuotas/Tabla';
+import Tabla from './Tabla';
 import AInhabilitar from './Alumnos_a_Inhabilitar';
-import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag, Spinner, Input } from "@chakra-ui/react";
-import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag, Spinner, Input, Tooltip } from "@chakra-ui/react";
+import { ArrowLeftIcon, ArrowRightIcon, InfoIcon } from '@chakra-ui/icons';
+
+type Inhabilitado = {
+    user: number;
+    full_name: string;
+    estado_financiero: string;
+    legajo: number;
+    fecha_inhabilitacion: string;
+};
+
 
 function Inhabilitados() {
-  const [inhabilitados, setInhabilitados] = useState<any[]>([]);
+  const [inhabilitados, setInhabilitados] = useState<Inhabilitado[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const headers = ['Apellido y Nombre', 'Legajo' , 'DNI', 'Desde'];
   const [limit1] = useState(10);
@@ -17,6 +26,7 @@ function Inhabilitados() {
     const fetchData = async () => {
       const response = await getInhabilitaciones(limit1, offset1);
       setInhabilitados(response.results);
+      console.log(inhabilitados);
       setTotalInhabilitados(response.count);
       setLoading(false);
     };
@@ -57,6 +67,9 @@ function Inhabilitados() {
                     _focus={{ boxShadow: "none" }}
                 >
                     Alumnos a Habilitar
+                    <Tooltip label="Alumnos sin cuotas vencidas que en Sysacad figuran como Inhabilitado" fontSize="md">
+                        <InfoIcon ml={2} />
+                    </Tooltip>
                 </Tab>
                 <Tab
                     _selected={{
@@ -70,6 +83,9 @@ function Inhabilitados() {
                     _focus={{ boxShadow: "none" }}
                 >
                     Alumnos a Inhabilitar
+                    <Tooltip label="Alumnos con cuotas vencidas que en Sysacad figuran como Habilitados" fontSize="md">
+                        <InfoIcon ml={2} />
+                    </Tooltip>
                 </Tab>
                 <Tab
                     _selected={{
@@ -83,6 +99,9 @@ function Inhabilitados() {
                     _focus={{ boxShadow: "none" }}
                 >
                     Alumnos Inhabilitados
+                    <Tooltip label="Alumnos que en Sysacad figuran como Inhabilitado" fontSize="md">
+                        <InfoIcon ml={2} />
+                    </Tooltip>
                 </Tab>
                 </TabList>
 
@@ -115,7 +134,6 @@ function Inhabilitados() {
                     </TabPanel>
                     <TabPanel>
                     <Flex>
-                        
                         {loading ? (
                                 <Spinner />
                             ) : 
@@ -125,8 +143,8 @@ function Inhabilitados() {
                                 <Flex direction={"column"} w={"100%"} mb={2}>
                                     <Tag  bg="secundaryBg" w={"100%"} p={"10px"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}>Total: {totalInhabilitados}</Tag>
                                 </Flex>
-                                <Input type="text"  placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={2} />
-                                <Tabla headers={headers} data={inhabilitados} /> 
+                                    <Input type="text"  placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} mb={2} />
+                                    <Tabla headers={headers} data={inhabilitados} /> 
                                     <Box bottom="0" width="100%" bg="white" p="10px" mt={4} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
                                             <Button onClick={handlePreviousPage} isDisabled={offset1 === 0} color="white" leftIcon={<ArrowLeftIcon/>}>
@@ -137,7 +155,7 @@ function Inhabilitados() {
                                                 Siguiente
                                             </Button>
                                             </Flex>
-                                </Box>
+                                    </Box>
                                 
                             </Box>
                         ): <p>No hay datos para mostrar</p>}

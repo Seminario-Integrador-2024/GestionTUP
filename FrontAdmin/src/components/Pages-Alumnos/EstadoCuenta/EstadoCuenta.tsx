@@ -280,20 +280,32 @@ function InformarPago() {
         </Tag>
         <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
           <Text color="gray">
-            Estado:
+            Condición Sycacad:
           </Text>
           <Text size="sm" pl="8px" fontWeight="semibold">
           {alumno?.estado_academico}
           </Text>
         </Tag>
-        <Tag w={"100%"} p="10px" fontSize={16}>
-          <Text color="gray">
-            Ultimo Periodo Cursado
-          </Text>
-          <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumnoInfo.ultimo_cursado}
-          </Text>
-        </Tag>
+          {alumno?.estado_financiero === 'Inhabilitado' ? 
+          <Tag w={"100%"} p="10px" fontSize={16} bg="#FF8A8A">
+            <Text color="gray">
+              Motivo:
+            </Text> 
+            <Text size="sm" pl="8px" fontWeight="semibold">
+              Deudor
+            </Text>
+          </Tag>
+            :
+            <Tag w={"100%"} p="10px" fontSize={16}>
+                <Text color="gray">
+                Ultimo Periodo Cursado
+              </Text>
+              <Text size="sm" pl="8px" fontWeight="semibold">
+              {alumnoInfo.ultimo_cursado}
+              </Text>
+          </Tag>
+          }
+          
       </Box>
       <Box  w={"100%"} display={"flex"} justifyContent={"center"}  >
                   {cuotas.length > 0 ? (
