@@ -19,6 +19,7 @@ import {
   } from '@chakra-ui/react'
 import { ViewIcon } from '@chakra-ui/icons'
 import { IoEyeOutline } from "react-icons/io5";
+import {formatoFechaISOaDDMMAAAA} from "../../../../../utils/general";
 
 type Pago = {
     fecha: string;
@@ -118,7 +119,7 @@ export default function Pagos() {
                         <Tbody>
                             {data.alumnos[selectedDni].pagos.map((pago, index) => (
                             <Tr key={index}>
-                                <Td textAlign="center">{pago.fecha}</Td>
+                                <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
                                 <Td textAlign="center">{ "$ " + new Intl.NumberFormat('es-ES').format(pago.monto)}</Td>
                             </Tr>
                             ))}

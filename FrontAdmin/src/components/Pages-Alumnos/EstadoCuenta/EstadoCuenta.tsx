@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td, Tooltip } from "@chakra-ui/react";
+import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td, Tooltip, Alert, AlertIcon } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
 import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon, QuestionOutlineIcon} from '@chakra-ui/icons';
@@ -278,22 +278,34 @@ function InformarPago() {
             {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
           </Text>
         </Tag>
-        <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_financiero === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
+        <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
           <Text color="gray">
-            Estado:
+            Condición Sysacad:
           </Text>
           <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno?.estado_financiero}
+          {alumno?.estado_academico}
           </Text>
         </Tag>
-        <Tag w={"100%"} p="10px" fontSize={16}>
-          <Text color="gray">
-            Ultimo Periodo Cursado
-          </Text>
-          <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumnoInfo.ultimo_cursado}
-          </Text>
-        </Tag>
+          {alumno?.estado_financiero === 'Inhabilitado' ? 
+          <Tag w={"100%"} p="10px" fontSize={16} bg="#FF8A8A">
+            <Text color="gray">
+              Motivo:
+            </Text> 
+            <Text size="sm" pl="8px" fontWeight="semibold">
+              Deudor
+            </Text>
+          </Tag>
+            :
+            <Tag w={"100%"} p="10px" fontSize={16}>
+                <Text color="gray">
+                Ultimo Periodo Cursado
+              </Text>
+              <Text size="sm" pl="8px" fontWeight="semibold">
+              {alumnoInfo.ultimo_cursado}
+              </Text>
+          </Tag>
+          }
+          
       </Box>
       <Box  w={"100%"} display={"flex"} justifyContent={"center"}  >
                   {cuotas.length > 0 ? (
@@ -350,10 +362,18 @@ function InformarPago() {
 
                     
                   ) : (
-                    <Text  textAlign="center" padding="20px">Aún no tienes cuotas generadas. <br />Verifica la firma del compromiso de pago para generar tus cuotas.</Text>
+                  <Alert status="info" alignItems="center" justifyContent="center" textAlign="center" width="70%">
+                    <AlertIcon  mr={1} />
+
+                    <Text>
+                      Aún no tienes cuotas generadas. Verifica la firma del compromiso de pago para generar tus cuotas.
+                    </Text>
+                   
+                  </Alert>
                   )}
                   
-      </Box>
+              </Box>
+              {cuotas.length > 0 ?
                   <Box w="90%" mt="20px" ml="70px">
                       <Flex justifyContent="space-between" > 
                           <Button onClick={handlePreviousPage} isDisabled={offset === 0} _hover="none" color="white"  leftIcon={<ArrowLeftIcon/>}>
@@ -365,6 +385,7 @@ function InformarPago() {
                           </Button>
                       </Flex>
                   </Box>
+              : null }
 
               {detail != null ? 
               <Box display={"flex"} justifyContent={"center"} flex={1} w={"100%"}>

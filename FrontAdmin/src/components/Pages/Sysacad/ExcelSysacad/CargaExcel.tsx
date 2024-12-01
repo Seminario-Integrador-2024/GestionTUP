@@ -118,6 +118,7 @@ function CargaExcel() {
                 <Resultado data={data} />
             </Stack>
 
+            { excels.length > 0 ?
             <Flex mb={5} mt={10} justifyContent={"center"} alignItems={"center"} w={"150%"} direction={"column"}>
                 <Flex justifyContent={"flex-start"} w={"100%"}>
                     <Text fontWeight="bold" fontSize="xl" mb={2}>Historial de archivos cargados</Text>
@@ -158,6 +159,7 @@ function CargaExcel() {
                     </TableContainer>
                 </Box>
             </Flex>
+            : null }
         </Stack>
     );
 }

@@ -13,7 +13,10 @@ import {
   HStack,
   Input,
   Text,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 
 interface Alumnos {
   full_name: string;
@@ -94,13 +97,19 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
 
   return (
     <Box p={5}>
+
+      <InputGroup >
+          <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" />
+            </InputLeftElement>
+            <Input
+            placeholder="Buscar por Nombre, Legajo, DNI, Situación o Año de Ingreso"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            mb={4}
+            />
+      </InputGroup>
       
-      <Input
-        placeholder="Buscar por Nombre, Legajo, DNI, Situación o Año de Ingreso"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        mb={4}
-      />
       <Table>
         <Thead>
           <Tr>

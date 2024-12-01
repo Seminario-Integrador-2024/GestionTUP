@@ -125,7 +125,7 @@ const handleFirmar = async () => {
 return (
 
 <Flex justifyContent={"center"} alignItems={"center"} direction={"column"}>
-                {ultimoCompromiso && <Flex  alignItems={"center"} w={'100%'} direction={"column"} mb={4} mt={4}>
+                {ultimoCompromiso && <Flex  alignItems={"center"} w={'85%'} direction={"column"} mb={4} mt={4}>
                 <Alert status='success'>
                     <AlertIcon />
                     El compromiso de pago del periodo actual ya se encuentra firmado ({formatoFechaISOaDDMMAAAA(ultimo.fecha_firmado)}).
@@ -163,7 +163,7 @@ return (
             {compromisos.length > 0 ? (
             <Flex mb={5} justifyContent={"center"} alignItems={"center"} w={"85%"} direction={"column"}>
                 <Flex justifyContent={"flex-start"} w={"100%"}>
-                    <Text fontWeight="bold" fontSize="xl" mb={2}>Historial compromisos de pago Firmados</Text>
+                    <Text fontWeight="bold" fontSize="xl" mb={2}>Historial compromisos de pago firmados</Text>
                 </Flex>
                 <Box flex={1} w={"100%"}>
                     <TableContainer
