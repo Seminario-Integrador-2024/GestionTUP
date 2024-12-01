@@ -78,6 +78,7 @@ export const FetchResumenPagos = async (dni: number | undefined ) => {
       
       if (response.ok) {
           const data = await response.json();
+          console.log('resumen pagos', data);
           return data;
       } else {
           throw new Error('Error en la respuesta del servidor');

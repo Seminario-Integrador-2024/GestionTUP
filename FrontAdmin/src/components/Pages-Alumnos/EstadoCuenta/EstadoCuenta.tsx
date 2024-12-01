@@ -280,7 +280,7 @@ function InformarPago() {
         </Tag>
         <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
           <Text color="gray">
-            Condición Sycacad:
+            Condición Sysacad:
           </Text>
           <Text size="sm" pl="8px" fontWeight="semibold">
           {alumno?.estado_academico}
