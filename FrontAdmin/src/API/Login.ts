@@ -16,9 +16,9 @@ export const FetchLogin = async ( legajo: string, contrasenia: string,) => {
         const data = await response.json();
         const roles = data.user.groups[0];
         localStorage.setItem('userRol', JSON.stringify(roles));
-        
         Cookies.set('tokennn', data.access);
         Cookies.set('dni', data.user.dni);
+        Cookies.set('cuil', data.user.cuil);
         Cookies.set('refresh_token', data.refresh);
         Cookies.set('access_expiration', data.access_expiration);
         Cookies.set('refresh_expiration', data.refresh_expiration);

@@ -53,6 +53,7 @@ interface Alumno {
   estado_academico: string;
   estado_financiero: string;
   ultimo_cursado: string;
+  cuil: string;
 }
 
 
@@ -377,10 +378,10 @@ function FichaAlumno() {
           fontWeight="Bold"
         >{`${alumno.full_name}`}</Text>
         <Text color="gray" mt="10px">
-          Número DNI:
+          CUIL:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {new Intl.NumberFormat().format(alumno.dni)}
+          {alumno.cuil}
         </Text>
         <Text color="gray" mt="10px">
           Legajo:
