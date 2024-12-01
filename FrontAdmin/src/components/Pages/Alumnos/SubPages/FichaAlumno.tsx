@@ -652,7 +652,7 @@ function FichaAlumno() {
                         {inhabilitaciones.map((inhabilitacion, index) => (
                           <Tr key={index}>
                             <Td textAlign="center">{new Date(inhabilitacion.fecha_desde).toLocaleDateString()}</Td>
-                            <Td textAlign="center">{new Date(inhabilitacion.fecha_hasta).toLocaleDateString()}</Td>
+                            <Td textAlign="center">{inhabilitacion.fecha_hasta === null ? ' - ' : new Date(inhabilitacion.fecha_hasta).toLocaleDateString()}</Td>
                             <Td textAlign="center">{inhabilitacion.descripcion}</Td>
                           </Tr>
                         ))}
