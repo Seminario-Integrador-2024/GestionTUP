@@ -34,7 +34,10 @@ const Tabla: React.FC<TablaProps> = ({ headers, data}) => {
                   ? row[keyMap[header]] 
                     ? new Date(row[keyMap[header]]).toLocaleDateString() 
                     : 'N/A'
-                  : row[keyMap[header]]}
+                  : header === 'Legajo' || header === 'DNI'
+                    ? new Intl.NumberFormat('es-ES').format(row[keyMap[header]])
+                    : 
+                  row[keyMap[header]]}
               </Td>
             ))}
           </Tr>

@@ -1,4 +1,4 @@
-import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, Text, ModalFooter, ModalHeader, ModalOverlay, Input, FormControl, FormLabel, IconButton } from '@chakra-ui/react';
+import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, Text, ModalFooter, ModalHeader, ModalOverlay, Input, FormControl, FormLabel, IconButton, Avatar } from '@chakra-ui/react';
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { EditIcon } from '@chakra-ui/icons';
 import { FetchDetalleAlumno } from '../../API/DetalleAlumno';
@@ -75,6 +75,17 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
         }
     };
 
+    
+    function formatUserName(fullName: string): string {
+        const parts = fullName.trim().split(',');
+        if (parts.length === 2) {
+        const lastName = parts[0].trim();
+        const firstName = parts[1].trim();
+        return `${firstName}, ${lastName}`;
+        }
+        return fullName.trim();
+    }
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -83,8 +94,13 @@ export default function Perfil({ isOpen, onClose, confirmar }: ModalComponentPro
                 <ModalCloseButton />
                 <ModalBody>
                     <Flex justifyContent={"center"} alignItems={"center"} direction={"column"}>
-                        <Flex direction={"row"} alignItems={"center"}>
-                            <HiOutlineUserCircle size={120} />
+                        <Flex direction={"row"} alignItems={"center"} alignContent={'center'}>
+                            <Avatar
+                                name={formatUserName(data.full_name || '')}
+                                borderRadius="full"
+                                size={"2xl"}
+                            />
+
                             <Flex direction={"column"} ml={5} textAlign={"left"}>
                                 <Text fontWeight={"bold"} fontSize={20}>{data.full_name}</Text>
                                 <Text fontSize={18}>{new Intl.NumberFormat('es-Es').format(data.dni)}</Text>

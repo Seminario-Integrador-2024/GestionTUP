@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td, Tooltip } from "@chakra-ui/react";
+import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td, Tooltip, Alert, AlertIcon } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
 import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon, QuestionOutlineIcon} from '@chakra-ui/icons';
@@ -362,10 +362,18 @@ function InformarPago() {
 
                     
                   ) : (
-                    <Text  textAlign="center" padding="20px">Aún no tienes cuotas generadas. <br />Verifica la firma del compromiso de pago para generar tus cuotas.</Text>
+                  <Alert status="info" alignItems="center" justifyContent="center" textAlign="center" width="70%">
+                    <AlertIcon  mr={1} />
+
+                    <Text>
+                      Aún no tienes cuotas generadas. Verifica la firma del compromiso de pago para generar tus cuotas.
+                    </Text>
+                   
+                  </Alert>
                   )}
                   
-      </Box>
+              </Box>
+              {cuotas.length > 0 ?
                   <Box w="90%" mt="20px" ml="70px">
                       <Flex justifyContent="space-between" > 
                           <Button onClick={handlePreviousPage} isDisabled={offset === 0} _hover="none" color="white"  leftIcon={<ArrowLeftIcon/>}>
@@ -377,6 +385,7 @@ function InformarPago() {
                           </Button>
                       </Flex>
                   </Box>
+              : null }
 
               {detail != null ? 
               <Box display={"flex"} justifyContent={"center"} flex={1} w={"100%"}>

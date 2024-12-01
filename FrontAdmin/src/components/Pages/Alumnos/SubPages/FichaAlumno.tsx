@@ -537,7 +537,7 @@ function FichaAlumno() {
 
 
                     ) : (
-                      <Text textAlign="center" padding="20px">Aún no tienes cuotas generadas. <br />Verifica la firma del compromiso de pago para generar tus cuotas.</Text>
+                      <Text textAlign="center" padding="20px">El alumno aún no tiene cuotas generadas. </Text>
                     )}
 
                   </Box>
@@ -645,7 +645,7 @@ function FichaAlumno() {
                         <Tr mt={6}>
                           <Th textAlign="center">Fecha Desde</Th>
                           <Th textAlign="center">Fecha Hasta</Th>
-                          <Th textAlign="center">Descripción</Th>
+                          <Th textAlign="center">Motivo</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
