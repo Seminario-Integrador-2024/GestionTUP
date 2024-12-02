@@ -73,9 +73,6 @@ export default function AInhabilitar() {
         const response2 = await getAlumnosaInhabilitar();
         setAlumnosAInhabilitar(response2.results);
         setTotalInhabilitados(response2.count);
-
-
-        setAlumnosAInhabilitar(prueba.results);
     };
 
     const handleDetailsClick = (dni: string) => {
