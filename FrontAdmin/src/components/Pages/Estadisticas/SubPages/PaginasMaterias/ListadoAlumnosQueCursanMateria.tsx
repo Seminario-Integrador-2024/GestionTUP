@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Asegúrate de importar Link
 import { FetchAlumnosMaterias } from '../../../../../API/Materias';
-import { Input, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text } from '@chakra-ui/react';
+import { Input, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 
 const ListadoAlumnosQueCursanMateria = () => {
   type Alumno = {
@@ -83,40 +84,78 @@ const ListadoAlumnosQueCursanMateria = () => {
 
   if (loading) return <Text>Cargando datos...</Text>;
   if (error) return <Text color="red.500">Error: {error}</Text>;
-  if (filteredAlumnos.length === 0) return <Text>No hay alumnos inscritos en esta materia.</Text>;
 
   // Número total de páginas basado en los resultados filtrados
   const totalPages = filteredAlumnos.length > 0 ? Math.ceil(filteredAlumnos.length / alumnosPerPage) : 0;
 
   return (
     <Box p={5}>
-      <Input
-        placeholder="Buscar por Nombre, DNI, Legajo, Estado Financiero o Año de Ingreso"
-        value={searchQuery}
-        onChange={handleSearch}
-        mb={4}
-      />
+      {/* Input con lupa */}
+      <InputGroup mb={4}>
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon color="gray.500" />
+        </InputLeftElement>
+        <Input
+          placeholder="Buscar por Nombre, DNI, Legajo, Situación o Año de Ingreso"
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+      </InputGroup>
       
       <Table variant="simple" mb={4}>
         <Thead>
           <Tr>
-            <Th fontFamily="Helvetica" fontWeight="900">Apellido y Nombre</Th>
-            <Th fontFamily="Helvetica" fontWeight="900">Legajo</Th>
-            <Th fontFamily="Helvetica" fontWeight="900">DNI</Th>
-            <Th fontFamily="Helvetica" fontWeight="900">Estado Financiero</Th>
-            <Th fontFamily="Helvetica" fontWeight="900">Año Ingreso</Th>
+            <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Apellido y Nombre</Th>
+            <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Legajo</Th>
+            <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">DNI</Th>
+            <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Estado Financiero</Th>
+            <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Año Ingreso</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {currentAlumnos.map((alumno) => (
-            <Tr key={alumno.dni}>
-              <Td>{alumno.full_name}</Td>
-              <Td>{alumno.legajo}</Td>
-              <Td>{alumno.dni}</Td>
-              <Td>{alumno.estado_financiero}</Td>
-              <Td>{alumno.anio_ingreso}</Td>
+          {currentAlumnos.length === 0 ? (
+            <Tr>
+              <Td colSpan={5} textAlign="center">
+                <Text>No se encontraron alumnos</Text>
+              </Td>
             </Tr>
-          ))}
+          ) : (
+            currentAlumnos.map((alumno) => (
+              <Tr
+                key={alumno.dni}
+                _hover={{
+                  bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
+                  cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+                }}
+              >
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.full_name}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.legajo}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.dni}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.estado_financiero}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.anio_ingreso}
+                  </Link>
+                </Td>
+              </Tr>
+            ))
+          )}
         </Tbody>
       </Table>
 
