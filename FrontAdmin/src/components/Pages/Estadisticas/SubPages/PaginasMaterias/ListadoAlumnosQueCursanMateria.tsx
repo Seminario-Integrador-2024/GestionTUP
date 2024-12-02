@@ -122,7 +122,7 @@ const ListadoAlumnosQueCursanMateria = () => {
 
       {/* Paginación */}
       {totalPages > 0 && (
-        <Flex justify="space-between" align="center" gap={4}>
+        <Flex justify="center" align="center" gap={4}>
           <Button 
             onClick={() => paginate(currentPage - 1)} 
             isDisabled={currentPage === 1} 

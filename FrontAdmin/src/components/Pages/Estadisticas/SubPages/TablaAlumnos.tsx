@@ -140,7 +140,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
       </Table>
 
       {filteredAlumnos.length > 0 && (
-        <HStack spacing={4} mt={4} justifyContent="space-between">
+        <HStack spacing={4} mt={4} justifyContent="center">
           <Button
             colorScheme="blue"
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
