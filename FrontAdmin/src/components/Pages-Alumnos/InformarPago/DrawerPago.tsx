@@ -91,9 +91,10 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
             mesesCuota = mesesCuota.sort((a, b) => a - b); // Ordenar de menor a mayor
            const dni = Cookies.get('dni');
            const fullName = Cookies.get('full_name');
+           const cuil = Cookies.get('cuil');
            const fechaHoy = obtenerFechaForm();
            const meses = obtenerMesesDeCuotas(mesesCuota);
-           const googleFormUrl =  `https://docs.google.com/forms/d/e/1FAIpQLSfNe4krjpaC7I_9FA7Do3MAuQr7eC9wF5zVHIgOV2XeqzAAnA/viewform?usp=pp_url&entry.1045781291=${fullName}&entry.839337160=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.1065046570=${dni}&entry.1651003915=${encodeURIComponent(fechaHoy)}&entry.180139663=${meses}&entry.463277821=${comentarios}`;
+           const googleFormUrl =  `https://docs.google.com/forms/d/e/1FAIpQLSfNe4krjpaC7I_9FA7Do3MAuQr7eC9wF5zVHIgOV2XeqzAAnA/viewform?usp=pp_url&entry.1045781291=${fullName}&entry.839337160=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.1065046570=${dni}&entry.1166974658=${cuil}&entry.1651003915=${encodeURIComponent(fechaHoy)}&entry.180139663=${meses}&entry.463277821=${comentarios}`;
            window.open(googleFormUrl, '_blank');
            
            //onRefresh();
