@@ -23,7 +23,7 @@ const Matricula: React.FC = () => {
       {!formSubmitted ? (
         <Box display="flex" flexDirection="column" justifyContent="flex-start" alignItems="center" height="100vh" p={4} py={12}>
           <Text fontSize="3xl" fontWeight="bold" mb={6}>
-            Seleccione un cuatrimestre y un año
+            Seleccione un año y cuatrimestre
           </Text>
 
           <Select
@@ -34,8 +34,8 @@ const Matricula: React.FC = () => {
             width="100%"
             maxWidth="400px"
           >
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
+            <option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}</option>
+            <option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
           </Select>
 
           <Select

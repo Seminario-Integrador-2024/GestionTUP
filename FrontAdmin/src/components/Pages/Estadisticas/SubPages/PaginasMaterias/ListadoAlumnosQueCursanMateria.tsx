@@ -18,7 +18,7 @@ const ListadoAlumnosQueCursanMateria = () => {
     gender: string;
   };
 
-  const headers = ['Nombre', 'Legajo', 'DNI', 'Estado Financiero', 'Año Ingreso'];
+  const headers = ['Nombre', 'Legajo', 'DNI', 'Año Ingreso'];
   const [alumnos, setAlumnos] = useState<Alumno[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +108,6 @@ const ListadoAlumnosQueCursanMateria = () => {
             <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Apellido y Nombre</Th>
             <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Legajo</Th>
             <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">DNI</Th>
-            <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Estado Financiero</Th>
             <Th fontFamily="Helvetica" fontWeight="900" textAlign="center">Año Ingreso</Th>
           </Tr>
         </Thead>
@@ -135,17 +134,12 @@ const ListadoAlumnosQueCursanMateria = () => {
                 </Td>
                 <Td textAlign="center">
                   <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-                    {alumno.legajo}
+                  {new Intl.NumberFormat('es-ES').format(alumno.legajo)}
                   </Link>
                 </Td>
                 <Td textAlign="center">
                   <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-                    {alumno.dni}
-                  </Link>
-                </Td>
-                <Td textAlign="center">
-                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-                    {alumno.estado_financiero}
+                  {new Intl.NumberFormat('es-ES').format(alumno.dni)}
                   </Link>
                 </Td>
                 <Td textAlign="center">
