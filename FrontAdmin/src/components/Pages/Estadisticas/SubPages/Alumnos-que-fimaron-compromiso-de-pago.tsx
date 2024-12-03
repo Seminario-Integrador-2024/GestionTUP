@@ -41,7 +41,7 @@ const AlumnosCompromisoPago: React.FC = () => {
       {!formSubmitted ? (
         <Box display="flex" flexDirection="column" justifyContent="flex-start" alignItems="center" height="100vh" p={4} py={12}>
           <Text fontSize="3xl" fontWeight="bold" mb={6}>
-            Seleccione un año y un cuatrimestre
+            Seleccione un año y cuatrimestre
           </Text>
 
           <Select
