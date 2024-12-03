@@ -52,10 +52,22 @@ export default function ModalConfirmar({
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleConfirmar} size="sm">
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={handleConfirmar}
+            size="sm"
+            isDisabled={!motivo.trim()} // Desactivar si el motivo está vacío
+          >
             Aceptar
           </Button>
-          <Button colorScheme="blue" mr={3} onClick={onClose} variant="light" size="sm">
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={onClose}
+            variant="light"
+            size="sm"
+          >
             Cancelar
           </Button>
         </ModalFooter>
