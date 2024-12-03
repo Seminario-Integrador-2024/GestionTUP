@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Button, Box, Text, Select, Flex,   Tag,  Alert, AlertIcon, } from '@chakra-ui/react';
-import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon} from '@chakra-ui/icons';
+import React, { useState, useEffect } from 'react';
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Button, Box, Text, Select, Flex, Tag, Alert, AlertIcon } from '@chakra-ui/react';
+import { AttachmentIcon, ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import TablaAlumnos from './TablaAlumnos';
-import { FetchFirmantes,FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
+import { FetchFirmantes, FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
 import { useNavigate } from 'react-router-dom';
 import { blueGrey } from '@mui/material/colors';
 
@@ -11,6 +11,7 @@ const AlumnosCompromisoPago: React.FC = () => {
   const [cuatrimestre, setCuatrimestre] = useState<string>(''); // Estado para el cuatrimestre
   const [anio, setAnio] = useState<string>(''); // Estado para el año
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
+  const [años, setAños] = useState<string[]>([]); // Estado para los años disponibles
   const navigate = useNavigate();
 
   // Verificar si el formulario está completo (ambos campos seleccionados)
@@ -23,6 +24,18 @@ const AlumnosCompromisoPago: React.FC = () => {
   const handleBackClick = () => {
     setFormSubmitted(false);
   };
+
+  // Función para generar los años disponibles
+  const generarAños = () => {
+    const añoActual = new Date().getFullYear();
+    return [añoActual.toString(), (añoActual - 1).toString(), (añoActual - 2).toString()];
+  };
+
+  // Al montar el componente, generamos los años disponibles
+  useEffect(() => {
+    setAños(generarAños());
+  }, []);
+
   return (
     <div>
       {!formSubmitted ? (
@@ -30,8 +43,6 @@ const AlumnosCompromisoPago: React.FC = () => {
           <Text fontSize="3xl" fontWeight="bold" mb={6}>
             Seleccione un año y un cuatrimestre
           </Text>
-
-          
 
           <Select
             placeholder="Seleccione un año"
@@ -41,10 +52,11 @@ const AlumnosCompromisoPago: React.FC = () => {
             width="100%"
             maxWidth="400px"
           >
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2023">2022</option>
-
+            {años.map((año) => (
+              <option key={año} value={año}>
+                {año}
+              </option>
+            ))}
           </Select>
 
           <Select
@@ -57,7 +69,6 @@ const AlumnosCompromisoPago: React.FC = () => {
           >
             <option value="2C">Segundo Cuatrimestre</option>
             <option value="1C">Primer Cuatrimestre</option>
-            
           </Select>
 
           <Button
@@ -118,7 +129,6 @@ const AlumnosCompromisoPago: React.FC = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-             
               <TablaAlumnos 
                 fetchFunction={() => FetchFirmantes(cuatrimestre, parseInt(anio))}
                 title="Alumnos que firmaron compromiso" 
@@ -126,19 +136,15 @@ const AlumnosCompromisoPago: React.FC = () => {
             </TabPanel>
 
             <TabPanel>
-             
               <TablaAlumnos 
                 fetchFunction={() => FetchNoFirmantes(cuatrimestre, parseInt(anio))}
                 title="Alumnos que no firmaron compromiso" 
               />
             </TabPanel>
-
-
           </TabPanels>
         </Tabs>
       </Box>
-      )
-      }
+      )}
     </div>
   );
 };
