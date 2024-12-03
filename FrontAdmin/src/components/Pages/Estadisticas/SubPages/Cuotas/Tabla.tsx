@@ -20,11 +20,12 @@ interface TablaProps {
 const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
   // Mapea headers a las propiedades correctas del objeto row
   const keyMap: { [key: string]: string } = {
-    'Apellido y Nombre': 'full_name',
     'DNI': 'user',
-    'Estado financiero': 'estado_financiero',
+    'Apellido y Nombre': 'full_name',
     'Legajo': 'legajo',
-    'Monto': 'cuota_monto'
+    'Monto Cuota': 'cuota_monto',
+    'Monto Adeudado': 'monto_restante',
+    'Monto Abonado': 'monto_pagado',
   };
   const navigate = useNavigate();
 
@@ -49,7 +50,9 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
                 {headers.map((header) => (
                 <Td key={header} textAlign={header === 'Apellido y Nombre' ? "left" : "center"}>
                   {/* Usamos keyMap para obtener la propiedad correcta */}
-                  {typeof row[keyMap[header]] === 'string' ? (
+                  {header === 'Monto Cuota' || header === 'Monto Adeudado' || header === 'Monto Abonado' ? (
+                  `$${new Intl.NumberFormat('es-ES').format(row[keyMap[header]])}`
+                  ) : typeof row[keyMap[header]] === 'string' ? (
                   row[keyMap[header]]
                   ) : typeof row[keyMap[header]] === 'number' ? (
                   new Intl.NumberFormat('es-ES').format(row[keyMap[header]]) 

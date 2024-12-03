@@ -69,9 +69,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const onLogin = async (password: string, account: string) => {
+  const onLogin = async (legajo: string, contrasenia: string) => {
     try {
-      await FetchLogin(password, account);
+      await FetchLogin(legajo, contrasenia);
       setRolUser(JSON.parse(localStorage.getItem('userRol') || '[]'));
       setIsAuthenticated(true);
       

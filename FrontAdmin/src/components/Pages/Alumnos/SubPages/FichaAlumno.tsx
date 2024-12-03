@@ -52,6 +52,8 @@ interface Alumno {
   telefono: number;
   estado_academico: string;
   estado_financiero: string;
+  ultimo_cursado: string;
+  cuil: string;
 }
 
 
@@ -184,7 +186,6 @@ function FichaAlumno() {
       try {
           const dniNumber = parseInt(dni, 10); // Convierte a número
           const data = await FetchEstadoCuenta(dniNumber);
-          console.log('dniNumber en este punto', dni);
           const dataDetalle = await FetchDetalleAlumno(dniNumber);
           const dataMaterias = await FetchMateriasAlumno(dniNumber);
           setAlumno(dataDetalle);
@@ -377,10 +378,10 @@ function FichaAlumno() {
           fontWeight="Bold"
         >{`${alumno.full_name}`}</Text>
         <Text color="gray" mt="10px">
-          Número DNI:
+          CUIL:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {new Intl.NumberFormat().format(alumno.dni)}
+          {alumno.cuil}
         </Text>
         <Text color="gray" mt="10px">
           Legajo:
@@ -410,17 +411,17 @@ function FichaAlumno() {
           {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
         </Text>
         <Text color="gray" mt="10px">
-          Estado:
+          Condición Sysacad:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {alumno.estado_financiero}
+          {alumno.estado_academico}
         </Text>
         <Text color="gray" mt="20px">
           Ultimo Periodo Cursado
         </Text>
-        <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {`${materias[0].anio_cursada} / ${materias[0].cuatrimestre}C`}
-        </Text>
+        {<Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
+          {alumno.ultimo_cursado}
+        </Text>}
 
       </Box>
 
@@ -537,7 +538,7 @@ function FichaAlumno() {
 
 
                     ) : (
-                      <Text textAlign="center" padding="20px">Aún no tienes cuotas generadas. <br />Verifica la firma del compromiso de pago para generar tus cuotas.</Text>
+                      <Text textAlign="center" padding="20px">El alumno aún no tiene cuotas generadas. </Text>
                     )}
 
                   </Box>
@@ -569,7 +570,7 @@ function FichaAlumno() {
                             </Tr>
                           </Thead>
                           <Tbody>
-                            {pagos?.results
+                            {pagos && pagos.results.length > 0 ? pagos.results
                               .filter(pago =>
                                 pago.cuotas.length > 0 &&
                                 pago.cuotas.some(cuota => cuota.id_cuota === detail) // Verifica si alguna cuota cumple la condición
@@ -591,7 +592,7 @@ function FichaAlumno() {
                                     ) : null
                                   ))}
                                 </Tr>
-                              ))}
+                              )) : 'No existen cuotas para el alumno'}
                           </Tbody>
                         </Table>
                       </Box>
@@ -645,14 +646,14 @@ function FichaAlumno() {
                         <Tr mt={6}>
                           <Th textAlign="center">Fecha Desde</Th>
                           <Th textAlign="center">Fecha Hasta</Th>
-                          <Th textAlign="center">Descripción</Th>
+                          <Th textAlign="center">Motivo</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
                         {inhabilitaciones.map((inhabilitacion, index) => (
                           <Tr key={index}>
                             <Td textAlign="center">{new Date(inhabilitacion.fecha_desde).toLocaleDateString()}</Td>
-                            <Td textAlign="center">{new Date(inhabilitacion.fecha_hasta).toLocaleDateString()}</Td>
+                            <Td textAlign="center">{inhabilitacion.fecha_hasta === null ? ' - ' : new Date(inhabilitacion.fecha_hasta).toLocaleDateString()}</Td>
                             <Td textAlign="center">{inhabilitacion.descripcion}</Td>
                           </Tr>
                         ))}

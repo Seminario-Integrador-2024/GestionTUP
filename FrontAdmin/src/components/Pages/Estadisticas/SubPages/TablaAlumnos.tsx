@@ -9,11 +9,15 @@ import {
   Td,
   Spinner,
   Alert,
-  IconButton,
+  Button,
   HStack,
   Input,
+  Text,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react';
-import { ArrowBackIcon, ArrowForwardIcon, ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { SearchIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';  // Importa Link para la navegación
 
 interface Alumnos {
   full_name: string;
@@ -24,7 +28,7 @@ interface Alumnos {
 }
 
 interface TablaAlumnosProps {
-  fetchFunction: () => Promise<Alumnos[]>;
+  fetchFunction: () => Promise<Alumnos[]>;  // Función para obtener los alumnos
   title: string;
 }
 
@@ -84,85 +88,107 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
     alumno.anio_ingreso.toString().includes(searchTerm)
   );
 
+  // Si no hay alumnos, no mostrar paginación
+  const totalPages = filteredAlumnos.length > 0 ? Math.ceil(filteredAlumnos.length / alumnosPerPage) : 0;
+
   // Paginación
   const indexOfLastAlumno = currentPage * alumnosPerPage;
   const indexOfFirstAlumno = indexOfLastAlumno - alumnosPerPage;
   const currentAlumnos = filteredAlumnos.slice(indexOfFirstAlumno, indexOfLastAlumno);
-  const totalPages = Math.ceil(filteredAlumnos.length / alumnosPerPage);
 
   return (
     <Box p={5}>
+      {/* Input de búsqueda */}
+      <InputGroup mb={4}>
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon color="gray.300" />
+        </InputLeftElement>
+        <Input
+          placeholder="Buscar por Nombre, Legajo, DNI, Situación o Año de Ingreso"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </InputGroup>
       
-      <Input
-        placeholder="Buscar por Nombre, Legajo, DNI, Situación o Año de Ingreso"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        mb={4}
-      />
       <Table>
         <Thead>
           <Tr>
             {['APELLIDO Y NOMBRE', 'LEGAJO', 'DNI', 'ESTADO FINANCIERO', 'AÑO INGRESO'].map((field) => (
-              <Th key={field} fontFamily="Helvetica" fontWeight="900">
+              <Th key={field} fontFamily="Helvetica" fontWeight="900" textAlign="center">
                 {field.toUpperCase()}
-                {/* 
-                quite xq no andaba
-                <IconButton
-                  icon={sortOrder === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                  size="xs"
-                  onClick={() => {
-                    setSortField(field as keyof Alumnos);
-                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                  }}
-                  aria-label={`Ordenar por ${field}`}
-                  variant="link"
-                  bg="transparent"
-                  _hover={{ bg: 'gray.200' }}
-                  _active={{ bg: 'gray.300' }}
-                /> */}
               </Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
           {currentAlumnos.length === 0 ? (
-             <Tr>
-             <Td colSpan={5} textAlign="center">No se encontraron alumnos</Td>
-           </Tr>
+            <Tr>
+              <Td colSpan={5} textAlign="center">No se encontraron alumnos</Td>
+            </Tr>
           ) : (
             currentAlumnos.map(alumno => (
-              <Tr key={alumno.legajo}>
-                <Td>{alumno.full_name}</Td>
-                <Td>{alumno.legajo}</Td>
-                <Td>{alumno.dni}</Td>
-                <Td>{alumno.estado_financiero}</Td>
-                <Td>{alumno.anio_ingreso}</Td>
+              <Tr
+                key={alumno.dni}  // Usamos el DNI como key
+                _hover={{
+                  bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
+                  cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+                }}
+              >
+                {/* Cada Td está envuelto en un Link */}
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.full_name}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.legajo}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.dni}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.estado_financiero}
+                  </Link>
+                </Td>
+                <Td textAlign="center">
+                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                    {alumno.anio_ingreso}
+                  </Link>
+                </Td>
               </Tr>
             ))
-          ) } 
+          )}
         </Tbody>
       </Table>
 
-      <HStack spacing={4} mt={4} justifyContent="flex-end">
-        <IconButton
-          icon={<ArrowBackIcon />}
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          isDisabled={currentPage === 1}
-          bg="transparent"
-          _hover={{ bg: 'gray.200' }}
-          _active={{ bg: 'gray.300' }}
-          aria-label="Página anterior"
-        />
-        <IconButton
-          icon={<ArrowForwardIcon />}
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-          isDisabled={currentPage === totalPages}
-          bg="transparent"
-          _hover={{ bg: 'gray.200' }}
-          _active={{ bg: 'gray.300' }}
-          aria-label="Siguiente página"
-        />
-      </HStack>
+      {filteredAlumnos.length > 0 && (
+        <HStack spacing={4} mt={4} justifyContent="center">
+          <Button
+            colorScheme="blue"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            isDisabled={currentPage === 1}
+          >
+            {'<<'} Anterior
+          </Button>
+
+          <Text>
+            Página {currentPage} de {totalPages}
+          </Text>
+
+          <Button
+            colorScheme="blue"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            isDisabled={currentPage === totalPages}
+          >
+            Siguiente {'>>'}
+          </Button>
+        </HStack>
+      )}
     </Box>
   );
 };

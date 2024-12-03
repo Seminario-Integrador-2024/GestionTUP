@@ -41,7 +41,7 @@ const tableHeaders: MRT_ColumnDef<Alumno>[] = [
   },
   {
     accessorKey: 'estado_academico',
-    header: 'ESTADO ACADÉMICO',
+    header: 'ESTADO SYSACAD',
     enableHiding: true,
   },
   {

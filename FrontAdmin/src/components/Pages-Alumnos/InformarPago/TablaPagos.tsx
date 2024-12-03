@@ -1,4 +1,4 @@
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, Tooltip} from '@chakra-ui/react'; 
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, Tooltip, Alert, AlertIcon} from '@chakra-ui/react'; 
 import {useState , useEffect} from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
 import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
@@ -157,7 +157,12 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   </Tbody>
                 </Table>
             ) : (
-              <Text>No hay cuotas para mostrar. Por favor, firmar el compromiso de pago.</Text>
+              <Alert status="info" alignItems="center" justifyContent="center" textAlign="center" >
+              <AlertIcon  mr={1}/>
+              <Text>
+                  No hay cuotas para mostrar. Por favor, firmar el compromiso de pago.
+              </Text>
+              </Alert>
             )
             )}
           

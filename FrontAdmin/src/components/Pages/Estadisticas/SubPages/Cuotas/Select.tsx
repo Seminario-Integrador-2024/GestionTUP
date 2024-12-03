@@ -33,14 +33,17 @@ const Select: React.FC<SelectProps> = ({ page }) => {
     };
 
     return (
-        <Flex gap={2} direction={"column"}>
-            <Heading fontSize={22} mt={6}>Seleccione un mes</Heading>
+        <Flex display="flex" flexDirection="column" justifyContent="flex-start" alignItems="center" height="100vh" p={4} py={12}>
+            <Heading fontSize="3xl" fontWeight="bold" mb={6}>Seleccione un mes</Heading>
             <Input
                 type="month"
                 id="month"
                 name="month"
                 value={selectedMonth}
                 onChange={handleMonthChange}
+                mb={4}
+                width="100%" 
+                maxWidth="400px" 
             />
             <Flex  justifyContent={"flex-end"} mt={1}>
                 <Button colorScheme='blue' variant={"solid"}
