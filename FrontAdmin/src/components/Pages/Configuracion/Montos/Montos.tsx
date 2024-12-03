@@ -20,6 +20,8 @@ import {
 import { AddIcon, CheckIcon } from '@chakra-ui/icons';
 import { createCompromiso } from '../../../../API/Montos';
 import ModalCargarDocumento from '../ModalCargarDocumento';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface Compromiso {
   anio: string | number | Date;
@@ -37,6 +39,7 @@ interface Compromiso {
   fecha_vencimiento_1: number;
   fecha_vencimiento_2: number;
   fecha_vencimiento_3: number;
+  fecha_limite_baja: Date | null;
 }
 
 interface CardCargaProps {
@@ -80,7 +83,7 @@ const DateSelect = ({
   onChange: (e: { target: { name: string; value: string } }) => void;
 }) => (
   <Flex align="center" mb={4}>
-    <Text  mb={1}>{label}</Text>
+    <Text mb={1}>{label}</Text>
     <Select
       name={name}
       value={value}
@@ -133,6 +136,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
     fecha_vencimiento_1: 10,
     fecha_vencimiento_2: 15,
     fecha_vencimiento_3: 20,
+    fecha_limite_baja: null,
   });
 
   const toast = useToast();
@@ -151,9 +155,17 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
         ...tempMonto,
         [name]: parseInt(value, 10) || 0,
       });
-    } 
+    }
   };
-  
+
+  const handleDateChange = (date: Date | null) => {
+    const formattedFechaLimiteBaja = date?.toISOString().split('T')[0]
+    setTempMonto({
+      ...tempMonto,
+      fecha_limite_baja: formattedFechaLimiteBaja? new Date(formattedFechaLimiteBaja) : null,
+    });
+  };
+
   const handleSave = async () => {
     if (!selectedFile) {
       toast({
@@ -177,8 +189,13 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       return;
     }
 
+    // Formatear la fecha límite de baja a YYYY-MM-DD
+    const formattedFechaLimiteBaja = tempMonto.fecha_limite_baja
+      ? tempMonto.fecha_limite_baja.toISOString().split('T')[0]
+      : null;
+
     try {
-      await createCompromiso(tempMonto, selectedFile);
+      await createCompromiso({ ...tempMonto, fecha_limite_baja: formattedFechaLimiteBaja }, selectedFile);
       onClose();
       toast({
         title: 'Éxito',
@@ -296,7 +313,16 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 value={tempMonto.fecha_vencimiento_3}
                 onChange={handleChange}
               />
-
+              <Flex direction="column">
+                <Text mb={1}>Fecha Límite de Baja</Text>
+                <DatePicker
+                  selected={tempMonto.fecha_limite_baja}
+                  onChange={handleDateChange}
+                  dateFormat="YYYY-MM-DD"
+                  placeholderText="Selecciona una fecha"
+                  customInput={<Input size="sm" bg="white" />}
+                />
+              </Flex>
             </Grid>
           </ModalBody>
           <ModalFooter>

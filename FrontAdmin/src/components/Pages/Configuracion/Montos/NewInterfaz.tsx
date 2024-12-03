@@ -24,6 +24,7 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { deleteCompromiso } from '../../../../API/Montos';
 import ModalComponent from '../../../Modal/ModalConfirmarCambios'; 
+
 interface Compromiso {
   anio: string | number | Date;
   fecha_carga_comp_pdf: string;
@@ -40,6 +41,7 @@ interface Compromiso {
   fecha_vencimiento_1: number;
   fecha_vencimiento_2: number;
   fecha_vencimiento_3: number;
+  fecha_limite_baja: Date | null;
 }
 
 interface CardCargaProps {
@@ -48,6 +50,7 @@ interface CardCargaProps {
 }
 
 const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
+  console.log(compromisos)
   const [montos, setMontos] = useState<Compromiso[]>([]);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -60,7 +63,6 @@ const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
       const dateB = new Date(b.fecha_carga_comp_pdf);
       return dateB.getTime() - dateA.getTime();
     });
-    console.log('Montos ordenados:', sortedMontos);
     setMontos(sortedMontos);
   }, [compromisos]);
 
@@ -72,7 +74,7 @@ const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('Buscando PDF en: ', url);
+
       const blob = await response.blob();
       const pdfUrl = URL.createObjectURL(blob);
       setPdfUrl(pdfUrl);
@@ -147,6 +149,7 @@ const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
                       <Text fontWeight="bold" mt={2}>Cuota Reducida: {' $ ' + monto.cuota_reducida}</Text>
                       <Text fontSize="sm">2do Vencimiento: {' $ ' + monto.cuota_reducida_2venc}</Text>
                       <Text fontSize="sm">3er Vencimiento: {' $ ' + monto.cuota_reducida_3venc}</Text>
+                      
                     </Box>
                   </Td>
                   <Td p={1}>
@@ -158,6 +161,9 @@ const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
                     </Text>
                     <Text>
                       3er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_3}</Box>
+                    </Text>
+                    <Text as="span" fontWeight="bold" color="black">
+                      Limite de Baja: {monto.fecha_limite_baja ? monto.fecha_limite_baja.toString() : 'N/A'}
                     </Text>
                   </Td>
                   <Td p={1}>

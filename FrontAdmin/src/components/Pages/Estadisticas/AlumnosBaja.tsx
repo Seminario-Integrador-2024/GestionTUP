@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import ModalComponent from '../../Modal/ModalConfirmarCambios';
+import { bajasSolicitadas, responderBaja, dadosDeBaja } from '../../../API-Alumnos/DarseBaja';
 
 interface BajaInfo {
   dni: number;
   nombre: string;
   motivo: string;
-  solicitud: string;
+  estado: string;
+  estado_academico: string;
+  puede_solicitar: boolean;
 }
 
 const AlumnosBaja = () => {
@@ -14,13 +17,16 @@ const AlumnosBaja = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBaja, setSelectedBaja] = useState<BajaInfo | null>(null);
   const [accion, setAccion] = useState<'aceptar' | 'rechazar'>('aceptar');
+  const [alumnosBajas, setAlumnosBajas] = useState<BajaInfo[]>([]);
 
   useEffect(() => {
-    // Obtener las solicitudes de baja del local storage
-    const bajaAlumnos = localStorage.getItem('bajaAlumnos');
-    if (bajaAlumnos) {
-      setBajas(JSON.parse(bajaAlumnos));
-    }
+    const fetchBajas = async () => {
+      const bajaAlumnos = await bajasSolicitadas();
+      if (bajaAlumnos) {
+        setBajas(bajaAlumnos); // Asumiendo que bajasSolicitadas() devuelve un arreglo de BajaInfo
+      }
+    };
+    fetchBajas();
   }, []);
 
   const handleAceptar = (baja: BajaInfo) => {
@@ -35,36 +41,86 @@ const AlumnosBaja = () => {
     setIsModalOpen(true);
   };
 
+  useEffect(() => {
+    const fetchBajas = async () => {
+      const alumnosDadosDeBaja = await dadosDeBaja();
+      if (alumnosDadosDeBaja) {
+        setAlumnosBajas(alumnosDadosDeBaja); 
+        console.log(alumnosDadosDeBaja);
+      }
+    };
+    fetchBajas();
+  }, []);
+  
+
   const confirmarAccion = () => {
     if (selectedBaja) {
-      const nuevasBajas = bajas.map(baja =>
-        baja.dni === selectedBaja.dni ? { ...baja, solicitud: accion === 'aceptar' ? 'aceptado' : 'rechazado' } : baja
+      const nuevasBajas = bajas.map(async bajaItem =>
+        bajaItem.dni === selectedBaja.dni
+          ? await responderBaja(selectedBaja.dni, accion === 'aceptar' ? 'ACEPTADO' : 'RECHAZADO')
+          : bajaItem
       );
-      localStorage.setItem('bajaAlumnos', JSON.stringify(nuevasBajas));
-      setBajas(nuevasBajas);
-      console.log(`Solicitud de baja ${accion} para el alumno con DNI: ${selectedBaja.dni}`);
     }
+    setIsModalOpen(false);
+    window.location.reload(); 
   };
 
   return (
     <div>
-
-      {bajas.length === 0 ? (
-        <Text textAlign="center">No hay solicitudes de baja.</Text>
-      ) : (
+      { 
         bajas.map(baja => (
           <Box key={baja.dni} p={4} borderWidth={1} borderRadius="md" mb={4}>
-            <Text><strong>Nombre:</strong> {baja.nombre}</Text>
-            <Text><strong>DNI:</strong> {baja.dni}</Text>
-            <Text><strong>Motivo:</strong> {baja.motivo}</Text>
-            <Text><strong>Estado:</strong> {baja.solicitud.toUpperCase()}</Text>
+            <Text>
+              <strong>Nombre:</strong> {baja.nombre}
+            </Text>
+            <Text>
+              <strong>DNI:</strong> {baja.dni}
+            </Text>
+            <Text>
+              <strong>Motivo:</strong> {baja.motivo}
+            </Text>
+            <Text>
+              <strong>Estado:</strong> {baja.estado.toUpperCase()}
+            </Text>
+            
             <Flex mt={2} justifyContent="space-between">
-              <Button colorScheme="green" onClick={() => handleAceptar(baja)}>Aceptar</Button>
-              <Button colorScheme="red" onClick={() => handleRechazar(baja)}>Rechazar</Button>
+              <Button colorScheme="green" onClick={() => handleAceptar(baja)}>
+                Aceptar
+              </Button>
+              <Button colorScheme="red" onClick={() => handleRechazar(baja)}>
+                Rechazar
+              </Button>
             </Flex>
           </Box>
         ))
+      }
+      {selectedBaja && (
+        <ModalComponent
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          texto={`¿Está seguro que desea ${accion} la solicitud de baja del alumno ${selectedBaja.nombre}?`}
+          confirmar={confirmarAccion}
+        />
       )}
+       {
+        alumnosBajas.map(baja => (
+          <Box key={baja.dni} p={4} borderWidth={1} borderRadius="md" mb={4}>
+            <Text>
+              <strong>Nombre:</strong> {baja.nombre}
+            </Text>
+            <Text>
+              <strong>DNI:</strong> {baja.dni}
+            </Text>
+            <Text>
+              <strong>Motivo:</strong> {baja.motivo}
+            </Text>
+            <Text>
+              <strong>Estado:</strong> {baja.estado.toUpperCase()}
+            </Text>
+            
+          </Box>
+        ))
+      }
       {selectedBaja && (
         <ModalComponent
           isOpen={isModalOpen}
