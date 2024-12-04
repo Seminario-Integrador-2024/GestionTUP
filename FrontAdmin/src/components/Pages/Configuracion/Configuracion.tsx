@@ -61,13 +61,13 @@ function Configuracion() {
         )}
       </GridItem>
       <Box position="fixed" bottom="0" width="90%" bg="white" p="10px" boxShadow="md">
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="center" alignItems="center" width="100%" gap="20px">
           <Button onClick={handlePreviousPage} isDisabled={offset === 0} color="white">
-            Anterior
+            {'<< Anterior'}
           </Button>
           <Text>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCount / limit)}</Text>
           <Button onClick={handleNextPage} isDisabled={offset + limit >= totalCount} color="white">
-            Siguiente
+            {'Siguiente >>'}
           </Button>
         </Flex>
       </Box>
