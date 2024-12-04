@@ -42,8 +42,8 @@ function InformarPago() {
     return (
 
 
-        <Stack
-            display={["none", "none", "flex", "flex"]}
+        <Flex
+       
             justifyContent="center"
             alignItems="center"
             direction="column"
@@ -62,7 +62,7 @@ function InformarPago() {
                  >Informar Pago</Button>
                 </Flex>
                 <DrawerInformar isOpen={isOpen} onClose={onClose} cuotasseleccionadas={cuotasSeleccionadas} onRefresh={handleRefresh}/>
-        </Stack>
+        </Flex>
     );
 }
 

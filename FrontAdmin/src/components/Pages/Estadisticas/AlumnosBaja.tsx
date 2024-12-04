@@ -46,7 +46,6 @@ const AlumnosBaja = () => {
       const alumnosDadosDeBaja = await dadosDeBaja();
       if (alumnosDadosDeBaja) {
         setAlumnosBajas(alumnosDadosDeBaja); 
-        console.log(alumnosDadosDeBaja);
       }
     };
     fetchBajas();

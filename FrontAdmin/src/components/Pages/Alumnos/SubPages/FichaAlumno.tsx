@@ -23,6 +23,7 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Spinner
 } from '@chakra-ui/react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import logoUser from '../../../icons/logo-user.png';
@@ -224,7 +225,7 @@ function FichaAlumno() {
         if (!dni) return
         const dniNumber = parseInt(dni, 10); // Convierte a número
         const data = await FetchResumenPagos(dniNumber);
-        setPagos(data);
+                setPagos(data);
       } catch (error) {
         console.error('Error al obtener los datos', error);
       } finally {
@@ -344,17 +345,24 @@ function FichaAlumno() {
   };
   
 
-  if (loading) {
-    return <Text>Cargando...</Text>;
+  if (loading || !alumno) {
+    return <Flex justifyContent="center" alignItems="center" mt="40px">
+    <Spinner
+      w="35px"
+      h="35px"
+      thickness='4px'
+      speed='0.65s'
+      emptyColor='gray.200'
+      color='blue.500'
+      size='xl'
+    />
+  </Flex>
   }
 
   if (error) {
     return <Text>Error al cargar los datos.</Text>;
   }
 
-  if (!alumno) {
-    return <Text>No se encontraron datos.</Text>;
-  }
 
   return (
 
@@ -522,8 +530,8 @@ function FichaAlumno() {
                               <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado - cuota.valorinformado)}</Td>
+                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Td>
                               <Td textAlign="center" p="8px">{
                                 cuota.valorinformado > 0 || cuota.valorpagado > 0 ?
                                   <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button>

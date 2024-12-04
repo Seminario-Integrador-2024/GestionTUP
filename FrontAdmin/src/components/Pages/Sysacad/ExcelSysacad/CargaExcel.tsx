@@ -124,12 +124,14 @@ function CargaExcel() {
                     <Button onClick={handleReset} variant="light" w={{ base: '100%', sm: 'auto' }}>Volver a Intentar</Button>
                 </Stack>
             </Stack>
+
             {isLoading && (
                 <Alert status='info'>
                     <AlertIcon />
                     Este proceso puede tardar unos minutos.
                 </Alert>
             )}
+
             <Stack>
                 <Resultado data={data} />
             </Stack>

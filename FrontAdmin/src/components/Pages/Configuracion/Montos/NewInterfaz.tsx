@@ -50,7 +50,6 @@ interface CardCargaProps {
 }
 
 const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
-  console.log(compromisos)
   const [montos, setMontos] = useState<Compromiso[]>([]);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -163,7 +162,7 @@ const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
                       3er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_3}</Box>
                     </Text>
                     <Text as="span" fontWeight="bold" color="black">
-                      Limite de Baja: {monto.fecha_limite_baja ? monto.fecha_limite_baja.toString() : 'N/A'}
+                      Límite de Baja: {monto.fecha_limite_baja ? monto.fecha_limite_baja.toString() : 'N/A'}
                     </Text>
                   </Td>
                   <Td p={1}>
