@@ -110,10 +110,19 @@ function CargaExcel() {
                     <Button onClick={handleReset} variant="light">Volver a Intentar</Button>
                 </Stack>
             </Stack>
-            {isLoading && <Alert status='info'>
-                    <AlertIcon />
-                        Este proceso puede tardar unos minutos.
-            </Alert>}
+            {isLoading && 
+                    
+                    <Button  
+                        isLoading
+                        loadingText='Este proceso puede tardar unos minutos.' 
+                        background={'#FFD700'}
+                        _hover={{ bg: "#FFD700" }}
+                        color={"#000000!important"}
+                    >
+                         
+                    </Button>
+                       
+            }
             <Stack>
                 <Resultado data={data} />
             </Stack>

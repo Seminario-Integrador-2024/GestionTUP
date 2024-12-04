@@ -68,7 +68,6 @@ const ListadoMaterias: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await FetchMaterias();
-        console.log('Materias recibidas:', data); // Verifica los datos
         if (data && Array.isArray(data.results)) {
           const sortedMaterias = data.results.sort((a: Materia, b: Materia) =>
             a.nombre.localeCompare(b.nombre)

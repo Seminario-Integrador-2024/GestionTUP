@@ -26,7 +26,6 @@ function Inhabilitados() {
     const fetchData = async () => {
       const response = await getInhabilitaciones(limit1, offset1);
       setInhabilitados(response.results);
-      console.log(inhabilitados);
       setTotalInhabilitados(response.count);
       setLoading(false);
     };

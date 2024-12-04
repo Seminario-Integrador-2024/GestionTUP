@@ -23,6 +23,7 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Spinner
 } from '@chakra-ui/react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import logoUser from '../../../icons/logo-user.png';
@@ -344,17 +345,24 @@ function FichaAlumno() {
   };
   
 
-  if (loading) {
-    return <Text>Cargando...</Text>;
+  if (loading || !alumno) {
+    return <Flex justifyContent="center" alignItems="center" mt="40px">
+    <Spinner
+      w="35px"
+      h="35px"
+      thickness='4px'
+      speed='0.65s'
+      emptyColor='gray.200'
+      color='blue.500'
+      size='xl'
+    />
+  </Flex>
   }
 
   if (error) {
     return <Text>Error al cargar los datos.</Text>;
   }
 
-  if (!alumno) {
-    return <Text>No se encontraron datos.</Text>;
-  }
 
   return (
 
