@@ -225,7 +225,7 @@ function FichaAlumno() {
         if (!dni) return
         const dniNumber = parseInt(dni, 10); // Convierte a número
         const data = await FetchResumenPagos(dniNumber);
-        setPagos(data);
+                setPagos(data);
       } catch (error) {
         console.error('Error al obtener los datos', error);
       } finally {
@@ -530,8 +530,8 @@ function FichaAlumno() {
                               <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado - cuota.valorinformado)}</Td>
+                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Td>
                               <Td textAlign="center" p="8px">{
                                 cuota.valorinformado > 0 || cuota.valorpagado > 0 ?
                                   <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button>
