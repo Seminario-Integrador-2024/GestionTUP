@@ -176,7 +176,7 @@ const DarseBaja = () => {
             alumno?.estado_academico === 'Baja solicitada' ||
             alumno?.estado_academico === 'ACEPTADO' ||
             alumno?.estado_academico === 'RECHAZADO' ||
-            !puedeSolicitarBaja  // Aquí agregamos la condición
+            !puedeSolicitarBaja //estado academico enrrealidad de estado de baja, fue un cambio de ultimo momento que se decidio hacer en el backend para no tener que cambiar el front
           }
         >
           Solicitar Baja
