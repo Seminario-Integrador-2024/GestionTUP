@@ -93,8 +93,16 @@ function CargaExcel() {
 
     return (
         <Stack direction="column" align="center">
-            <Stack direction="column" spacing={4} align="center" bg="secundaryBg" padding={5} borderRadius={10} w={550}>
-                <Text fontSize="xl">Procesar Excel de Sysacad</Text>
+            <Stack
+                direction="column"
+                spacing={4}
+                align="center"
+                bg="secundaryBg"
+                padding={5}
+                borderRadius={10}
+                w={{ base: '70%', sm: '80%', md: '90%', lg: '100%' }} // Responsivo para el ancho
+            >
+                <Text fontSize={{ base: 'lg', sm: 'xl', md: '2xl' }}>Procesar Excel de Sysacad</Text>
                 <ZonaCarga
                     onFileUpload={handleFileUpload}
                     reset={reset}
@@ -103,63 +111,79 @@ function CargaExcel() {
                     fileAux={fileAux}
                     setFileAux={setFileAux}
                 />
-                <Stack direction="row" padding={2} gap={4}>
-                    <Button onClick={handleUploadClick} color="white" isDisabled={!fileUploaded} _hover={{ bg: "secundaryHover" }}>
+                <Stack direction="row" padding={2} gap={4} w="100%" justify="center">
+                    <Button
+                        onClick={handleUploadClick}
+                        color="white"
+                        isDisabled={!fileUploaded}
+                        _hover={{ bg: "secundaryHover" }}
+                        w={{ base: '100%', sm: 'auto' }} // Responsivo
+                    >
                         {isLoading ? 'Procesando...' : 'Cargar'}
                     </Button>
-                    <Button onClick={handleReset} variant="light">Volver a Intentar</Button>
+                    <Button onClick={handleReset} variant="light" w={{ base: '100%', sm: 'auto' }}>Volver a Intentar</Button>
                 </Stack>
             </Stack>
-            {isLoading && <Alert status='info'>
+            {isLoading && (
+                <Alert status='info'>
                     <AlertIcon />
-                        Este proceso puede tardar unos minutos.
-            </Alert>}
+                    Este proceso puede tardar unos minutos.
+                </Alert>
+            )}
             <Stack>
                 <Resultado data={data} />
             </Stack>
 
-            { excels.length > 0 ?
-            <Flex mb={5} mt={10} justifyContent={"center"} alignItems={"center"} w={"150%"} direction={"column"}>
-                <Flex justifyContent={"flex-start"} w={"100%"}>
-                    <Text fontWeight="bold" fontSize="xl" mb={2}>Historial de archivos cargados</Text>
-                </Flex>
-                <Box flex={1} w={"100%"}>
-                    <TableContainer
-                        border="2px"
-                        borderColor="#BABABA"
-                        borderRadius="md"
-                        width="100%"
-                        height="100%"
-                    >
-                        <Table variant="unstyled" size="sm">
-                            <Thead>
-                                <Tr borderBottom="1px" borderColor="#BABABA" p={5}>
-                                    <Th textAlign="center" fontWeight="bold" borderBottom="1px" borderColor="#BABABA">Numero</Th>
-                                    <Th textAlign="center" fontWeight="bold" borderBottom="1px" borderColor="#BABABA">Cargado el</Th>
-                                    <Th textAlign="center" fontWeight="bold" borderBottom="1px" borderColor="#BABABA" w={"10%"}>Descargar</Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {excels.map((excel: any, index) => (
-                                    <Tr borderColor="#BABABA" key={index}>
-                                        <Td textAlign="center">{excel.id}</Td>
-                                        <Td textAlign="center">{extractDateFromUrl(excel.excel)}</Td>
-                                        <Td textAlign="center">
-                                            <IconButton
-                                                colorScheme="blue"
-                                                aria-label="Descargar"
-                                                icon={<DownloadIcon />}
-                                                onClick={() => window.open(`${excel.excel}`, '_blank')}
-                                            />
-                                        </Td>
+            {excels.length > 0 && (
+                <Flex mb={5} mt={10} justifyContent={"center"} alignItems={"center"} w="100%" direction="column">
+                    <Flex justifyContent={"flex-start"} w="100%">
+                        <Text fontWeight="bold" fontSize={{ base: 'lg', sm: 'xl', md: '2xl' }} mb={2}>
+                            Historial de archivos cargados
+                        </Text>
+                    </Flex>
+                    <Box flex={1} w="100%">
+                        <TableContainer
+                            border="2px"
+                            borderColor="#BABABA"
+                            borderRadius="md"
+                            width="100%"
+                            height="100%"
+                        >
+                            <Table variant="unstyled" size="sm">
+                                <Thead>
+                                    <Tr borderBottom="1px" borderColor="#BABABA" p={5}>
+                                        <Th textAlign="center" fontWeight="bold" borderBottom="1px" borderColor="#BABABA">
+                                            Numero
+                                        </Th>
+                                        <Th textAlign="center" fontWeight="bold" borderBottom="1px" borderColor="#BABABA">
+                                            Cargado el
+                                        </Th>
+                                        <Th textAlign="center" fontWeight="bold" borderBottom="1px" borderColor="#BABABA" w="10%">
+                                            Descargar
+                                        </Th>
                                     </Tr>
-                                ))}
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
-                </Box>
-            </Flex>
-            : null }
+                                </Thead>
+                                <Tbody>
+                                    {excels.map((excel: any, index) => (
+                                        <Tr borderColor="#BABABA" key={index}>
+                                            <Td textAlign="center">{excel.id}</Td>
+                                            <Td textAlign="center">{extractDateFromUrl(excel.excel)}</Td>
+                                            <Td textAlign="center">
+                                                <IconButton
+                                                    colorScheme="blue"
+                                                    aria-label="Descargar"
+                                                    icon={<DownloadIcon />}
+                                                    onClick={() => window.open(`${excel.excel}`, '_blank')}
+                                                />
+                                            </Td>
+                                        </Tr>
+                                    ))}
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                </Flex>
+            )}
         </Stack>
     );
 }
