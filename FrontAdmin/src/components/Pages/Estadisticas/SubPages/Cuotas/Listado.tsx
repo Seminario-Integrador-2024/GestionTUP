@@ -84,11 +84,9 @@ export default function Listado() {
     useEffect(() => {
         const fetchAbonaron = async (fecha: string) => {
             const data = await AbonaronCuota(fecha, limit2, offset2, filter);
-            console.log(data)
 
             if (data.alumnos?.results?.length > 0) {
                 setAbonaron(data.alumnos.results);
-                console.log(abonaron)
                 setMTotalAbonaron(data.recaudado_por_el_mes);
                 setTotalAbonaron(data.alumnos.count);
             }

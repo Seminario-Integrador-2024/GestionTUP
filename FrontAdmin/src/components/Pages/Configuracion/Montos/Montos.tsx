@@ -143,7 +143,6 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     if (name.includes('monto') || name === 'matricula' || name.includes('cuota')) {
       setTempMonto({

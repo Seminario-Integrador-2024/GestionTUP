@@ -18,7 +18,6 @@ export const FetchMontos = async (offset: number, limit: number) => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       return data;
     } else {
       throw new Error('Error en la respuesta del servidor');
