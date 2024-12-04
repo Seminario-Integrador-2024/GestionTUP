@@ -134,11 +134,10 @@ export default function TablaMaterias() {
                 <Table variant="simple">
                     <Thead>
                         <Tr bg="secundaryBg">
-                            <Th>Cod. Materia</Th>
-                            <Th>Nombre</Th>
-                            
-                            <Th>Cuatrimestre</Th>
-                            <Th>Plan</Th>
+                            <Th textAlign="center">Cod. Materia</Th>
+                            <Th textAlign="center">Nombre</Th>
+                            <Th textAlign="center">Cuatrimestre</Th>
+                            <Th textAlign="center">Plan</Th>
                             <Th textAlign="center">Acciones</Th>
                         </Tr>
                     </Thead>
