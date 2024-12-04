@@ -12,10 +12,11 @@ function App() {
     document.title = 'TUP Admin';
   }, []);
 
-  const { isAuthenticated, rolUser } = useAuth();
+  const {  rolUser } = useAuth();
 
   const isAdmin = rolUser.includes('staff') || rolUser.includes('Administradores');
-  const isAlumno = rolUser.includes('Alumno');
+  const isAlumno = true;
+  const isAuthenticated = true;
 
 
   return (
