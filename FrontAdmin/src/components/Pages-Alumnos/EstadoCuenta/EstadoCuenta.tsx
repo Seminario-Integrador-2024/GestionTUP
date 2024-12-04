@@ -269,44 +269,48 @@ function InformarPago() {
         </Tag>
       </Box>
 
-      <Box  w="100%" mb={7} display={"flex"} gap={2} flexDirection={"row"} alignItems={"center"} justifyContent={"center"}>
-        <Tag w={"100%"} p="10px" fontSize={16}>
-          <Text color="gray">
-            Último Compromiso de Pago:
-          </Text>
-          <Text size="sm" pl="8px" fontWeight="semibold">
-            {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
-          </Text>
+      <Box w="100%" mb={7} display="flex" gap={2} flexDirection={{ base: "column", sm: "row" }} alignItems="center" justifyContent="center" flexWrap="wrap">
+        <Tag flex="1" p="10px" fontSize={16}>
+          <Flex alignItems="center" direction={{ base: "column", md: "row" }}>
+            <Text color="gray" textAlign="center">
+              Último Compromiso de Pago:
+            </Text>
+            <Text size="sm" fontWeight="semibold">
+              {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
+            </Text>
+          </Flex>
         </Tag>
-        <Tag w={"100%"} p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"} >
-          <Text color="gray">
-            Condición Sysacad:
-          </Text>
-          <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno?.estado_academico}
-          </Text>
+        <Tag flex="1" p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"}>
+          <Flex alignItems="center" justifyContent="center" direction={{ base: "column", md: "row" }}>
+            <Text color="gray">
+              Condición Sysacad:
+            </Text>
+            <Text size="sm" fontWeight="semibold">
+            {alumno?.estado_academico}
+            </Text>
+          </Flex>
         </Tag>
-          {alumno?.estado_financiero === 'Inhabilitado' ? 
-          <Tag w={"100%"} p="10px" fontSize={16} bg="#FF8A8A">
+        {alumno?.estado_financiero === 'Inhabilitado' ? (
+          <Tag flex="1" p="10px" fontSize={16} bg="#FF8A8A">
             <Text color="gray">
               Motivo:
-            </Text> 
+            </Text>
             <Text size="sm" pl="8px" fontWeight="semibold">
               Deudor
             </Text>
           </Tag>
-            :
-            <Tag w={"100%"} p="10px" fontSize={16}>
-                <Text color="gray">
-                Ultimo Periodo Cursado
-              </Text>
-              <Text size="sm" pl="8px" fontWeight="semibold">
+        ) : (
+          <Tag flex="1" p="10px" fontSize={16}>
+            <Text color="gray">
+              Ultimo Periodo Cursado
+            </Text>
+            <Text size="sm" pl="8px" fontWeight="semibold">
               {alumnoInfo.ultimo_cursado}
-              </Text>
+            </Text>
           </Tag>
-          }
-          
+        )}
       </Box>
+
       <Box  w={"100%"} display={"flex"} justifyContent={"center"}  >
                   {cuotas.length > 0 ? (
                     <Table variant="simple" width="90%" borderColor={"gray.200"}
