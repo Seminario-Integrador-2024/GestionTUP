@@ -29,6 +29,8 @@ export function SidebarContent({ onClose, LINK_ITEMS, ...rest }: SidebarProps) {
       borderRight="1px"
       borderColor="gray.300"
       w={{ base: 'full', md: '100px' }}
+      background='white'
+      zIndex='10'
       pos="fixed"
       h="100%"
       {...rest}
