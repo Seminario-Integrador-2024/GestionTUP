@@ -34,7 +34,13 @@ export default function Admin() {
         onOverlayClick={onClose}
         size="xs"
       >
-        <DrawerContent>
+        <DrawerContent
+                  style={{
+                    width: '80px', // Establece el ancho a 30px
+                    maxWidth: '80px', // Asegura que no sea más grande que 30px
+                    minWidth: '80px', // Asegura que no sea más pequeño que 30px
+                  }}
+        >
           <SidebarContent onClose={onClose} LINK_ITEMS={LINK_ITEMS} />
         </DrawerContent>
       </Drawer>
