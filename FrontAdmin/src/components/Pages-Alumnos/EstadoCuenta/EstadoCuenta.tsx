@@ -19,7 +19,7 @@ interface Cuota {
     numero: number,
     montoActual: number;
     fechaVencimiento: string;
-    valorpagado: number;
+    monto_pagado: number;
     estado: string;
     tipo: string;
     valorinformado: number;
@@ -158,6 +158,7 @@ function InformarPago() {
     const fetchPagos = async () => {
       try {
         const data = await FetchResumenPagos(undefined);
+        console.log('pagos:', data);
         setPagos(data);
       } catch (error) {
         setError(error);
@@ -349,11 +350,11 @@ function InformarPago() {
                             <Td textAlign="center">{cuota.numero}</Td>
                             <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado)}</Td>
                             <Td textAlign="center" p="8px">{
-                              cuota.valorinformado > 0 || cuota.valorpagado > 0  ? 
+                              cuota.valorinformado > 0 || cuota.monto_pagado > 0  ? 
                                 <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
                               : 
                               <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
@@ -420,11 +421,11 @@ function InformarPago() {
                                   <Td textAlign="center">{cuota.nro_cuota}</Td>
                                   <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuotaCompleta ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) )}</Td>
                                   <Td textAlign="center">
-                                  {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (calcularMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) }
+                                  {'$ 0 '/*  + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (calcularMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) */ }
                                     </Td>
                                   <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                   <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
-                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.monto_informado > cuota.monto ? cuota.monto : pago.monto_informado)}</Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                 </>
                               ) : null
                             ))}

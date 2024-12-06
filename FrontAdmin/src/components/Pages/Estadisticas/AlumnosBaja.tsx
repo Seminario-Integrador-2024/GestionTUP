@@ -68,7 +68,7 @@ const AlumnosBaja = () => {
     <div>
       { 
         bajas.map(baja => (
-          <Box key={baja.dni} p={4} borderWidth={1} borderRadius="md" mb={4}>
+          <Box key={baja.dni} p={4} borderWidth={1} borderRadius="md" mb={4} mt={4}>
             <Text>
               <strong>Nombre:</strong> {baja.nombre}
             </Text>
@@ -103,21 +103,21 @@ const AlumnosBaja = () => {
       )}
        {
         alumnosBajas.map(baja => (
-          <Box key={baja.dni} p={4} borderWidth={1} borderRadius="md" mb={4}>
-            <Text>
+          <Flex key={baja.dni} p={4} borderWidth={1} borderRadius="md" mb={4} padding={4} >
+            <Text m={4}>
               <strong>Nombre:</strong> {baja.nombre}
             </Text>
-            <Text>
+            <Text m={4}>
               <strong>DNI:</strong> {baja.dni}
             </Text>
-            <Text>
+            <Text m={4}>
               <strong>Motivo:</strong> {baja.motivo}
             </Text>
-            <Text>
-              <strong>Estado:</strong> {baja.estado.toUpperCase()}
+            <Text m={4}>
+              <strong>Estado de la solicitud:</strong> {baja.estado.toUpperCase()}
             </Text>
             
-          </Box>
+          </Flex>
         ))
       }
       {selectedBaja && (

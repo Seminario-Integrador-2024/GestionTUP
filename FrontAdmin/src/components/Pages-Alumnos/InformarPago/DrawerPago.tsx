@@ -33,7 +33,7 @@ interface Cuota {
     numero: number;
     montoActual: number;
     fechaVencimiento: string;
-    valorpagado: number;
+    monto_pagado: number;
     estado: string;
     tipocuota: string;
     valorinformado: number;
@@ -121,7 +121,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
     
     useEffect(() => {
-      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0);
+      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.monto_pagado - cuota.valorinformado), 0);
       setTotal(calculatedTotal);
       setMontoAbonado(calculatedTotal);
   }, [isOpen, cuotasseleccionadas]);

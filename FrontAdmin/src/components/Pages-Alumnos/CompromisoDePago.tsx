@@ -108,7 +108,6 @@ export default function CompromisoDePago() {
 
   useEffect(() => {
     if (ultimo) {
-      console.log(ultimo);
       if (ultimo.firmo_ultimo_compromiso === true) {
         setUltimoCompromiso(true);
       }
@@ -167,7 +166,7 @@ export default function CompromisoDePago() {
         </Flex>
 
         <Flex justifyContent={isMobile ? "center" : "flex-end"} mt={4} mb={4} flex={1} width="100%">
-          <Button colorScheme="teal" isDisabled={ultimoCompromiso || adeuda || error} onClick={handleFirmar}>
+          <Button colorScheme="teal" isDisabled={ultimoCompromiso || adeuda} onClick={handleFirmar}>
             Firmar
           </Button>
         </Flex>

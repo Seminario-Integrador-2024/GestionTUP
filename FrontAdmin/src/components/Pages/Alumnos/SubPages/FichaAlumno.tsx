@@ -54,7 +54,7 @@ interface Alumno {
   estado_academico: string;
   estado_financiero: string;
   ultimo_cursado: string;
-  cuil: string;
+  cuil_alumno: string;
 }
 
 
@@ -62,7 +62,7 @@ interface Cuota {
   numero: number;
   montoActual: number;
   fechaVencimiento: string;
-  valorpagado: number;
+  monto_pagado: number;
   estado: number;
   tipocuota: string;
   valorinformado: number;
@@ -84,7 +84,7 @@ interface Cuota {
   numero: number,
   montoActual: number;
   fechaVencimiento: string;
-  valorpagado: number;
+  monto_pagado: number;
   estado: number; //whats this?
   tipo: string;
   valorinformado: number;
@@ -389,7 +389,7 @@ function FichaAlumno() {
           CUIL:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno.cuil}
+          {alumno.cuil_alumno}
         </Text>
         <Text color="gray" mt="10px">
           Legajo:
@@ -529,11 +529,11 @@ function FichaAlumno() {
                               <Td textAlign="center">{cuota.numero}</Td>
                               <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado - cuota.valorinformado)}</Td>
+                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
+                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Td>
                               <Td textAlign="center" p="8px">{
-                                cuota.valorinformado > 0 || cuota.valorpagado > 0 ?
+                                cuota.valorinformado > 0 || cuota.monto_pagado > 0 ?
                                   <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button>
                                   :
                                   <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
