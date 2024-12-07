@@ -41,6 +41,8 @@ import DarseBaja from './components/Pages-Alumnos/DarseBaja/DarseBaja';
 import Deuda from './components/Pages/Estadisticas/SubPages/Pagos/Deuda';
 import PendientesFirma from './components/Pages/Estadisticas/SubPages/PendientesFirma';
 import Tareas from './components/Pages/TareasProgramadas/Tareas';
+import Excels from './components/Pages/Excels/Excels';
+import TablaMaterias from './components/Pages/Sysacad/Materias/TablaMaterias';
 
 const routes = [
   {
@@ -126,16 +128,16 @@ const routes = [
     ],
   },
   {
-    path: 'sysadmin',
-    title: 'SysAdmin',
-    element: <Sysadmin/>,
+    path: 'excels',
+    title: 'Excels',
+    element: <Excels/>,
     icon: iconSysAdmin,
     rol: 'admin',
   },
   {
-    path: 'sysacad',
+    path: 'academica',
     title: 'Academica',
-    element: <Sysacad />,
+    element: <TablaMaterias />,
     icon: iconSysAcad,
     rol: 'admin',
   },

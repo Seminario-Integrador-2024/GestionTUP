@@ -1,8 +1,8 @@
 import { actualizarinhabilitaciones, actualizarmaterias, actualizarpagos, actualizarcuotas } from "../../../API/TareasProgramadas";
 import { useEffect, useState } from "react";
-import {Flex, Box, Button, Heading, Text, useDisclosure, Alert} from '@chakra-ui/react';
+import {Flex, Box, Button, Heading, Text, useDisclosure, Alert, Spinner} from '@chakra-ui/react';
 import ModalComponent from "../../Modal/ModalConfirmarCambios";
-import { useToast } from "@chakra-ui/react";
+import { useToast } from "../../Toast/useToast";
 import { CiPlay1 } from "react-icons/ci";
 
 function Tareas() {
@@ -13,109 +13,79 @@ function Tareas() {
   const {isOpen: isOpen4, onOpen: onOpen4, onClose: onClose4} = useDisclosure();
   const {isOpen: isOpen5, onOpen: onOpen5, onClose: onClose5} = useDisclosure();
   const toast = useToast();
+  const [loadingPagos, setLoadingPagos] = useState(false);
+  const [loadingInhabilitaciones, setLoadingInhabilitaciones] = useState(false);
+  const [loadingMaterias, setLoadingMaterias] = useState(false);
+  const [loadingCuotas, setLoadingCuotas] = useState(false);
 
   const handleconfirmarpagos = async() => {
+    setLoadingPagos(true);
     try {
-      await actualizarpagos();
+      const response = await actualizarpagos();
       onClose();
-      toast({
-        title: "Proceso ejecutado correctamente",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
+      toast('Exito', `${response[0].mensaje}`, 'success');
     } catch (error) {
-      toast({
-        title: "Proceso no ejecutado",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      })
+      toast('Error', 'Proceso no ejecutado', 'error');
     }
+    setLoadingPagos(false);
   }
 
   const handleactualizarmaterias = async() => {
+    setLoadingMaterias(true);
     try {
-      await actualizarmaterias();
+      const response = await actualizarmaterias();
       onClose3();
-      toast({
-        title: "Proceso ejecutado correctamente",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
+      toast('Exito', `${response[0].mensaje}`, 'success');
     } catch (error) {
-      toast({
-        title: "Proceso no ejecutado",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      })
+      toast('Error', 'Proceso no ejecutado', 'error');
     }
+    setLoadingMaterias(false);
   }
 
     const handleactualizarinhabilitaciones = async() => {
+    setLoadingInhabilitaciones(true);
     try {
-      await actualizarinhabilitaciones();
+      const response = await actualizarinhabilitaciones();
       onClose2();
-      toast({
-        title: "Proceso ejecutado correctamente",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
+      toast('Exito', `${response[0].mensaje}`, 'success');
     } catch (error) {
-      toast({
-        title: "Proceso no ejecutado",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      })
+      toast('Error', 'Proceso no ejecutado', 'error');
     }
+    setLoadingInhabilitaciones(false);
     }
 
     const handleactualizarcuotas = async() => {
+    setLoadingCuotas(true);
     try {
-        await actualizarcuotas();
+        const response = await actualizarcuotas();
         onClose4();
-        toast({
-            title: "Proceso ejecutado correctamente",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
-        } catch (error) {
-          toast({
-            title: "Proceso no ejecutado",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          })
-        }
+        toast('Exito', `${response[0].mensaje}`, 'success');
+    } catch (error) {
+      toast('Error', 'Proceso no ejecutado', 'error');
+    }
+    setLoadingCuotas(false);
     }
 
     const handleejecutartodos = async() => {
+      setLoadingCuotas(true);
+      setLoadingInhabilitaciones(true);
+      setLoadingMaterias(true);
+      setLoadingPagos(true);
         try {
             await actualizarpagos();
             await actualizarinhabilitaciones();
             await actualizarmaterias();
             await actualizarcuotas();
             onClose5();
-            toast({
-                title: "Proceso ejecutado correctamente",
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-              });
-            } catch (error) {
-              toast({
-                title: "Proceso no ejecutado",
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-              })
-            }
-        }
+            toast('Exito', `Todos los procesos fueron ejecutados correctamente`, 'success');
+          } catch (error) {
+            toast('Error', 'Proceso no ejecutado', 'error');
+          }
+          setLoadingCuotas(false);
+          setLoadingInhabilitaciones(false);
+          setLoadingMaterias(false);
+          setLoadingPagos(false);
+    }
 
   return (
     <div>
@@ -135,7 +105,7 @@ function Tareas() {
                  <Text ml={5}><li> <strong>Ejecución:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 23:00 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen} variant={'light'}>Ejecutar</Button>
+                <Button onClick={onOpen} variant={'light'}>{loadingPagos ? <Spinner size="sm" /> : 'Ejecutar'}</Button>
                 </Flex>
             </Box>
             <Box
@@ -149,7 +119,7 @@ function Tareas() {
                  <Text ml={5}><li> <strong>Ejecución:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 00:00 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen2} variant={'light'}>Ejecutar</Button>
+                <Button onClick={onOpen2} variant={'light'}>{loadingInhabilitaciones ? <Spinner size="sm" /> : 'Ejecutar' }</Button>
                 </Flex>
             </Box>
             <Box
@@ -165,7 +135,7 @@ function Tareas() {
                     - 2do cuatrimestre del 12 julio al  2 agosto a las 00:00 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen3} variant={'light'}>Ejecutar</Button>
+                <Button onClick={onOpen3} variant={'light'}>{loadingMaterias ? <Spinner size="sm" /> : 'Ejecutar'}</Button>
                 </Flex>
             </Box>
             <Box
@@ -180,7 +150,7 @@ function Tareas() {
                  <Text ml={5}><li> <strong>Ejecución:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 23:59 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen4} variant={'light'}>Ejecutar</Button>
+                <Button onClick={onOpen4} variant={'light'}>{loadingCuotas ? <Spinner size="sm" /> : 'Ejecutar'}</Button>
                 </Flex>
             </Box>
         </Flex>
