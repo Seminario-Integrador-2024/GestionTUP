@@ -123,7 +123,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
   };
 
   const [tempMonto, setTempMonto] = useState<Compromiso>({
-    anio: getCurrentDateTime(),
+    anio: 0,
     fecha_carga_comp_pdf: '',
     cuatrimestre: '',
     archivo_pdf_url: '',
@@ -227,8 +227,12 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       return now.toISOString();
     };
     let fechaAux = getCurrentDateTime();
-    
-    if (tempMonto.cuatrimestre === '1C') {
+
+   if (tempMonto.cuatrimestre === '' ) {
+      setTempMonto({...tempMonto, cuatrimestre: "1C",  anio: fechaAux});
+    } else{
+   
+    if (tempMonto.cuatrimestre === '1C' ) {
       setTempMonto({...tempMonto, cuatrimestre: "2C",  anio: fechaAux});
     } else {
       let year = parseInt(fechaAux.split('-')[0], 10) + 1;
@@ -240,7 +244,8 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
         cuatrimestre: "1C",
         anio: fechaAux
       });
-    }}
+    }
+  }}
 }, [isOpen]);
 
 
@@ -267,7 +272,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 Cargar Documento
               </Button>
             </Flex>
-           <Text mb={1}>{new Date(tempMonto.anio).getFullYear()}/{tempMonto.cuatrimestre}</Text>
+           <Text mb={4} fontSize="2xl" fontWeight="bold">{new Date(tempMonto.anio).getFullYear()}/{tempMonto.cuatrimestre}</Text>
             
             <Text fontWeight="bold" mb={4}>Montos</Text>
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
