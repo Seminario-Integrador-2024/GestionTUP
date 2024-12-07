@@ -18,6 +18,8 @@ import {
   FaSignOutAlt,
 } from 'react-icons/fa';
 import { BsCashCoin } from 'react-icons/bs';
+import { CiPlay1 } from "react-icons/ci";
+import { VscDebugRerun } from "react-icons/vsc";
 import { RiContractLine } from 'react-icons/ri';
 import { CiSaveDown1 } from 'react-icons/ci';
 import Alumnos from './components/Pages/Alumnos/Alumnos';
@@ -38,6 +40,9 @@ import AlumnosBaja from './components/Pages/Estadisticas/AlumnosBaja';
 import DarseBaja from './components/Pages-Alumnos/DarseBaja/DarseBaja';
 import Deuda from './components/Pages/Estadisticas/SubPages/Pagos/Deuda';
 import PendientesFirma from './components/Pages/Estadisticas/SubPages/PendientesFirma';
+import Tareas from './components/Pages/TareasProgramadas/Tareas';
+import Excels from './components/Pages/Excels/Excels';
+import TablaMaterias from './components/Pages/Sysacad/Materias/TablaMaterias';
 
 const routes = [
   {
@@ -123,16 +128,16 @@ const routes = [
     ],
   },
   {
-    path: 'sysadmin',
-    title: 'SysAdmin',
-    element: <Sysadmin/>,
+    path: 'excels',
+    title: 'Excels',
+    element: <Excels/>,
     icon: iconSysAdmin,
     rol: 'admin',
   },
   {
-    path: 'sysacad',
+    path: 'academica',
     title: 'Academica',
-    element: <Sysacad />,
+    element: <TablaMaterias />,
     icon: iconSysAcad,
     rol: 'admin',
   },
@@ -142,6 +147,13 @@ const routes = [
     title: 'Configuración',
     rol: 'admin',
     icon: iconConfig,
+  },
+  {
+    path: 'procesos-automaticos',
+    element: <Tareas />,
+    title: 'Procesos Automáticos',
+    rol: 'admin',
+    icon: <VscDebugRerun size="30px" />,
   },
   {
     path: 'cuenta',
