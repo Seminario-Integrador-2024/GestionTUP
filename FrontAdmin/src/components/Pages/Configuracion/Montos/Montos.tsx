@@ -22,6 +22,7 @@ import { createCompromiso } from '../../../../API/Montos';
 import ModalCargarDocumento from '../ModalCargarDocumento';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { set } from 'date-fns';
 
 interface Compromiso {
   anio: string | number | Date;
@@ -106,6 +107,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+
   useEffect(() => {
     const sortedMontos = [...compromisos].sort((a, b) => {
       const dateA = new Date(a.fecha_carga_comp_pdf);
@@ -113,7 +115,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       return dateB.getTime() - dateA.getTime();
     });
     sortedMontos[0] ? setTempMonto(sortedMontos[0]) : null;
-  }, [compromisos]);
+  }, [compromisos]); // Ordeno de ultimo compromiso cargado al ultimo.
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -140,6 +142,8 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
   });
 
   const toast = useToast();
+
+
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
@@ -216,6 +220,30 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
     }
   };
 
+  useEffect(() => {
+    if (isOpen){
+    const getCurrentDateTime = () => {
+      const now = new Date();
+      return now.toISOString();
+    };
+    let fechaAux = getCurrentDateTime();
+    
+    if (tempMonto.cuatrimestre === '1C') {
+      setTempMonto({...tempMonto, cuatrimestre: "2C",  anio: fechaAux});
+    } else {
+      let year = parseInt(fechaAux.split('-')[0], 10) + 1;
+      fechaAux = `${year}${fechaAux.slice(4)}`;
+      console.log(fechaAux);
+  
+      setTempMonto({
+        ...tempMonto,
+        cuatrimestre: "1C",
+        anio: fechaAux
+      });
+    }}
+}, [isOpen]);
+
+
   return (
     <>
       <Button colorScheme="blue" onClick={onOpen} leftIcon={<AddIcon />}>
@@ -239,16 +267,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 Cargar Documento
               </Button>
             </Flex>
-            <Select
-              placeholder="Selecciona un cuatrimestre"
-              name="cuatrimestre"
-              mb={4}
-              bg="white"
-              onChange={(e) => setTempMonto({ ...tempMonto, cuatrimestre: e.target.value })}
-            >
-              <option value="1C">1er Cuatrimestre</option>
-              <option value="2C">2do Cuatrimestre</option>
-            </Select>
+           <Text mb={1}>{new Date(tempMonto.anio).getFullYear()}/{tempMonto.cuatrimestre}</Text>
             
             <Text fontWeight="bold" mb={4}>Montos</Text>
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
@@ -317,7 +336,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 <DatePicker
                   selected={tempMonto.fecha_limite_baja}
                   onChange={handleDateChange}
-                  dateFormat="YYYY-MM-DD"
+                  dateFormat="yyyy-MM-dd"
                   placeholderText="Selecciona una fecha"
                   customInput={<Input size="sm" bg="white" />}
                 />
