@@ -102,10 +102,10 @@ function Tareas() {
                 
                 <ul>
                  <Text ml={5}><li> <strong>Función:</strong> Encargado de imputar los pagos confirmados de cada alumno</li></Text>
-                 <Text ml={5}><li> <strong>Ejecución:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 23:00 hs </li></Text>
+                 <Text ml={5}><li> <strong>Ejecución automática:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 23:00 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen} variant={'light'}>{loadingPagos ? <Spinner size="sm" /> : 'Ejecutar'}</Button>
+                <Button onClick={onOpen} variant={'light'}>{loadingPagos ? <Spinner size="sm" /> : 'Ejecutar ahora'}</Button>
                 </Flex>
             </Box>
             <Box
@@ -116,10 +116,10 @@ function Tareas() {
                 <Heading fontSize={22} mb={2}>Actualizar Inhabilitaciones</Heading>
                 <ul>
                  <Text ml={5}><li> <strong>Función:</strong> Encargado de actualizar las inhabilitaciones registradas de cada alumno</li></Text>
-                 <Text ml={5}><li> <strong>Ejecución:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 00:00 hs </li></Text>
+                 <Text ml={5}><li> <strong>Ejecución automática:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 00:00 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen2} variant={'light'}>{loadingInhabilitaciones ? <Spinner size="sm" /> : 'Ejecutar' }</Button>
+                <Button onClick={onOpen2} variant={'light'}>{loadingInhabilitaciones ? <Spinner size="sm" /> : 'Ejecutar ahora' }</Button>
                 </Flex>
             </Box>
             <Box
@@ -131,11 +131,11 @@ function Tareas() {
                 <Heading fontSize={22} mb={2}>Actualizar Materias</Heading>
                 <ul>
                  <Text ml={5}><li> <strong>Función:</strong> Encargado de actualizar las materiasque cursa actualmente cada alumno</li></Text>
-                 <Text ml={5}><li> <strong>Ejecución:</strong> - 1er cuatrimestre del 12 febreo al 6 de marzo a las 00:00 hs 
+                 <Text ml={5}><li> <strong>Ejecución automática:</strong> 1er cuatrimestre del 12 febrero al 6 de marzo a las 00:00 hs 
                     - 2do cuatrimestre del 12 julio al  2 agosto a las 00:00 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen3} variant={'light'}>{loadingMaterias ? <Spinner size="sm" /> : 'Ejecutar'}</Button>
+                <Button onClick={onOpen3} variant={'light'}>{loadingMaterias ? <Spinner size="sm" /> : 'Ejecutar ahora'}</Button>
                 </Flex>
             </Box>
             <Box
@@ -147,10 +147,10 @@ function Tareas() {
                 <Heading fontSize={22} mb={2}>Actualizar Cuotas</Heading>
                 <ul>
                  <Text ml={5}><li> <strong>Función:</strong> Encargado de actualizar el monto de las cuotas según el vencimiento</li></Text>
-                 <Text ml={5}><li> <strong>Ejecución:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 23:59 hs </li></Text>
+                 <Text ml={5}><li> <strong>Ejecución automática:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 23:59 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
-                <Button onClick={onOpen4} variant={'light'}>{loadingCuotas ? <Spinner size="sm" /> : 'Ejecutar'}</Button>
+                <Button onClick={onOpen4} variant={'light'}>{loadingCuotas ? <Spinner size="sm" /> : 'Ejecutar ahora'}</Button>
                 </Flex>
             </Box>
         </Flex>

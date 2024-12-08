@@ -103,7 +103,7 @@ export default function AInhabilitar() {
                             <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">Apellido y Nombre</Th>
                             <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">DNI</Th>
                             <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">Legajo</Th>
-                            <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver Detalles</Th>
+                            <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver Cuotas Vencidas</Th>
                         </Tr>
                         </Thead>
                         <Tbody>

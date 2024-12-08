@@ -1,7 +1,7 @@
 import { title } from "process";
 
 export const ITEMS_SUBMENU = [
-  { url: 'inhabilitaciones', title: 'Inhabilitaciones', tooltip: 'Alumnos que se encuentran inhabilitados' },
+  { url: 'inhabilitaciones', title: 'Habilitar/Inhabilitar', tooltip: 'Alumnos que se encuentran inhabilitados' },
   { url: 'baja-provisoria', title: 'Baja Provisoria', tooltip: 'Alumnos que solicitaron la baja' },
   { url: 'cuotas', title: 'Cuotas' , tooltip: 'Alumnos que abonaron/adeudan una respectiva cuota' },
   { url: 'matricula', title: 'Matricula', tooltip: 'Alumnos que abonaron la matricula' },

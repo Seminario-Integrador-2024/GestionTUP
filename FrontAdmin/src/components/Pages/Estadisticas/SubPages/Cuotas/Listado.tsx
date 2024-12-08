@@ -143,10 +143,10 @@ export default function Listado() {
                         <Flex>
                             {loading2 ? <Flex justifyContent={"center"} w={"100%"}> <Spinner size="xl" /> </Flex>:
                             abonaron.length > 0 ? <Flex direction={"column"} w={"100%"}>
-                                 <Flex direction={"row"} w={"100%"} justifyContent={"center"} gap={1} mb={3} >
+                                 <Flex direction={"column"} w={"100%"} justifyContent={"center"} gap={1} mb={3} >
                                  <Flex  direction={'row'} gap={2}>
                                     <Tag bg="secundaryBg" w={"100%"} size="lg" p={"10px"} fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Periodo: {fecha} </Tag>
-                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total: {totalabonaron}</Tag>
+                                    <Tag bg="secundaryBg" w={"100%"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Total Alumnos: {totalabonaron}</Tag>
                                  </Flex>   
                                     <Tag bg="secundaryBg" w={"100%"}  p={"10px"} size="lg" fontSize={18} display="flex" justifyContent="center" fontWeight={"bold"} fontFamily={"serif"}> Monto Total: { "$ " + new Intl.NumberFormat('es-ES', { notation: "compact", compactDisplay: "short" }).format(MtotalAbonaron)}
                                     <Tooltip label="Sumatoria del monto abonado por cada alumno" fontSize="md">
@@ -161,7 +161,7 @@ export default function Listado() {
                                         <Input type="text" value={filter} onChange={handleFilterChange} placeholder="Buscar por Apellido y Nombre, Legajo o DNI..." w={"100%"} />
                                     </InputGroup>
                                     <Tabla headers={headersAbonaron} data={abonaron} /> 
-                                    <Box bottom="0" width="100%" bg="white" p="10px" mt={4} boxShadow="md" >
+                                    <Box bottom="0" width="100%" bg="white" p="10px" mt={2} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
                                             <Button onClick={handlePreviousPage2} isDisabled={offset2 === 0} color="white" leftIcon={<ArrowLeftIcon/>}>
                                                 Anterior

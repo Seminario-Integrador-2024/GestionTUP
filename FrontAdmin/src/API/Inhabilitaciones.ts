@@ -46,30 +46,24 @@ export const getAlumnosaInhabilitar = async () => {
 
 };
 
-export const inhabilitarAlumno = async (legajo: number) => {
-    try {
-        const token = Cookies.get('tokennn');
-        const response = await fetch(`http://localhost:8000/api/alumnos/alumno-a-inhabilitar/${legajo}/` , {
-        method: 'DELETE',
+export const alumnosaHabilitar = async () => {
+    const token = Cookies.get('tokennn');
+    const response = await fetch('http://localhost:8000/api/alumnos/alumnos-a-habilitar', {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-        });
-        if (response.ok) {
-            if (response.status === 204) {
-                // No hay contenido en la respuesta
-                return {};
-            } else {
-                const data = await response.json();
-                return data;
-            }
-        } else {
-        throw new Error('Error en la respuesta del servidor');
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
         }
-    } catch (error) {
-        throw new Error('Network error: ' + error);
+    });
+    if (response.ok) {
+        const data = await response.json();
+        return data;
+    } else {
+        const errorData = await response.json();
+        throw new Error(
+            `Error en la respuesta del servidor: ${errorData.message}`
+        );
     }
+}
 
-};
 
