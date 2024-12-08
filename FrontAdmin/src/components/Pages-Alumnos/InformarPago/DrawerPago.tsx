@@ -121,7 +121,7 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
     
     useEffect(() => {
-      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.monto_pagado - cuota.valorinformado), 0);
+      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorinformado), 0);
       setTotal(calculatedTotal);
       setMontoAbonado(calculatedTotal);
   }, [isOpen, cuotasseleccionadas]);

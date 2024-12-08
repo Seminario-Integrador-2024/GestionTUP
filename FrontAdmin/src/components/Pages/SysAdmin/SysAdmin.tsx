@@ -100,7 +100,7 @@ function Sysadmin(){
                 borderRadius={10} 
                 w={["90%", "80%", "550px"]} // Se ajusta el ancho para pantallas pequeñas
             >
-                <Text fontSize={["lg", "xl"]}>Subir Excel de SysAdmin</Text>
+                <Text fontSize={["lg", "xl"]}>Procesar Excel de SysAdmin</Text>
                 <ZonaCarga
                     onFileUpload={handleFileUpload}
                     reset={reset}

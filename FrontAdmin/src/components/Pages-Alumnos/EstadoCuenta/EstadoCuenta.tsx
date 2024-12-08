@@ -291,7 +291,7 @@ function InformarPago() {
             </Text>
           </Flex>
         </Tag>
-        {alumno?.estado_financiero === 'Inhabilitado' ? (
+        {alumno?.estado_financiero === 'Inhabilitado' && alumno?.estado_academico === 'Inhabilitado' ? (
           <Tag flex="1" p="10px" fontSize={16} bg="#FF8A8A">
             <Text color="gray">
               Motivo:
