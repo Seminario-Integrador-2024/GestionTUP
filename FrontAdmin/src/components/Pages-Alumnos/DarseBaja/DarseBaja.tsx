@@ -112,7 +112,12 @@ const DarseBaja = () => {
           Compromiso de pago no firmado
         </Alert>
       )}
-
+      {!puedeSolicitarBaja && (
+        <Alert status="error">
+          <AlertIcon />
+          No se puede solicitar baja en este momento, debido a que no se encuentra dentro de la fecha permitida.
+          </Alert>
+      )}
       
 
         <Box

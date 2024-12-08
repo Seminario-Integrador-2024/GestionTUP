@@ -173,7 +173,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                       <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                       <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
                       <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                      <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado - cuota.valorinformado)}</Td>
+                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado)}</Td>
                     </Tr>
                   ))}
                 </Tbody>

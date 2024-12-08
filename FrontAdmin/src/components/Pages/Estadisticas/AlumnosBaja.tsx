@@ -86,7 +86,7 @@ const AlumnosBaja = () => {
               <Button colorScheme="green" onClick={() => handleAceptar(baja)}>
                 Aceptar
               </Button>
-              <Button colorScheme="red" onClick={() => handleRechazar(baja)}>
+              <Button variant={'light'} onClick={() => handleRechazar(baja)}>
                 Rechazar
               </Button>
             </Flex>

@@ -13,7 +13,7 @@ function Resultado({ data }: { data: any }) {
     <Stack mt={3}>
       <Text fontSize="xl" fontWeight="bold">Datos cargados</Text>
       <Tag colorScheme="green" fontSize="md" fontWeight="bold">
-        Total procesado: {total_processed}
+        Total filas leidas: {total_processed}
       </Tag>
       {Object.keys(alumnos_rehabilitados).length > 0 && (
         <Stack>
@@ -27,7 +27,7 @@ function Resultado({ data }: { data: any }) {
       )}
       {Object.keys(not_processed).length > 0 && (
        <Stack>
-       <Text fontSize="md" fontWeight="bold">No procesados:</Text>
+       <Text fontSize="md" fontWeight="bold">Filas No procesadas:</Text>
        <Box maxHeight="200px" overflowY="auto" border="1px solid #ccc" borderRadius="md" p={2} >
          {Object.keys(not_processed).map((key) => (
            <Tag colorScheme="red" fontSize="md" fontWeight="bold" key={key}  display="block" m={1}>
