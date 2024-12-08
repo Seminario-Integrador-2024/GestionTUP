@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heading, Input, Flex, Button } from '@chakra-ui/react';
+import { Heading, Input, Flex, Button, Alert, AlertIcon } from '@chakra-ui/react';
 import {formatoFechaAAAAMMaMMAAAA} from '../../../../../utils/general';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -33,7 +33,8 @@ const Select: React.FC<SelectProps> = ({ page }) => {
     };
 
     return (
-        <Flex display="flex" flexDirection="column" justifyContent="flex-start" alignItems="center" height="100vh" p={4} py={12}>
+        <Flex display="flex" flexDirection="column" justifyContent="flex-start" alignItems="center" height="100vh" p={4}>
+            <Alert status='info'  mb={12}> <AlertIcon /> Informe correspondiente a los pagos efectuados POR un mes específico</Alert>
             <Heading fontSize="3xl" fontWeight="bold" mb={6}>Seleccione un mes</Heading>
             <Input
                 type="month"

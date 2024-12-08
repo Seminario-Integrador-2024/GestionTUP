@@ -28,7 +28,7 @@ const PendientesFirma = () => {
     
     return (
         <Box>
-            <Alert status='warning' m={4}> <AlertIcon /> Alumnos que cursan una matería del cuatrimestre actual y no firmaron el compromiso de pago (Total: {count}).</Alert>
+            <Alert status='info' m={4}> <AlertIcon /> Alumnos que cursan una matería del cuatrimestre actual y no firmaron el compromiso de pago (Total: {count}).</Alert>
 {/*             <Alert status='info' alignItems={'center'} maxW={'20%'} p={'10px'} m={4}> <AlertIcon /> Total: {count} alumnos.</Alert> */}
             <TablaAlumnos
             fetchFunction={async () => {
