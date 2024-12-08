@@ -61,7 +61,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
     });
   };
 
-  const CuotasInformadas = cuotas.filter((cuota) => cuota.estado === "Pagada completamente");
+  const CuotasInformadas = cuotas.filter((cuota) => cuota.valorinformado === cuota.montoActual);
 
   const CompararFechas = (fechaVencimiento: string): boolean => {
     const fechaActual = new Date();
@@ -108,11 +108,15 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   bg={CompararFechas(cuota.fechaVencimiento) ? 'red.100' : 'white'}
                 >
                   <Flex justifyContent="space-between" mb={2}>
-                    <Checkbox
-                      isDisabled={CuotasInformadas.includes(cuota)}
-                      isChecked={cuotasSeleccionadas.includes(cuota)}
-                      onChange={() => handleCheckboxChange(cuota)}
-                    />
+                  <Checkbox
+                        p={0}
+                        borderColor={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                        colorScheme={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                        isChecked={cuotasSeleccionadas.includes(cuota)}
+                        isDisabled={cuotas.slice(0, index).filter(item => !CuotasInformadas.includes(item)).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota)) || CuotasInformadas.includes(cuota)}
+                        onChange={() => handleCheckboxChange(cuota)}
+                        >
+                  </Checkbox>
                     <Text fontWeight="bold">Cuota {cuota.numero}</Text>
                   </Flex>
                   <Text><strong>Fecha Próximo VTO.:</strong> {formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Text>
@@ -155,10 +159,14 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                     >
                       <Td>
                         <Checkbox
-                          isDisabled={CuotasInformadas.includes(cuota)}
-                          isChecked={cuotasSeleccionadas.includes(cuota)}
-                          onChange={() => handleCheckboxChange(cuota)}
-                        />
+                            p={0}
+                            borderColor={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                            colorScheme={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                            isChecked={cuotasSeleccionadas.includes(cuota)}
+                            isDisabled={cuotas.slice(0, index).filter(item => !CuotasInformadas.includes(item)).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota)) || CuotasInformadas.includes(cuota)}
+                            onChange={() => handleCheckboxChange(cuota)}
+                            >
+                        </Checkbox>
                       </Td>
                       <Td textAlign="center" p={1}>{cuota.numero}</Td>
                       <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
