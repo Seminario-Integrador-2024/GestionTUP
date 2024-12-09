@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom"
 import {GetPagos} from "../../../../../API/Pagos";
 import { useState } from "react";
@@ -16,14 +16,21 @@ import {
     Td,
     Tag,
     Spinner,
+    Divider,
   } from '@chakra-ui/react'
 import { ViewIcon } from '@chakra-ui/icons'
 import { IoEyeOutline } from "react-icons/io5";
 import {formatoFechaISOaDDMMAAAA} from "../../../../../utils/general";
 
+type Cuota = {
+    nro_cuota: number;
+    monto: number;
+}
+
 type Pago = {
     fecha: string;
     monto: number;
+    cuotas: Cuota[];
   };
   
   type Alumno = {
@@ -45,6 +52,7 @@ export default function Pagos() {
     const [data, setData] = useState<Data | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedDni, setSelectedDni] = useState<string | null>(null);
+    const [expandedPagoIndex, setExpandedPagoIndex] = useState(null);
 
     const handleDetailsClick = (dni: string) => {
         if (selectedDni === dni) {
@@ -52,6 +60,11 @@ export default function Pagos() {
           return;
         }
         setSelectedDni(dni);
+        setExpandedPagoIndex(null); // Reset expanded payment index when changing DNI
+    };
+
+    const handlePagoDetailsClick = (index: any) => {
+        setExpandedPagoIndex(expandedPagoIndex === index ? null : index);
     };
 
     useEffect (() => {
@@ -76,11 +89,11 @@ export default function Pagos() {
             data && (
             <>
             <Box flexDirection={"row"} display={"flex"} justifyContent={"space-around"} w={"100%"} >
-                <Tag bg="secundaryBg" flexDirection={"column"} w={"40%"} p={2} fontWeight="bold"  fontFamily={"serif"} > 
+                <Tag bg="secundaryBg" flexDirection={"column"} w={"45%"} p={2} fontWeight="bold"  fontFamily={"serif"} > 
                     <Text fontSize={18}>Periodo:</Text>
                     <Text fontSize={30}>{`${fecha_inicio} / ${fecha_fin}`}</Text>
                 </Tag>
-                <Tag bg="secundaryBg" flexDirection={"column"} w={"40%"} p={2} fontWeight="bold" fontFamily={"serif"} > 
+                <Tag bg="secundaryBg" flexDirection={"column"} w={"45%"} p={2} fontWeight="bold" fontFamily={"serif"} > 
                     <Text fontSize={18}>Total Recaudado:</Text>
                     <Text fontSize={30}>{ "$ " + new Intl.NumberFormat('es-ES', { notation: "compact", compactDisplay: "short" }).format(data.total_mes)}</Text>
                 </Tag>
@@ -90,7 +103,7 @@ export default function Pagos() {
                 <Tr>
                     <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">Apellido y Nombre</Th>
                     <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">DNI</Th>
-                    <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">Total</Th>
+                    <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">Total Pagado</Th>
                     <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver Detalles</Th>
                 </Tr>
                 </Thead>
@@ -114,14 +127,43 @@ export default function Pagos() {
                             <Tr>
                             <Th textAlign="center">Fecha Pago</Th>
                             <Th textAlign="center">Monto Confirmado</Th>
+                            <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver Detalles</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
                             {data.alumnos[selectedDni].pagos.map((pago, index) => (
-                            <Tr key={index}>
+                            <React.Fragment key={index}>
+                            <Tr>
                                 <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
                                 <Td textAlign="center">{ "$ " + new Intl.NumberFormat('es-ES').format(pago.monto)}</Td>
+                                <Td textAlign="center" >
+                                <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handlePagoDetailsClick(index)}> <IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
+                                </Td>
                             </Tr>
+                            {expandedPagoIndex === index && (
+                            <Tr key={`cuotas-${index}`}>
+                            <Td colSpan={3}>
+                                <Table variant="simple"  mt={1}>
+                                    <Thead>
+                                        <Tr>
+                                            <Th textAlign="center">Número Cuota</Th>
+                                            <Th textAlign="center">Monto</Th>
+                                        </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                        {pago.cuotas.map((cuota, cuotaIndex) => (
+                                            <Tr key={cuotaIndex}>
+                                                <Td textAlign="center">{cuota.nro_cuota}</Td>
+                                                <Td textAlign="center">{ "$ " + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
+                                            </Tr>
+                                        ))}
+                                    </Tbody>
+                                </Table>
+                                <Divider mt={2} mb={2} h={2} />
+                            </Td>
+                        </Tr>
+                        )}
+                        </React.Fragment>
                             ))}
                         </Tbody>
                         </Table>
