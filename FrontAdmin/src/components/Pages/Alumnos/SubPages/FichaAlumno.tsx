@@ -225,6 +225,7 @@ function FichaAlumno() {
         if (!dni) return
         const dniNumber = parseInt(dni, 10); // Convierte a número
         const data = await FetchResumenPagos(dniNumber);
+        console.log('pagos; ' , data)
                 setPagos(data);
       } catch (error) {
         console.error('Error al obtener los datos', error);
@@ -533,7 +534,7 @@ function FichaAlumno() {
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
                               <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Td>
                               <Td textAlign="center" p="8px">{
-                                cuota.valorinformado > 0 || cuota.monto_pagado > 0 ?
+                                cuota.monto_pagado > 0 ?
                                   <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button>
                                   :
                                   <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
@@ -571,7 +572,6 @@ function FichaAlumno() {
                             <Tr mt={6}>
                               <Th textAlign="center" >Cuota</Th>
                               <Th textAlign="center" >Valor Original Cuota</Th>
-                              <Th textAlign="center" >Mora</Th>
                               <Th textAlign="center" >Cuota con Mora</Th>
                               <Th textAlign="center" >Fecha de Informe</Th>
                               <Th textAlign="center" >Valor Pagado</Th>
@@ -590,12 +590,9 @@ function FichaAlumno() {
                                       <>
                                         <Td textAlign="center">{cuota.nro_cuota}</Td>
                                         <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuotaCompleta ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0))}</Td>
-                                        <Td textAlign="center">
-                                          {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (calcularMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0))}
-                                        </Td>
                                         <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                         <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
-                                        <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.monto_informado > cuota.monto ? cuota.monto : pago.monto_informado)}</Td>
+                                        <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.monto_informado > cuota.monto ? cuota.monto_pagado : pago.monto_informado)}</Td>
                                       </>
                                     ) : null
                                   ))}
