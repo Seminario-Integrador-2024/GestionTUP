@@ -47,7 +47,8 @@ function Tareas() {
     try {
       const response = await actualizarinhabilitaciones();
       onClose2();
-      toast('Exito', `${response[0].mensaje}`, 'success');
+      toast('Exito', `${response.mensaje}`, 'success');
+      console.log('hice el toast');
     } catch (error) {
       toast('Error', 'Proceso no ejecutado', 'error');
     }
