@@ -104,7 +104,7 @@ export default function Pagos() {
                     <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">Apellido y Nombre</Th>
                     <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">DNI</Th>
                     <Th textAlign="center" fontFamily="Helvetica" fontWeight="900">Total Pagado</Th>
-                    <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver Detalles</Th>
+                    <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver pagos realizados</Th>
                 </Tr>
                 </Thead>
                 <Tbody>
@@ -127,7 +127,7 @@ export default function Pagos() {
                             <Tr>
                             <Th textAlign="center">Fecha Pago</Th>
                             <Th textAlign="center">Monto Confirmado</Th>
-                            <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver Detalles</Th>
+                            <Th textAlign="center" fontFamily="Helvetica" fontWeight="900" w={"20%"}>Ver Cuotas abonadas</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
