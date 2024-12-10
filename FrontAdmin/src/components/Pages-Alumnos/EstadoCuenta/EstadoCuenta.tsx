@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td, Tooltip, Alert, AlertIcon } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, useBreakpointValue} from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
 import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon, QuestionOutlineIcon} from '@chakra-ui/icons';
 import { IoEyeOutline } from "react-icons/io5";
@@ -96,6 +96,9 @@ function InformarPago() {
   const [offset, setOffset1] = useState(0);
 
   const [cuotaCompleta, setCuotaCompleta] = useState()
+
+  // Definir el ancho de la caja de SubMenuContent según el tamaño de la pantalla
+  const isMobile = useBreakpointValue({ base: true, xl: false });
 
   const handleNextPage = () => {
     if (offset + limit < totalCuotas) {
@@ -270,7 +273,7 @@ function InformarPago() {
         </Tag>
       </Box>
 
-      <Box w="100%" mb={7} display="flex" gap={2} flexDirection={{ base: "column", sm: "row" }} alignItems="center" justifyContent="center" flexWrap="wrap">
+      <Box w="100%" mb={7} display="flex" gap={2} flexDirection={{ base: "column", sm: "row" }} alignItems="center" justifyContent="center" flexWrap="wrap" paddingBottom={isMobile ? '20px' : ''} borderBottom={isMobile ? '2px solid gray' : ''}>
         <Tag flex="1" p="10px" fontSize={16}>
           <Flex alignItems="center" direction={{ base: "column", md: "row" }}>
             <Text color="gray" textAlign="center">
@@ -312,6 +315,29 @@ function InformarPago() {
         )}
       </Box>
 
+      { isMobile ? (//mobile
+                      <Box>
+                      {cuotas && cuotas.map((cuota, index) => (
+                            <Box
+                              key={index}
+                              borderWidth="1px"
+                              borderRadius="lg"
+                              overflow="hidden"
+                              p={4}
+                              mb={4}
+                              background={'blue.50'}
+                            >
+                                <Text textAlign={'center'} fontWeight={'600'}>Cuota Número: {cuota.numero}</Text>
+                                <Text>Fecha Vto.:{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Text>
+                                <Text>Monto Actual: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Text>
+                                <Text>Monto Pagado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Text>
+                                <Text>Valor Informado: {'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Text>
+                                <Text>Valor Adeudado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Text>
+                            </Box>
+                            ))}
+                      </Box>
+                  ) 
+                  : (
       <Box  w={"100%"} display={"flex"} justifyContent={"center"}  >
                   {cuotas.length > 0 ? (
                     <Table variant="simple" width="90%" borderColor={"gray.200"}
@@ -378,13 +404,15 @@ function InformarPago() {
                   )}
                   
               </Box>
+              )}
+
               {cuotas.length > 0 ?
-                  <Box w="90%" mt="20px" ml="70px">
-                      <Flex justifyContent="space-between" > 
+                  <Box w="90%" mt="20px" ml={isMobile? '' : "70px"}>
+                      <Flex justifyContent="space-between"> 
                           <Button onClick={handlePreviousPage} isDisabled={offset === 0} _hover="none" color="white"  leftIcon={<ArrowLeftIcon/>}>
                                 Anterior
                           </Button>
-                          <Text textAlign={"center"} mb={0}>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCuotas / limit)}</Text>
+                          <Text  m={isMobile? '2px' : ""} textAlign={"center"} mb={0}>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCuotas / limit)}</Text>
                           <Button onClick={handleNextPage} isDisabled={offset + limit >= totalCuotas} _hover="none" color="white" rightIcon={<ArrowRightIcon/>}>
                               Siguiente
                           </Button>
