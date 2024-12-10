@@ -110,8 +110,8 @@ export default function AInhabilitar() {
                         {alumnosAInhabilitar.map((alumno) => (
                                 <Tr key={alumno.user}>
                                     <Td textAlign="center">{alumno.full_name}</Td>
-                                    <Td textAlign="center">{alumno.user}</Td>
-                                    <Td textAlign="center">{alumno.legajo}</Td>
+                                    <Td textAlign="center">{new Intl.NumberFormat('es-ES').format(alumno.user)}</Td>
+                                    <Td textAlign="center">{new Intl.NumberFormat('es-ES').format(alumno.legajo)}</Td>
                                     <Td textAlign="center">
                                         <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailsClick((alumno.user.toString()))}>
                                             <IoEyeOutline size="22px" />
