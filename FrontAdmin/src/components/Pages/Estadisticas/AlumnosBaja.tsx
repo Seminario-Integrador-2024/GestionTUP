@@ -127,6 +127,10 @@ const AlumnosBaja = () => {
           texto={`¿Está seguro que desea ${accion} la solicitud de baja del alumno ${selectedBaja.nombre}?`}
           confirmar={confirmarAccion}
         />
+      )
+      }
+      {alumnosBajas.length === 0 && bajas.length === 0 && (
+        <Text>No hay solicitudes de baja pendientes</Text>
       )}
     </div>
   );
