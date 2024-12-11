@@ -73,9 +73,9 @@ function Tareas() {
       setLoadingMaterias(true);
       setLoadingPagos(true);
         try {
-            await actualizarpagos();
-            await actualizarinhabilitaciones();
             await actualizarmaterias();
+            await actualizarinhabilitaciones();
+            await actualizarpagos();
             await actualizarcuotas();
             onClose5();
             toast('Exito', `Todos los procesos fueron ejecutados correctamente`, 'success');
@@ -147,7 +147,7 @@ function Tareas() {
             >
                 <Heading fontSize={22} mb={2}>Actualizar Cuotas</Heading>
                 <ul>
-                 <Text ml={5}><li> <strong>Función:</strong> Encargado de actualizar el monto de las cuotas según el vencimiento</li></Text>
+                 <Text ml={5}><li> <strong>Función:</strong> Encargado de actualizar el monto y estado de las cuotas según el vencimiento</li></Text>
                  <Text ml={5}><li> <strong>Ejecución automática:</strong> Anual del 1 de Marzo al 31 de Diciembre a las 23:59 hs </li></Text>
                 </ul>
                 <Flex mt={2} justifyContent={'flex-end'}>
