@@ -21,6 +21,7 @@ import {
 import { ViewIcon } from '@chakra-ui/icons'
 import { IoEyeOutline } from "react-icons/io5";
 import {formatoFechaISOaDDMMAAAA} from "../../../../../utils/general";
+import { useNavigate } from "react-router-dom";
 
 type Cuota = {
     nro_cuota: number;
@@ -52,6 +53,7 @@ export default function Pagos() {
     const [data, setData] = useState<Data | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedDni, setSelectedDni] = useState<string | null>(null);
+    const navigate = useNavigate();
     const [expandedPagoIndex, setExpandedPagoIndex] = useState(null);
 
     const handleDetailsClick = (dni: string) => {
@@ -66,6 +68,10 @@ export default function Pagos() {
     const handlePagoDetailsClick = (index: any) => {
         setExpandedPagoIndex(expandedPagoIndex === index ? null : index);
     };
+
+    const handleRowClick = (dni: any) => {
+        navigate(`/admin/alumnos/${dni}`);
+    };   
 
     useEffect (() => {
     const fetchPagos = async () => {
@@ -109,8 +115,11 @@ export default function Pagos() {
                 </Thead>
                 <Tbody>
                 {Object.keys(data.alumnos).map((dni) => (
-                    <Tr key={dni}>
-                    <Td textAlign="center" > {data.alumnos[dni].nombre}</Td>
+                    <Tr key={dni}   cursor="pointer" _hover={{
+                        bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
+                        cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+                      }}>
+                    <Td textAlign="center" onClick={() => handleRowClick(dni)}> {data.alumnos[dni].nombre}</Td>
                     <Td textAlign="center" >{new Intl.NumberFormat('es-ES').format(parseInt(dni))}</Td>
                     <Td textAlign="center" >{ "$ " + new Intl.NumberFormat('es-ES').format(data.alumnos[dni].total)}</Td>
                     <Td textAlign="center" >
