@@ -151,13 +151,14 @@ export default function CompromisoDePago() {
             p={4}
             borderRadius="md"
             w="100%"
-            mt={4}
+            mt={1}
           >
             {pdfUrl ?  (
               <iframe
                 src={pdfUrl}
                 width={isMobile ? "100%" : "1000px"}
                 height={isMobile ? "500px" : "400px"}
+                style={{ display: 'block', margin: '0 auto' }}
               />
             ) : error? (
                 <Text>PDF no disponible</Text>
