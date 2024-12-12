@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Asegúrate de importar Link
+import { useParams, Link } from 'react-router-dom'; 
 import { FetchAlumnosMaterias } from '../../../../../API/Materias';
 import { Input, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
@@ -24,10 +24,10 @@ const ListadoAlumnosQueCursanMateria = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredAlumnos, setFilteredAlumnos] = useState<Alumno[]>([]); // Alumnos filtrados
+  const [filteredAlumnos, setFilteredAlumnos] = useState<Alumno[]>([]); 
   const { codigo_materia } = useParams<{ codigo_materia: string }>();
 
-  const alumnosPerPage = 10; // Máximo de alumnos por página
+  const alumnosPerPage = 10; 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +39,7 @@ const ListadoAlumnosQueCursanMateria = () => {
           const codigo_materiaNumber = parseInt(codigo_materia);
           const data = await FetchAlumnosMaterias(codigo_materiaNumber);
           setAlumnos(data.results);
-          setFilteredAlumnos(data.results); // Inicialmente se muestran todos
+          setFilteredAlumnos(data.results); 
         }
       } catch (error: any) {
         setError(error.message || 'Error al obtener los datos');
@@ -56,8 +56,8 @@ const ListadoAlumnosQueCursanMateria = () => {
     setSearchQuery(query);
 
     if (query === '') {
-      setFilteredAlumnos(alumnos); // Si no hay filtro, se muestran todos
-      setCurrentPage(1); // Reseteamos la página a 1
+      setFilteredAlumnos(alumnos); 
+      setCurrentPage(1); 
     } else {
       const filtered = alumnos.filter((alumno) => {
         return (
@@ -69,7 +69,7 @@ const ListadoAlumnosQueCursanMateria = () => {
         );
       });
       setFilteredAlumnos(filtered);
-      setCurrentPage(1); // Reseteamos la página a 1 cuando cambiamos el filtro
+      setCurrentPage(1); 
     }
   };
 
@@ -77,7 +77,6 @@ const ListadoAlumnosQueCursanMateria = () => {
     setCurrentPage(pageNumber);
   };
 
-  // Calculamos los alumnos a mostrar según la página actual y los resultados filtrados
   const indexOfLastAlumno = currentPage * alumnosPerPage;
   const indexOfFirstAlumno = indexOfLastAlumno - alumnosPerPage;
   const currentAlumnos = filteredAlumnos.slice(indexOfFirstAlumno, indexOfLastAlumno);
@@ -85,12 +84,10 @@ const ListadoAlumnosQueCursanMateria = () => {
   if (loading) return <Text>Cargando datos...</Text>;
   if (error) return <Text color="red.500">Error: {error}</Text>;
 
-  // Número total de páginas basado en los resultados filtrados
   const totalPages = filteredAlumnos.length > 0 ? Math.ceil(filteredAlumnos.length / alumnosPerPage) : 0;
 
   return (
     <Box p={5}>
-      {/* Input con lupa */}
       <InputGroup mb={4}>
         <InputLeftElement pointerEvents="none">
           <SearchIcon color="gray.500" />
@@ -123,8 +120,8 @@ const ListadoAlumnosQueCursanMateria = () => {
               <Tr
                 key={alumno.dni}
                 _hover={{
-                  bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
-                  cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+                  bg: 'gray.200', 
+                  cursor: 'pointer',
                 }}
               >
                 <Td textAlign="center">
@@ -153,7 +150,6 @@ const ListadoAlumnosQueCursanMateria = () => {
         </Tbody>
       </Table>
 
-      {/* Paginación */}
       {totalPages > 0 && (
         <Flex justify="center" align="center" gap={4}>
           <Button 

@@ -17,7 +17,7 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';  // Importa Link para la navegación
+import { Link } from 'react-router-dom';  
 
 interface Alumnos {
   full_name: string;
@@ -28,7 +28,7 @@ interface Alumnos {
 }
 
 interface TablaAlumnosProps {
-  fetchFunction: () => Promise<Alumnos[]>;  // Función para obtener los alumnos
+  fetchFunction: () => Promise<Alumnos[]>;  
   title: string;
 }
 
@@ -79,7 +79,6 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
     return 0;
   });
 
-  // Filtrar alumnos
   const filteredAlumnos = sortedAlumnos.filter(alumno =>
     alumno.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     alumno.legajo.toString().includes(searchTerm) ||
@@ -88,7 +87,6 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
     alumno.anio_ingreso.toString().includes(searchTerm)
   );
 
-  // Si no hay alumnos, no mostrar paginación
   const totalPages = filteredAlumnos.length > 0 ? Math.ceil(filteredAlumnos.length / alumnosPerPage) : 0;
 
   // Paginación
@@ -98,7 +96,6 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
 
   return (
     <Box p={5}>
-      {/* Input de búsqueda */}
       <InputGroup mb={4}>
         <InputLeftElement pointerEvents="none">
           <SearchIcon color="gray.300" />
@@ -128,13 +125,12 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
           ) : (
             currentAlumnos.map(alumno => (
               <Tr
-                key={alumno.dni}  // Usamos el DNI como key
+                key={alumno.dni} 
                 _hover={{
-                  bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
-                  cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+                  bg: 'gray.200', 
+                  cursor: 'pointer',
                 }}
               >
-                {/* Cada Td está envuelto en un Link */}
                 <Td textAlign="center">
                   <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
                     {alumno.full_name}

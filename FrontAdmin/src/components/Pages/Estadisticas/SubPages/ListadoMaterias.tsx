@@ -13,7 +13,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { FetchMaterias } from '../../../../API/Materias';
-import { FetchAlumnosMaterias } from '../../../../API/Materias'; // Asumo que tienes esta función en tu API
+import { FetchAlumnosMaterias } from '../../../../API/Materias';
 
 interface Materia {
   anio_cursada: number;
@@ -24,44 +24,39 @@ interface Materia {
 }
 
 const ListadoMaterias: React.FC = () => {
-  const [materias, setMaterias] = useState<Materia[]>([]); // Estado para las materias
-  const [filteredMaterias, setFilteredMaterias] = useState<Materia[]>([]); // Estado para las materias filtradas por búsqueda
-  const [alumnos, setAlumnos] = useState([]); // Estado para los alumnos
-  const [currentPage, setCurrentPage] = useState(1); // Estado para la página actual
-  const [itemsPerPage] = useState(10); // Número de elementos por página
-  const [searchQuery, setSearchQuery] = useState(''); // Estado para la búsqueda por nombre de materia
+  const [materias, setMaterias] = useState<Materia[]>([]);
+  const [filteredMaterias, setFilteredMaterias] = useState<Materia[]>([]);
+  const [alumnos, setAlumnos] = useState([]); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [itemsPerPage] = useState(10); 
+  const [searchQuery, setSearchQuery] = useState(''); 
   const navigate = useNavigate();
 
-  // Maneja el clic sobre una materia para obtener los alumnos
   const handleMateriaClick = async (codigoMateria: number) => {
     try {
-      const alumnosData = await FetchAlumnosMaterias(codigoMateria); // Asumiendo que tienes una API para obtener los alumnos
-      setAlumnos(alumnosData); // Guarda los datos de los alumnos
-      navigate(`${codigoMateria}/alumnos`); // Navega a la ruta correspondiente
+      const alumnosData = await FetchAlumnosMaterias(codigoMateria);
+      setAlumnos(alumnosData); 
+      navigate(`${codigoMateria}/alumnos`); 
     } catch (error) {
       console.error('Error al obtener los alumnos:', error);
-      setAlumnos([]); // Respaldo a un array vacío en caso de error
+      setAlumnos([]);
     }
   };
 
-  // Filtra las materias por nombre, ignorando mayúsculas/minúsculas
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
 
-    // Filtra las materias según el query de búsqueda
     const filtered = materias.filter((materia) =>
       materia.nombre.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredMaterias(filtered);
   };
 
-  // Paginación
   const indexOfLastMateria = currentPage * itemsPerPage;
   const indexOfFirstMateria = indexOfLastMateria - itemsPerPage;
   const currentMaterias = filteredMaterias.slice(indexOfFirstMateria, indexOfLastMateria);
 
-  // Cambiar de página
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   useEffect(() => {
@@ -71,18 +66,18 @@ const ListadoMaterias: React.FC = () => {
         if (data && Array.isArray(data.results)) {
           const sortedMaterias = data.results.sort((a: Materia, b: Materia) =>
             a.nombre.localeCompare(b.nombre)
-          ); // Ordenar alfabéticamente por el nombre
-          setMaterias(sortedMaterias); // Establecer las materias ordenadas
-          setFilteredMaterias(sortedMaterias); // Inicializamos también la lista filtrada
+          );
+          setMaterias(sortedMaterias);
+          setFilteredMaterias(sortedMaterias); 
         } else {
           console.error('Datos inválidos:', data);
-          setMaterias([]); // Respaldo a un array vacío si los datos son inválidos
-          setFilteredMaterias([]); // Respaldo a un array vacío si los datos son inválidos
+          setMaterias([]); 
+          setFilteredMaterias([]); 
         }
       } catch (error) {
         console.error('Network error:', error);
-        setMaterias([]); // Respaldo a un array vacío si ocurre un error
-        setFilteredMaterias([]); // Respaldo a un array vacío si ocurre un error
+        setMaterias([]);
+        setFilteredMaterias([]); 
       }
     };
     fetchData();
@@ -105,7 +100,6 @@ const ListadoMaterias: React.FC = () => {
           Listado de Materias
         </Heading>
 
-        {/* Campo de búsqueda */}
         <Box w="full">
           <Input
             placeholder="Buscar por nombre de materia"
@@ -123,7 +117,7 @@ const ListadoMaterias: React.FC = () => {
                 p={2}
                 borderRadius="md"
                 _hover={{ bg: 'gray.100', cursor: 'pointer' }}
-                onClick={() => handleMateriaClick(materia.codigo_materia)} // Llama a la función cuando se haga clic
+                onClick={() => handleMateriaClick(materia.codigo_materia)} 
               >
                 <Text fontSize="md" color="gray.700">
                   {materia.nombre}
@@ -133,16 +127,15 @@ const ListadoMaterias: React.FC = () => {
           </List>
         </Box>
 
-        {/* Paginación */}
         <HStack spacing={4} justify="center" mt={4}>
           <Button
             isDisabled={currentPage === 1}
             onClick={() => paginate(currentPage - 1)}
             color="white"
-            bg="blue.700" // Color azul más oscuro
+            bg="blue.700" 
             _hover={{ bg: 'blue.800' }}
           >
-            {'Anterior <<'} {/* Símbolo "Anterior" */}
+            {'Anterior <<'}
           </Button>
           <Text>
             Página {currentPage} de {Math.ceil(filteredMaterias.length / itemsPerPage)}
@@ -151,10 +144,10 @@ const ListadoMaterias: React.FC = () => {
             isDisabled={currentPage === Math.ceil(filteredMaterias.length / itemsPerPage)}
             onClick={() => paginate(currentPage + 1)}
             color="white"
-            bg="blue.900" // Color azul más oscuro
+            bg="blue.900"
             _hover={{ bg: 'blue.800' }}
           >
-            {'Siguiente >>'} {/* Símbolo "Siguiente" */}
+            {'Siguiente >>'}
           </Button>
         </HStack>
 
