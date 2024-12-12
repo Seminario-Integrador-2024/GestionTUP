@@ -104,7 +104,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
           <SearchIcon color="gray.300" />
         </InputLeftElement>
         <Input
-          placeholder="Buscar por Nombre, Legajo, DNI, Situación o Año de Ingreso"
+          placeholder="Buscar por Nombre, Legajo, DNI o Año de Ingreso"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -113,7 +113,7 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
       <Table>
         <Thead>
           <Tr>
-            {['APELLIDO Y NOMBRE', 'LEGAJO', 'DNI', 'ESTADO FINANCIERO', 'AÑO INGRESO'].map((field) => (
+            {['APELLIDO Y NOMBRE', 'LEGAJO', 'DNI', 'AÑO INGRESO'].map((field) => (
               <Th key={field} fontFamily="Helvetica" fontWeight="900" textAlign="center">
                 {field.toUpperCase()}
               </Th>
@@ -148,11 +148,6 @@ const TablaAlumnos: React.FC<TablaAlumnosProps> = ({ fetchFunction, title }) => 
                 <Td textAlign="center">
                   <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
                     {alumno.dni}
-                  </Link>
-                </Td>
-                <Td textAlign="center">
-                  <Link to={`/admin/alumnos/${alumno.dni}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-                    {alumno.estado_financiero}
                   </Link>
                 </Td>
                 <Td textAlign="center">
