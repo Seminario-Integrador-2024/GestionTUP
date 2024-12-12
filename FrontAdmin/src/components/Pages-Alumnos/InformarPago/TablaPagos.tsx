@@ -123,7 +123,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                   <Text><strong>Valor Actual:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Text>
                   <Text><strong>Valor Pagado:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Text>
                   <Text><strong>Valor Informado:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Text>
-                  <Text><strong>Valor Adeudado:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado - cuota.valorinformado)}</Text>
+                  <Text><strong>Valor Adeudado:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado)}</Text>
                 </Box>
               ))
             ) : (
@@ -173,7 +173,7 @@ function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: T
                       <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                       <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
                       <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado)}</Td>
+                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado)}</Td>
                     </Tr>
                   ))}
                 </Tbody>

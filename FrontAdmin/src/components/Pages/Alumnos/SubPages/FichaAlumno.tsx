@@ -46,6 +46,7 @@ import { Link } from 'react-router-dom';
 import { formatoFechaISOaDDMMAAAA } from '../../../../utils/general';
 import Cookies from 'js-cookie';
 import { FetchDetalleCompromiso } from '../../../../API-Alumnos/Compromiso.ts';
+import { off } from 'process';
 
 interface Alumno {
   full_name: string;
@@ -190,7 +191,6 @@ function FichaAlumno() {
     const fetchDetalleAlumno = async (dni: any) => {
       try {
           const dniNumber = parseInt(dni, 10); // Convierte a número
-          const data = await FetchEstadoCuenta(dniNumber);
           const dataDetalle = await FetchDetalleAlumno(dniNumber);
           const dataMaterias = await FetchMateriasAlumno(dniNumber);
           setAlumno(dataDetalle);
@@ -201,13 +201,16 @@ function FichaAlumno() {
       }
     };
 
-    const fetchEstadoCuentaAlumno = async () => {
+    const fetchEstadoCuentaAlumno = async (limit: number, offset: number) => {
       try {
         if (dni) {
           const dniNumber = parseInt(dni, 10); // Convierte a número
-          const data = await FetchEstadoCuenta(dniNumber);
-          const sortedCuotas = data.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
+          const data = await FetchEstadoCuenta(dniNumber, limit, offset);
+          const  sortedCuotas = data.results.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
+          console.log('data.count: ', data.count)
+          setTotalCuotas(data.count);
           setCuotas(sortedCuotas);
+          console.log('cuotas: ', data)
         }
       } catch (error) {
         setError(error);
@@ -217,11 +220,11 @@ function FichaAlumno() {
       }
     };
     fetchDetalleAlumno(dni);
-    fetchEstadoCuentaAlumno();
+    fetchEstadoCuentaAlumno(limit, offset);
     fetchCompromiso();
     fetchImpagas();
     fetchPagos();
-  }, []); 
+  }, [limit, offset]); 
     
 
     const fetchPagos = async () => {
@@ -526,7 +529,7 @@ function FichaAlumno() {
                                 <Text>Monto Actual: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Text>
                                 <Text>Monto Pagado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Text>
                                 <Text>Valor Informado: {'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Text>
-                                <Text>Valor Adeudado{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Text>
+                                <Text>Valor Adeudado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado )}</Text>
                             </Box>
                             ))}
                       </Box>
@@ -560,7 +563,7 @@ function FichaAlumno() {
                                 <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                                 <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
                                 <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
-                                <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Td>
+                                <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado )}</Td>
                                 <Td textAlign="center" p="8px">{
                                   cuota.monto_pagado > 0 ?
                                     <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button>

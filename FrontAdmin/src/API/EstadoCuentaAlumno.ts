@@ -1,10 +1,10 @@
 import Cookies from 'js-cookie';
 
-export const FetchEstadoCuenta = async (dni: number) => {
+export const FetchEstadoCuenta = async (dni: number, limit: number, offset: number) => {
   try {
     const token = Cookies.get('tokennn');
 
-    const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}/`, {
+    const response = await fetch(`http://localhost:8000/api/cuotas/alumno/${dni}?limit=${limit}&offset=${offset}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ export const FetchEstadoCuenta = async (dni: number) => {
 
     if (response.ok) {
       const data = await response.json();
-      return data.results;
+      return data;
     } else {
       throw new Error('Error en la respuesta del servidor');
     }
