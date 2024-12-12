@@ -332,7 +332,7 @@ function InformarPago() {
                                 <Text>Monto Actual: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Text>
                                 <Text>Monto Pagado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Text>
                                 <Text>Valor Informado: {'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Text>
-                                <Text>Valor Adeudado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Text>
+                                <Text>Valor Adeudado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado )}</Text>
                             </Box>
                             ))}
                       </Box>
@@ -378,7 +378,7 @@ function InformarPago() {
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado)}</Td>
                             <Td textAlign="center" p="8px">{
                               cuota.valorinformado > 0 || cuota.monto_pagado > 0  ? 
                                 <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
