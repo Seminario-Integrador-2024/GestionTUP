@@ -39,7 +39,7 @@ function LoginPage() {
     try {
       await FetchLogin(username, password);
       onLogin();
-      showToast('Bienvenido', 'Inicio de sesión exitoso', 'success');
+      showToast('Bienvenido', 'Inicio de sesión éxitoso', 'success');
     } catch (error) {
       console.error('Network error', error);
       showToast('Error', 'Inicio de sesión fallido', 'error');

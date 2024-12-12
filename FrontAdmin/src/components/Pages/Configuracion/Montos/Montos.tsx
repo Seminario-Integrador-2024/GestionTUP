@@ -202,7 +202,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       onClose();
       toast({
         title: 'Éxito',
-        description: 'Compromiso creado exitosamente.',
+        description: 'Compromiso creado éxitosamente.',
         status: 'success',
         duration: 5000,
         isClosable: true,

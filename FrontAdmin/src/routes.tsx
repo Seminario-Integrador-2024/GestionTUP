@@ -137,7 +137,7 @@ const routes = [
   },
   {
     path: 'academica',
-    title: 'Academica',
+    title: 'Académica',
     element: <TablaMaterias />,
     icon: iconSysAcad,
     rol: 'admin',

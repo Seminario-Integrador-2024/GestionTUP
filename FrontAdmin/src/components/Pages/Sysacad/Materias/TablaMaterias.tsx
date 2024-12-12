@@ -42,7 +42,7 @@ export default function TablaMaterias() {
     const handleConfirmarBorrado = async () => {
         try {
             await FetchDeleteMateria(selectedMateria.codigo_materia);
-            showToast('Exito', 'Materia eliminada con exito', 'success');
+            showToast('Éxito', 'Materia eliminada con éxito', 'success');
             setMaterias((prevMaterias) =>
                 prevMaterias.filter((m) => m.codigo_materia !== selectedMateria.codigo_materia)
             );
@@ -62,7 +62,7 @@ export default function TablaMaterias() {
             console.log({ codigo_materia, anio_plan, nombre });
             const Data = FetchPostMateria(parseInt(codigo_materia), parseInt(anio_cursada), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
             console.log(Data);
-            showToast('Exito', 'Materia agregada con exito', 'success');
+            showToast('Éxito', 'Materia agregada con éxito', 'success');
         } catch (error) {
             console.error('Network error', error);
             showToast('Error', 'No se pudo agregar la materia', 'error');
@@ -84,7 +84,7 @@ export default function TablaMaterias() {
         try {
             const Data = FetchPutMateria(parseInt(codigo_materia), parseInt(anio_cursado), parseInt(anio_plan), nombre, parseInt(cuatrimestre));
             console.log(Data);
-            showToast('Exito', 'Materia editada con exito', 'success');
+            showToast('Éxito', 'Materia editada con éxito', 'success');
 
             const index = materias.findIndex(materia => materia.codigo_materia === parseInt(codigo_materia));
             if (index !== -1) {

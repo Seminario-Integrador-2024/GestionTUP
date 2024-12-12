@@ -23,7 +23,7 @@ function Tareas() {
     try {
       const response = await actualizarpagos();
       onClose();
-      toast('Exito', `${response[0].mensaje}`, 'success');
+      toast('Éxito', `${response[0].mensaje}`, 'success');
     } catch (error) {
       toast('Error', 'Proceso no ejecutado', 'error');
     }
@@ -35,7 +35,7 @@ function Tareas() {
     try {
       const response = await actualizarmaterias();
       onClose3();
-      toast('Exito', `${response[0].mensaje}`, 'success');
+      toast('Éxito', `${response[0].mensaje}`, 'success');
     } catch (error) {
       toast('Error', 'Proceso no ejecutado', 'error');
     }
@@ -47,7 +47,7 @@ function Tareas() {
     try {
       const response = await actualizarinhabilitaciones();
       onClose2();
-      toast('Exito', `${response.mensaje}`, 'success');
+      toast('Éxito', `${response.mensaje}`, 'success');
       console.log('hice el toast');
     } catch (error) {
       toast('Error', 'Proceso no ejecutado', 'error');
@@ -60,7 +60,7 @@ function Tareas() {
     try {
         const response = await actualizarcuotas();
         onClose4();
-        toast('Exito', `${response[0].mensaje}`, 'success');
+        toast('Éxito', `${response[0].mensaje}`, 'success');
     } catch (error) {
       toast('Error', 'Proceso no ejecutado', 'error');
     }
@@ -78,7 +78,7 @@ function Tareas() {
             await actualizarpagos();
             await actualizarcuotas();
             onClose5();
-            toast('Exito', `Todos los procesos fueron ejecutados correctamente`, 'success');
+            toast('Éxito', `Todos los procesos fueron ejecutados correctamente`, 'success');
           } catch (error) {
             toast('Error', 'Proceso no ejecutado', 'error');
           }
