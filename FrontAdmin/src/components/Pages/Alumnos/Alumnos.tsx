@@ -14,7 +14,7 @@ export default function Alumnos() {
     <ThemeProvider theme={lightTheme}>
       <Flex>
         <Box flex="1">
-          <Table boolEnableRowSelection={true} />
+          <Table  />
         </Box>
       </Flex>
     </ThemeProvider>

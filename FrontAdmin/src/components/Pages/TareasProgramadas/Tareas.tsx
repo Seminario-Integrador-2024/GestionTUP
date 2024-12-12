@@ -131,7 +131,7 @@ function Tareas() {
             >
                 <Heading fontSize={22} mb={2}>Actualizar Materias</Heading>
                 <ul>
-                 <Text ml={5}><li> <strong>Función:</strong> Encargado de actualizar las materiasque cursa actualmente cada alumno</li></Text>
+                 <Text ml={5}><li> <strong>Función:</strong> Encargado de actualizar las materias que cursa actualmente cada alumno</li></Text>
                  <Text ml={5}><li> <strong>Ejecución automática:</strong> 1er cuatrimestre del 12 febrero al 6 de marzo a las 00:00 hs 
                     - 2do cuatrimestre del 12 julio al  2 agosto a las 00:00 hs </li></Text>
                 </ul>

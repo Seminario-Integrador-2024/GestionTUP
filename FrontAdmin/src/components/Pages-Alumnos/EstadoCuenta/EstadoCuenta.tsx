@@ -277,9 +277,9 @@ function InformarPago() {
         <Tag flex="1" p="10px" fontSize={16}>
           <Flex alignItems="center" direction={{ base: "column", md: "row" }}>
             <Text color="gray" textAlign="center">
-              Último Compromiso de Pago:
+              Último Compromiso de Pago: 
             </Text>
-            <Text size="sm" fontWeight="semibold">
+            <Text size="sm" fontWeight="semibold"  ml={'2px'}>
               {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
             </Text>
           </Flex>
@@ -287,32 +287,13 @@ function InformarPago() {
         <Tag flex="1" p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"}>
           <Flex alignItems="center" justifyContent="center" direction={{ base: "column", md: "row" }}>
             <Text color="gray">
-              Condición Sysacad:
+              Condición Sysacad: 
             </Text>
-            <Text size="sm" fontWeight="semibold">
+            <Text size="sm" fontWeight="semibold" ml={'2px'}>
             {alumno?.estado_academico}
             </Text>
           </Flex>
         </Tag>
-        {alumno?.estado_financiero === 'Inhabilitado' && alumno?.estado_academico === 'Inhabilitado' ? (
-          <Tag flex="1" p="10px" fontSize={16} bg="#FF8A8A">
-            <Text color="gray">
-              Motivo:
-            </Text>
-            <Text size="sm" pl="8px" fontWeight="semibold">
-              Deudor
-            </Text>
-          </Tag>
-        ) : (
-          <Tag flex="1" p="10px" fontSize={16}>
-            <Text color="gray">
-              Ultimo Periodo Cursado
-            </Text>
-            <Text size="sm" pl="8px" fontWeight="semibold">
-              {alumnoInfo.ultimo_cursado}
-            </Text>
-          </Tag>
-        )}
       </Box>
 
       { isMobile ? (//mobile
@@ -380,7 +361,7 @@ function InformarPago() {
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado)}</Td>
                             <Td textAlign="center" p="8px">{
-                              cuota.valorinformado > 0 || cuota.monto_pagado > 0  ? 
+                               cuota.monto_pagado > 0  ? 
                                 <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
                               : 
                               <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>

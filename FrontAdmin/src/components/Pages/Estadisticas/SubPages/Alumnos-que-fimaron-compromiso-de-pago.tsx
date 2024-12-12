@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Button, Box, Text, Select, Flex, Tag, Alert, AlertIcon } from '@chakra-ui/react';
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Button, Box, Text, Select, Flex, Tag, Alert, AlertIcon, Center } from '@chakra-ui/react';
 import { AttachmentIcon, ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import TablaAlumnos from './TablaAlumnos';
 import { FetchFirmantes, FetchNoFirmantes } from '../../../../API/AlumnosCompromisoPago';
@@ -98,51 +98,13 @@ const AlumnosCompromisoPago: React.FC = () => {
           <Flex pt="60px" >
              <Alert status='info'> <AlertIcon /> Periodo Seleccionado: {anio} - {cuatrimestre == '1C' ? 'Primer Cuatrimestre' : 'Segundo Cuatrimestre'}</Alert>
             </Flex>  
-          <Tabs w={"100%"}>
-            <TabList display="flex" justifyContent="center" alignItems="center" borderBottom="2px solid" borderColor="gray.200">
-              <Tab
-                   _selected={{
-                   borderBottom: "2px solid",
-                   borderColor: "blue.500",
-                   color: "blue.500",
-                   borderTop: "none",
-                   borderLeft: "none",
-                   borderRight: "none"
-                   }}
-                   _focus={{ boxShadow: "none" }}
-                    >
-                        Compromiso firmado
-                </Tab>
-                <Tab
-                   _selected={{
-                   borderBottom: "2px solid",
-                   borderColor: "blue.500",
-                   color: "blue.500",
-                   borderTop: "none",
-                   borderLeft: "none",
-                   borderRight: "none"
-                   }}
-                   _focus={{ boxShadow: "none" }}
-                    >
-                      Compromiso pendiente de firma
-                </Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
+          <Flex justifyContent={'center'} >
+          
               <TablaAlumnos 
                 fetchFunction={() => FetchFirmantes(cuatrimestre, parseInt(anio))}
                 title="Alumnos que firmaron compromiso" 
               />
-            </TabPanel>
-
-            <TabPanel>
-              <TablaAlumnos 
-                fetchFunction={() => FetchNoFirmantes(cuatrimestre, parseInt(anio))}
-                title="Alumnos que no firmaron compromiso" 
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+            </Flex>
       </Box>
       )}
     </div>

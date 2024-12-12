@@ -149,7 +149,7 @@ function FichaAlumno() {
   const [detail, showDetail] = useState<number | null>(null);
   const [idCuotaSeleccionada, setIdCuotaSeleccionada] = useState<number | null>(null);
   const [cuotaCompleta, setCuotaCompleta] = useState()
-  const [limit] = useState(5);
+  const [limit] = useState(6);
   const [offset, setOffset1] = useState(0);
   const [totalCuotas, setTotalCuotas] = useState<number>(0);
   const [pagos, setPagos] = useState<PagosResponse | null>(null);
@@ -433,12 +433,6 @@ function FichaAlumno() {
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
           {alumno.estado_academico}
         </Text>
-        <Text color="gray" mt="20px">
-          Ultimo Periodo Cursado
-        </Text>
-        {<Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {alumno.ultimo_cursado}
-        </Text>}
 
       </Box>
 

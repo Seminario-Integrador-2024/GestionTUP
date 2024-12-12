@@ -17,10 +17,7 @@ export const FetchPendientesFirma = async () => {
 
     if (response.ok) {
       const data = await response.json();
-      return {
-        results: data.results, // Lista de resultados
-        count: data.count,     // Total de elementos
-      };
+      return data;
     } else {
       throw new Error('Error en la respuesta del servidor');
     }
