@@ -29,6 +29,12 @@ function Estadisticas() {
     };
   }, [lastScrollY]);
 
+  const leftPosition = useBreakpointValue({ 
+    base: '10px',
+    sm: '10px',
+    md: '105px'
+  });
+
   return (
     <Box display="flex" position="relative">
       {!isMobile ? (
@@ -40,7 +46,7 @@ function Estadisticas() {
           <Box
             position="fixed"
             bottom="760px"  
-            left="10px"    
+            left={leftPosition}
             zIndex="1000"
           >
             <IconButton
