@@ -43,6 +43,7 @@ import PendientesFirma from './components/Pages/Estadisticas/SubPages/Pendientes
 import Tareas from './components/Pages/TareasProgramadas/Tareas';
 import Excels from './components/Pages/Excels/Excels';
 import TablaMaterias from './components/Pages/Sysacad/Materias/TablaMaterias';
+import { LuDatabaseBackup } from "react-icons/lu";
 
 const routes = [
   {
@@ -153,7 +154,7 @@ const routes = [
     element: <Tareas />,
     title: 'Procesos Automáticos',
     rol: 'admin',
-    icon: <VscDebugRerun size="30px" />,
+    icon: <LuDatabaseBackup size="30px" />,
   },
   {
     path: 'cuenta',
