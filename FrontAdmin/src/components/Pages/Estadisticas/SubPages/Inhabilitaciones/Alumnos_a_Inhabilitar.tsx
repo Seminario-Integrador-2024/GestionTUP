@@ -5,6 +5,8 @@ import { Box, Button, Flex, Table, Tbody, Td, Th, Thead, Tr, Text } from "@chakr
 import Tabla from './Tabla';
 import { IoEyeOutline } from "react-icons/io5";
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
+import TablaDetalle from "./TablaDetalles";
 
 type Alumno = {
     user: number,
@@ -20,31 +22,6 @@ type Cuota = {
     tipo: string
 };
 
-const prueba = {
-    "count": 2,
-    "next": null,
-    "previous": null,
-    "results": [
-      {
-        "user": 43665213,
-        "full_name": "ACEVEDO, Gabriel Antonio",
-        "estado_financiero": "Inhabilitado",
-        "legajo": 25112,
-        "cuotas_adeudadas": [
-          {
-            "monto": 10,
-            "fecha_vencimiento": "2024-12-10",
-            "tipo": "Cuota"
-          },
-          {
-            "monto": 10,
-            "fecha_vencimiento": "2025-01-10",
-            "tipo": "Cuota"
-          }
-        ]
-      }
-    ]
-  }  
 
 export default function AInhabilitar() {
 
@@ -54,6 +31,7 @@ export default function AInhabilitar() {
     const headers = ['Tipo', 'Fecha Vencimiento' , 'Monto'];
     const [limit1] = useState(10);
     const [offset1, setOffset1] = useState(0);
+    const navigate = useNavigate();
     const [totalInhabilitados, setTotalInhabilitados] = useState<number>(0);
 
     const handleNextPage = () => {   
@@ -83,6 +61,10 @@ export default function AInhabilitar() {
         setSelectedDni(dni);
     };
 
+    const handleRowClick = (dni: any) => {
+        navigate(`/admin/alumnos/${dni}`);
+    };    
+
 
     useEffect(() => {
         fetchData();
@@ -108,10 +90,13 @@ export default function AInhabilitar() {
                         </Thead>
                         <Tbody>
                         {alumnosAInhabilitar.map((alumno) => (
-                                <Tr key={alumno.user}>
-                                    <Td textAlign="center">{alumno.full_name}</Td>
-                                    <Td textAlign="center">{new Intl.NumberFormat('es-ES').format(alumno.user)}</Td>
-                                    <Td textAlign="center">{new Intl.NumberFormat('es-ES').format(alumno.legajo)}</Td>
+                                <Tr key={alumno.user} cursor="pointer" _hover={{
+                                    bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
+                                    cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+                                  }}>
+                                    <Td textAlign="center"  onClick={() => handleRowClick(alumno.user)}>{alumno.full_name}</Td>
+                                    <Td textAlign="center"  onClick={() => handleRowClick(alumno.user)}>{new Intl.NumberFormat('es-ES').format(alumno.user)}</Td>
+                                    <Td textAlign="center"  onClick={() => handleRowClick(alumno.user)}>{new Intl.NumberFormat('es-ES').format(alumno.legajo)}</Td>
                                     <Td textAlign="center">
                                         <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailsClick((alumno.user.toString()))}>
                                             <IoEyeOutline size="22px" />
@@ -122,7 +107,7 @@ export default function AInhabilitar() {
                         </Tbody>
                         </Table>
                         {selectedDni && (
-                            <Tabla headers={headers} data={alumnosAInhabilitar.find((alumno) => alumno.user === parseInt(selectedDni))?.cuotas_adeudadas || []} />
+                            <TablaDetalle headers={headers} data={alumnosAInhabilitar.find((alumno) => alumno.user === parseInt(selectedDni))?.cuotas_adeudadas || []} />
                         )}
                          <Box bottom="0" width="100%" bg="white" p="10px" mt={5} mb={5} boxShadow="md" >
                                             <Flex justifyContent="space-between" alignItems={"center"}>
@@ -134,7 +119,7 @@ export default function AInhabilitar() {
                                                 Siguiente
                                             </Button>
                                             </Flex>
-                        </Box>
+                         </Box>
                         </>
                     ) : <p>No hay datos para mostrar</p>}
                 </Flex>

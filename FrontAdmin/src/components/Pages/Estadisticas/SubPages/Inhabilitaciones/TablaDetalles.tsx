@@ -7,7 +7,7 @@ interface TablaProps {
   data: Array<Record<string, any>>;
 }
 
-const Tabla: React.FC<TablaProps> = ({ headers, data}) => {
+const TablaDetalle: React.FC<TablaProps> = ({ headers, data}) => {
   const [renderKey, setRenderKey] = useState(0);
   const navigate = useNavigate();
 
@@ -21,10 +21,6 @@ const Tabla: React.FC<TablaProps> = ({ headers, data}) => {
     'Monto': 'monto'
   };
 
-  const handleRowClick = (dni: any) => {
-    navigate(`/admin/alumnos/${dni}`);
-  }
-
   return (
     <Table key={renderKey} variant="simple" p={4} borderWidth={1} borderColor={'grey.500'}>
       <Thead>
@@ -36,7 +32,7 @@ const Tabla: React.FC<TablaProps> = ({ headers, data}) => {
       </Thead>
       <Tbody>
       {data.map((row) => (
-            <Tr key={row.user} onClick={() => handleRowClick(row[keyMap['DNI']])} cursor="pointer" _hover={{
+            <Tr key={row.user} cursor="pointer" _hover={{
               bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
               cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
             }}>
@@ -62,4 +58,4 @@ const Tabla: React.FC<TablaProps> = ({ headers, data}) => {
   );
 };
 
-export default Tabla;
+export default TablaDetalle;
