@@ -108,7 +108,8 @@ export default function TablaMaterias() {
     };
 
     return (
-        <Box>
+        <Flex justifyContent={'center'}>
+        <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} mt={4} maxWidth={'900px'}>
             <Flex justifyContent="center" mb={4}>
                 <Button leftIcon={<AddIcon />} colorScheme="green" onClick={onOpen2}>Agregar Materia</Button>
             </Flex>
@@ -226,5 +227,6 @@ export default function TablaMaterias() {
                 materia={selectedMateriaEditar}
             />
         </Box>
+        </Flex>
     );
 }

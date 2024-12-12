@@ -108,7 +108,6 @@ export default function CompromisoDePago() {
 
   useEffect(() => {
     if (ultimo) {
-      console.log(ultimo);
       if (ultimo.firmo_ultimo_compromiso === true) {
         setUltimoCompromiso(true);
       }
@@ -152,13 +151,14 @@ export default function CompromisoDePago() {
             p={4}
             borderRadius="md"
             w="100%"
-            mt={4}
+            mt={1}
           >
             {pdfUrl ?  (
               <iframe
                 src={pdfUrl}
                 width={isMobile ? "100%" : "1000px"}
                 height={isMobile ? "500px" : "400px"}
+                style={{ display: 'block', margin: '0 auto' }}
               />
             ) : error? (
                 <Text>PDF no disponible</Text>
@@ -167,7 +167,7 @@ export default function CompromisoDePago() {
         </Flex>
 
         <Flex justifyContent={isMobile ? "center" : "flex-end"} mt={4} mb={4} flex={1} width="100%">
-          <Button colorScheme="teal" isDisabled={ultimoCompromiso || adeuda || error} onClick={handleFirmar}>
+          <Button colorScheme="teal" isDisabled={ultimoCompromiso || adeuda} onClick={handleFirmar}>
             Firmar
           </Button>
         </Flex>

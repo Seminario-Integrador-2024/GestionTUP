@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {getInhabilitaciones} from '../../../../../API/Inhabilitaciones';
 import Tabla from './Tabla';
 import AInhabilitar from './Alumnos_a_Inhabilitar';
+import Habilitar from './Alumno_a_Habilitar';
 import { Box, Button, Flex, Tab, TabList, Text ,TabPanel, TabPanels, Tabs, Tag, Spinner, Input, Tooltip } from "@chakra-ui/react";
 import { ArrowLeftIcon, ArrowRightIcon, InfoIcon } from '@chakra-ui/icons';
 
@@ -107,23 +108,7 @@ function Inhabilitados() {
                 <TabPanels>
                     <TabPanel>
                     <Flex>
-                        <Box
-                            borderRadius={8}
-                            borderColor={"gray.200"}
-                            borderStyle={"solid"}
-                            borderWidth={1}
-                            p={3}
-                        >
-                        {loading ? (
-                                <Spinner />
-                            ) : (
-                            <Box>
-                                <Flex>
-                                    <Text fontSize="xl" fontWeight="bold">Habilitar</Text>
-                                </Flex>
-                            </Box>
-                        )}
-                        </Box>
+                        <Habilitar />
                     </Flex>
                     </TabPanel>
                     <TabPanel>

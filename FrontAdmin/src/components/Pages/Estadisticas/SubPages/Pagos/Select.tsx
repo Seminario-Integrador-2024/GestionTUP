@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heading, Input, Flex,Button , Text } from '@chakra-ui/react';
+import { Heading, Input, Flex,Button , Text, AlertIcon, Alert } from '@chakra-ui/react';
 import {formatoFechaISOaAAAAMMDD} from '../../../../../utils/general';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -72,7 +72,8 @@ function SelectPagos () {
 
     return (
         <Flex gap={2} direction={"column"}>
-            <Heading fontSize={22} mt={6}>Seleccione un periodo</Heading>
+            <Alert status='info' mb={2}> <AlertIcon /> Informe correspondiente a los pagos efectuados en un período específico</Alert>
+            <Heading fontSize={22} >Seleccione un período</Heading>
             <Flex direction={'row'} w={'100%'} gap={4} mt={2}>
                 <Button w={'100%'} variant={'light'}
                 onClick={handleMesActual}>

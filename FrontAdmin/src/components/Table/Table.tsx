@@ -52,11 +52,9 @@ const tableHeaders: MRT_ColumnDef<Alumno>[] = [
   },
 ];
 
-interface PropsTable extends FlexProps {
-  boolEnableRowSelection: boolean;
-}
 
-function Table({ boolEnableRowSelection }: PropsTable) {
+
+function Table() {
   const [alumnos, setAlumnos] = useState<Alumno[]>([]); //para la llamada a la api del back
   //const [alumnos, setAlumnos] = useState<Alumno[]>(data); // Usa el arreglo importado directamente
   const [loading, setLoading] = useState<boolean>(true); // Estado de carga
@@ -84,7 +82,6 @@ function Table({ boolEnableRowSelection }: PropsTable) {
   const table = useMaterialReactTable({
     columns,
     data: alumnos,
-    enableRowSelection: boolEnableRowSelection,
     enableColumnOrdering: true,
     enableGlobalFilter: true,
     initialState: {

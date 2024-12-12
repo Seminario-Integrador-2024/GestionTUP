@@ -139,30 +139,30 @@ const NewInterfaz = ({ compromisos, fetchMontos }: CardCargaProps) => {
                       ' / ' +
                       monto.cuatrimestre}
                   </Td>
-                  <Td p={2}>{' $ ' + monto.matricula}</Td>
+                  <Td p={2}>{'$ ' + new Intl.NumberFormat('es-ES').format(monto.matricula)}</Td>
                   <Td p={2}>
                     <Box>
-                      <Text fontWeight="bold">Monto Completo: {' $ ' + monto.monto_completo}</Text>
-                      <Text fontSize="sm">2do Vencimiento: {' $ ' + monto.monto_completo_2venc}</Text>
-                      <Text fontSize="sm">3er Vencimiento: {' $ ' + monto.monto_completo_3venc}</Text>
-                      <Text fontWeight="bold" mt={2}>Cuota Reducida: {' $ ' + monto.cuota_reducida}</Text>
-                      <Text fontSize="sm">2do Vencimiento: {' $ ' + monto.cuota_reducida_2venc}</Text>
-                      <Text fontSize="sm">3er Vencimiento: {' $ ' + monto.cuota_reducida_3venc}</Text>
+                      <Text fontWeight="bold">Cuota Completa: { '$ ' + new Intl.NumberFormat('es-ES').format(monto.monto_completo)}</Text>
+                      <Text fontSize="sm">2do Vencimiento: {'$ ' + new Intl.NumberFormat('es-ES').format(monto.monto_completo_2venc)}</Text>
+                      <Text fontSize="sm">3er Vencimiento: {'$ ' + new Intl.NumberFormat('es-ES').format(monto.monto_completo_3venc)}</Text>
+                      <Text fontWeight="bold" mt={2}>Cuota Reducida: {'$ ' + new Intl.NumberFormat('es-ES').format(monto.cuota_reducida)}</Text>
+                      <Text fontSize="sm">2do Vencimiento: {'$ ' + new Intl.NumberFormat('es-ES').format(monto.cuota_reducida_2venc)}</Text>
+                      <Text fontSize="sm">3er Vencimiento: {'$ ' + new Intl.NumberFormat('es-ES').format(monto.cuota_reducida_3venc)}</Text>
                       
                     </Box>
                   </Td>
                   <Td p={1}>
                     <Text>
-                      1er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_1}</Box>
+                      1er Vencimiento: <Box as="span" color="black">{monto.fecha_vencimiento_1} de cada mes</Box>
                     </Text>
                     <Text>
-                      2do Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_2}</Box>
+                      2do Vencimiento: <Box as="span" color="black">{monto.fecha_vencimiento_2} de cada mes</Box>
                     </Text>
                     <Text>
-                      3er Vencimiento: <Box as="span" fontWeight="bold" color="black">{monto.fecha_vencimiento_3}</Box>
+                      3er Vencimiento: <Box as="span" color="black">{monto.fecha_vencimiento_3} de cada mes</Box>
                     </Text>
                     <Text as="span" fontWeight="bold" color="black">
-                      Límite de Baja: {monto.fecha_limite_baja ? monto.fecha_limite_baja.toString() : 'N/A'}
+                      Fecha límite para solicitar la baja: {monto.fecha_limite_baja ? monto.fecha_limite_baja.toString() : 'N/A'}
                     </Text>
                   </Td>
                   <Td p={1}>

@@ -12,7 +12,7 @@ interface Cuota {
     numero: number;
     montoActual: number;
     fechaVencimiento: string;
-    valorpagado: number;
+    monto_pagado: number;
     estado: string;
     tipocuota: string;
     valorinformado: number;

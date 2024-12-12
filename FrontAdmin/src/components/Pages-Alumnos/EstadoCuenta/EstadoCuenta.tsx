@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Button, Text, Stack, Card, CardBody, Box,Tabs,TabList,  TabPanels, TabPanel, Table, Tag,Thead,Tr, Th, Tbody, Tab,Td, Tooltip, Alert, AlertIcon } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, useBreakpointValue} from "@chakra-ui/react";
 import {useState, useEffect} from 'react';
 import {AttachmentIcon, ArrowLeftIcon, ArrowRightIcon, QuestionOutlineIcon} from '@chakra-ui/icons';
 import { IoEyeOutline } from "react-icons/io5";
@@ -19,7 +19,7 @@ interface Cuota {
     numero: number,
     montoActual: number;
     fechaVencimiento: string;
-    valorpagado: number;
+    monto_pagado: number;
     estado: string;
     tipo: string;
     valorinformado: number;
@@ -97,6 +97,9 @@ function InformarPago() {
 
   const [cuotaCompleta, setCuotaCompleta] = useState()
 
+  // Definir el ancho de la caja de SubMenuContent según el tamaño de la pantalla
+  const isMobile = useBreakpointValue({ base: true, xl: false });
+
   const handleNextPage = () => {
     if (offset + limit < totalCuotas) {
       setOffset1(offset + limit);
@@ -158,6 +161,7 @@ function InformarPago() {
     const fetchPagos = async () => {
       try {
         const data = await FetchResumenPagos(undefined);
+        console.log('pagos:', data);
         setPagos(data);
       } catch (error) {
         setError(error);
@@ -269,13 +273,13 @@ function InformarPago() {
         </Tag>
       </Box>
 
-      <Box w="100%" mb={7} display="flex" gap={2} flexDirection={{ base: "column", sm: "row" }} alignItems="center" justifyContent="center" flexWrap="wrap">
+      <Box w="100%" mb={7} display="flex" gap={2} flexDirection={{ base: "column", sm: "row" }} alignItems="center" justifyContent="center" flexWrap="wrap" paddingBottom={isMobile ? '20px' : ''} borderBottom={isMobile ? '2px solid gray' : ''}>
         <Tag flex="1" p="10px" fontSize={16}>
           <Flex alignItems="center" direction={{ base: "column", md: "row" }}>
             <Text color="gray" textAlign="center">
-              Último Compromiso de Pago:
+              Último Compromiso de Pago: 
             </Text>
-            <Text size="sm" fontWeight="semibold">
+            <Text size="sm" fontWeight="semibold"  ml={'2px'}>
               {compromisoFirmado && compromisoFirmado.results[0]?.firmo_ultimo_compromiso ? 'Firmado' : 'Pendiente de firma'}
             </Text>
           </Flex>
@@ -283,34 +287,38 @@ function InformarPago() {
         <Tag flex="1" p="10px" fontSize={16} bg={alumno?.estado_academico === 'Habilitado' ? "#C0EBA6" : "#FF8A8A"}>
           <Flex alignItems="center" justifyContent="center" direction={{ base: "column", md: "row" }}>
             <Text color="gray">
-              Condición Sysacad:
+              Condición Sysacad: 
             </Text>
-            <Text size="sm" fontWeight="semibold">
+            <Text size="sm" fontWeight="semibold" ml={'2px'}>
             {alumno?.estado_academico}
             </Text>
           </Flex>
         </Tag>
-        {alumno?.estado_financiero === 'Inhabilitado' ? (
-          <Tag flex="1" p="10px" fontSize={16} bg="#FF8A8A">
-            <Text color="gray">
-              Motivo:
-            </Text>
-            <Text size="sm" pl="8px" fontWeight="semibold">
-              Deudor
-            </Text>
-          </Tag>
-        ) : (
-          <Tag flex="1" p="10px" fontSize={16}>
-            <Text color="gray">
-              Ultimo Periodo Cursado
-            </Text>
-            <Text size="sm" pl="8px" fontWeight="semibold">
-              {alumnoInfo.ultimo_cursado}
-            </Text>
-          </Tag>
-        )}
       </Box>
 
+      { isMobile ? (//mobile
+                      <Box>
+                      {cuotas && cuotas.map((cuota, index) => (
+                            <Box
+                              key={index}
+                              borderWidth="1px"
+                              borderRadius="lg"
+                              overflow="hidden"
+                              p={4}
+                              mb={4}
+                              background={'blue.50'}
+                            >
+                                <Text textAlign={'center'} fontWeight={'600'}>Cuota Número: {cuota.numero}</Text>
+                                <Text>Fecha Vto.:{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Text>
+                                <Text>Monto Actual: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Text>
+                                <Text>Monto Pagado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Text>
+                                <Text>Valor Informado: {'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Text>
+                                <Text>Valor Adeudado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado )}</Text>
+                            </Box>
+                            ))}
+                      </Box>
+                  ) 
+                  : (
       <Box  w={"100%"} display={"flex"} justifyContent={"center"}  >
                   {cuotas.length > 0 ? (
                     <Table variant="simple" width="90%" borderColor={"gray.200"}
@@ -349,11 +357,11 @@ function InformarPago() {
                             <Td textAlign="center">{cuota.numero}</Td>
                             <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
                             <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
-                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorpagado - cuota.valorinformado)}</Td>
+                            <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado)}</Td>
                             <Td textAlign="center" p="8px">{
-                              cuota.valorinformado > 0 || cuota.valorpagado > 0  ? 
+                               cuota.monto_pagado > 0  ? 
                                 <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button> 
                               : 
                               <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
@@ -377,13 +385,15 @@ function InformarPago() {
                   )}
                   
               </Box>
+              )}
+
               {cuotas.length > 0 ?
-                  <Box w="90%" mt="20px" ml="70px">
-                      <Flex justifyContent="space-between" > 
+                  <Box w="90%" mt="20px" ml={isMobile? '' : "70px"}>
+                      <Flex justifyContent="space-between"> 
                           <Button onClick={handlePreviousPage} isDisabled={offset === 0} _hover="none" color="white"  leftIcon={<ArrowLeftIcon/>}>
                                 Anterior
                           </Button>
-                          <Text textAlign={"center"} mb={0}>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCuotas / limit)}</Text>
+                          <Text  m={isMobile? '2px' : ""} textAlign={"center"} mb={0}>Página {Math.ceil(offset / limit) + 1} de {Math.ceil(totalCuotas / limit)}</Text>
                           <Button onClick={handleNextPage} isDisabled={offset + limit >= totalCuotas} _hover="none" color="white" rightIcon={<ArrowRightIcon/>}>
                               Siguiente
                           </Button>
@@ -420,11 +430,11 @@ function InformarPago() {
                                   <Td textAlign="center">{cuota.nro_cuota}</Td>
                                   <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuotaCompleta ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) )}</Td>
                                   <Td textAlign="center">
-                                  {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (calcularMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) }
+                                  {'$ 0 '/*  + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (calcularMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0) ) */ }
                                     </Td>
                                   <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                   <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
-                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.monto_informado > cuota.monto ? cuota.monto : pago.monto_informado)}</Td>
+                                  <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                 </>
                               ) : null
                             ))}

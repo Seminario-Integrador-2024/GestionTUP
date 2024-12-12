@@ -11,6 +11,7 @@ import {
   Text,
   useDisclosure,
   Avatar,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import imgLogo from '../icons/Logos TUP_Mesa de trabajo 1.png';
 import logoUser from '../icons/logo-user.png';
@@ -32,6 +33,9 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
     }
     return fullName.trim();
   }
+
+  // Definir el ancho de la caja de SubMenuContent según el tamaño de la pantalla
+  const isMobile = useBreakpointValue({ base: true, xl: false });
 
   // Perfil  
   const {
@@ -74,7 +78,7 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
           color="white"
         />
         <Flex direction={"row"} alignItems={"center"} gap={3}>
-        <Text fontFamily={"'Roboto',sans-serif"} fontWeight="600">{user}</Text>
+        <Text display={isMobile ? 'none' : ''} fontFamily={"'Roboto',sans-serif"} fontWeight="600">{user}</Text>
         <MenuButton borderRadius={'full'}>
           <Avatar
             name={formatUserName(user || '')}

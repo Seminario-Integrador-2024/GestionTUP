@@ -46,9 +46,13 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
           </Thead>
           <Tbody>
           {data.map((row, rowIndex) => (
-            <Tr key={rowIndex} onClick={() => handleRowClick(row[keyMap['DNI']])} cursor="pointer">
+            <Tr key={rowIndex} onClick={() => handleRowClick(row[keyMap['DNI']])} cursor="pointer" _hover={{
+              bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
+              cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+            }}>
                 {headers.map((header) => (
-                <Td key={header} textAlign={header === 'Apellido y Nombre' ? "left" : "center"}>
+                <Td key={header} textAlign={header === 'Apellido y Nombre' ? "left" : "center"}
+                >
                   {/* Usamos keyMap para obtener la propiedad correcta */}
                   {header === 'Monto Cuota' || header === 'Monto Adeudado' || header === 'Monto Abonado' ? (
                   `$${new Intl.NumberFormat('es-ES').format(row[keyMap[header]])}`
@@ -57,6 +61,7 @@ const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
                   ) : typeof row[keyMap[header]] === 'number' ? (
                   new Intl.NumberFormat('es-ES').format(row[keyMap[header]]) 
                   ) : 'N/A'}
+                 
                 </Td>
                 ))}
             </Tr>

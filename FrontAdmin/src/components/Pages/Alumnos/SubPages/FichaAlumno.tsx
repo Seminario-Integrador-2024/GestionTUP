@@ -23,7 +23,9 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  Spinner
+  Spinner, 
+  useBreakpointValue,
+  Center
 } from '@chakra-ui/react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import logoUser from '../../../icons/logo-user.png';
@@ -44,6 +46,7 @@ import { Link } from 'react-router-dom';
 import { formatoFechaISOaDDMMAAAA } from '../../../../utils/general';
 import Cookies from 'js-cookie';
 import { FetchDetalleCompromiso } from '../../../../API-Alumnos/Compromiso.ts';
+import { off } from 'process';
 
 interface Alumno {
   full_name: string;
@@ -54,7 +57,7 @@ interface Alumno {
   estado_academico: string;
   estado_financiero: string;
   ultimo_cursado: string;
-  cuil: string;
+  cuil_alumno: string;
 }
 
 
@@ -62,7 +65,7 @@ interface Cuota {
   numero: number;
   montoActual: number;
   fechaVencimiento: string;
-  valorpagado: number;
+  monto_pagado: number;
   estado: number;
   tipocuota: string;
   valorinformado: number;
@@ -84,7 +87,7 @@ interface Cuota {
   numero: number,
   montoActual: number;
   fechaVencimiento: string;
-  valorpagado: number;
+  monto_pagado: number;
   estado: number; //whats this?
   tipo: string;
   valorinformado: number;
@@ -146,13 +149,15 @@ function FichaAlumno() {
   const [detail, showDetail] = useState<number | null>(null);
   const [idCuotaSeleccionada, setIdCuotaSeleccionada] = useState<number | null>(null);
   const [cuotaCompleta, setCuotaCompleta] = useState()
-  const [limit] = useState(5);
+  const [limit] = useState(6);
   const [offset, setOffset1] = useState(0);
   const [totalCuotas, setTotalCuotas] = useState<number>(0);
   const [pagos, setPagos] = useState<PagosResponse | null>(null);
   const [detalleCompromiso, setDetalleCompromiso] = useState<CompromisoResponse >(); 
   const [compromisoFirmado, setCompromiso] = useState<CompromisoResponse >(); // Defi
- 
+  // Definir el ancho de la caja de SubMenuContent según el tamaño de la pantalla
+  const isMobile = useBreakpointValue({ base: true, xl: false });
+  
   interface Inhabilitacion {
     fecha_desde: string;
     fecha_hasta: string;
@@ -186,7 +191,6 @@ function FichaAlumno() {
     const fetchDetalleAlumno = async (dni: any) => {
       try {
           const dniNumber = parseInt(dni, 10); // Convierte a número
-          const data = await FetchEstadoCuenta(dniNumber);
           const dataDetalle = await FetchDetalleAlumno(dniNumber);
           const dataMaterias = await FetchMateriasAlumno(dniNumber);
           setAlumno(dataDetalle);
@@ -197,13 +201,16 @@ function FichaAlumno() {
       }
     };
 
-    const fetchEstadoCuentaAlumno = async () => {
+    const fetchEstadoCuentaAlumno = async (limit: number, offset: number) => {
       try {
         if (dni) {
           const dniNumber = parseInt(dni, 10); // Convierte a número
-          const data = await FetchEstadoCuenta(dniNumber);
-          const sortedCuotas = data.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
+          const data = await FetchEstadoCuenta(dniNumber, limit, offset);
+          const  sortedCuotas = data.results.sort((a: Cuota, b: Cuota) => a.numero - b.numero);      // Si cambia el numero de cuota no olvidar cambiar aca
+          console.log('data.count: ', data.count)
+          setTotalCuotas(data.count);
           setCuotas(sortedCuotas);
+          console.log('cuotas: ', data)
         }
       } catch (error) {
         setError(error);
@@ -213,11 +220,11 @@ function FichaAlumno() {
       }
     };
     fetchDetalleAlumno(dni);
-    fetchEstadoCuentaAlumno();
+    fetchEstadoCuentaAlumno(limit, offset);
     fetchCompromiso();
     fetchImpagas();
     fetchPagos();
-  }, []); 
+  }, [limit, offset]); 
     
 
     const fetchPagos = async () => {
@@ -225,6 +232,7 @@ function FichaAlumno() {
         if (!dni) return
         const dniNumber = parseInt(dni, 10); // Convierte a número
         const data = await FetchResumenPagos(dniNumber);
+        console.log('pagos; ' , data)
                 setPagos(data);
       } catch (error) {
         console.error('Error al obtener los datos', error);
@@ -366,17 +374,18 @@ function FichaAlumno() {
 
   return (
 
-    <Flex mt="20px" width={"100%"} >
+    <Flex mt="20px" width={"100%"} display={isMobile ? 'Box' : 'Flex'} >
       <Button
         position="absolute"
-        left="120"
+        left={isMobile ? '10px' : '120px'}
         color="white"
         size="sm"
         onClick={handleBackClick}
       >
         <ArrowLeftIcon mr="10px" /> Volver{' '}
       </Button>
-      <Box borderRight="1px solid #cbd5e0" w="25%" minH="80vh" p="20px">
+      
+      <Box borderRight={isMobile ? '' : "1px solid #cbd5e0"} borderBottom={isMobile ? "1px solid #cbd5e0" : ''} w={isMobile ? '100%' : '25%'} minH={isMobile ? '' : "80vh"} p={isMobile ? '20px 0px 0px 0px' : '20px'}  >
         <Text color="gray" mt="30px">
           Apellido y nombre
         </Text>
@@ -389,7 +398,7 @@ function FichaAlumno() {
           CUIL:
         </Text>
         <Text size="sm" pl="8px" fontWeight="semibold">
-          {alumno.cuil}
+          {alumno.cuil_alumno}
         </Text>
         <Text color="gray" mt="10px">
           Legajo:
@@ -424,12 +433,6 @@ function FichaAlumno() {
         <Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
           {alumno.estado_academico}
         </Text>
-        <Text color="gray" mt="20px">
-          Ultimo Periodo Cursado
-        </Text>
-        {<Text size="sm" pl="8px" fontWeight="semibold" mb="20px">
-          {alumno.ultimo_cursado}
-        </Text>}
 
       </Box>
 
@@ -495,7 +498,7 @@ function FichaAlumno() {
 
               <TabPanels>
                 <TabPanel w={"100%"}>
-                  <Flex justifyContent="center" w={"100%"} mt={1} gap={2} mb={2}>
+                  <Flex justifyContent="center" w={"100%"} mt={1} gap={2} mb={2} display={isMobile ? 'Block' : 'Flex'}>
                     <Tag m="1px" p="10px" w={"100%"} fontWeight={"bold"} fontSize={16}>
                       Estado de cuenta al {(new Date().toLocaleDateString())}
                     </Tag>
@@ -503,54 +506,79 @@ function FichaAlumno() {
                       Deuda total: {'$ ' + new Intl.NumberFormat('es-ES').format(deuda)}
                     </Tag>
                   </Flex>
-                  <Box w={"100%"} display={"flex"} justifyContent={"center"}  >
-                    {cuotas.length > 0 ? (
-                      <Table variant="simple" width="90%" borderColor={"gray.200"}
-                        borderStyle={"solid"}
-                        borderWidth={1}
-                        p={5}
-                      >
-                        <Thead>
-                          <Tr mt={6}>
-                            <Th textAlign="center" >
-                              Numero
-                            </Th>
-                            <Th textAlign="center">Fecha Proximo Vto.</Th>
-                            <Th textAlign="center">Valor Actual</Th>
-                            <Th textAlign="center">Valor Pagado</Th>
-                            <Th textAlign="center">Valor Informado</Th>
-                            <Th textAlign="center">Valor Adeudado</Th>
-                            <Th textAlign="center">Detalle</Th>
-                          </Tr>
-                        </Thead>
-                        <Tbody>
-                          {cuotas && cuotas.map((cuota, index) => (
-                            <Tr key={index}>
-                              <Td textAlign="center">{cuota.numero}</Td>
-                              <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.valorpagado - cuota.valorinformado)}</Td>
-                              <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.valorinformado )}</Td>
-                              <Td textAlign="center" p="8px">{
-                                cuota.valorinformado > 0 || cuota.valorpagado > 0 ?
-                                  <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button>
-                                  :
-                                  <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
-                              }
-                              </Td>
+                  { isMobile ? (//mobile
+                      <Box>
+                      {cuotas && cuotas.map((cuota, index) => (
+                            <Box
+                              key={index}
+                              borderWidth="1px"
+                              borderRadius="lg"
+                              overflow="hidden"
+                              p={4}
+                              mb={4}
+                              background={'gray.100'}
+                            >
+                                <Text textAlign={'center'} fontWeight={'600'}>Cuota Número: {cuota.numero}</Text>
+                                <Text>Fecha Vto.:{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Text>
+                                <Text>Monto Actual: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Text>
+                                <Text>Monto Pagado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Text>
+                                <Text>Valor Informado: {'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Text>
+                                <Text>Valor Adeudado: {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado )}</Text>
+                            </Box>
+                            ))}
+                      </Box>
+                  ) 
+                  : ( //desktop
+                    <Box w={"100%"} display={"flex"} justifyContent={"center"}  >
+                      {cuotas.length > 0 ? (
+                        <Table variant="simple" width="90%" borderColor={"gray.200"}
+                          borderStyle={"solid"}
+                          borderWidth={1}
+                          p={5}
+                        >
+                          <Thead>
+                            <Tr mt={6}>
+                              <Th textAlign="center" >
+                                Numero
+                              </Th>
+                              <Th textAlign="center">Fecha Proximo Vto.</Th>
+                              <Th textAlign="center">Valor Actual</Th>
+                              <Th textAlign="center">Valor Pagado</Th>
+                              <Th textAlign="center">Valor Informado</Th>
+                              <Th textAlign="center">Valor Adeudado</Th>
+                              <Th textAlign="center">Detalle</Th>
                             </Tr>
-                          ))}
-                        </Tbody>
-                      </Table>
+                          </Thead>
+                          <Tbody>
+                            {cuotas && cuotas.map((cuota, index) => (
+                              <Tr key={index}>
+                                <Td textAlign="center">{cuota.numero}</Td>
+                                <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
+                                <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
+                                <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
+                                <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
+                                <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado )}</Td>
+                                <Td textAlign="center" p="8px">{
+                                  cuota.monto_pagado > 0 ?
+                                    <Button bg='transparent' _hover='transparent' m="0px" p="0px" onClick={() => handleDetailPay(cuota)}><IoEyeOutline size="22px"> </IoEyeOutline> </Button>
+                                    :
+                                    <Button bg='transparent' _hover='transparent' disabled cursor="not-allowed" pointerEvents="none"> <IoEyeOutline color='gray' size="22px"> </IoEyeOutline> </Button>
+                                }
+                                </Td>
+                              </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
 
 
-                    ) : (
-                      <Text textAlign="center" padding="20px">El alumno aún no tiene cuotas generadas. </Text>
-                    )}
+                      ) : (
+                        <Text textAlign="center" padding="20px">El alumno aún no tiene cuotas generadas. </Text>
+                      )}
 
-                  </Box>
-                  <Box w="90%" mt="20px" ml="70px">
+                    </Box>
+                  )}
+                 
+                  <Box w="90%" mt="20px" ml={isMobile? '' : "70px"}>
                     <Flex justifyContent="space-between" >
                       <Button onClick={handlePreviousPage} isDisabled={offset === 0} _hover="none" color="white" leftIcon={<ArrowLeftIcon />}>
                         Anterior
@@ -571,7 +599,6 @@ function FichaAlumno() {
                             <Tr mt={6}>
                               <Th textAlign="center" >Cuota</Th>
                               <Th textAlign="center" >Valor Original Cuota</Th>
-                              <Th textAlign="center" >Mora</Th>
                               <Th textAlign="center" >Cuota con Mora</Th>
                               <Th textAlign="center" >Fecha de Informe</Th>
                               <Th textAlign="center" >Valor Pagado</Th>
@@ -590,12 +617,9 @@ function FichaAlumno() {
                                       <>
                                         <Td textAlign="center">{cuota.nro_cuota}</Td>
                                         <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? (detalleCompromiso?.matricula ?? 0) : (cuotaCompleta ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0))}</Td>
-                                        <Td textAlign="center">
-                                          {'$ ' + new Intl.NumberFormat('es-ES').format(cuota.tipo === "Matrícula" ? 0 : (calcularMontoConMora(pago.fecha, cuota.cuota_completa, cuota.fecha_vencimiento) ?? 0) - (cuota.cuota_completa ? (detalleCompromiso?.monto_completo) ?? 0 : (detalleCompromiso?.cuota_reducida) ?? 0))}
-                                        </Td>
                                         <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.monto)}</Td>
                                         <Td textAlign="center">{formatoFechaISOaDDMMAAAA(pago.fecha)}</Td>
-                                        <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.monto_informado > cuota.monto ? cuota.monto : pago.monto_informado)}</Td>
+                                        <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(pago.monto_informado > cuota.monto ? cuota.monto_pagado : pago.monto_informado)}</Td>
                                       </>
                                     ) : null
                                   ))}
