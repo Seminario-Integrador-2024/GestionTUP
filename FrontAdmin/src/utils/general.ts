@@ -19,6 +19,12 @@ export function formatoFechaAAAAMMaMMAAAA(fecha: string): string {
   return `${mes}-${año}`;
 }
 
+export function formatoFechaISOaMM(fechaISO: string): number {
+  const fechaObjeto = new Date(fechaISO);
+  const mes = String(fechaObjeto.getUTCMonth() + 1).padStart(2, '0');
+  return Number(mes);
+}
+
 export function obtenerFechaDeHoy(): string {
   const hoy = new Date();
   const dia = String(hoy.getDate()).padStart(2, '0');

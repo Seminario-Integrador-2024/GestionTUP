@@ -1,7 +1,7 @@
 import { createContext, useState, ReactNode, useContext, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { FetchLogin } from './API/Login';
-const URL= import.meta.env.VITE_URL_DEV;
+
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -26,12 +26,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const refreshToken = async () => {
     const refresh = Cookies.get('refresh_token');
     if (!refresh) {
+
       onLogout();
       return;
     }
 
     try {
-      const response = await fetch(`${URL}/users/token/refresh/`, {
+      const response = await fetch(`http://localhost:8000/api/auth/token/refresh/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,19 +41,20 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (response.ok) {
-        console.log('Token refreshed');
+    
         const data = await response.json();
-        console.log(data);
+   
         Cookies.set('tokennn', data.access);
         Cookies.set('refresh_token', data.refresh);
         Cookies.set('access_expiration', data.access_expiration);
         Cookies.set('refresh_expiration', data.refresh_expiration);
         TokenRefresh(data.access_expiration);
       } else {
+      
         onLogout();
       }
     } catch (error) {
-      console.error('Error refreshing token:', error);
+    
       onLogout();
     }
   };
@@ -67,9 +69,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const onLogin = async (password: string, account: string) => {
+  const onLogin = async (legajo: string, contrasenia: string) => {
     try {
-      await FetchLogin(password, account);
+      await FetchLogin(legajo, contrasenia);
       setRolUser(JSON.parse(localStorage.getItem('userRol') || '[]'));
       setIsAuthenticated(true);
       
@@ -90,7 +92,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const onLogout = () => {
-    console.log('logout');
+
     
     // Verificar y eliminar cookies
     const cookiesToRemove = [
@@ -106,9 +108,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     cookiesToRemove.forEach(cookie => {
       if (Cookies.get(cookie)) {
         Cookies.remove(cookie, { path: '/', domain: window.location.hostname });
-        console.log(`Cookie ${cookie} eliminada`);
+      
       } else {
-        console.log(`Cookie ${cookie} no encontrada`);
+     
       }
     });
   

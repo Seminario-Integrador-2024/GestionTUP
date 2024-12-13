@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -8,16 +8,12 @@ import {
   List,
   ListItem,
   VStack,
+  Button,
+  HStack,
+  Input,
 } from '@chakra-ui/react';
-import CustomSelect from './Seleccion';
 import { FetchMaterias } from '../../../../API/Materias';
-
-type Cuatrimestre = 'primer-cuatrimestre' | 'segundo-cuatrimestre';
-
-const opcionesCuatrimestre = [
-  { value: 'primer-cuatrimestre', label: 'Primer Cuatrimestre' },
-  { value: 'segundo-cuatrimestre', label: 'Segundo Cuatrimestre' },
-];
+import { FetchAlumnosMaterias } from '../../../../API/Materias';
 
 interface Materia {
   anio_cursada: number;
@@ -28,36 +24,60 @@ interface Materia {
 }
 
 const ListadoMaterias: React.FC = () => {
-  const [cuatrimestre, setSemester] = useState<Cuatrimestre | ''>('');
-  const [materias, setMaterias] = useState<Materia[]>([]); // Estado para las materias
+  const [materias, setMaterias] = useState<Materia[]>([]);
+  const [filteredMaterias, setFilteredMaterias] = useState<Materia[]>([]);
+  const [alumnos, setAlumnos] = useState([]); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [itemsPerPage] = useState(10); 
+  const [searchQuery, setSearchQuery] = useState(''); 
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // Maneja el cambio de selección del cuatrimestre
-  const handleSemesterChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSemester(event.target.value as Cuatrimestre);
+  const handleMateriaClick = async (codigoMateria: number) => {
+    try {
+      const alumnosData = await FetchAlumnosMaterias(codigoMateria);
+      setAlumnos(alumnosData); 
+      navigate(`${codigoMateria}/alumnos`); 
+    } catch (error) {
+      console.error('Error al obtener los alumnos:', error);
+      setAlumnos([]);
+    }
   };
 
-  // Filtra las materias según el cuatrimestre seleccionado
-  const filteredSubjects = materias.filter((materia: Materia) => {
-    if (cuatrimestre === 'primer-cuatrimestre') {
-      return materia.cuatrimestre === 1;
-    }
-    if (cuatrimestre === 'segundo-cuatrimestre') {
-      return materia.cuatrimestre === 2;
-    }
-    return false; // Si no hay cuatrimestre seleccionado
-  });
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    const filtered = materias.filter((materia) =>
+      materia.nombre.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredMaterias(filtered);
+  };
+
+  const indexOfLastMateria = currentPage * itemsPerPage;
+  const indexOfFirstMateria = indexOfLastMateria - itemsPerPage;
+  const currentMaterias = filteredMaterias.slice(indexOfFirstMateria, indexOfLastMateria);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await FetchMaterias();
-        setMaterias(data); // Actualiza el estado con las materias obtenidas
-        console.log(data);
+        if (data && Array.isArray(data.results)) {
+          const sortedMaterias = data.results.sort((a: Materia, b: Materia) =>
+            a.nombre.localeCompare(b.nombre)
+          );
+          setMaterias(sortedMaterias);
+          setFilteredMaterias(sortedMaterias); 
+        } else {
+          console.error('Datos inválidos:', data);
+          setMaterias([]); 
+          setFilteredMaterias([]); 
+        }
       } catch (error) {
-        console.error('Network error', error);
-        // showToast('Error', 'No se pudieron cargar las materias', 'error');
+        console.error('Network error:', error);
+        setMaterias([]);
+        setFilteredMaterias([]); 
       }
     };
     fetchData();
@@ -65,39 +85,73 @@ const ListadoMaterias: React.FC = () => {
 
   return (
     <Container maxW="container.md" p={4}>
-      <VStack spacing={6} align="start">
-        <Heading as="h1" size="lg">
+      <VStack
+        spacing={6}
+        align="start"
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-start"
+        alignItems="center"
+        height="100vh"
+        p={4}
+        py={12}
+      >
+        <Heading as="h1" size="lg" fontSize="3xl" fontWeight="bold" mb={3}>
           Listado de Materias
         </Heading>
+
         <Box w="full">
-          <CustomSelect
-            placeholder="Seleccionar Cuatrimestre"
-            options={opcionesCuatrimestre}
-            value={cuatrimestre}
-            onChange={handleSemesterChange}
+          <Input
+            placeholder="Buscar por nombre de materia"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            mb={4}
           />
         </Box>
-        {cuatrimestre && ( // Solo muestra la lista si no estamos en una vista de detalle
-          <Box w="full">
-            <List spacing={3}>
-              {filteredSubjects.map((materia) => (
-                <ListItem
-                  key={materia.codigo_materia} // Utiliza codigo_materia como clave única
-                  p={2}
-                  borderRadius="md"
-                  _hover={{ bg: 'gray.100', cursor: 'pointer' }}
-                  onClick={() => navigate(`${materia.codigo_materia}`)}
-                >
-                  <Text fontSize="md" color="gray.700">
-                    {materia.nombre} {/* Muestra el nombre de la materia */}
-                  </Text>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        )}
-        <Outlet />{' '}
-        {/* Outlet para renderizar rutas hijas, como la vista de detalle */}
+
+        <Box w="full">
+          <List spacing={3}>
+            {currentMaterias.map((materia) => (
+              <ListItem
+                key={materia.codigo_materia}
+                p={2}
+                borderRadius="md"
+                _hover={{ bg: 'gray.100', cursor: 'pointer' }}
+                onClick={() => handleMateriaClick(materia.codigo_materia)} 
+              >
+                <Text fontSize="md" color="gray.700">
+                  {materia.nombre}
+                </Text>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
+        <HStack spacing={4} justify="center" mt={4}>
+          <Button
+            isDisabled={currentPage === 1}
+            onClick={() => paginate(currentPage - 1)}
+            color="white"
+            bg="blue.700" 
+            _hover={{ bg: 'blue.800' }}
+          >
+            {'Anterior <<'}
+          </Button>
+          <Text>
+            Página {currentPage} de {Math.ceil(filteredMaterias.length / itemsPerPage)}
+          </Text>
+          <Button
+            isDisabled={currentPage === Math.ceil(filteredMaterias.length / itemsPerPage)}
+            onClick={() => paginate(currentPage + 1)}
+            color="white"
+            bg="blue.900"
+            _hover={{ bg: 'blue.800' }}
+          >
+            {'Siguiente >>'}
+          </Button>
+        </HStack>
+
+        <Outlet />
       </VStack>
     </Container>
   );

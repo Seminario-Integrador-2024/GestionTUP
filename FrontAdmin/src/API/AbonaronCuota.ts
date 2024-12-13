@@ -1,10 +1,13 @@
 import Cookies from 'js-cookie';
 
-export const AbonaronCuota = async (fecha: string) => {
+export const AbonaronCuota = async (fecha: string, limit:number, offset:number, valor?: string) => {
     try {
 
     const token = Cookies.get('tokennn');
-    const response = await fetch(`http://localhost:8000/api/alumnos/pagaron-cuota/${fecha}/`, {
+    const url = valor
+    ? `http://localhost:8000/api/alumnos/pagaron-cuota/${fecha}/?limit=${limit}&offset=${offset}&valor=${valor}`
+    : `http://localhost:8000/api/alumnos/pagaron-cuota/${fecha}/?limit=${limit}&offset=${offset}`;
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -27,12 +30,15 @@ export const AbonaronCuota = async (fecha: string) => {
     }
 };
 
-export const NoAbonaronCuota = async (fecha: string, limit: number, offset:number) => {
-    try {
-
+export const NoAbonaronCuota = async (fecha: string, limit: number, offset: number, valor?: string) => {
+  try {
     const token = Cookies.get('tokennn');
-    const response = await fetch(`http://localhost:8000/api/alumnos/no-pagaron-cuota/${fecha}/?limit=${limit}&offset=${offset}&ordering=full_name`, {
-        method: 'GET',
+    const url = valor
+      ? `http://localhost:8000/api/alumnos/no-pagaron-cuota/${fecha}/?limit=${limit}&offset=${offset}&valor=${valor}`
+      : `http://localhost:8000/api/alumnos/no-pagaron-cuota/${fecha}/?limit=${limit}&offset=${offset}`;
+
+    const response = await fetch(url, {
+      method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,

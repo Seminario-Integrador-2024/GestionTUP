@@ -9,15 +9,15 @@ import {obtenerFechaDeHoy} from '../../../utils/general';
 
 interface Cuota {
     id_cuota: number;
-    numero: string;
-    monto1erVencimiento: number;
-    monto2doVencimiento: number;
-    monto3erVencimiento: number;
-    valortotal: number;
-    valorpagado: number;
-    valoradeudado: number;
+    numero: number;
+    montoActual: number;
+    fechaVencimiento: string;
+    monto_pagado: number;
     estado: string;
-}
+    tipocuota: string;
+    valorinformado: number;
+    cuota_completa: boolean;
+  }
 
 function InformarPago() {
     const {
@@ -42,8 +42,8 @@ function InformarPago() {
     return (
 
 
-        <Stack
-            display={["none", "none", "flex", "flex"]}
+        <Flex
+       
             justifyContent="center"
             alignItems="center"
             direction="column"
@@ -62,7 +62,7 @@ function InformarPago() {
                  >Informar Pago</Button>
                 </Flex>
                 <DrawerInformar isOpen={isOpen} onClose={onClose} cuotasseleccionadas={cuotasSeleccionadas} onRefresh={handleRefresh}/>
-        </Stack>
+        </Flex>
     );
 }
 

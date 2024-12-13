@@ -23,12 +23,12 @@ const fetchAlumnosCompromiso = async (url: string): Promise<any> => {
   }
 };
 
-export const FetchFirmantes = async (): Promise<any> => {
-  const url = 'http://localhost:8000/api/firmantes/alumnos-firmaron-ultimo-compromiso/';
+export const FetchFirmantes = async (cuatrimestre: string, anio: number): Promise<any> => {
+  const url = `http://localhost:8000/api/alumnos/firmaron-compromiso/${cuatrimestre}/${anio}`;
   return fetchAlumnosCompromiso(url);
 };
 
-export const FetchNoFirmantes = async (): Promise<any> => {
-  const url = 'http://localhost:8000/api/firmantes/alumnos-no-firmaron-ultimo-compromiso/';
+export const FetchNoFirmantes = async (cuatrimestre: string, anio: number): Promise<any> => {
+  const url = `http://localhost:8000/api/alumnos/no-firmaron-compromiso/${cuatrimestre}/${anio}`;
   return fetchAlumnosCompromiso(url);
 };

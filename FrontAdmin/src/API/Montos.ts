@@ -18,7 +18,6 @@ export const FetchMontos = async (offset: number, limit: number) => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       return data;
     } else {
       throw new Error('Error en la respuesta del servidor');
@@ -84,3 +83,28 @@ export const loadPDF = async (id :string,file: File) => {
     throw new Error('Network error: ' +  JSON.stringify(error));
   }
 };
+
+export const deleteCompromiso = async (id: number) => {
+  try {
+    const token = Cookies.get('tokennn');
+
+    const response = await fetch(`http://localhost:8000/api/compromisos/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      const errorResponse = await response.json();
+      throw new Error(
+        'Error en la respuesta del servidor: ' + JSON.stringify(errorResponse)
+      );
+    }
+  } catch (error) {
+    throw new Error('Network error: ' + error);
+  }
+}

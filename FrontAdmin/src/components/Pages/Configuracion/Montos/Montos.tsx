@@ -20,6 +20,9 @@ import {
 import { AddIcon, CheckIcon } from '@chakra-ui/icons';
 import { createCompromiso } from '../../../../API/Montos';
 import ModalCargarDocumento from '../ModalCargarDocumento';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { set } from 'date-fns';
 
 interface Compromiso {
   anio: string | number | Date;
@@ -37,6 +40,7 @@ interface Compromiso {
   fecha_vencimiento_1: number;
   fecha_vencimiento_2: number;
   fecha_vencimiento_3: number;
+  fecha_limite_baja: Date | null;
 }
 
 interface CardCargaProps {
@@ -80,7 +84,7 @@ const DateSelect = ({
   onChange: (e: { target: { name: string; value: string } }) => void;
 }) => (
   <Flex align="center" mb={4}>
-    <Text  mb={1}>{label}</Text>
+    <Text mb={1}>{label}</Text>
     <Select
       name={name}
       value={value}
@@ -103,6 +107,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+
   useEffect(() => {
     const sortedMontos = [...compromisos].sort((a, b) => {
       const dateA = new Date(a.fecha_carga_comp_pdf);
@@ -110,7 +115,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       return dateB.getTime() - dateA.getTime();
     });
     sortedMontos[0] ? setTempMonto(sortedMontos[0]) : null;
-  }, [compromisos]);
+  }, [compromisos]); // Ordeno de ultimo compromiso cargado al ultimo.
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -118,7 +123,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
   };
 
   const [tempMonto, setTempMonto] = useState<Compromiso>({
-    anio: getCurrentDateTime(),
+    anio: 0,
     fecha_carga_comp_pdf: '',
     cuatrimestre: '',
     archivo_pdf_url: '',
@@ -133,13 +138,15 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
     fecha_vencimiento_1: 10,
     fecha_vencimiento_2: 15,
     fecha_vencimiento_3: 20,
+    fecha_limite_baja: null,
   });
 
   const toast = useToast();
 
+
+
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     if (name.includes('monto') || name === 'matricula' || name.includes('cuota')) {
       setTempMonto({
@@ -151,9 +158,17 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
         ...tempMonto,
         [name]: parseInt(value, 10) || 0,
       });
-    } 
+    }
   };
-  
+
+  const handleDateChange = (date: Date | null) => {
+    const formattedFechaLimiteBaja = date?.toISOString().split('T')[0]
+    setTempMonto({
+      ...tempMonto,
+      fecha_limite_baja: formattedFechaLimiteBaja? new Date(formattedFechaLimiteBaja) : null,
+    });
+  };
+
   const handleSave = async () => {
     if (!selectedFile) {
       toast({
@@ -177,12 +192,17 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       return;
     }
 
+    // Formatear la fecha límite de baja a YYYY-MM-DD
+    const formattedFechaLimiteBaja = tempMonto.fecha_limite_baja
+      ? tempMonto.fecha_limite_baja.toISOString().split('T')[0]
+      : null;
+
     try {
-      await createCompromiso(tempMonto, selectedFile);
+      await createCompromiso({ ...tempMonto, fecha_limite_baja: formattedFechaLimiteBaja }, selectedFile);
       onClose();
       toast({
         title: 'Éxito',
-        description: 'Compromiso creado exitosamente.',
+        description: 'Compromiso creado éxitosamente.',
         status: 'success',
         duration: 5000,
         isClosable: true,
@@ -199,6 +219,35 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (isOpen){
+    const getCurrentDateTime = () => {
+      const now = new Date();
+      return now.toISOString();
+    };
+    let fechaAux = getCurrentDateTime();
+
+   if (tempMonto.cuatrimestre === '' ) {
+      setTempMonto({...tempMonto, cuatrimestre: "1C",  anio: fechaAux});
+    } else{
+   
+    if (tempMonto.cuatrimestre === '1C' ) {
+      setTempMonto({...tempMonto, cuatrimestre: "2C",  anio: fechaAux});
+    } else {
+      let year = parseInt(fechaAux.split('-')[0], 10) + 1;
+      fechaAux = `${year}${fechaAux.slice(4)}`;
+      console.log(fechaAux);
+  
+      setTempMonto({
+        ...tempMonto,
+        cuatrimestre: "1C",
+        anio: fechaAux
+      });
+    }
+  }}
+}, [isOpen]);
+
 
   return (
     <>
@@ -223,16 +272,7 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 Cargar Documento
               </Button>
             </Flex>
-            <Select
-              placeholder="Selecciona un cuatrimestre"
-              name="cuatrimestre"
-              mb={4}
-              bg="white"
-              onChange={(e) => setTempMonto({ ...tempMonto, cuatrimestre: e.target.value })}
-            >
-              <option value="1C">1er Cuatrimestre</option>
-              <option value="2C">2do Cuatrimestre</option>
-            </Select>
+           <Text mb={4} fontSize="2xl" fontWeight="bold">{new Date(tempMonto.anio).getFullYear()}/{tempMonto.cuatrimestre}</Text>
             
             <Text fontWeight="bold" mb={4}>Montos</Text>
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
@@ -296,7 +336,16 @@ const Montos = ({ compromisos, fetchMontos }: CardCargaProps) => {
                 value={tempMonto.fecha_vencimiento_3}
                 onChange={handleChange}
               />
-
+              <Flex direction="column">
+                <Text mb={1}>Fecha Límite de Baja</Text>
+                <DatePicker
+                  selected={tempMonto.fecha_limite_baja}
+                  onChange={handleDateChange}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Selecciona una fecha"
+                  customInput={<Input size="sm" bg="white" />}
+                />
+              </Flex>
             </Grid>
           </ModalBody>
           <ModalFooter>

@@ -1,19 +1,21 @@
-import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Skeleton, Checkbox, Input} from '@chakra-ui/react'; 
-import {useState , useEffect} from 'react';
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Flex, Text, Checkbox, Tooltip, Alert, AlertIcon, Spinner, useBreakpointValue } from '@chakra-ui/react'; 
+import { useState, useEffect } from 'react';
 import { FetchGetCuotas } from '../../../API-Alumnos/Pagos';
 import { formatoFechaISOaDDMMAAAA } from '../../../utils/general';
 import { motion } from 'framer-motion';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
+import { set } from 'date-fns';
 
 interface Cuota {
   id_cuota: number;
-  numero: string;
-  monto1erVencimiento: number;
-  monto2doVencimiento: number;
-  monto3erVencimiento: number;
-  valortotal: number;
-  valorpagado: number;
-  valoradeudado: number;
+  numero: number;
+  montoActual: number;
+  fechaVencimiento: string;
+  monto_pagado: number;
   estado: string;
+  tipocuota: string;
+  valorinformado: number;
+  cuota_completa: boolean;
 }
 
 interface TablaCuotasProps {
@@ -23,134 +25,172 @@ interface TablaCuotasProps {
 }
 
 
+
 function TablaCuotas({ refresh, setCuotasSeleccionadas, cuotasSeleccionadas }: TablaCuotasProps) {
 
-    const [cuotas, setCuotas] = useState<any[]>([]); 
-    const [loading, setLoading] = useState<boolean>(true);
+  const [cuotas, setCuotas] = useState<Cuota[]>([]); 
+  const [loading, setLoading] = useState<boolean>(true);
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
-    // useEffect(() => {
-    //   // handleCheckboxChange(); // Llamar a la función cuando refresh cambie
-    //   if (refresh) {
-    //     window.location.reload();
-    //   }
-    // }, [refresh]);
-
-    useEffect(() => {
-      const getCuotas = async () => {
-          setLoading(true);
-          try {
-              const cuotas = await FetchGetCuotas();
-              const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => parseInt(a.numero) - parseInt(b.numero));      // Si cambia el numero de cuota no olvidar cambiar aca
-              setCuotas(sortedCuotas);
-          } catch (error) {
-              console.error('Error:', error);
-          } finally {
-              setLoading(false);
-          }
-      };
-      getCuotas();
-      setCuotasSeleccionadas([]);
+  useEffect(() => {
+    const getCuotas = async () => {
+      setLoading(true);
+      try {
+         const cuotas = await FetchGetCuotas(undefined);
+         const sortedCuotas = cuotas.sort((a: Cuota, b: Cuota) => a.numero - b.numero);
+         setCuotas(sortedCuotas);
+       
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getCuotas();
+    setCuotasSeleccionadas([]);
   }, [refresh]);
-   
-    const handleCheckboxChange = (cuota: Cuota) => {
-      setCuotasSeleccionadas((prevSeleccionadas) => {
-          const cuotaIndex = cuotas.indexOf(cuota);
-          if (prevSeleccionadas.includes(cuota)) {
-            return prevSeleccionadas.filter((item) => cuotas.indexOf(item) < cuotaIndex);
-          } else {
-              return [...prevSeleccionadas, cuota];
-          }
-      });
-      
-    };
 
-    const CuotasInformadas = cuotas.filter((cuota) => cuota.estado === "Pagada completamente");
+  const handleCheckboxChange = (cuota: Cuota) => {
+    setCuotasSeleccionadas((prevSeleccionadas) => {
+      const cuotaIndex = cuotas.indexOf(cuota);
+      if (prevSeleccionadas.includes(cuota)) {
+        return prevSeleccionadas.filter((item) => cuotas.indexOf(item) < cuotaIndex);
+      } else {
+        return [...prevSeleccionadas, cuota];
+      }
+    });
+  };
 
-    const CompararFechas = (fechaVencimiento: string): boolean => {
-      const fechaActual = new Date();
-      const fechaVenc = new Date(fechaVencimiento);
-      return fechaActual > fechaVenc;
-    };
+  const CuotasInformadas = cuotas.filter((cuota) => cuota.valorinformado === cuota.montoActual);
 
-    return (
-            <Flex
-                alignItems="center"
-                justifyContent="center"
-                flexDirection="column"
-            >
-            <Box
-                borderRadius={8}
-                borderColor={"gray.200"}
-                borderStyle={"solid"}
-                borderWidth={1}
-                p={3}
-            >
-            {loading ? (
-                    <Skeleton height="400px" w="900px" />
-                ) : (
-             cuotas.length > 0 ? (
-                <Table variant="simple" width="100%">
-                  <Thead>
-                    <Tr mt={6}>
-                      <Th></Th>
-                      <Th textAlign="center" p={1}>Cuota</Th>
-                      <Th textAlign="center">Fecha Primer VTO.</Th>
-                      <Th textAlign="center">Valor Actual</Th>
-                      <Th textAlign="center">Valor Pagado</Th>
-                      <Th textAlign="center">Valor Informado</Th>
-                      <Th textAlign="center">Valor Adeudado</Th>
-                    
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {cuotas.map((cuota, index) => (
-                          <motion.tr
-                          key={index}
-                          animate={{
-                            //opacity: CompararFechas(cuota.fechaVencimiento) ? [1, 0.5, 1] : 1,
-                            backgroundColor: CompararFechas(cuota.fechaVencimiento) ? ['#FFFFFF', '#FFAAAA', '#FF8A8A'] : 'transparent',
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            repeatType: 'reverse',
-                          }}
-                        >
-                        { CuotasInformadas.includes(cuota) ?
-                        <Td><Checkbox isDisabled={true}></Checkbox></Td>
-                        :
-                        <Td><Checkbox
+  const CompararFechas = (fechaVencimiento: string): boolean => {
+    const fechaActual = new Date();
+    const fechaVenc = new Date(fechaVencimiento);
+    return fechaActual > fechaVenc;
+  };
+
+  return (
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      flexDirection="column"
+      w="100%"
+    >
+      <Box
+        borderRadius={8}
+        borderColor="gray.200"
+        borderStyle="solid"
+        borderWidth={1}
+        p={3}
+        w="100%"
+      >
+        {loading ? (
+          <Flex alignItems="center" justifyContent="center" >
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Flex>
+        ) : (
+          cuotas.length > 0 ? (
+            isMobile ? (
+              cuotas.map((cuota, index) => (
+                <Box
+                  key={index}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  p={4}
+                  mb={4}
+                  bg={CompararFechas(cuota.fechaVencimiento) ? 'red.100' : 'white'}
+                >
+                  <Flex justifyContent="space-between" mb={2}>
+                  <Checkbox
                         p={0}
                         borderColor={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
                         colorScheme={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
                         isChecked={cuotasSeleccionadas.includes(cuota)}
-                        isDisabled={cuotas.slice(0, index).filter(item => !CuotasInformadas.includes(item)).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota))}
+                        isDisabled={cuotas.slice(0, index).filter(item => !CuotasInformadas.includes(item)).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota)) || CuotasInformadas.includes(cuota)}
                         onChange={() => handleCheckboxChange(cuota)}
                         >
-                        </Checkbox></Td>
-                        }
-                        <Td textAlign="center" p={1}>{cuota.numero}</Td>
-                        <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
-                        <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.montoActual)}</Td>
-                        <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorpagado)}</Td>
-                        <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format( cuota.valorinformado)}</Td>
-                        { cuota.estado !== "Pagada" ?
-                        <Td textAlign="center">{"$ " +  new Intl.NumberFormat('es-ES').format((cuota.montoActual - cuota.valorpagado - cuota.valorinformado))}</Td>
-                        : 
-                        <Td textAlign="center">{"$ " + 0}</Td>
-                        }
-                     </motion.tr>
-                    ))}
-                  </Tbody>
-                </Table>
+                  </Checkbox>
+                    <Text fontWeight="bold">Cuota {cuota.numero}</Text>
+                  </Flex>
+                  <Text><strong>Fecha Próximo VTO.:</strong> {formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Text>
+                  <Text><strong>Valor Actual:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Text>
+                  <Text><strong>Valor Pagado:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Text>
+                  <Text><strong>Valor Informado:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Text>
+                  <Text><strong>Valor Adeudado:</strong> ${new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado)}</Text>
+                </Box>
+              ))
             ) : (
-              <Text>No hay cuotas para mostrar. Por favor, firmar el compromiso de pago.</Text>
+              <Table variant="simple" width="100%">
+                <Thead>
+                  <Tr mt={6}>
+                    <Th></Th>
+                    <Th textAlign="center" p={1}>Cuota</Th>
+                    <Th textAlign="center">Fecha Próximo VTO.</Th>
+                    <Th textAlign="center">Valor Actual     
+                      <Tooltip ml={'2px'} label="Valor dependiente del vencimiento en que se encuentra" aria-label="A tooltip">
+                        <QuestionOutlineIcon boxSize={4} />
+                      </Tooltip>
+                    </Th>
+                    <Th textAlign="center">Valor Pagado
+                      <Tooltip label="Valor correspondiente a pagos confirmados por tesorería" aria-label="A tooltip">
+                        <QuestionOutlineIcon boxSize={4} />
+                      </Tooltip>
+                    </Th>
+                    <Th textAlign="center">Valor Informado
+                      <Tooltip label="Valor correspondiente a pagos sin confirmar por tesorería" aria-label="A tooltip">
+                        <QuestionOutlineIcon boxSize={4} />
+                      </Tooltip>
+                    </Th>
+                    <Th textAlign="center">Valor Adeudado</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {cuotas.map((cuota, index) => (
+                    <Tr
+                      key={index}
+                      bg={CompararFechas(cuota.fechaVencimiento) ? 'red.100' : 'transparent'}
+                    >
+                      <Td>
+                        <Checkbox
+                            p={0}
+                            borderColor={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                            colorScheme={CompararFechas(cuota.fechaVencimiento) ? 'red' : 'green'}
+                            isChecked={cuotasSeleccionadas.includes(cuota)}
+                            isDisabled={cuotas.slice(0, index).filter(item => !CuotasInformadas.includes(item)).some((prevCuota) => !cuotasSeleccionadas.includes(prevCuota)) || CuotasInformadas.includes(cuota)}
+                            onChange={() => handleCheckboxChange(cuota)}
+                            >
+                        </Checkbox>
+                      </Td>
+                      <Td textAlign="center" p={1}>{cuota.numero}</Td>
+                      <Td textAlign="center">{formatoFechaISOaDDMMAAAA(cuota.fechaVencimiento)}</Td>
+                      <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.montoActual)}</Td>
+                      <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.monto_pagado)}</Td>
+                      <Td textAlign="center">{"$ " + new Intl.NumberFormat('es-ES').format(cuota.valorinformado)}</Td>
+                      <Td textAlign="center">{'$ ' + new Intl.NumberFormat('es-ES').format(cuota.montoActual - cuota.monto_pagado)}</Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
             )
-            )}
-          
-        </Box>
-        </Flex>
-    );
-    }
+          ) : (
+            <Alert status="info" alignItems="center" justifyContent="center" textAlign="center">
+              <AlertIcon mr={1} />
+              <Text>
+                No hay cuotas para mostrar. Por favor, firmar el compromiso de pago.
+              </Text>
+            </Alert>
+          )
+        )}
+      </Box>
+    </Flex>
+  );
+}
 
 export default TablaCuotas;

@@ -10,6 +10,8 @@ import {
   Box,
   Text,
   useDisclosure,
+  Avatar,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import imgLogo from '../icons/Logos TUP_Mesa de trabajo 1.png';
 import logoUser from '../icons/logo-user.png';
@@ -17,30 +19,35 @@ import { FiMenu } from 'react-icons/fi';
 import { useAuth } from '../../Context';
 import Cookies from 'js-cookie';
 import Perfil from '../Modal/Perfil';
-import Contraseña from '../Modal/Contraseña';
 
 export function HeaderContent({ onOpen }: { onOpen: any }) {
   const { onLogout } = useAuth();
-  const user = Cookies.get('full_name');
-  // Perfil
+  const user = Cookies.get('full_name') || '';
+
+  function formatUserName(fullName: string): string {
+    const parts = fullName.trim().split(',');
+    if (parts.length === 2) {
+      const lastName = parts[0].trim();
+      const firstName = parts[1].trim();
+      return `${firstName}, ${lastName}`;
+    }
+    return fullName.trim();
+  }
+
+  // Definir el ancho de la caja de SubMenuContent según el tamaño de la pantalla
+  const isMobile = useBreakpointValue({ base: true, xl: false });
+
+  // Perfil  
   const {
     isOpen: isOpen1,
     onOpen: onOpen1,
     onClose: onClose1,
   } = useDisclosure();
 
-  // Contraseña
-  const {
-    isOpen: isOpen2,
-    onOpen: onOpen2,
-    onClose: onClose2,
-  } = useDisclosure();
-
   const handleConfirmar = () => {
-    console.log('confirmar');
+
     // TODO: Implementar la lógica de confirmar
   }
-
 
   return (
     <Flex
@@ -70,17 +77,19 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
           display={{ base: 'flex', md: 'none' }}
           color="white"
         />
-        <Flex direction={"row"} alignItems={"center"} gap={5}>
-        <Text fontFamily={"'Roboto',sans-serif"} fontWeight="600">{user}</Text>
-        <MenuButton as={Button} borderRadius="50%" w="50px" h="50px" p="0px">
-          <Image src={logoUser} w="100%"></Image>
+        <Flex direction={"row"} alignItems={"center"} gap={3}>
+        <Text display={isMobile ? 'none' : ''} fontFamily={"'Roboto',sans-serif"} fontWeight="600">{user}</Text>
+        <MenuButton borderRadius={'full'}>
+          <Avatar
+            name={formatUserName(user || '')}
+            borderRadius="full"
+          />
         </MenuButton>
         <MenuList>
           <MenuItem 
             onClick={onOpen1}>
             Ver Perfil
           </MenuItem>
-          <MenuItem onClick={onOpen2}>Cambiar Contraseña</MenuItem>
           <MenuItem onClick={() => onLogout()}>Cerrar sesión</MenuItem>
         </MenuList>
         </Flex>
@@ -89,10 +98,6 @@ export function HeaderContent({ onOpen }: { onOpen: any }) {
       isOpen={isOpen1}
       onClose={onClose1}
       confirmar={handleConfirmar}
-      />
-      <Contraseña
-      isOpen={isOpen2}
-      onClose={onClose2}
       />
     </Flex>
   );

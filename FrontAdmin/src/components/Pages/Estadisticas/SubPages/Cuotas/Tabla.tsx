@@ -10,6 +10,7 @@ import {
   Td,
   Link,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 interface TablaProps {
   headers: string[];
@@ -19,33 +20,48 @@ interface TablaProps {
 const Tabla: React.FC<TablaProps> = ({ headers, data }) => {
   // Mapea headers a las propiedades correctas del objeto row
   const keyMap: { [key: string]: string } = {
-    'Nombre': 'full_name',
     'DNI': 'user',
-    'Situación': 'estado_financiero',
+    'Apellido y Nombre': 'full_name',
+    'Legajo': 'legajo',
+    'Monto Cuota': 'cuota_monto',
+    'Monto Adeudado': 'monto_restante',
+    'Monto Abonado': 'monto_pagado',
+  };
+  const navigate = useNavigate();
+
+  const handleRowClick = (dni: any) => {
+    navigate(`/admin/alumnos/${dni}`);
   };
 
   return (
     <Box w={"100%"}>
       <TableContainer borderWidth={1} borderColor={'grey.700'}>
-        <Table variant="simple">
-          <Thead>
-            <Tr bg="secundary">
+        <Table>
+          <Thead >
+            <Tr >
               {headers.map((header) => (
-                <Th key={header} textAlign="center">{header}</Th>
+                <Th key={header} textAlign="center" fontFamily="Helvetica" fontWeight="900">{header}</Th>
               ))}
             </Tr>
           </Thead>
           <Tbody>
           {data.map((row, rowIndex) => (
-            <Tr key={rowIndex}>
+            <Tr key={rowIndex} onClick={() => handleRowClick(row[keyMap['DNI']])} cursor="pointer" _hover={{
+              bg: 'gray.200', // Color de fondo cuando el cursor está sobre la fila
+              cursor: 'pointer', // Cambiar el cursor para indicar que es un enlace
+            }}>
                 {headers.map((header) => (
-                <Td key={header} textAlign={header === 'Nombre' ? "left" : "center"}>
-                    {/* Usamos keyMap para obtener la propiedad correcta */}
-                    {typeof row[keyMap[header]] === 'string' ? (
-                    row[keyMap[header]]
-                    ) : typeof row[keyMap[header]] === 'number' ? (
-                    new Intl.NumberFormat('es-ES').format(row[keyMap[header]])
-                    ) : 'N/A'}
+                <Td key={header} textAlign={header === 'Apellido y Nombre' ? "left" : "center"}
+                >
+                  {/* Usamos keyMap para obtener la propiedad correcta */}
+                  {header === 'Monto Cuota' || header === 'Monto Adeudado' || header === 'Monto Abonado' ? (
+                  `$${new Intl.NumberFormat('es-ES').format(row[keyMap[header]])}`
+                  ) : typeof row[keyMap[header]] === 'string' ? (
+                  row[keyMap[header]]
+                  ) : typeof row[keyMap[header]] === 'number' ? (
+                  new Intl.NumberFormat('es-ES').format(row[keyMap[header]]) 
+                  ) : 'N/A'}
+                 
                 </Td>
                 ))}
             </Tr>

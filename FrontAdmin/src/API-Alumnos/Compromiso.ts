@@ -1,11 +1,13 @@
 import Cookies from 'js-cookie'
 // los dni son la mama de lo hardcodeado
 
-export const FetchCompromisos = async () => {
+export const FetchCompromisos = async (dni: number | undefined ) => {
  try {
     const token = Cookies.get('tokennn');
-    const dni = Cookies.get('dni');
-   
+    if (!dni) {
+        dni = parseInt(Cookies.get('dni') || '', 10);
+    }
+
     const response = await fetch(`http://localhost:8000/api/firmas/firmas-de-alumno/${dni}/`, {
             method: 'GET',
             headers: {

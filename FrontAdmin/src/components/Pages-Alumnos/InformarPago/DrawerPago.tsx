@@ -17,6 +17,8 @@ import {
     Stack,
     Flex,
     Icon,
+    Alert,
+    AlertIcon
   } from '@chakra-ui/react'
 import { useState} from 'react'
 import {AttachmentIcon, InfoIcon, InfoOutlineIcon} from '@chakra-ui/icons';
@@ -24,17 +26,18 @@ import { FetchPostPago } from '../../../API-Alumnos/Pagos';
 import Cookies from 'js-cookie';
 import {useToast} from '../../Toast/useToast';
 import {obtenerFechaForm} from '../../../utils/general';
+import { formatoFechaISOaMM } from '../../../utils/general';
 
 interface Cuota {
     id_cuota: number;
-    numero: string;
-    monto1erVencimiento: number;
-    monto2doVencimiento: number;
-    monto3erVencimiento: number;
-    valortotal: number;
-    valorpagado: number;
-    valoradeudado: number;
+    numero: number;
+    montoActual: number;
+    fechaVencimiento: string;
+    monto_pagado: number;
     estado: string;
+    tipocuota: string;
+    valorinformado: number;
+    cuota_completa: boolean;
   }
 
 interface DrawerInformarProps {
@@ -51,25 +54,30 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
     const showToast = useToast();
 
     const obtenerMesesDeCuotas = (numerosCuotas: number[]): string[] => {
+      console.log('nuemrossss', numerosCuotas)
       const meses: { [key: number]: string } = {
           0: 'Matrícula',
-          1: 'Marzo',
-          2: 'Abril',
-          3: 'Mayo',
-          4: 'Junio',
-          5: 'Julio',
-          6: 'Agosto',
-          7: 'Septiembre',
-          8: 'Octubre',
-          9: 'Noviembre'
+          1: 'Enero',
+          2: 'Febrero',
+          3: 'Marzo',
+          4: 'Abril',
+          5: 'Mayo',
+          6: 'Junio',
+          7: 'Julio',
+          8: 'Agosto',
+          9: 'Septiembre',
+          10: 'Octubre',
+          11: 'Noviembre',
+          12: 'Diciembre',
       };
   
       return numerosCuotas.map(numero => meses[numero] || 'Mes desconocido');
   };
 
+  console.log('cuotasseleccionadas', cuotasseleccionadas);
+
 
     const handleSave = () => {
-       // Aca hay que hacer el post al backend
        const guardar = async () => {
        try{
             let numerosCuotas = cuotasseleccionadas.map(cuota => cuota.id_cuota);
@@ -78,10 +86,15 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
             showToast('Pago informado', 'El pago se ha informado correctamente, continuar en el google forms', 'success');
 
+            let mesesCuota = cuotasseleccionadas.map(cuota => formatoFechaISOaMM(cuota.fechaVencimiento));
+            mesesCuota = mesesCuota.map((mes, index, self) => self.indexOf(mes) !== index ? 0 : mes);    // Para la matricula
+            mesesCuota = mesesCuota.sort((a, b) => a - b); // Ordenar de menor a mayor
            const dni = Cookies.get('dni');
            const fullName = Cookies.get('full_name');
+           const cuil = Cookies.get('cuil');
            const fechaHoy = obtenerFechaForm();
-           const googleFormUrl =  `https://docs.google.com/forms/d/e/1FAIpQLSfNe4krjpaC7I_9FA7Do3MAuQr7eC9wF5zVHIgOV2XeqzAAnA/viewform?usp=pp_url&entry.1045781291=${fullName}&entry.839337160=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.1065046570=${dni}&entry.1651003915=${encodeURIComponent(fechaHoy)}&entry.180139663=${obtenerMesesDeCuotas(numerosCuotas)}&entry.463277821=${comentarios}`;
+           const meses = obtenerMesesDeCuotas(mesesCuota);
+           const googleFormUrl =  `https://docs.google.com/forms/d/e/1FAIpQLSfNe4krjpaC7I_9FA7Do3MAuQr7eC9wF5zVHIgOV2XeqzAAnA/viewform?usp=pp_url&entry.1045781291=${fullName}&entry.839337160=Tecnicatura+Universitaria+en+Programaci%C3%B3n&entry.1065046570=${dni}&entry.1166974658=${cuil}&entry.1651003915=${encodeURIComponent(fechaHoy)}&entry.180139663=${meses}&entry.463277821=${comentarios}`;
            window.open(googleFormUrl, '_blank');
            
            //onRefresh();
@@ -108,20 +121,10 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
 
     
     useEffect(() => {
-      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorpagado - cuota.valorinformado), 0);
+      const calculatedTotal = cuotasseleccionadas.reduce((acc, cuota) => acc + (cuota.montoActual - cuota.valorinformado), 0);
       setTotal(calculatedTotal);
-      setMontoAbonado(calculatedTotal); // Inicializa montoAbonado con el valor de total
+      setMontoAbonado(calculatedTotal);
   }, [isOpen, cuotasseleccionadas]);
-
-  const handleMontoAbonadoChange = (e: any) => {
-    const value = e.target.value;
-    setMontoAbonado(value === '' ? 0 : parseFloat(value));
-  };
-
-  
-    // useEffect(() => {
-    //   setMontoAbonado(total);
-    // }, [total]);
 
     return (
       <>
@@ -143,26 +146,15 @@ const DrawerInformar: React.FC<DrawerInformarProps> = ({ isOpen, onClose, cuotas
                 ))}
             </Stack>
             <Text mt={4}>Total a abonar:</Text>
-            <Text mb={4} mt={4} fontWeight={600} textAlign={"center"} fontSize={22}>{"$" + new Intl.NumberFormat('es-ES').format(total)}</Text>
-          
-            <FormControl isRequired={true}>
-                <FormLabel mb={0}>Monto Abonado</FormLabel>
-                <InputGroup>
-                    <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
-                      $
-                    </InputLeftElement>
-                    <Input placeholder='' value={montoAbonado} onChange={handleMontoAbonadoChange} />
-                </InputGroup>
-            
-            </FormControl>
+            <Text mb={1} mt={4} fontWeight={600} textAlign={"center"} fontSize={22}>{"$" + new Intl.NumberFormat('es-ES').format(total)}</Text>
             <Stack gap={0}>
-              <FormLabel mt={4} mb={0}>Comentarios</FormLabel>
+              <FormLabel mt={2} mb={0}>Comentarios</FormLabel>
               <Input placeholder='' mt={0}  onChange={(e) => setComentarios(e.target.value)} />
             </Stack>
-            <Stack bg={'secundaryBg'} direction={'row'} alignItems={'center'} borderRadius={5} mt={4} mb={4} p={4} gap={4}>
-                <Icon as={InfoOutlineIcon} w={7} h={7} />
-                <Text as={'i'}>Al seleccionar Guardar se lo redirigira al google forms para que pueda continuar con el informe del pago</Text>
-            </Stack>
+            <Alert status='info' mt={4} mb={4}>
+              <AlertIcon />
+              Al seleccionar Guardar se lo redirigira al google forms para que pueda continuar con el informe del pago. Revisar tener desactivado el bloqueo de ventanas emergentes
+            </Alert>
             </DrawerBody>
             <DrawerFooter>
               <Button variant='light' mr={3} onClick={handleCancel}>
